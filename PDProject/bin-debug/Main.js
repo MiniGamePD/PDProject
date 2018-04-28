@@ -78,10 +78,24 @@ var Main = (function (_super) {
         _this.addEventListener(egret.Event.ADDED_TO_STAGE, _this.onAddToStage, _this);
         return _this;
     }
+    Main.prototype.CreateGameMain = function () {
+        if (this.mGameMain == null) {
+            if (!GameMain.HasInstance()) {
+                GameMain.CreatInstance();
+            }
+            this.mGameMain = GameMain.GetInstance();
+            this.mGameMain.Init(this.stage);
+        }
+    };
     Main.prototype.onAddToStage = function (event) {
+        var _this = this;
+        this.CreateGameMain();
         egret.lifecycle.addLifecycleListener(function (context) {
             // custom lifecycle plugin
             context.onUpdate = function () {
+                if (_this.mGameMain != null) {
+                    _this.mGameMain.Update(0);
+                }
             };
         });
         egret.lifecycle.onPause = function () {

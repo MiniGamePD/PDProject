@@ -12,7 +12,7 @@ class GameMain implements IGameMain {
 	private mModuleMgr: IModuleMgr;
 
 	//创建单例
-	public CreatInstance(): boolean {
+	public static CreatInstance(): boolean {
 		if (!GameMain.HasInstance()) {
 			GameMain.msInstance = new GameMain();
 			return true;

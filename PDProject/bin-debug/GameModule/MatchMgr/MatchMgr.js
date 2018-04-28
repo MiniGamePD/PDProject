@@ -17,6 +17,7 @@ var MatchMgr = (function (_super) {
         return true;
     };
     MatchMgr.prototype.Update = function (deltaTime) {
+        console.log("MatchMgr update, deltaTime=" + deltaTime);
     };
     MatchMgr.prototype.Release = function () {
     };

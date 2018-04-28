@@ -5,7 +5,7 @@ class MatchMgr extends ModuleBase implements IMatchMgr {
 	}
 
 	public Update(deltaTime: number): void {
-
+		console.log("MatchMgr update, deltaTime=" + deltaTime);
 	}
 
 	public Release(): void {

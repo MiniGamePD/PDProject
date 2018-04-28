@@ -17,6 +17,7 @@ var LobbyMgr = (function (_super) {
         return true;
     };
     LobbyMgr.prototype.Update = function (deltaTime) {
+        console.log("LobbyMgr update, deltaTime=" + deltaTime);
     };
     LobbyMgr.prototype.Release = function () {
     };

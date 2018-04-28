@@ -5,7 +5,7 @@ var GameMain = (function () {
     function GameMain() {
     }
     //创建单例
-    GameMain.prototype.CreatInstance = function () {
+    GameMain.CreatInstance = function () {
         if (!GameMain.HasInstance()) {
             GameMain.msInstance = new GameMain();
             return true;

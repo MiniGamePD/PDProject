@@ -29,19 +29,33 @@
 
 class Main extends egret.DisplayObjectContainer {
 
-
+    private mGameMain: GameMain;
 
     public constructor() {
         super();
         this.addEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
     }
 
+    private CreateGameMain() {
+        if (this.mGameMain == null) {
+            if (!GameMain.HasInstance()) {
+                GameMain.CreatInstance();
+            }
+            this.mGameMain = GameMain.GetInstance();
+            this.mGameMain.Init(this.stage);
+        }
+    }
+
     private onAddToStage(event: egret.Event) {
+
+        this.CreateGameMain();
 
         egret.lifecycle.addLifecycleListener((context) => {
             // custom lifecycle plugin
-
             context.onUpdate = () => {
+                if (this.mGameMain != null) {
+                    this.mGameMain.Update(0);
+                }
 
             }
         })
