@@ -109,7 +109,7 @@ class GameMain implements IGameMain {
 		return this.mEgretMain;
 	}	
 
-	public DispatchEvent(event:DisplayChangeEvent): void
+	public DispatchEvent(event:egret.Event): void
 	{
 		if(this.mEgretMain.hasEventListener(event.$type))
 		{
@@ -130,5 +130,15 @@ class GameMain implements IGameMain {
 	public RemoveEventListener(type: string, listener: Function, thisObject: any, useCapture?: boolean): void
 	{
 		this.mEgretMain.removeEventListener(type, listener, thisObject, useCapture);
+	}
+
+	public GetStageWidth(): number
+	{
+		return this.GameStage.stageWidth
+	}
+
+	public GetStageHeight(): number
+	{
+		return this.GameStage.stageHeight;
 	}
 }

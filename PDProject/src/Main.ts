@@ -79,13 +79,11 @@ class Main extends egret.DisplayObjectContainer {
 
     private OnDisplayChange(event: DisplayChangeEvent)
     {
-        console.log("OnDisplayChange");
         this.removeChildren();
         
         let gameViewArray:IGameView[] = event.gameViewArray;
         for (var i = 0; i < gameViewArray.length; ++i)
         {
-            console.log("OnDisplayChange:" + i);
             this.addChild(gameViewArray[i].GetDisplayObjectContainer());
         }
     }

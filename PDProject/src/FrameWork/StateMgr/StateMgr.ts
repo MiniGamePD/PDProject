@@ -3,7 +3,7 @@ class StateMgr implements IStateMgr{
 	private mCurState: GameStateType;
 
 	public Init():void{
-		this.mCurState = GameStateType.Init;
+		this.mCurState = GameStateType.Lobby;
 	}
 
 	public Update(deltaTime: number):void{
