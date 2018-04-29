@@ -31,6 +31,6 @@ enum GameStateType
 	None,
 	Init,
 	Lobby,
-	Game,
+	Match,
 	Result
 }

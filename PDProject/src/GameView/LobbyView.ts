@@ -1,4 +1,4 @@
-class LobbyView extends  egret.DisplayObjectContainer implements IGameView
+class LobbyView extends GameView
 {
     private textField: egret.TextField;
 
@@ -41,23 +41,9 @@ class LobbyView extends  egret.DisplayObjectContainer implements IGameView
         this.addChild(text);
     }
 
-    public UpdateView(): void
-    {
-    }
-
-    public ReleaseView(): void
-    {
-
-    }
-
-    public GetDisplayObjectContainer():egret.DisplayObjectContainer
-    {
-        return this;
-    }
-
     private OnClickStartGame(): void
     {
         egret.log("OnClickStartGame");
-        //GameMain.GetInstance().SwitchGameState(GameStateType.Game);
+        GameMain.GetInstance().SwitchGameState(GameStateType.Match);
     }
 }

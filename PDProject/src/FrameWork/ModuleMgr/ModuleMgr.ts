@@ -16,7 +16,7 @@ class ModuleMgr implements IModuleMgr
 	{
 		this.mModuleList = [];
 		this.mModuleList.push(new LobbyModule);
-		//this.mModuleList.push(new MatchMgr);
+		this.mModuleList.push(new MatchModule);
 
 		this.mModuleCount = this.mModuleList.length;
 	}
