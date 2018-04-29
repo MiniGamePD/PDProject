@@ -1,4 +1,4 @@
-abstract class ModuleBase implements IModule
+abstract class ModuleBase
 {	
 	protected isForeground:boolean = false;	
 

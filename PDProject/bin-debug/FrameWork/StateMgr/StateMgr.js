@@ -5,7 +5,7 @@ var StateMgr = (function () {
     function StateMgr() {
     }
     StateMgr.prototype.Init = function () {
-        this.mCurState = GameStateType.Init;
+        this.mCurState = GameStateType.None;
     };
     StateMgr.prototype.Update = function (deltaTime) {
     };

@@ -10,8 +10,9 @@ var ModuleMgr = (function () {
     };
     ModuleMgr.prototype.CreateModule = function () {
         this.mModuleList = [];
-        this.mModuleList.push(new LobbyMgr);
-        this.mModuleList.push(new MatchMgr);
+        this.mModuleList.push(new ResMgr);
+        this.mModuleList.push(new LobbyModule);
+        this.mModuleList.push(new MatchModule);
         this.mModuleCount = this.mModuleList.length;
     };
     ModuleMgr.prototype.InitModule = function () {
@@ -21,7 +22,8 @@ var ModuleMgr = (function () {
     };
     ModuleMgr.prototype.Update = function (deltaTime) {
         for (var i = 0; i < this.mModuleCount; ++i) {
-            this.mModuleList[i].Update(deltaTime);
+            if (this.mModuleList[i].IsForeground())
+                this.mModuleList[i].Update(deltaTime);
         }
     };
     ModuleMgr.prototype.Release = function () {
@@ -34,7 +36,17 @@ var ModuleMgr = (function () {
     };
     ModuleMgr.prototype.OnGameStateChange = function (from, to) {
         for (var i = 0; i < this.mModuleCount; ++i) {
-            this.mModuleList[i].OnGameStateChange(from, to);
+            var iModule = this.mModuleList[i];
+            var lastForegroundStat = iModule.IsForeground();
+            iModule.SwitchForeOrBack(from, to);
+            if (lastForegroundStat != iModule.IsForeground()) {
+                if (lastForegroundStat) {
+                    iModule.SwitchToBackground(from, to);
+                }
+                else {
+                    iModule.SwitchToForeground(from, to);
+                }
+            }
         }
     };
     return ModuleMgr;

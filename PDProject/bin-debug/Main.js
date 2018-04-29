@@ -75,38 +75,59 @@ var Main = (function (_super) {
     __extends(Main, _super);
     function Main() {
         var _this = _super.call(this) || this;
+        _this.mTimeOnEnterFrame = 0;
         _this.addEventListener(egret.Event.ADDED_TO_STAGE, _this.onAddToStage, _this);
         return _this;
     }
     Main.prototype.CreateGameMain = function () {
         if (this.mGameMain == null) {
             if (!GameMain.HasInstance()) {
-                GameMain.CreatInstance();
+                GameMain.CreatInstance(this);
             }
             this.mGameMain = GameMain.GetInstance();
+            this.mGameMain.AddEventListener(DisplayChangeEvent.EventName, this.OnDisplayChange, this);
             this.mGameMain.Init(this.stage);
+            this.addEventListener(egret.Event.ENTER_FRAME, this.onEnterFrame, this);
+            this.mTimeOnEnterFrame = egret.getTimer();
         }
     };
     Main.prototype.onAddToStage = function (event) {
-        var _this = this;
         this.CreateGameMain();
-        egret.lifecycle.addLifecycleListener(function (context) {
-            // custom lifecycle plugin
-            context.onUpdate = function () {
-                if (_this.mGameMain != null) {
-                    _this.mGameMain.Update(0);
-                }
-            };
-        });
+        // egret.lifecycle.addLifecycleListener((context) =>
+        //     {
+        //         // custom lifecycle plugin
+        //         context.onUpdate = () => {
+        //             if (this.mGameMain != null) {
+        //                 this.mGameMain.Update(0);
+        //             }
+        //         }
+        //     })
         egret.lifecycle.onPause = function () {
             egret.ticker.pause();
         };
         egret.lifecycle.onResume = function () {
             egret.ticker.resume();
         };
-        this.runGame().catch(function (e) {
-            console.log(e);
-        });
+        //this.runGame().catch(e => {
+        //    console.log(e);
+        //})
+    };
+    Main.prototype.onEnterFrame = function (event) {
+        var now = egret.getTimer();
+        var time = this.mTimeOnEnterFrame;
+        var pass = now - time;
+        //console.log("onEnterFrame: ", (1000 / pass).toFixed(5),pass);
+        if (this.mGameMain != null) {
+            this.mGameMain.Update(pass);
+        }
+        this.mTimeOnEnterFrame = egret.getTimer();
+    };
+    Main.prototype.OnDisplayChange = function (event) {
+        this.removeChildren();
+        var gameViewArray = event.gameViewArray;
+        for (var i = 0; i < gameViewArray.length; ++i) {
+            this.addChild(gameViewArray[i].GetDisplayObjectContainer());
+        }
     };
     Main.prototype.runGame = function () {
         return __awaiter(this, void 0, void 0, function () {

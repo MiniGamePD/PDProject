@@ -1,4 +1,4 @@
-abstract class GameViewModule extends ModuleBase
+abstract class GameViewModule extends ModuleBase implements IModule
 {	
     protected gameViewList: IGameView[] = [];
 

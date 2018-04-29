@@ -15,6 +15,7 @@ class ModuleMgr implements IModuleMgr
 	private CreateModule() 
 	{
 		this.mModuleList = [];
+		this.mModuleList.push(new ResMgr);
 		this.mModuleList.push(new LobbyModule);
 		this.mModuleList.push(new MatchModule);
 

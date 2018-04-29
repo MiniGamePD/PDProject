@@ -1,0 +1,6 @@
+{"file":"pd_res.png","frames":{
+"Bottle":{"x":496,"y":1,"w":409,"h":793,"offX":42,"offY":72,"sourceW":493,"sourceH":872},
+"BackGround":{"x":1,"y":1,"w":493,"h":872,"offX":0,"offY":0,"sourceW":493,"sourceH":872},
+"Pill_Blue":{"x":907,"y":1,"w":64,"h":53,"offX":0,"offY":5,"sourceW":64,"sourceH":64},
+"Pill_Yellow":{"x":907,"y":111,"w":64,"h":53,"offX":0,"offY":5,"sourceW":64,"sourceH":64},
+"Pill_Red":{"x":907,"y":56,"w":64,"h":53,"offX":0,"offY":5,"sourceW":64,"sourceH":64}}}

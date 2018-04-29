@@ -5,9 +5,10 @@ var GameMain = (function () {
     function GameMain() {
     }
     //创建单例
-    GameMain.CreatInstance = function () {
+    GameMain.CreatInstance = function (egretMain) {
         if (!GameMain.HasInstance()) {
             GameMain.msInstance = new GameMain();
+            GameMain.msInstance.mEgretMain = egretMain;
             return true;
         }
         else {
@@ -29,6 +30,7 @@ var GameMain = (function () {
         this.mStateMgr.Init();
         this.mModuleMgr = new ModuleMgr();
         this.mModuleMgr.Init();
+        this.SwitchGameState(GameStateType.Lobby);
     };
     //更新
     GameMain.prototype.Update = function (deltaTime) {
@@ -75,6 +77,30 @@ var GameMain = (function () {
             return this.mModuleMgr.GetModule(moduleType);
         }
         return null;
+    };
+    GameMain.prototype.GetEgretMain = function () {
+        return this.mEgretMain;
+    };
+    GameMain.prototype.DispatchEvent = function (event) {
+        if (this.mEgretMain.hasEventListener(event.$type)) {
+            console.log(event.$type + " dispatch event " + this.mEgretMain.willTrigger(event.$type));
+            this.mEgretMain.dispatchEvent(event);
+        }
+        else {
+            console.log(event.$type + " has no lisenter");
+        }
+    };
+    GameMain.prototype.AddEventListener = function (type, listener, thisObject, useCapture, priority) {
+        this.mEgretMain.addEventListener(type, listener, thisObject, useCapture, priority);
+    };
+    GameMain.prototype.RemoveEventListener = function (type, listener, thisObject, useCapture) {
+        this.mEgretMain.removeEventListener(type, listener, thisObject, useCapture);
+    };
+    GameMain.prototype.GetStageWidth = function () {
+        return this.GameStage.stageWidth;
+    };
+    GameMain.prototype.GetStageHeight = function () {
+        return this.GameStage.stageHeight;
     };
     return GameMain;
 }());

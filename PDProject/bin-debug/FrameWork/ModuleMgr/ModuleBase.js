@@ -3,16 +3,14 @@ var __reflect = (this && this.__reflect) || function (p, c, t) {
 };
 var ModuleBase = (function () {
     function ModuleBase() {
+        this.isForeground = false;
     }
-    ModuleBase.prototype.Init = function () {
-        return true;
-    };
-    ModuleBase.prototype.Update = function (deltaTime) {
-    };
-    ModuleBase.prototype.Release = function () {
-    };
-    ModuleBase.prototype.OnGameStateChange = function (from, to) {
-    };
+    ModuleBase.prototype.Init = function () { return true; };
+    ModuleBase.prototype.Update = function (deltaTime) { };
+    ModuleBase.prototype.Release = function () { };
+    ModuleBase.prototype.SwitchToForeground = function (from, to) { };
+    ModuleBase.prototype.SwitchToBackground = function (from, to) { };
+    ModuleBase.prototype.IsForeground = function () { return this.isForeground; };
     return ModuleBase;
 }());
 __reflect(ModuleBase.prototype, "ModuleBase");
