@@ -27,11 +27,14 @@
 //
 //////////////////////////////////////////////////////////////////////////////////////
 
-class Main extends egret.DisplayObjectContainer {
+class Main extends egret.DisplayObjectContainer 
+{
 
-    private mGameMain: GameMain;    
+    private mGameMain: GameMain;   
+    private mTimeOnEnterFrame: number = 0;
 
-    public constructor() {
+    public constructor() 
+    {
         super();
         this.addEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);        
     }
@@ -45,8 +48,11 @@ class Main extends egret.DisplayObjectContainer {
                 GameMain.CreatInstance(this);
             }            
             this.mGameMain = GameMain.GetInstance();
-            this.mGameMain.AddEventListener(DisplayChangeEvent.EventName, this.OnDisplayChange, this);
+            this.mGameMain.AddEventListener(DisplayChangeEvent.EventName, this.OnDisplayChange, this);            
             this.mGameMain.Init(this.stage);
+
+            this.addEventListener(egret.Event.ENTER_FRAME,this.onEnterFrame,this);
+            this.mTimeOnEnterFrame = egret.getTimer();
         }
     }
 
@@ -54,15 +60,15 @@ class Main extends egret.DisplayObjectContainer {
     {
         this.CreateGameMain();
 
-        egret.lifecycle.addLifecycleListener((context) =>
-            {
-                // custom lifecycle plugin
-                context.onUpdate = () => {
-                    if (this.mGameMain != null) {
-                        this.mGameMain.Update(0);
-                    }
-                }
-            })
+        // egret.lifecycle.addLifecycleListener((context) =>
+        //     {
+        //         // custom lifecycle plugin
+        //         context.onUpdate = () => {
+        //             if (this.mGameMain != null) {
+        //                 this.mGameMain.Update(0);
+        //             }
+        //         }
+        //     })
 
         egret.lifecycle.onPause = () => {
             egret.ticker.pause();
@@ -75,6 +81,19 @@ class Main extends egret.DisplayObjectContainer {
         //this.runGame().catch(e => {
         //    console.log(e);
         //})
+    }
+
+    private  onEnterFrame(event:egret.Event)
+    {
+        var now = egret.getTimer();
+        var time = this.mTimeOnEnterFrame;
+        var pass = now - time;
+        //console.log("onEnterFrame: ", (1000 / pass).toFixed(5),pass);
+        if (this.mGameMain != null) 
+        {
+            this.mGameMain.Update(pass);
+        }
+        this.mTimeOnEnterFrame = egret.getTimer();
     }
 
     private OnDisplayChange(event: DisplayChangeEvent)
