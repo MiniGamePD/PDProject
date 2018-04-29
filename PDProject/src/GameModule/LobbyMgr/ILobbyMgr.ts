@@ -1,3 +1,0 @@
-interface ILobbyMgr extends IModule {
-	
-}

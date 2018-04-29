@@ -1,3 +1,0 @@
-interface IMatchMgr extends IModule {
-
-}

@@ -11,13 +11,20 @@ class GameMain implements IGameMain {
 	//模块管理器
 	private mModuleMgr: IModuleMgr;
 
+	//白鹭Main
+	private mEgretMain: Main;
+
 	//创建单例
-	public static CreatInstance(): boolean {
-		if (!GameMain.HasInstance()) {
+	public static CreatInstance(egretMain:Main): boolean 
+	{
+		if (!GameMain.HasInstance()) 
+		{
 			GameMain.msInstance = new GameMain();
+			GameMain.msInstance.mEgretMain = egretMain;
 			return true;
 		}
-		else {
+		else 
+		{
 			return false;
 		}
 	}
@@ -95,5 +102,33 @@ class GameMain implements IGameMain {
 			return this.mModuleMgr.GetModule(moduleType);
 		}
 		return null;
+	}
+
+	public GetEgretMain():Main
+	{
+		return this.mEgretMain;
+	}	
+
+	public DispatchEvent(event:DisplayChangeEvent): void
+	{
+		if(this.mEgretMain.hasEventListener(event.$type))
+		{
+			console.log(event.$type + " dispatch event " + this.mEgretMain.willTrigger(event.$type));
+			this.mEgretMain.dispatchEvent(event);
+		}
+		else
+		{
+			console.log(event.$type + " has no lisenter");
+		}		
+	}
+
+	public AddEventListener(type: string, listener: Function, thisObject: any, useCapture?: boolean, priority?: number): void
+	{
+		this.mEgretMain.addEventListener(type, listener, thisObject, useCapture, priority);
+	}
+
+	public RemoveEventListener(type: string, listener: Function, thisObject: any, useCapture?: boolean): void
+	{
+		this.mEgretMain.removeEventListener(type, listener, thisObject, useCapture);
 	}
 }

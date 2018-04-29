@@ -1,18 +1,22 @@
-class ModuleBase {
-	
-	public Init(): boolean {
+class ModuleBase
+{	
+	public Init(): boolean
+	{
 		return true;
 	}
 
-	public Update(deltaTime: number): void {
+	public Update(deltaTime: number): void 
+	{
 
 	}
 
-	public Release(): void {
+	public Release(): void 
+	{
 
 	}
 
-	public OnGameStateChange(from: GameStateType, to: GameStateType): void {
+	public OnGameStateChange(from: GameStateType, to: GameStateType): void 
+	{
 
 	}
 }

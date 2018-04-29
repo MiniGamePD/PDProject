@@ -29,36 +29,40 @@
 
 class Main extends egret.DisplayObjectContainer {
 
-    private mGameMain: GameMain;
+    private mGameMain: GameMain;    
 
     public constructor() {
         super();
-        this.addEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
+        this.addEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);        
     }
 
-    private CreateGameMain() {
-        if (this.mGameMain == null) {
-            if (!GameMain.HasInstance()) {
-                GameMain.CreatInstance();
-            }
+    private CreateGameMain() 
+    {
+        if (this.mGameMain == null) 
+        {
+            if (!GameMain.HasInstance()) 
+            {
+                GameMain.CreatInstance(this);
+            }            
             this.mGameMain = GameMain.GetInstance();
+            this.mGameMain.AddEventListener(DisplayChangeEvent.EventName, this.OnDisplayChange, this);
             this.mGameMain.Init(this.stage);
         }
     }
 
-    private onAddToStage(event: egret.Event) {
-
+    private onAddToStage(event: egret.Event) 
+    {
         this.CreateGameMain();
 
-        egret.lifecycle.addLifecycleListener((context) => {
-            // custom lifecycle plugin
-            context.onUpdate = () => {
-                if (this.mGameMain != null) {
-                    this.mGameMain.Update(0);
+        egret.lifecycle.addLifecycleListener((context) =>
+            {
+                // custom lifecycle plugin
+                context.onUpdate = () => {
+                    if (this.mGameMain != null) {
+                        this.mGameMain.Update(0);
+                    }
                 }
-
-            }
-        })
+            })
 
         egret.lifecycle.onPause = () => {
             egret.ticker.pause();
@@ -68,12 +72,22 @@ class Main extends egret.DisplayObjectContainer {
             egret.ticker.resume();
         }
 
-        this.runGame().catch(e => {
-            console.log(e);
-        })
+        //this.runGame().catch(e => {
+        //    console.log(e);
+        //})
+    }
 
-
-
+    private OnDisplayChange(event: DisplayChangeEvent)
+    {
+        console.log("OnDisplayChange");
+        this.removeChildren();
+        
+        let gameViewArray:IGameView[] = event.gameViewArray;
+        for (var i = 0; i < gameViewArray.length; ++i)
+        {
+            console.log("OnDisplayChange:" + i);
+            this.addChild(gameViewArray[i].GetDisplayObjectContainer());
+        }
     }
 
     private async runGame() {
