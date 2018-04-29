@@ -1,4 +1,4 @@
-class ResMgr extends ModuleBase implements IResMgr {
+class ResModule extends ModuleBase implements IResModule {
 
 	public Init(): boolean {
 		this.isForeground = true;

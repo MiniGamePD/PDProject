@@ -92,6 +92,7 @@ var Main = (function (_super) {
         }
     };
     Main.prototype.onAddToStage = function (event) {
+        this.touchEnabled = true;
         this.CreateGameMain();
         // egret.lifecycle.addLifecycleListener((context) =>
         //     {

@@ -10,7 +10,8 @@ var ModuleMgr = (function () {
     };
     ModuleMgr.prototype.CreateModule = function () {
         this.mModuleList = [];
-        this.mModuleList.push(new ResMgr);
+        this.mModuleList.push(new ResModule);
+        this.mModuleList.push(new InputModule);
         this.mModuleList.push(new LobbyModule);
         this.mModuleList.push(new MatchModule);
         this.mModuleCount = this.mModuleList.length;

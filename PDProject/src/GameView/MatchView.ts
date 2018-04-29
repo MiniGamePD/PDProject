@@ -1,27 +1,30 @@
 class MatchView extends GameView {
     private textField: egret.TextField;
-    private mResMgr: IResMgr;
+    private mResModule: IResModule;
     private mStageWidth: number;
     private mStageHeight: number;
 
+    private mRedPill: egret.Bitmap;
+
     public CreateView(): void {
-        this.mResMgr = <IResMgr>GameMain.GetInstance().GetModule(ModuleType.RES_MGR);
+        this.mResModule = <IResModule>GameMain.GetInstance().GetModule(ModuleType.RES);
         this.mStageWidth = GameMain.GetInstance().GetStageWidth();
         this.mStageHeight = GameMain.GetInstance().GetStageHeight();
 
         this.LoadBackGround();
 
         this.LoadPillForTest();
+        GameMain.GetInstance().AddEventListener(InputEvent.EventName, this.OnInputEvent, this);
     }
 
     private LoadBackGround() {
-        if (this.mResMgr != null) {
-            let bg = this.mResMgr.CreateBitmapByName("pd_res_json.BackGround");
+        if (this.mResModule != null) {
+            let bg = this.mResModule.CreateBitmapByName("pd_res_json.BackGround");
             this.addChild(bg);
             bg.width = this.mStageWidth;
             bg.height = this.mStageHeight;
 
-            let bottle = this.mResMgr.CreateBitmapByName("pd_res_json.Bottle");
+            let bottle = this.mResModule.CreateBitmapByName("pd_res_json.Bottle");
             this.addChild(bottle);
             bottle.width = this.mStageWidth;
             bottle.height = this.mStageHeight;
@@ -29,21 +32,42 @@ class MatchView extends GameView {
     }
 
     private LoadPillForTest() {
-        if (this.mResMgr != null) {
-            let redPill = this.mResMgr.CreateBitmapByName("pd_res_json.Pill_Red");
-            this.addChild(redPill);
-            redPill.x = this.mStageWidth/2;
-            redPill.y = this.mStageHeight/2;
+        if (this.mResModule != null) {
+            this.mRedPill = this.mResModule.CreateBitmapByName("pd_res_json.Pill_Red");
+            this.addChild(this.mRedPill);
+            this.mRedPill.x = this.mStageWidth/2;
+            this.mRedPill.y = this.mStageHeight/2;
 
-            let bluePill = this.mResMgr.CreateBitmapByName("pd_res_json.Pill_Blue");
+            let bluePill = this.mResModule.CreateBitmapByName("pd_res_json.Pill_Blue");
             this.addChild(bluePill);
             bluePill.x = this.mStageWidth/2;
             bluePill.y = this.mStageHeight/2 + 50;
 
-            let yellowPill = this.mResMgr.CreateBitmapByName("pd_res_json.Pill_Yellow");
+            let yellowPill = this.mResModule.CreateBitmapByName("pd_res_json.Pill_Yellow");
             this.addChild(yellowPill);
             yellowPill.x = this.mStageWidth/2;
             yellowPill.y = this.mStageHeight/2 + 100;
+        }
+    }
+
+    private OnInputEvent(event: InputEvent): void{
+        if (this.mRedPill != null){
+            var key = event.Key;
+            if (key == InputKey.Left){
+                this.mRedPill.x -= 10;
+            }
+            else if (key == InputKey.Right){
+                this.mRedPill.x += 10;
+            }
+            else if (key == InputKey.Up){
+                this.mRedPill.y -= 20;
+            }
+            else if (key == InputKey.Down){
+                this.mRedPill.y += 20;
+            }
+            else if (key == InputKey.Rotate){
+                this.mRedPill.rotation += 90;
+            }
         }
     }
 }

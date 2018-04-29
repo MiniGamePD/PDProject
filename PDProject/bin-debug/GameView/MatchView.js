@@ -14,38 +14,59 @@ var MatchView = (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     MatchView.prototype.CreateView = function () {
-        this.mResMgr = GameMain.GetInstance().GetModule(ModuleType.RES_MGR);
+        this.mResModule = GameMain.GetInstance().GetModule(ModuleType.RES);
         this.mStageWidth = GameMain.GetInstance().GetStageWidth();
         this.mStageHeight = GameMain.GetInstance().GetStageHeight();
         this.LoadBackGround();
         this.LoadPillForTest();
+        GameMain.GetInstance().AddEventListener(InputEvent.EventName, this.OnInputEvent, this);
     };
     MatchView.prototype.LoadBackGround = function () {
-        if (this.mResMgr != null) {
-            var bg = this.mResMgr.CreateBitmapByName("pd_res_json.BackGround");
+        if (this.mResModule != null) {
+            var bg = this.mResModule.CreateBitmapByName("pd_res_json.BackGround");
             this.addChild(bg);
             bg.width = this.mStageWidth;
             bg.height = this.mStageHeight;
-            var bottle = this.mResMgr.CreateBitmapByName("pd_res_json.Bottle");
+            var bottle = this.mResModule.CreateBitmapByName("pd_res_json.Bottle");
             this.addChild(bottle);
             bottle.width = this.mStageWidth;
             bottle.height = this.mStageHeight;
         }
     };
     MatchView.prototype.LoadPillForTest = function () {
-        if (this.mResMgr != null) {
-            var redPill = this.mResMgr.CreateBitmapByName("pd_res_json.Pill_Red");
-            this.addChild(redPill);
-            redPill.x = this.mStageWidth / 2;
-            redPill.y = this.mStageHeight / 2;
-            var bluePill = this.mResMgr.CreateBitmapByName("pd_res_json.Pill_Blue");
+        if (this.mResModule != null) {
+            this.mRedPill = this.mResModule.CreateBitmapByName("pd_res_json.Pill_Red");
+            this.addChild(this.mRedPill);
+            this.mRedPill.x = this.mStageWidth / 2;
+            this.mRedPill.y = this.mStageHeight / 2;
+            var bluePill = this.mResModule.CreateBitmapByName("pd_res_json.Pill_Blue");
             this.addChild(bluePill);
             bluePill.x = this.mStageWidth / 2;
             bluePill.y = this.mStageHeight / 2 + 50;
-            var yellowPill = this.mResMgr.CreateBitmapByName("pd_res_json.Pill_Yellow");
+            var yellowPill = this.mResModule.CreateBitmapByName("pd_res_json.Pill_Yellow");
             this.addChild(yellowPill);
             yellowPill.x = this.mStageWidth / 2;
             yellowPill.y = this.mStageHeight / 2 + 100;
+        }
+    };
+    MatchView.prototype.OnInputEvent = function (event) {
+        if (this.mRedPill != null) {
+            var key = event.Key;
+            if (key == InputKey.Left) {
+                this.mRedPill.x -= 10;
+            }
+            else if (key == InputKey.Right) {
+                this.mRedPill.x += 10;
+            }
+            else if (key == InputKey.Up) {
+                this.mRedPill.y -= 20;
+            }
+            else if (key == InputKey.Down) {
+                this.mRedPill.y += 20;
+            }
+            else if (key == InputKey.Rotate) {
+                this.mRedPill.rotation += 90;
+            }
         }
     };
     return MatchView;

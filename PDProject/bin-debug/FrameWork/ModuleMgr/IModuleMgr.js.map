@@ -1,1 +1,1 @@
-{"version":3,"file":"IModuleMgr.js","sourceRoot":"","sources":["../../../src/FrameWork/ModuleMgr/IModuleMgr.ts"],"names":[],"mappings":"AA2BA,IAAK,UAKJ;AALD,WAAK,UAAU;IACd,iDAAW,CAAA;IACX,qDAAS,CAAA;IACT,qDAAS,CAAA;IACT,yCAAG,CAAA;AACJ,CAAC,EALI,UAAU,KAAV,UAAU,QAKd"}
+{"version":3,"file":"IModuleMgr.js","sourceRoot":"","sources":["../../../src/FrameWork/ModuleMgr/IModuleMgr.ts"],"names":[],"mappings":"AA2BA,IAAK,UAMJ;AAND,WAAK,UAAU;IACd,yCAAO,CAAA;IACP,6CAAK,CAAA;IACL,6CAAK,CAAA;IACL,6CAAK,CAAA;IACL,yCAAG,CAAA;AACJ,CAAC,EANI,UAAU,KAAV,UAAU,QAMd"}

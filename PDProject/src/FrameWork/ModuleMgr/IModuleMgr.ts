@@ -26,8 +26,9 @@ interface IModuleMgr {
 }
 
 enum ModuleType{
-	RES_MGR = 0,
-	LOBBY_MGR,
-	MATCH_MGR,
+	RES = 0,
+	INPUT,
+	LOBBY,
+	MATCH,
 	MAX
 }

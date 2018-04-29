@@ -43,24 +43,24 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var ResMgr = (function (_super) {
-    __extends(ResMgr, _super);
-    function ResMgr() {
+var ResModule = (function (_super) {
+    __extends(ResModule, _super);
+    function ResModule() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    ResMgr.prototype.Init = function () {
+    ResModule.prototype.Init = function () {
         this.isForeground = true;
         this.LoadResource();
         return true;
     };
-    ResMgr.prototype.Update = function (deltaTime) {
+    ResModule.prototype.Update = function (deltaTime) {
     };
-    ResMgr.prototype.Release = function () {
+    ResModule.prototype.Release = function () {
     };
-    ResMgr.prototype.SwitchForeOrBack = function (from, to) {
+    ResModule.prototype.SwitchForeOrBack = function (from, to) {
         this.isForeground = true;
     };
-    ResMgr.prototype.LoadResource = function () {
+    ResModule.prototype.LoadResource = function () {
         return __awaiter(this, void 0, void 0, function () {
             var e_1;
             return __generator(this, function (_a) {
@@ -83,16 +83,16 @@ var ResMgr = (function (_super) {
             });
         });
     };
-    ResMgr.prototype.GetRes = function (key) {
+    ResModule.prototype.GetRes = function (key) {
         return RES.getRes(key);
     };
-    ResMgr.prototype.CreateBitmapByName = function (key) {
+    ResModule.prototype.CreateBitmapByName = function (key) {
         var result = new egret.Bitmap();
         var texture = this.GetRes(key);
         result.texture = texture;
         return result;
     };
-    return ResMgr;
+    return ResModule;
 }(ModuleBase));
-__reflect(ResMgr.prototype, "ResMgr", ["IResMgr", "IModule"]);
-//# sourceMappingURL=ResMgr.js.map
+__reflect(ResModule.prototype, "ResModule", ["IResModule", "IModule"]);
+//# sourceMappingURL=ResModule.js.map

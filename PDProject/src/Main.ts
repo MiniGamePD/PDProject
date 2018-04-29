@@ -58,6 +58,7 @@ class Main extends egret.DisplayObjectContainer
 
     private onAddToStage(event: egret.Event) 
     {
+        this.touchEnabled = true;
         this.CreateGameMain();
 
         // egret.lifecycle.addLifecycleListener((context) =>

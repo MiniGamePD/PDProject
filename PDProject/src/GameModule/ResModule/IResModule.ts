@@ -1,4 +1,4 @@
-interface IResMgr extends IModule{
+interface IResModule extends IModule{
 
 	/**
 	 * 获取资源
