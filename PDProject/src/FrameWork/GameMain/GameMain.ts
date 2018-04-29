@@ -40,7 +40,8 @@ class GameMain implements IGameMain {
 	}
 
 	//初始化
-	public Init(stage: egret.Stage): void {
+	public Init(stage: egret.Stage): void 
+	{
 		this.GameStage = stage;
 
 		this.mStateMgr = new StateMgr();
@@ -48,48 +49,63 @@ class GameMain implements IGameMain {
 
 		this.mModuleMgr = new ModuleMgr();
 		this.mModuleMgr.Init();
+
+		this.SwitchGameState(GameStateType.Lobby);
 	}
 
 	//更新
-	public Update(deltaTime: number): void {
-		if (this.mStateMgr != null) {
+	public Update(deltaTime: number): void 
+	{
+		if (this.mStateMgr != null) 
+		{
 			this.mStateMgr.Update(deltaTime);
 		}
 
-		if (this.mModuleMgr != null) {
+		if (this.mModuleMgr != null) 
+		{
 			this.mModuleMgr.Update(deltaTime);
 		}
 	}
 
 	//释放
-	public Release(): void {
-		if (this.mStateMgr != null) {
+	public Release(): void 
+	{
+		if (this.mStateMgr != null) 
+		{
 			this.mStateMgr.Release();
 		}
 
-		if (this.mModuleMgr != null) {
+		if (this.mModuleMgr != null) 
+		{
 			this.mModuleMgr.Release();
 		}
 	}
 
-	public GetGameStage(): egret.Stage {
+	public GetGameStage(): egret.Stage 
+	{
 		return this.GameStage;
 	}
 
-	public GetCureGameState(): GameStateType {
-		if (this.mStateMgr != null) {
+	public GetCureGameState(): GameStateType 
+	{
+		if (this.mStateMgr != null) 
+		{
 			return this.mStateMgr.CurGameState();
 		}
 		return GameStateType.Init;
 	}
 
-	public SwitchGameState(toState: GameStateType): boolean {
+	public SwitchGameState(toState: GameStateType): boolean 
+	{
 		let hasSwitch: boolean = false;
-		if (this.mStateMgr != null) {
+		if (this.mStateMgr != null) 
+		{
 			let fromState: GameStateType = this.mStateMgr.CurGameState();
-			if (fromState != toState) {
+			if (fromState != toState) 
+			{
 				hasSwitch = this.mStateMgr.SwitchGameState(toState);
-				if (hasSwitch && this.mModuleMgr != null) {
+				if (hasSwitch && this.mModuleMgr != null) 
+				{
 					this.mModuleMgr.OnGameStateChange(fromState, toState);
 				}
 			}
@@ -97,8 +113,10 @@ class GameMain implements IGameMain {
 		return hasSwitch;
 	}
 
-	public GetModule(moduleType: ModuleType): IModule {
-		if (this.mModuleMgr != null) {
+	public GetModule(moduleType: ModuleType): IModule 
+	{
+		if (this.mModuleMgr != null) 
+		{
 			return this.mModuleMgr.GetModule(moduleType);
 		}
 		return null;

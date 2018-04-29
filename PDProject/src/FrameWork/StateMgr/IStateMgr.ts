@@ -26,7 +26,9 @@ interface IStateMgr {
 	CurGameState(): GameStateType;
 }
 
-enum GameStateType{
+enum GameStateType
+{
+	None,
 	Init,
 	Lobby,
 	Game,

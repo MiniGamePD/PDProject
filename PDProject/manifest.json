@@ -11,7 +11,7 @@
 	],
 	"game": [
 		"bin-debug/FrameWork/ModuleMgr/ModuleBase.js",
-		"bin-debug/GameModule/GameViewMgr/GameViewMgr.js",
+		"bin-debug/GameModule/GameViewModule/GameViewModule.js",
 		"bin-debug/FrameWork/ModuleMgr/ModuleMgr.js",
 		"bin-debug/Events/Common/DisplayChangeEvent.js",
 		"bin-debug/FrameWork/GameMain/GameMain.js",
@@ -23,8 +23,8 @@
 		"bin-debug/FrameWork/StateMgr/IStateMgr.js",
 		"bin-debug/FrameWork/StateMgr/StateMgr.js",
 		"bin-debug/Platform.js",
-		"bin-debug/GameModule/GameViewMgr/LobbyMgr/LobbyMgr.js",
-		"bin-debug/GameModule/GameViewMgr/MatchMgr/MatchMgr.js",
+		"bin-debug/GameModule/GameViewModule/LobbyModule/LobbyModule.js",
+		"bin-debug/GameModule/GameViewModule/MatchModule/MatchModule.js",
 		"bin-debug/GameView/IGameView.js",
 		"bin-debug/GameView/LobbyView.js",
 		"bin-debug/GameView/MatchView.js"

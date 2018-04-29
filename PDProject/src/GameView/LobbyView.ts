@@ -9,7 +9,6 @@ class LobbyView extends  egret.DisplayObjectContainer implements IGameView
         
         this.textField = new egret.TextField();       
         this.textField.x = 0;
-        console.log(this.textField.x);
         this.textField.y = stageHeight / 4;
         this.textField.width = stageWidth;
         this.textField.height = 100;

@@ -1,18 +1,31 @@
-abstract class GameViewMgr extends ModuleBase implements IModule
+abstract class GameViewModule extends ModuleBase
 {	
     protected gameViewList: IGameView[] = [];
 
-	public Init(): boolean
+	public SwitchToForeground(): void
     {
+        this.CreateView();
+
         if(this.gameViewList.length > 0)
         {
             var event:DisplayChangeEvent = new DisplayChangeEvent(this.gameViewList);        
             GameMain.GetInstance().DispatchEvent(event);            
         }
-		return true;
 	}
 
-	public Update(deltaTime: number): void
+    public SwitchToBackground(): void
+    {
+        this.ReleaseView();
+    }
+
+    public Update(deltaTime: number):void
+    {
+        this.UpdateView(deltaTime);
+    }
+
+    protected abstract CreateView():boolean;    
+
+	private UpdateView(deltaTime: number): void
     {
         for (var i = 0; i < this.gameViewList.length; ++i)
         {
@@ -20,7 +33,7 @@ abstract class GameViewMgr extends ModuleBase implements IModule
         }
 	}
 
-	public Release(): void 
+	private ReleaseView(): void 
     {
         for (var i = 0; i < this.gameViewList.length; ++i)
         {
@@ -28,4 +41,6 @@ abstract class GameViewMgr extends ModuleBase implements IModule
         }
         this.gameViewList.slice();
 	}
+
+    abstract SwitchForeOrBack(from: GameStateType, to: GameStateType):void;
 }
