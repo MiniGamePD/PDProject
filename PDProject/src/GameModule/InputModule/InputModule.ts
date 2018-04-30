@@ -128,4 +128,8 @@ class InputModule extends ModuleBase implements IInputModule {
 	public LocalFunc(){
 		// 本地修改
 	}
+
+	public Test02(){
+		//再加个函数试试
+	}
 }
