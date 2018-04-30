@@ -15,11 +15,42 @@ var MatchView = (function (_super) {
     }
     MatchView.prototype.CreateView = function () {
         this.mResModule = GameMain.GetInstance().GetModule(ModuleType.RES);
+        this.mSoundModule = GameMain.GetInstance().GetModule(ModuleType.SOUND);
         this.mStageWidth = GameMain.GetInstance().GetStageWidth();
         this.mStageHeight = GameMain.GetInstance().GetStageHeight();
         this.LoadBackGround();
-        this.LoadPillForTest();
-        GameMain.GetInstance().AddEventListener(InputEvent.EventName, this.OnInputEvent, this);
+        this.PlayBgm();
+        //this.LoadPillForTest();
+        //GameMain.GetInstance().AddEventListener(InputEvent.EventName, this.OnInputEvent, this);
+    };
+    MatchView.prototype.SetMatchData = function (matchData) {
+        this.mMatchData = matchData;
+    };
+    MatchView.prototype.UpdateView = function () {
+        for (var i = 0; i < MatchData.battleGroundColumns; ++i) {
+            for (var j = 0; j < MatchData.battleGroundRows; ++j) {
+                var element = this.mMatchData.sceneData[i][j];
+                if (element != null) {
+                    if (!element.hasAddToDisplayList) {
+                        element.renderer.width = this.mElementWidth;
+                        element.renderer.height = this.mElementHeight;
+                        element.renderer.anchorOffsetX = this.mElementWidth / 2;
+                        element.renderer.anchorOffsetY = this.mElementHeight / 2;
+                        this.mBattleGround.addChild(element.renderer);
+                        element.hasAddToDisplayList = true;
+                        //console.log(element + " add to dis " + element.renderer.width + "," + element.renderer.height);
+                    }
+                    if (element.dirty) {
+                        element.renderer.x = this.mBattleGroundStartXCenter
+                            + this.mElementWidth * (element.posx);
+                        element.renderer.y = this.mBattleGroundStartYCenter
+                            + this.mElementHeight * (element.posy);
+                        element.dirty = false;
+                        //console.log(element + " refresh " + element.renderer.x + "," + element.renderer.y);
+                    }
+                }
+            }
+        }
     };
     MatchView.prototype.LoadBackGround = function () {
         if (this.mResModule != null) {
@@ -28,9 +59,29 @@ var MatchView = (function (_super) {
             bg.width = this.mStageWidth;
             bg.height = this.mStageHeight;
             var bottle = this.mResModule.CreateBitmapByName("pd_res_json.Bottle");
-            this.addChild(bottle);
-            bottle.width = this.mStageWidth;
-            bottle.height = this.mStageHeight;
+            bottle.x = 0;
+            bottle.y = 0;
+            //bottle.anchorOffsetX += bottle.width / 2;
+            //bottle.anchorOffsetY += bottle.height / 2;
+            //bottle.width = this.mStageWidth;
+            //bottle.height = this.mStageHeight;
+            this.mBattleGround = new egret.Sprite();
+            var battleRect = new egret.Rectangle(50, 170, bottle.width - 100, bottle.height - 188);
+            this.mBattleGround.x = this.mStageWidth / 2 - battleRect.width / 2 - 25;
+            this.mBattleGround.y = this.mStageHeight / 2 - battleRect.height / 2 - 99;
+            this.mBattleGround.graphics.beginFill(0xFF0000, 0.3);
+            this.mBattleGround.graphics.drawRect(battleRect.x, battleRect.y, battleRect.width, battleRect.height);
+            this.mBattleGround.graphics.endFill();
+            this.mBattleGround.graphics.beginFill(0x0000FF, 0.3);
+            this.mBattleGround.graphics.drawRect(bottle.x, bottle.y, bottle.width, bottle.height);
+            this.mBattleGround.graphics.endFill();
+            this.addChild(this.mBattleGround);
+            this.mBattleGround.addChild(bottle);
+            console.log(battleRect);
+            this.mElementWidth = battleRect.width / MatchData.battleGroundColumns;
+            this.mElementHeight = battleRect.height / MatchData.battleGroundRows;
+            this.mBattleGroundStartXCenter = battleRect.x + this.mElementWidth / 2;
+            this.mBattleGroundStartYCenter = battleRect.y + this.mElementHeight / 2;
         }
     };
     MatchView.prototype.LoadPillForTest = function () {
@@ -67,6 +118,11 @@ var MatchView = (function (_super) {
             else if (key == InputKey.Rotate) {
                 this.mRedPill.rotation += 90;
             }
+        }
+    };
+    MatchView.prototype.PlayBgm = function () {
+        if (this.mSoundModule != null) {
+            this.mSoundModule.PlaySound("bgm_mp3", -1);
         }
     };
     return MatchView;

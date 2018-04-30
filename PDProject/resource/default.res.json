@@ -1,7 +1,7 @@
 {
 	"groups": [
 		{
-			"keys": "pd_res_json",
+			"keys": "pd_res_json,bgm_mp3",
 			"name": "preload"
 		}
 	],
@@ -26,6 +26,11 @@
 			"type": "sheet",
 			"name": "pd_res_json",
 			"subkeys": "BackGround,Bottle,Pill_Blue,Pill_Red,Pill_Yellow"
+		},
+		{
+			"name": "bgm_mp3",
+			"type": "sound",
+			"url": "assets/bgm.mp3"
 		}
 	]
 }

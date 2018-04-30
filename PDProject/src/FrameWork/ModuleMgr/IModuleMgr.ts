@@ -28,6 +28,7 @@ interface IModuleMgr {
 enum ModuleType{
 	RES = 0,
 	INPUT,
+	SOUND,
 	LOBBY,
 	MATCH,
 	MAX

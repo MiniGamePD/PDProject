@@ -1,6 +1,7 @@
 class MatchView extends GameView 
 {    
     private mResModule: IResModule;
+    private mSoundModule: ISoundModule
     private mStageWidth: number;
     private mStageHeight: number;
     private mMatchData: MatchData;
@@ -13,10 +14,13 @@ class MatchView extends GameView
 
     public CreateView(): void {
         this.mResModule = <IResModule>GameMain.GetInstance().GetModule(ModuleType.RES);
+        this.mSoundModule = <ISoundModule>GameMain.GetInstance().GetModule(ModuleType.SOUND);
         this.mStageWidth = GameMain.GetInstance().GetStageWidth();
         this.mStageHeight = GameMain.GetInstance().GetStageHeight();
 
         this.LoadBackGround();
+
+        this.PlayBgm();
 
         //this.LoadPillForTest();
         //GameMain.GetInstance().AddEventListener(InputEvent.EventName, this.OnInputEvent, this);
@@ -143,6 +147,12 @@ class MatchView extends GameView
             else if (key == InputKey.Rotate){
                 this.mRedPill.rotation += 90;
             }
+        }
+    }
+
+    private PlayBgm(){
+        if (this.mSoundModule != null){
+            this.mSoundModule.PlaySound("bgm_mp3", -1);
         }
     }
 }
