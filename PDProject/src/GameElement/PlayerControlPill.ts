@@ -15,6 +15,8 @@ class PlayerControlPill
     public Reset():void
     {        
         this.rotAngle = 0;        
+        this.pill1 = new Pill();
+        this.pill2 = new Pill();
         this.pill1.ChangePillTexByColor();
         this.pill2.ChangePillTexByColor();     
         //坐标表示药丸左下角块的坐标, 初始坐标在瓶子正中间的最上方

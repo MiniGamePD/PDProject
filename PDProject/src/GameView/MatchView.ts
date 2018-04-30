@@ -18,8 +18,8 @@ class MatchView extends GameView
 
         this.LoadBackGround();
 
-        this.LoadPillForTest();
-        GameMain.GetInstance().AddEventListener(InputEvent.EventName, this.OnInputEvent, this);
+        //this.LoadPillForTest();
+        //GameMain.GetInstance().AddEventListener(InputEvent.EventName, this.OnInputEvent, this);
     }
 
     public SetMatchData(matchData:MatchData)
@@ -50,10 +50,10 @@ class MatchView extends GameView
 
                     if(element.dirty)
                     {
-                        element.renderer.x = 0 
-                            + this.mElementWidth * (element.posx + 1);
-                        element.renderer.y = 0 
-                            + this.mElementHeight * (element.posy + 1);
+                        element.renderer.x = this.mBattleGroundStartXCenter 
+                            + this.mElementWidth * (element.posx);
+                        element.renderer.y = this.mBattleGroundStartYCenter 
+                            + this.mElementHeight * (element.posy);
                         element.dirty = false;
                         //console.log(element + " refresh " + element.renderer.x + "," + element.renderer.y);
                     }
@@ -88,12 +88,15 @@ class MatchView extends GameView
             this.mBattleGround.graphics.beginFill(0xFF0000, 0.3);
             this.mBattleGround.graphics.drawRect(battleRect.x, battleRect.y, battleRect.width, battleRect.height);
             this.mBattleGround.graphics.endFill();
+
+            this.mBattleGround.graphics.beginFill(0x0000FF, 0.3);
+            this.mBattleGround.graphics.drawRect(bottle.x, bottle.y, bottle.width, bottle.height);
+            this.mBattleGround.graphics.endFill();
+
             this.addChild(this.mBattleGround);
 
             this.mBattleGround.addChild(bottle);
 
-            battleRect.x += this.mBattleGround.x;
-            battleRect.y += this.mBattleGround.y;
             console.log(battleRect);             
 
             this.mElementWidth = battleRect.width / MatchData.battleGroundColumns;

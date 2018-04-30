@@ -1,5 +1,5 @@
 class MatchModule extends GameViewModule
-{	
+{		
     protected CreateView(): boolean
 	{
 		this.matchData = new MatchData();
@@ -15,6 +15,11 @@ class MatchModule extends GameViewModule
 		return true;
 	}
 
+	public Release():void
+	{
+		this.matchData = null;
+	}
+
 	public SwitchForeOrBack(from: GameStateType, to: GameStateType):void
 	{
 		this.isForeground = to == GameStateType.Match;	
@@ -23,6 +28,8 @@ class MatchModule extends GameViewModule
     //##############游戏逻辑##################
     private matchState:MatchState = MatchState.None;
     private matchData:MatchData;
+	public static readonly PillDropdownInterval:number = 500;//每隔多久药丸下落一格
+	private pillDropdownTimer:number;
 
     public Update(deltaTime: number):void
     {
@@ -33,7 +40,7 @@ class MatchModule extends GameViewModule
 				this.UpdateInitState();
 				break;
             case MatchState.PlayerControl:
-                this.UpdatePlayerControlState();
+                this.UpdatePlayerControlState(deltaTime);
                 break;
             case MatchState.Eliminate:
                 this.UpdateEliminateState();
@@ -59,9 +66,20 @@ class MatchModule extends GameViewModule
 
 	}
 
-    private UpdatePlayerControlState(): void
+    private UpdatePlayerControlState(deltaTime:number): void
     {
-
+		this.pillDropdownTimer += deltaTime;
+		if(this.pillDropdownTimer >= MatchModule.PillDropdownInterval)
+		{
+			//即使时间很长，超过两个MatchModule.PillDropdownInterval，也还是移动一格，否则卡了，就忽然间下降很多，体验不好
+			this.pillDropdownTimer = 0;
+			if(!this.matchData.TryDropdownPill())
+			{
+				//下落到不能再下落了，就进入消除状态
+				this.OnChangeToEliminateState();
+				this.matchState = MatchState.Eliminate;
+			}
+		}
     }
 
 	private OnChangeToPlayerControlState():void
@@ -71,16 +89,22 @@ class MatchModule extends GameViewModule
 			this.OnChangeToGameOverState();
 			this.matchState = MatchState.GameOver;
 		}
+		else
+		{
+			this.pillDropdownTimer = 0;
+		}
 	}
 
     private UpdateEliminateState(): void
     {
-
+		//TODO:处理消除的逻辑
+		this.OnChangeToPlayerControlState();
+		this.matchState = MatchState.PlayerControl;
     }
 
 	private OnChangeToEliminateState():void
 	{
-
+		
 	}
 
     private UpdateGameOverState(): void
