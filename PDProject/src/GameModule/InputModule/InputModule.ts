@@ -134,6 +134,9 @@ class InputModule extends ModuleBase implements IInputModule {
 	}
 
 	public Test03_GitHub(){
+	}
+
+	public Test03(){
 		//再加个函数试试
 	}
 }
