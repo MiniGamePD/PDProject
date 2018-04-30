@@ -132,4 +132,8 @@ class InputModule extends ModuleBase implements IInputModule {
 	public Test02(){
 		//再加个函数试试
 	}
+
+	public Test03(){
+		//再加个函数试试
+	}
 }
