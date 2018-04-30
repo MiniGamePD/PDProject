@@ -15,6 +15,7 @@ var InputModule = (function (_super) {
     }
     InputModule.prototype.Init = function () {
         this.isForeground = true;
+        this.mInputEvent = new InputEvent(InputKey.Max, 0, 0);
         var stageWidth = GameMain.GetInstance().GetStageWidth();
         var stageHeight = GameMain.GetInstance().GetStageHeight();
         this.mMoveEventMinDisX = stageWidth * INPUT_MOVE_EVENT_DIS_RATE;
@@ -39,8 +40,12 @@ var InputModule = (function (_super) {
             this.mKeyState[key] = true;
             // egret.log("InputKey " + key + " (" + stageX + "," + stageY + ")");
             //Event
-            var event = new InputEvent(key, stageX, stageY);
-            GameMain.GetInstance().DispatchEvent(event);
+            if (this.mInputEvent != null) {
+                this.mInputEvent.Key = key;
+                this.mInputEvent.StageX = stageX;
+                this.mInputEvent.StageY = stageY;
+                GameMain.GetInstance().DispatchEvent(this.mInputEvent);
+            }
         }
     };
     InputModule.prototype.RegisterTouchEvent = function () {

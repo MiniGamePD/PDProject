@@ -20,8 +20,8 @@ var MatchView = (function (_super) {
         this.mStageHeight = GameMain.GetInstance().GetStageHeight();
         this.LoadBackGround();
         this.PlayBgm();
-        //this.LoadPillForTest();
-        //GameMain.GetInstance().AddEventListener(InputEvent.EventName, this.OnInputEvent, this);
+        this.LoadPillForTest();
+        GameMain.GetInstance().AddEventListener(InputEvent.EventName, this.OnInputEvent, this);
     };
     MatchView.prototype.SetMatchData = function (matchData) {
         this.mMatchData = matchData;
