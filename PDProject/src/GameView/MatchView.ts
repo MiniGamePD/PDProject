@@ -1,9 +1,14 @@
-class MatchView extends GameView {
-    private textField: egret.TextField;
+class MatchView extends GameView 
+{    
     private mResModule: IResModule;
     private mStageWidth: number;
     private mStageHeight: number;
-
+    private mMatchData: MatchData;
+    private mBattleGroundStartXCenter:number; //00号元素的中心点坐标x
+    private mBattleGroundStartYCenter:number; //00号元素的中心点坐标y
+    private mElementWidth:number;
+    private mElementHeight:number;
+    private mBattleGround: egret.Sprite;
     private mRedPill: egret.Bitmap;
 
     public CreateView(): void {
@@ -17,17 +22,84 @@ class MatchView extends GameView {
         GameMain.GetInstance().AddEventListener(InputEvent.EventName, this.OnInputEvent, this);
     }
 
-    private LoadBackGround() {
-        if (this.mResModule != null) {
+    public SetMatchData(matchData:MatchData)
+    {
+        this.mMatchData = matchData;
+    }
+
+    public UpdateView(): void
+    {
+        for(var i = 0; i < MatchData.battleGroundColumns; ++i)
+        {
+            for(var j = 0; j < MatchData.battleGroundRows; ++j)
+            {
+                let element = this.mMatchData.sceneData[i][j];
+                if(element != null)
+                {
+                    
+                    if(!element.hasAddToDisplayList)
+                    {                        
+                        element.renderer.width = this.mElementWidth;
+                        element.renderer.height = this.mElementHeight;
+                        element.renderer.anchorOffsetX = this.mElementWidth / 2;
+                        element.renderer.anchorOffsetY = this.mElementHeight / 2;
+                        this.mBattleGround.addChild(element.renderer);
+                        element.hasAddToDisplayList = true;
+                        //console.log(element + " add to dis " + element.renderer.width + "," + element.renderer.height);
+                    }
+
+                    if(element.dirty)
+                    {
+                        element.renderer.x = 0 
+                            + this.mElementWidth * (element.posx + 1);
+                        element.renderer.y = 0 
+                            + this.mElementHeight * (element.posy + 1);
+                        element.dirty = false;
+                        //console.log(element + " refresh " + element.renderer.x + "," + element.renderer.y);
+                    }
+                }                
+            }
+        }
+    }
+
+    private LoadBackGround() 
+    {
+        if (this.mResModule != null) 
+        {
             let bg = this.mResModule.CreateBitmapByName("pd_res_json.BackGround");
             this.addChild(bg);
             bg.width = this.mStageWidth;
             bg.height = this.mStageHeight;
 
             let bottle = this.mResModule.CreateBitmapByName("pd_res_json.Bottle");
-            this.addChild(bottle);
-            bottle.width = this.mStageWidth;
-            bottle.height = this.mStageHeight;
+            
+            bottle.x = 0;
+            bottle.y = 0;
+            //bottle.anchorOffsetX += bottle.width / 2;
+            //bottle.anchorOffsetY += bottle.height / 2;
+            
+            //bottle.width = this.mStageWidth;
+            //bottle.height = this.mStageHeight;
+
+            this.mBattleGround = new egret.Sprite();  
+            let battleRect = new egret.Rectangle(50, 170, bottle.width-100, bottle.height-188);      
+            this.mBattleGround.x = this.mStageWidth / 2 - battleRect.width / 2 - 25;
+            this.mBattleGround.y = this.mStageHeight / 2 - battleRect.height / 2 - 99;
+            this.mBattleGround.graphics.beginFill(0xFF0000, 0.3);
+            this.mBattleGround.graphics.drawRect(battleRect.x, battleRect.y, battleRect.width, battleRect.height);
+            this.mBattleGround.graphics.endFill();
+            this.addChild(this.mBattleGround);
+
+            this.mBattleGround.addChild(bottle);
+
+            battleRect.x += this.mBattleGround.x;
+            battleRect.y += this.mBattleGround.y;
+            console.log(battleRect);             
+
+            this.mElementWidth = battleRect.width / MatchData.battleGroundColumns;
+            this.mElementHeight = battleRect.height / MatchData.battleGroundRows;
+            this.mBattleGroundStartXCenter = battleRect.x + this.mElementWidth / 2;
+            this.mBattleGroundStartYCenter = battleRect.y + this.mElementHeight /2;   
         }
     }
 
