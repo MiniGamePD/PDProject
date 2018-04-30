@@ -121,9 +121,11 @@ var MatchView = (function (_super) {
         }
     };
     MatchView.prototype.PlayBgm = function () {
-        if (this.mSoundModule != null) {
-            this.mSoundModule.PlaySound("bgm_mp3", -1);
-        }
+        // if (this.mSoundModule != null){
+        //     this.mSoundModule.PlaySound("bgm_mp3", -1);
+        // }
+        var event = new PlaySoundEvent("bgm_mp3", -1);
+        GameMain.GetInstance().DispatchEvent(event);
     };
     return MatchView;
 }(GameView));

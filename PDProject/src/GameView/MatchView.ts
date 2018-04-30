@@ -151,8 +151,10 @@ class MatchView extends GameView
     }
 
     private PlayBgm(){
-        if (this.mSoundModule != null){
-            this.mSoundModule.PlaySound("bgm_mp3", -1);
-        }
+        // if (this.mSoundModule != null){
+        //     this.mSoundModule.PlaySound("bgm_mp3", -1);
+        // }
+        var event:PlaySoundEvent = new PlaySoundEvent("bgm_mp3", -1);        
+        GameMain.GetInstance().DispatchEvent(event);   
     }
 }
