@@ -128,8 +128,4 @@ class InputModule extends ModuleBase implements IInputModule {
 	public LocalFunc(){
 		// 本地修改
 	}
-
-	public Test(){
-		// Git工具测试用的新增代码
-	}
 }
