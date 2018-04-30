@@ -124,19 +124,4 @@ class InputModule extends ModuleBase implements IInputModule {
 	public GetKey(key: InputKey): boolean {
 		return this.mKeyState[key];
 	}
-
-	public LocalFunc(){
-		// 本地修改 V2
-	}
-
-	public Test02(){
-		//再加个函数试试
-	}
-
-	public Test03_GitHub(){
-	}
-
-	public Test03(){
-		//再加个函数试试
-	}
 }
