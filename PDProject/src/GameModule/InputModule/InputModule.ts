@@ -124,4 +124,8 @@ class InputModule extends ModuleBase implements IInputModule {
 	public GetKey(key: InputKey): boolean {
 		return this.mKeyState[key];
 	}
+
+	public Test(){
+		// Git工具测试用的新增代码
+	}
 }
