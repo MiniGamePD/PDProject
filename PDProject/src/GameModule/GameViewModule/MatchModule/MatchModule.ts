@@ -11,7 +11,7 @@ class MatchModule extends GameViewModule
 		this.gameViewList.push(view);
     
 		this.matchState = MatchState.Init;
-
+		 
 		return true;
 	}
 
@@ -23,12 +23,20 @@ class MatchModule extends GameViewModule
 	public SwitchForeOrBack(from: GameStateType, to: GameStateType):void
 	{
 		this.isForeground = to == GameStateType.Match;	
+		if(this.isForeground)
+		{
+			GameMain.GetInstance().AddEventListener(InputEvent.EventName, this.OnInputEvent, this);
+		}
+		else
+		{
+			GameMain.GetInstance().RemoveEventListener(InputEvent.EventName, this.OnInputEvent, this);
+		}
 	}
 
     //##############游戏逻辑##################
     private matchState:MatchState = MatchState.None;
     private matchData:MatchData;
-	public static readonly PillDropdownInterval:number = 500;//每隔多久药丸下落一格
+	public static readonly PillDropdownInterval:number = 1000;//每隔多久药丸下落一格
 	private pillDropdownTimer:number;
 
     public Update(deltaTime: number):void
@@ -116,6 +124,30 @@ class MatchModule extends GameViewModule
 	{
 		
 	}
+
+	 private OnInputEvent(event: InputEvent): void
+	 {
+		if(this.matchState == MatchState.PlayerControl)
+		{
+			var key = event.Key;
+			if (key == InputKey.Left)
+			{
+				this.matchData.TryMoveLeftPill();
+			}
+			else if (key == InputKey.Right)
+			{
+				this.matchData.TryMoveRightPill();
+			}
+			else if (key == InputKey.Down)
+			{
+				
+			}
+			else if (key == InputKey.Rotate)
+			{
+				this.matchData.TryRotatePill();
+			}
+		}
+    }
     //#######################################
 }
 
