@@ -125,12 +125,11 @@ class InputModule extends ModuleBase implements IInputModule {
 		return this.mKeyState[key];
 	}
 
-<<<<<<< .merge_file_K3yj01
 	public LocalFunc(){
 		// 本地修改
-=======
+	}
+
 	public Test(){
 		// Git工具测试用的新增代码
->>>>>>> .merge_file_QzbGDh
 	}
 }
