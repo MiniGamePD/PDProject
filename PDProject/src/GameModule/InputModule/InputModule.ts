@@ -126,7 +126,7 @@ class InputModule extends ModuleBase implements IInputModule {
 	}
 
 	public LocalFunc(){
-		// 本地修改
+		// 本地修改 V2
 	}
 
 	public Test(){
