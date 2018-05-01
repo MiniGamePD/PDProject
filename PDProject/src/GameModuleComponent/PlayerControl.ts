@@ -1,4 +1,4 @@
-class PlayerControl extends LogicElementBase
+class PlayerControl extends GameModuleComponentBase
 {
     public static readonly DropdownInterval:number = 1000;//每隔多久药丸下落一格    
     private dropdownTimer:number;
@@ -6,27 +6,37 @@ class PlayerControl extends LogicElementBase
 
     public Init():void
     {
-        super.Init();
         GameMain.GetInstance().AddEventListener(InputEvent.EventName, this.OnInputEvent, this);
         GameMain.GetInstance().AddEventListener(PillControlFailedEvent.EventName, this.OnPillControlFailed, this);
     }
 
     public Release():void
     {
-        super.Release();
         GameMain.GetInstance().RemoveEventListener(InputEvent.EventName, this.OnInputEvent, this);
         GameMain.GetInstance().AddEventListener(PillControlFailedEvent.EventName, this.OnPillControlFailed, this);
     }
 
-    private Reset():void
-    {        
-        this.target = new Pill();
-        this.dropdownTimer = 0;
+    public SetTarget(target:Pill)
+    {
+        this.target = target;
     }
+    
+    public Work()
+    {
+        super.Work();
+        this.dropdownTimer = 0;
+        this.DispatchPillControlEvent(PillControlType.Create);
+    }
+
+    public Sleep()
+    {
+        super.Sleep();
+        this.target = null;
+    } 
 
     private OnInputEvent(event: InputEvent): void
 	 {
-		if(this.matchState == MatchState.PlayerControl)
+		if(this.target != null)
 		{
 			var key = event.Key;
 			if (key == InputKey.Left)
@@ -50,57 +60,45 @@ class PlayerControl extends LogicElementBase
 
     public Update(deltaTime:number)
     {
-        this.TryDropdown(deltaTime);
+        if(this.isWorking && this.target != null)
+		{
+            this.TryDropdown(deltaTime);
+        }
     }
 
     private TryDropdown(deltaTime:number): void
     {
-        if(this.matchState == MatchState.PlayerControl)
-		{
-            this.dropdownTimer += deltaTime;
-            if(this.dropdownTimer >= PlayerControl.DropdownInterval)
-            {
-                //即使时间很长，超过两个MatchModule.PillDropdownInterval，也还是移动一格，否则卡了，就忽然间下降很多，体验不好
-                this.dropdownTimer = 0;
-                this.DispatchPillControlEvent(PillControlType.DropDown);                
-            }
+        this.dropdownTimer += deltaTime;
+        if(this.dropdownTimer >= PlayerControl.DropdownInterval)
+        {
+            //即使时间很长，超过两个MatchModule.PillDropdownInterval，也还是移动一格，否则卡了，就忽然间下降很多，体验不好
+            this.dropdownTimer = 0;
+            this.DispatchPillControlEvent(PillControlType.DropDown);                
         }
     }
 
     protected OnPillControlFailed(event:PillControlFailedEvent)
     {
-        if(this.matchState != MatchState.PlayerControl)
+        if(this.isWorking && this.target == null)
         {
              if(DEBUG)
             {
-                console.error("PillRenderer DropDown Failed In " + this.matchState + ", Which Should Not Happen");
+                console.error("PillRenderer DropDown Failed While Player Control Is Not Working");
             }
             return;
         }        
 
         if(event.pillControlType == PillControlType.DropDown)
         {
-            //下落到不能再下落了，就进入消除状态
-            let event = new ChangeMatchStateEvent();
-            event.matchState = MatchState.Eliminate;
+            //下落到不能再下落了，就进入消除状态        
+            let event = new PlayerControlFinishEvent();            
             GameMain.GetInstance().DispatchEvent(event);
         }
         else if(event.pillControlType == PillControlType.Create)
         {
             //已经无法创建新的药丸，就进入死亡状态
-            let event = new ChangeMatchStateEvent();
-            event.matchState = MatchState.GameOver;
+            let event = new GameOverEvent();            
             GameMain.GetInstance().DispatchEvent(event);
-        }
-    }
-
-    protected OnChangeMatchState()
-    {
-        if(this.matchState == MatchState.PlayerControl)
-        {
-            //切换到PlayerControl状态，创建一个pill
-            this.Reset();
-            this.DispatchPillControlEvent(PillControlType.Create);
         }
     }
 

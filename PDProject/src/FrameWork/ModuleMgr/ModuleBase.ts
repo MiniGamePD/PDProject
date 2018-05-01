@@ -1,4 +1,4 @@
-abstract class ModuleBase
+abstract class ModuleBase extends egret.EventDispatcher
 {	
 	protected isForeground:boolean = false;	
 

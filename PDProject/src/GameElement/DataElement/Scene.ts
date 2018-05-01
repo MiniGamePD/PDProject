@@ -1,5 +1,5 @@
-//MVC中的M, 其他LogicElement通过消息通知Scene刷新数据
-class Scene extends LogicElementBase
+//MVC中的M
+class Scene extends GameModuleComponentBase
 {    
     public static readonly Columns:number = 8;
     public static readonly Rows:number = 16;  
@@ -9,7 +9,6 @@ class Scene extends LogicElementBase
 
     public Init(): void
     {       
-        super.Init();
         this.eliminateInfo = new EliminateInfo();
         for(var i = 0; i < Scene.Columns; ++i)
         {
@@ -25,7 +24,6 @@ class Scene extends LogicElementBase
 
     public Release()
     {
-        super.Release();
         GameMain.GetInstance().RemoveEventListener(PillControlEvent.EventName, this.PillControl, this);
     }
 
@@ -231,21 +229,13 @@ class Scene extends LogicElementBase
 
         element.MoveTo(newPosx, newPosy);
     }
-
-    protected OnChangeMatchState()
-    {
-        if(this.matchState == MatchState.Eliminate)
-        {
-            this.TryEliminate();                    
-        }
-    }
     
     public Update(deltaTime:number)
     {
-        if(this.matchState == MatchState.Eliminate && !this.isEliminating)
+        if(this.isWorking && !this.isEliminating)
         {
-            let newEvent = new ChangeMatchStateEvent();
-            newEvent.matchState = MatchState.PlayerControl;
+            this.TryEliminate();
+            let newEvent = new SceneEliminateFinishEvent();            
             GameMain.GetInstance().DispatchEvent(newEvent); 
         }
     }
