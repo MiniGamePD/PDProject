@@ -2,7 +2,7 @@ class MatchModule extends GameViewModule
 {		
 	private matchState:MatchState = MatchState.None;
     private scene:Scene;
-	private playerControlPill:PlayerControlPill;
+	private playerControl:PlayerControl;
 
     protected CreateView(): boolean
 	{
@@ -14,8 +14,8 @@ class MatchModule extends GameViewModule
 		view.CreateView();
 		this.gameViewList.push(view);
     
-		this.playerControlPill = new PlayerControlPill();
-		this.playerControlPill.Init();
+		this.playerControl = new PlayerControl();
+		this.playerControl.Init();
 
 		//TODO:应该先从Init事件开始
 		let event = new ChangeMatchStateEvent();
@@ -30,8 +30,8 @@ class MatchModule extends GameViewModule
 		super.ReleaseView();
 		this.scene.Release();
 		this.scene = null;
-		this.playerControlPill.Release();
-		this.playerControlPill = null;
+		this.playerControl.Release();
+		this.playerControl = null;
 	}
 
 	public SwitchForeOrBack(from: GameStateType, to: GameStateType):void
@@ -43,6 +43,6 @@ class MatchModule extends GameViewModule
     {        
         super.Update(deltaTime);
 		this.scene.Update(deltaTime);
-		this.playerControlPill.Update(deltaTime);
+		this.playerControl.Update(deltaTime);
     }
 }

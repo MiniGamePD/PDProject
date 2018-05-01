@@ -1,4 +1,4 @@
-class Pill extends DisplayElementBase
+class PillRenderer extends DisplayElementBase
 {
     public constructor()
     {
