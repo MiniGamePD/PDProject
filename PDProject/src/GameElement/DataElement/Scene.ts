@@ -1,12 +1,16 @@
 //MVC中的M, 其他LogicElement通过消息通知Scene刷新数据
-class Scene extends egret.EventDispatcher
+class Scene extends LogicElementBase
 {    
     public static readonly Columns:number = 8;
     public static readonly Rows:number = 16;  
     public sceneData:DisplayElementBase[][] = []; //左上角是00    
+    public eliminateInfo:EliminateInfo;
+    public isEliminating:boolean = false;
 
     public Init(): void
     {       
+        super.Init();
+        this.eliminateInfo = new EliminateInfo();
         for(var i = 0; i < Scene.Columns; ++i)
         {
             this.sceneData.push([]);
@@ -16,12 +20,12 @@ class Scene extends egret.EventDispatcher
             }
         }
 
-        GameMain.GetInstance().AddEventListener(PillControlEvent.EventName, this.PillControl, this);
-        GameMain.GetInstance().AddEventListener(ChangeMatchStateEvent.EventName, this.OnChangeMatchEvent, this);
+        GameMain.GetInstance().AddEventListener(PillControlEvent.EventName, this.PillControl, this);        
     }
 
     public Release()
     {
+        super.Release();
         GameMain.GetInstance().RemoveEventListener(PillControlEvent.EventName, this.PillControl, this);
     }
 
@@ -131,8 +135,8 @@ class Scene extends egret.EventDispatcher
             result = newPosx >= 0 && this.sceneData[newPosx][newPosy] == null;
             if(result)
             {
-                this.MoveElement(pill2, pill1.posx, pill1.posy);
                 this.MoveElement(pill1, newPosx, newPosy);
+                this.MoveElement(pill2, pill2.posx - 1, pill2.posy); 
             }
         }
         else if(pill1.posx > pill2.posx)
@@ -143,8 +147,8 @@ class Scene extends egret.EventDispatcher
             result = newPosx >= 0 && this.sceneData[newPosx][newPosy] == null;
             if(result)
             {
-                this.MoveElement(pill1, pill2.posx, pill2.posy);
                 this.MoveElement(pill2, newPosx, newPosy);
+                this.MoveElement(pill1, pill1.posx - 1, pill2.posy);  
             }
         }
         else
@@ -177,8 +181,8 @@ class Scene extends egret.EventDispatcher
             result = newPosx < Scene.Columns && this.sceneData[newPosx][newPosy] == null;
             if(result)
             {
-                this.MoveElement(pill2, pill1.posx, pill1.posy);
                 this.MoveElement(pill1, newPosx, newPosy);
+                this.MoveElement(pill2, pill2.posx + 1, pill2.posy);
             }
         }
         else if(pill1.posx < pill2.posx)
@@ -189,8 +193,8 @@ class Scene extends egret.EventDispatcher
             result = newPosx < Scene.Columns && this.sceneData[newPosx][newPosy] == null;
             if(result)
             {
-                this.MoveElement(pill1, pill2.posx, pill2.posy);
                 this.MoveElement(pill2, newPosx, newPosy);
+                this.MoveElement(pill1, pill1.posx + 1, pill1.posy);
             }
         }
         else
@@ -228,23 +232,181 @@ class Scene extends egret.EventDispatcher
         element.MoveTo(newPosx, newPosy);
     }
 
-    private OnChangeMatchEvent(event:ChangeMatchStateEvent)
+    protected OnChangeMatchState()
     {
-        if(event.matchState == MatchState.Eliminate)
+        if(this.matchState == MatchState.Eliminate)
         {
-            this.eliminating = true;                       
+            this.TryEliminate();                    
         }
     }
-
-    private eliminating:boolean = false;
+    
     public Update(deltaTime:number)
     {
-        if(this.eliminating)
+        if(this.matchState == MatchState.Eliminate && !this.isEliminating)
         {
-            this.eliminating = false;
             let newEvent = new ChangeMatchStateEvent();
             newEvent.matchState = MatchState.PlayerControl;
             GameMain.GetInstance().DispatchEvent(newEvent); 
         }
     }
+
+    //#####消除相关######
+    public TryEliminate(): boolean {
+        this.isEliminating = true;
+        this.ClearEliminateInfo();
+        this.EliminateElement();
+        this.MoveAfterEliminate();
+        //TODO:消除的表现结束之后，才把isEliminating设成false
+        this.isEliminating = false;
+        return true;
+    }
+
+    // 重置eliminateInfo
+    public ClearEliminateInfo() {
+        if (this.eliminateInfo.HasInfo) {
+            this.eliminateInfo.Reset();
+        }
+    }
+
+    // 计算消除元素，把消除的元素放到this.eliminateInfo.EliminatedElements列表
+    private EliminateElement() {
+        for (var iColumn = 0; iColumn < this.sceneData.length; ++iColumn) {
+            var cloumnList = this.sceneData[iColumn];
+            for (var iRow = 0; iRow < cloumnList.length; ++iRow) {
+                var element = cloumnList[iRow];
+                if (element != null
+                    && this.NeedEliminate(element)) {
+                    this.eliminateInfo.EliminatedElements.push(element);
+                    this.eliminateInfo.HasInfo = true;
+                }
+            }
+        }
+    }
+
+    // 根据消除的元素列表，把上面元素往下移
+    private MoveAfterEliminate() {
+        if (this.eliminateInfo.HasInfo) {
+            for (var count = 0; count < this.eliminateInfo.EliminatedElements.length; ++count) {
+                var eliminatedElement = this.eliminateInfo.EliminatedElements[count];
+                this.RemoveElement(eliminatedElement);
+                eliminatedElement.renderer.alpha = 0; // TODO：这里后面改成View里面做动画，现在暂时直接隐藏了
+                var moveDownValue = this.GetNullElementCountInDown(eliminatedElement.posx, eliminatedElement.posy);
+                for (var upIdx = eliminatedElement.posy - 1; upIdx >= 0; --upIdx) {
+                    var upElement = this.GetElement(eliminatedElement.posx, upIdx);
+                    if (upElement != null) { // TODO：在这里加上病毒这种不可移动的判断。
+                        var targetPosY = upIdx + moveDownValue;
+                        var moveInfo: EliminateMoveInfo = new EliminateMoveInfo(upElement, upElement.posx, upElement.posy, upElement.posx, targetPosY); // TODO：改成池子
+                        this.eliminateInfo.MoveElements.push(moveInfo);
+                        this.MoveElement(upElement, upElement.posx, targetPosY);
+                    }
+                    else {
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    // 计算某个位置下面的空槽数量(包括这个位置本身)
+    private GetNullElementCountInDown(posX: number, posY: number): number {
+        var count = 0;
+        for (var downIdx = posY; downIdx < Scene.Rows; ++downIdx) {
+            if (this.GetElement(posX, downIdx) == null) {
+                ++count;
+            }
+            else {
+                break;
+            }
+        }
+
+        return count;
+    }
+
+    // 获取某个坐标的元素
+    private GetElement(posX: number, posY: number): DisplayElementBase {
+        if (this.IsPosLegal(posX, posY)) {
+            return this.sceneData[posX][posY];
+        }
+        return null;
+    }
+
+    // 一个坐标是否合法
+    private IsPosLegal(posX: number, posY: number): boolean {
+        if (posX >= 0 && posX < Scene.Columns
+            && posY >= 0 && posY < Scene.Rows) {
+            return true;
+        }
+    }
+
+    // 把一个元素，从Data中移除
+    private RemoveElement(element: DisplayElementBase): boolean {
+        if (element != null) {
+            var posX = element.posx;
+            var posY = element.posy;
+            if (this.IsPosLegal(posX, posY)
+                && this.sceneData[posX][posY] == element) {
+                this.sceneData[posX][posY] = null;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // 判断一个元素是否需要被消除(横竖方向满足相邻的3个相同颜色的块)
+    private NeedEliminate(element: DisplayElementBase): boolean {
+        var needEliminate: boolean = false;
+        var cloumnCount: number = 1;
+        var rowCount: number = 1;
+        for (var up = element.posy - 1; up >= 0; --up) {
+            var e = this.GetElement(element.posx, up);
+            if (e != null
+                && e.color == element.color) {
+                ++cloumnCount;
+            }
+            else {
+                break;
+            }
+        }
+
+        for (var down = element.posy + 1; down < Scene.Rows; ++down) {
+            var e = this.GetElement(element.posx, down);
+            if (e != null
+                && e.color == element.color) {
+                ++cloumnCount;
+            }
+            else {
+                break;
+            }
+        }
+
+        for (var left = element.posx - 1; left >= 0; --left) {
+            var e = this.GetElement(left, element.posy);
+            if (e != null
+                && e.color == element.color) {
+                ++rowCount;
+            }
+            else {
+                break;
+            }
+        }
+
+        for (var right = element.posx + 1; right < Scene.Columns; ++right) {
+            var e = this.GetElement(right, element.posy);
+            if (e != null
+                && e.color == element.color) {
+                ++rowCount;
+            }
+            else {
+                break;
+            }
+        }
+
+        if (cloumnCount >= 3
+            || rowCount >= 3) {
+            needEliminate = true;
+        }
+
+        return needEliminate;
+    }
+    //#####消除相关######
 }

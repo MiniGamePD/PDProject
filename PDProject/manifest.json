@@ -11,10 +11,10 @@
 	],
 	"game": [
 		"bin-debug/FrameWork/ModuleMgr/ModuleBase.js",
+		"bin-debug/GameElement/DisplayElement/DisplayElementBase.js",
 		"bin-debug/GameElement/LogicElement/LogicElementBase.js",
 		"bin-debug/GameModule/GameViewModule/GameViewModule.js",
 		"bin-debug/GameView/GameView.js",
-		"bin-debug/GameElement/DisplayElement/DisplayElementBase.js",
 		"bin-debug/Events/Common/PlaySoundEvent.js",
 		"bin-debug/Events/Logic/ChangeMatchStateEvent.js",
 		"bin-debug/Events/Logic/PillControlEvent.js",
@@ -27,8 +27,9 @@
 		"bin-debug/FrameWork/ModuleMgr/ModuleMgr.js",
 		"bin-debug/FrameWork/StateMgr/IStateMgr.js",
 		"bin-debug/FrameWork/StateMgr/StateMgr.js",
+		"bin-debug/GameElement/DataElement/EliminateInfo.js",
 		"bin-debug/GameElement/DataElement/Scene.js",
-		"bin-debug/GameView/MatchView.js",
+		"bin-debug/Main.js",
 		"bin-debug/GameElement/DisplayElement/PillRenderer.js",
 		"bin-debug/GameElement/DisplayElement/VirusRenderer.js",
 		"bin-debug/Platform.js",
@@ -46,6 +47,6 @@
 		"bin-debug/Events/Common/InputEvent.js",
 		"bin-debug/GameView/IGameView.js",
 		"bin-debug/GameView/LobbyView.js",
-		"bin-debug/Main.js"
+		"bin-debug/GameView/MatchView.js"
 	]
 }
