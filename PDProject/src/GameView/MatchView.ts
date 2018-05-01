@@ -4,7 +4,7 @@ class MatchView extends GameView
     private mSoundModule: ISoundModule
     private mStageWidth: number;
     private mStageHeight: number;
-    private mMatchData: MatchData;
+    private mScene: Scene;
     private mBattleGroundStartXCenter:number; //00号元素的中心点坐标x
     private mBattleGroundStartYCenter:number; //00号元素的中心点坐标y
     private mElementWidth:number;
@@ -26,18 +26,18 @@ class MatchView extends GameView
         //GameMain.GetInstance().AddEventListener(InputEvent.EventName, this.OnInputEvent, this);
     }
 
-    public SetMatchData(matchData:MatchData)
+    public SetScene(scene:Scene)
     {
-        this.mMatchData = matchData;
+        this.mScene = scene;
     }
 
     public UpdateView(): void
     {
-        for(var i = 0; i < MatchData.battleGroundColumns; ++i)
+        for(var i = 0; i < Scene.Columns; ++i)
         {
-            for(var j = 0; j < MatchData.battleGroundRows; ++j)
+            for(var j = 0; j < Scene.Rows; ++j)
             {
-                let element = this.mMatchData.sceneData[i][j];
+                let element = this.mScene.sceneData[i][j];
                 if(element != null)
                 {
                     
@@ -103,8 +103,8 @@ class MatchView extends GameView
 
             console.log(battleRect);             
 
-            this.mElementWidth = battleRect.width / MatchData.battleGroundColumns;
-            this.mElementHeight = battleRect.height / MatchData.battleGroundRows;
+            this.mElementWidth = battleRect.width / Scene.Columns;
+            this.mElementHeight = battleRect.height / Scene.Rows;
             this.mBattleGroundStartXCenter = battleRect.x + this.mElementWidth / 2;
             this.mBattleGroundStartYCenter = battleRect.y + this.mElementHeight /2;   
         }

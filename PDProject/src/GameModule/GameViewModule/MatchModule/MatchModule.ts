@@ -1,161 +1,48 @@
 class MatchModule extends GameViewModule
 {		
+	private matchState:MatchState = MatchState.None;
+    private scene:Scene;
+	private playerControlPill:PlayerControlPill;
+
     protected CreateView(): boolean
 	{
-		this.matchData = new MatchData();
-        this.matchData.Init();
+		this.scene = new Scene();
+        this.scene.Init();
 
 		let view = new MatchView();
-		view.SetMatchData(this.matchData);
+		view.SetScene(this.scene);
 		view.CreateView();
 		this.gameViewList.push(view);
     
-		this.matchState = MatchState.Init;
+		this.playerControlPill = new PlayerControlPill();
+		this.playerControlPill.Init();
+
+		//TODO:应该先从Init事件开始
+		let event = new ChangeMatchStateEvent();
+		event.matchState = MatchState.PlayerControl;
+		GameMain.GetInstance().DispatchEvent(event);
 		 
 		return true;
 	}
 
-	public Release():void
+	public ReleaseView():void
 	{
-		this.matchData = null;
+		super.ReleaseView();
+		this.scene.Release();
+		this.scene = null;
+		this.playerControlPill.Release();
+		this.playerControlPill = null;
 	}
 
 	public SwitchForeOrBack(from: GameStateType, to: GameStateType):void
 	{
 		this.isForeground = to == GameStateType.Match;	
-		if(this.isForeground)
-		{
-			GameMain.GetInstance().AddEventListener(InputEvent.EventName, this.OnInputEvent, this);
-		}
-		else
-		{
-			GameMain.GetInstance().RemoveEventListener(InputEvent.EventName, this.OnInputEvent, this);
-		}
 	}
-
-    //##############游戏逻辑##################
-    private matchState:MatchState = MatchState.None;
-    private matchData:MatchData;
-	public static readonly PillDropdownInterval:number = 1000;//每隔多久药丸下落一格
-	private pillDropdownTimer:number;
-
+    		
     public Update(deltaTime: number):void
-    {
-        //这里只处理match data的变化, view会根据data的变化进行绘制内容的更新
-        switch(this.matchState)
-        {
-			case MatchState.Init:
-				this.UpdateInitState();
-				break;
-            case MatchState.PlayerControl:
-                this.UpdatePlayerControlState(deltaTime);
-                break;
-            case MatchState.Eliminate:
-                this.UpdateEliminateState();
-                break;
-            case MatchState.GameOver:
-                this.UpdateGameOverState();
-                break;
-            default:
-                break;
-        }
+    {        
         super.Update(deltaTime);
+		this.scene.Update(deltaTime);
+		this.playerControlPill.Update(deltaTime);
     }
-
-	private UpdateInitState():void
-	{
-		//TODO:处理初始细菌出现的过程
-		this.OnChangeToPlayerControlState();
-		this.matchState = MatchState.PlayerControl;
-	}
-
-	private OnChangeToInitState():void
-	{
-
-	}
-
-    private UpdatePlayerControlState(deltaTime:number): void
-    {
-		this.pillDropdownTimer += deltaTime;
-		if(this.pillDropdownTimer >= MatchModule.PillDropdownInterval)
-		{
-			//即使时间很长，超过两个MatchModule.PillDropdownInterval，也还是移动一格，否则卡了，就忽然间下降很多，体验不好
-			this.pillDropdownTimer = 0;
-			if(!this.matchData.TryDropdownPill())
-			{
-				//下落到不能再下落了，就进入消除状态
-				this.OnChangeToEliminateState();
-				this.matchState = MatchState.Eliminate;
-			}
-		}
-    }
-
-	private OnChangeToPlayerControlState():void
-	{
-		if(!this.matchData.TryCreatePill())
-		{
-			this.OnChangeToGameOverState();
-			this.matchState = MatchState.GameOver;
-		}
-		else
-		{
-			this.pillDropdownTimer = 0;
-		}
-	}
-
-    private UpdateEliminateState(): void
-    {
-		//TODO:处理消除的逻辑
-		this.OnChangeToPlayerControlState();
-		this.matchState = MatchState.PlayerControl;
-    }
-
-	private OnChangeToEliminateState():void
-	{
-		
-	}
-
-    private UpdateGameOverState(): void
-    {
-
-    }
-
-	private OnChangeToGameOverState():void
-	{
-		
-	}
-
-	 private OnInputEvent(event: InputEvent): void
-	 {
-		if(this.matchState == MatchState.PlayerControl)
-		{
-			var key = event.Key;
-			if (key == InputKey.Left)
-			{
-				this.matchData.TryMoveLeftPill();
-			}
-			else if (key == InputKey.Right)
-			{
-				this.matchData.TryMoveRightPill();
-			}
-			else if (key == InputKey.Down)
-			{
-				
-			}
-			else if (key == InputKey.Rotate)
-			{
-				this.matchData.TryRotatePill();
-			}
-		}
-    }
-    //#######################################
-}
-
-enum MatchState
-{
-    None,    
-	Init, //预先生成一些细菌
-    PlayerControl, //该状态下玩家可控制药丸旋转、下落
-    Eliminate, //消除阶段，计算刚才玩家的操作是否产生消除，以及处理消除的各种效果
-    GameOver //拜拜了
 }

@@ -1,4 +1,4 @@
-class GameElementBase
+class DisplayElementBase
 {
     public posx:number = 0;
     public posy:number = 0;

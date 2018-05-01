@@ -33,7 +33,7 @@ abstract class GameViewModule extends ModuleBase implements IModule
         }
 	}
 
-	private ReleaseView(): void 
+	protected ReleaseView(): void 
     {
         for (var i = 0; i < this.gameViewList.length; ++i)
         {

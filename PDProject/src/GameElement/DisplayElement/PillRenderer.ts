@@ -1,4 +1,4 @@
-class Pill extends GameElementBase
+class Pill extends DisplayElementBase
 {
     public constructor()
     {

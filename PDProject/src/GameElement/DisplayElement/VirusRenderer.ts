@@ -1,0 +1,4 @@
+class VirusRenderer extends DisplayElementBase
+{
+    
+}
