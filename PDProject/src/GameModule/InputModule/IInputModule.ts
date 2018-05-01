@@ -11,4 +11,4 @@ enum InputKey{
 	Max = 5,
 }
 
-const INPUT_MOVE_EVENT_DIS_RATE: number = 0.1;
+const INPUT_MOVE_EVENT_DIS_RATE: number = 0.05;
