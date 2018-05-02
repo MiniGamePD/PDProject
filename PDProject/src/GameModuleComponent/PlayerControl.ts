@@ -2,21 +2,21 @@ class PlayerControl extends GameModuleComponentBase
 {
     public static readonly DropdownInterval:number = 200;//每隔多久药丸下落一格    
     private dropdownTimer:number;
-    public target:Pill;
+    public target:ControlableElement;
 
     public Init():void
     {
         GameMain.GetInstance().AddEventListener(InputEvent.EventName, this.OnInputEvent, this);
-        GameMain.GetInstance().AddEventListener(PillControlFailedEvent.EventName, this.OnPillControlFailed, this);
+        GameMain.GetInstance().AddEventListener(PlayerControlFailedEvent.EventName, this.OnPlayerControlFailed, this);
     }
 
     public Release():void
     {
         GameMain.GetInstance().RemoveEventListener(InputEvent.EventName, this.OnInputEvent, this);
-        GameMain.GetInstance().AddEventListener(PillControlFailedEvent.EventName, this.OnPillControlFailed, this);
+        GameMain.GetInstance().RemoveEventListener(PlayerControlFailedEvent.EventName, this.OnPlayerControlFailed, this);
     }
 
-    public SetTarget(target:Pill)
+    public SetTarget(target:ControlableElement)
     {
         this.target = target;
     }
@@ -25,7 +25,7 @@ class PlayerControl extends GameModuleComponentBase
     {
         super.Work();
         this.dropdownTimer = 0;
-        this.DispatchPillControlEvent(PillControlType.Create);
+        this.DispatchControlEvent(ControlType.Create);
     }
 
     public Sleep()
@@ -41,11 +41,11 @@ class PlayerControl extends GameModuleComponentBase
 			var key = event.Key;
 			if (key == InputKey.Left)
 			{
-                this.DispatchPillControlEvent(PillControlType.MoveLeft);
+                this.DispatchControlEvent(ControlType.MoveLeft);
 			}
 			else if (key == InputKey.Right)
 			{
-                this.DispatchPillControlEvent(PillControlType.MoveRight);
+                this.DispatchControlEvent(ControlType.MoveRight);
 			}
 			else if (key == InputKey.Down)
 			{
@@ -53,7 +53,7 @@ class PlayerControl extends GameModuleComponentBase
 			}
 			else if (key == InputKey.Rotate)
 			{
-                this.DispatchPillControlEvent(PillControlType.Rotation);
+                this.DispatchControlEvent(ControlType.Rotation);
 			}
 		}
     }
@@ -73,42 +73,50 @@ class PlayerControl extends GameModuleComponentBase
         {
             //即使时间很长，超过两个MatchModule.PillDropdownInterval，也还是移动一格，否则卡了，就忽然间下降很多，体验不好
             this.dropdownTimer = 0;
-            this.DispatchPillControlEvent(PillControlType.DropDown);                
+            this.DispatchControlEvent(ControlType.DropDown);                
         }
     }
 
-    protected OnPillControlFailed(event:PillControlFailedEvent)
+    protected OnPlayerControlFailed(event:PlayerControlFailedEvent)
     {
         if(this.isWorking && this.target == null)
         {
              if(DEBUG)
             {
-                console.error("PillRenderer DropDown Failed While Player Control Is Not Working");
+                console.error("Player Control Failed While Player Control Is Not Working");
             }
             return;
         }        
 
-        if(event.pillControlType == PillControlType.DropDown)
+        if(event.controlType == ControlType.DropDown)
         {
             //下落到不能再下落了，就进入消除状态        
             let event = new PlayerControlFinishEvent();            
             GameMain.GetInstance().DispatchEvent(event);
         }
-        else if(event.pillControlType == PillControlType.Create)
+        else if(event.controlType == ControlType.Create)
         {
-            //已经无法创建新的药丸，就进入死亡状态
+            //已经无法创建新的元素了，就进入死亡状态
             let event = new GameOverEvent();            
             GameMain.GetInstance().DispatchEvent(event);
         }
     }
 
-    private DispatchPillControlEvent(pillControlType:PillControlType)
+    private DispatchControlEvent(controlType:ControlType)
     {
-        let event = new PillControlEvent();
-        event.pillControlType = pillControlType;
-        event.pill1 = this.target.pill1;
-        event.pill2 = this.target.pill2;
+        let event = new PlayerControlEvent();
+        event.controlType = controlType;
+        event.targets = this.target.GetControledElements();
         GameMain.GetInstance().DispatchEvent(event);        
     }
+}
+
+enum ControlType
+{
+    Create,
+    MoveLeft,
+    MoveRight,
+    DropDown,
+    Rotation,
 }
 
