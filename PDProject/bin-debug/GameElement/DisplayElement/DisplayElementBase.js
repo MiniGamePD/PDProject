@@ -17,7 +17,7 @@ var DisplayElementBase = (function () {
         }
     };
     DisplayElementBase.prototype.RandomColor = function () {
-        var random = Math.random() * 2;
+        var random = Math.random() * 3;
         if (random >= 0 && random < 1) {
             return GameElementColor.red;
         }
