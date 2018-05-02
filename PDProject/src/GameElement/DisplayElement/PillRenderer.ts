@@ -1,25 +1,36 @@
 class PillRenderer extends DisplayElementBase
 {
+    public mPillType: PillElementType;
     public constructor()
     {
         super();
-        this.renderer = new egret.Bitmap();        
+        this.renderer = new egret.Bitmap();       
+        this.color = this.RandomColor(); 
+        this.canDrop = true;
     }
 
-    public ChangePillTexByColor():void
+    public SetPillType(pillType: PillElementType){
+        this.mPillType = pillType;
+        this.RefreshTexture();
+    }
+
+    private RefreshTexture():void
     {
-        this.color = this.RandomColor();
         let texture: egret.Texture;
+        let path = "pd_res_json.Pill_";
+        if (this.mPillType == PillElementType.Single){
+            path += "Single_"
+        }
         switch(this.color)
         {
             case GameElementColor.red:
-                texture = this.GetTexture("pd_res_json.Pill_Red");
+                path += "Red";
                 break;
             case GameElementColor.blue:
-                texture = this.GetTexture("pd_res_json.Pill_Blue");
+                path += "Blue";
                 break;
             case GameElementColor.yellow:
-                texture = this.GetTexture("pd_res_json.Pill_Yellow");
+                path += "Yellow";
                 break;
             default:
                 if(DEBUG)
@@ -28,8 +39,33 @@ class PillRenderer extends DisplayElementBase
                 }    
                 break;
         }
-
+        texture = this.GetTexture(path);
 		this.renderer.texture = texture;
+        if (this.mPillType == PillElementType.right){
+            this.renderer.rotation = 180;
+        }
     }
+
+    // 删除捆绑元素后，重新计算药丸的类型
+    public UnbindElement(element: DisplayElementBase): boolean{
+        var result = super.UnbindElement(element);
+        if (result
+            && this.GetBindElements().length == 0){
+                this.SetPillType(PillElementType.Single);
+        }
+        return result;
+    }
+
+    // 删除捆绑元素后，重新计算药丸的类型
+    public UnbindAllElement(){
+        super.UnbindAllElement();
+        this.SetPillType(PillElementType.Single);
+    }
+
 }
 
+enum PillElementType {
+    left,   //左边
+    right,  //右边
+    Single, //独立
+}

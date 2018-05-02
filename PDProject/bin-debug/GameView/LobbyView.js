@@ -45,10 +45,18 @@ var LobbyView = (function (_super) {
         text.width = stageWidth;
         text.height = 100;
         this.addChild(text);
+        // this.PlayBgm();
     };
     LobbyView.prototype.OnClickStartGame = function () {
         egret.log("OnClickStartGame");
         GameMain.GetInstance().SwitchGameState(GameStateType.Match);
+    };
+    LobbyView.prototype.PlayBgm = function () {
+        // if (this.mSoundModule != null){
+        //     this.mSoundModule.PlaySound("bgm_mp3", -1);
+        // }
+        var event = new PlaySoundEvent("bgm_mp3", -1);
+        GameMain.GetInstance().DispatchEvent(event);
     };
     return LobbyView;
 }(GameView));

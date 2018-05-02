@@ -1,6 +1,6 @@
 class PlayerControl extends GameModuleComponentBase
 {
-    public static readonly DropdownInterval:number = 1000;//每隔多久药丸下落一格    
+    public static readonly DropdownInterval:number = 200;//每隔多久药丸下落一格    
     private dropdownTimer:number;
     public target:Pill;
 

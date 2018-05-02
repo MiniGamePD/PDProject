@@ -7,5 +7,5 @@ var InputKey;
     InputKey[InputKey["Rotate"] = 4] = "Rotate";
     InputKey[InputKey["Max"] = 5] = "Max";
 })(InputKey || (InputKey = {}));
-var INPUT_MOVE_EVENT_DIS_RATE = 0.1;
+var INPUT_MOVE_EVENT_DIS_RATE = 0.05;
 //# sourceMappingURL=IInputModule.js.map

@@ -20,16 +20,16 @@ var MatchView = (function (_super) {
         this.mStageHeight = GameMain.GetInstance().GetStageHeight();
         this.LoadBackGround();
         this.PlayBgm();
-        this.LoadPillForTest();
-        GameMain.GetInstance().AddEventListener(InputEvent.EventName, this.OnInputEvent, this);
+        //this.LoadPillForTest();
+        //GameMain.GetInstance().AddEventListener(InputEvent.EventName, this.OnInputEvent, this);
     };
-    MatchView.prototype.SetMatchData = function (matchData) {
-        this.mMatchData = matchData;
+    MatchView.prototype.SetScene = function (scene) {
+        this.mScene = scene;
     };
     MatchView.prototype.UpdateView = function () {
-        for (var i = 0; i < MatchData.battleGroundColumns; ++i) {
-            for (var j = 0; j < MatchData.battleGroundRows; ++j) {
-                var element = this.mMatchData.sceneData[i][j];
+        for (var i = 0; i < Scene.Columns; ++i) {
+            for (var j = 0; j < Scene.Rows; ++j) {
+                var element = this.mScene.sceneData[i][j];
                 if (element != null) {
                     if (!element.hasAddToDisplayList) {
                         element.renderer.width = this.mElementWidth;
@@ -78,8 +78,8 @@ var MatchView = (function (_super) {
             this.addChild(this.mBattleGround);
             this.mBattleGround.addChild(bottle);
             console.log(battleRect);
-            this.mElementWidth = battleRect.width / MatchData.battleGroundColumns;
-            this.mElementHeight = battleRect.height / MatchData.battleGroundRows;
+            this.mElementWidth = battleRect.width / Scene.Columns;
+            this.mElementHeight = battleRect.height / Scene.Rows;
             this.mBattleGroundStartXCenter = battleRect.x + this.mElementWidth / 2;
             this.mBattleGroundStartYCenter = battleRect.y + this.mElementHeight / 2;
         }

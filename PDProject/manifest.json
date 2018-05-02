@@ -11,16 +11,17 @@
 	],
 	"game": [
 		"bin-debug/FrameWork/ModuleMgr/ModuleBase.js",
+		"bin-debug/GameElement/DisplayElement/DisplayElementBase.js",
 		"bin-debug/GameModule/GameViewModule/GameViewModule.js",
 		"bin-debug/GameModuleComponent/GameModuleComponentBase.js",
 		"bin-debug/GameView/GameView.js",
-		"bin-debug/GameElement/DisplayElement/DisplayElementBase.js",
 		"bin-debug/GameElement/DataElement/Scene.js",
 		"bin-debug/Events/Logic/GameOverEvent.js",
 		"bin-debug/Events/Logic/PillControlEvent.js",
 		"bin-debug/Events/Logic/PillControlFailedEvent.js",
 		"bin-debug/Events/Logic/PlayerControlFinishEvent.js",
 		"bin-debug/Events/Logic/SceneEliminateFinish.js",
+		"bin-debug/FrameWork/Tools.js",
 		"bin-debug/FrameWork/GameMain/GameMain.js",
 		"bin-debug/FrameWork/GameMain/IGameMain.js",
 		"bin-debug/FrameWork/ModuleMgr/IModule.js",
@@ -30,7 +31,7 @@
 		"bin-debug/FrameWork/StateMgr/IStateMgr.js",
 		"bin-debug/FrameWork/StateMgr/StateMgr.js",
 		"bin-debug/GameElement/DataElement/EliminateInfo.js",
-		"bin-debug/GameView/MatchView.js",
+		"bin-debug/Main.js",
 		"bin-debug/Platform.js",
 		"bin-debug/GameElement/DisplayElement/PillRenderer.js",
 		"bin-debug/GameElement/DisplayElement/VirusRenderer.js",
@@ -50,6 +51,6 @@
 		"bin-debug/Events/Common/PlaySoundEvent.js",
 		"bin-debug/GameView/IGameView.js",
 		"bin-debug/GameView/LobbyView.js",
-		"bin-debug/Main.js"
+		"bin-debug/GameView/MatchView.js"
 	]
 }

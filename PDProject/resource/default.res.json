@@ -1,7 +1,7 @@
 {
 	"groups": [
 		{
-			"keys": "pd_res_json,bgm_mp3",
+			"keys": "bgm_mp3,pd_res_json",
 			"name": "preload"
 		}
 	],
@@ -25,12 +25,12 @@
 			"url": "assets/pd_res.json",
 			"type": "sheet",
 			"name": "pd_res_json",
-			"subkeys": "BackGround,Bottle,Pill_Blue,Pill_Red,Pill_Yellow"
+			"subkeys": "BackGround,Bottle,Pill_Blue,Pill_Red,Pill_Single_Blue,Pill_Single_Red,Pill_Single_Yellow,Pill_Yellow,Virus_Blue,Virus_Red,Virus_Yellow"
 		},
 		{
-			"name": "bgm_mp3",
+			"url": "assets/bgm.mp3",
 			"type": "sound",
-			"url": "assets/bgm.mp3"
+			"name": "bgm_mp3"
 		}
 	]
 }
