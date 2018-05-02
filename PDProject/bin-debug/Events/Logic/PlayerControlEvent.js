@@ -8,15 +8,15 @@ var __extends = this && this.__extends || function __extends(t, e) {
 for (var i in e) e.hasOwnProperty(i) && (t[i] = e[i]);
 r.prototype = e.prototype, t.prototype = new r();
 };
-var PillControlFailedEvent = (function (_super) {
-    __extends(PillControlFailedEvent, _super);
-    function PillControlFailedEvent(bubbles, cancelable) {
+var PlayerControlEvent = (function (_super) {
+    __extends(PlayerControlEvent, _super);
+    function PlayerControlEvent(bubbles, cancelable) {
         if (bubbles === void 0) { bubbles = false; }
         if (cancelable === void 0) { cancelable = false; }
-        return _super.call(this, PillControlFailedEvent.EventName, bubbles, cancelable) || this;
+        return _super.call(this, PlayerControlEvent.EventName, bubbles, cancelable) || this;
     }
-    PillControlFailedEvent.EventName = "PillControlFailedEvent";
-    return PillControlFailedEvent;
+    PlayerControlEvent.EventName = "PlayerControlEvent";
+    return PlayerControlEvent;
 }(egret.Event));
-__reflect(PillControlFailedEvent.prototype, "PillControlFailedEvent");
-//# sourceMappingURL=PillControlFailedEvent.js.map
+__reflect(PlayerControlEvent.prototype, "PlayerControlEvent");
+//# sourceMappingURL=PlayerControlEvent.js.map

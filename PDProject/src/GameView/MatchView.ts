@@ -38,8 +38,7 @@ class MatchView extends GameView
 
     public UpdateView(deltaTime: number): void
     {
-        if (this.mScene.isEliminating
-            && this.mScene.eliminateInfo.HasInfo)
+        if (this.mScene.eliminateInfo.HasInfo)
         {
             this.UpdateEliminating(deltaTime);
         }

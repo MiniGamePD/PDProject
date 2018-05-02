@@ -29,8 +29,7 @@ var MatchView = (function (_super) {
         this.mScene = scene;
     };
     MatchView.prototype.UpdateView = function (deltaTime) {
-        if (this.mScene.isEliminating
-            && this.mScene.eliminateInfo.HasInfo) {
+        if (this.mScene.eliminateInfo.HasInfo) {
             this.UpdateEliminating(deltaTime);
         }
         else {

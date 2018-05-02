@@ -14,7 +14,6 @@ var Scene = (function (_super) {
     function Scene() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.sceneData = []; //左上角是00    
-        _this.isEliminating = false;
         // // 根据消除的元素列表，把上面元素往下移
         // private MoveAfterEliminate() {
         //     if (this.eliminateInfo.HasInfo) {
@@ -49,165 +48,53 @@ var Scene = (function (_super) {
                 this.sceneData[i].push(null);
             }
         }
-        GameMain.GetInstance().AddEventListener(PillControlEvent.EventName, this.PillControl, this);
+        GameMain.GetInstance().AddEventListener(PlayerControlEvent.EventName, this.ProcessControl, this);
     };
     Scene.prototype.Release = function () {
-        GameMain.GetInstance().RemoveEventListener(PillControlEvent.EventName, this.PillControl, this);
+        GameMain.GetInstance().RemoveEventListener(PlayerControlEvent.EventName, this.ProcessControl, this);
     };
-    Scene.prototype.PillControl = function (event) {
+    Scene.prototype.ProcessControl = function (event) {
         var operationSuccess = true;
-        switch (event.pillControlType) {
-            case PillControlType.Create:
+        switch (event.controlType) {
+            case ControlType.Create:
                 {
-                    operationSuccess = this.TryCreatePill(event.pill1, event.pill2);
+                    operationSuccess = this.AddElementGroup(event.targets);
                     break;
                 }
-            case PillControlType.MoveLeft:
+            case ControlType.MoveLeft:
                 {
-                    operationSuccess = this.TryMoveLeftPill(event.pill1, event.pill2);
+                    operationSuccess = this.GetElementGroupMoveSpace(event.targets, Direction.Left) > 0;
+                    if (operationSuccess)
+                        this.MoveElementGroup(event.targets, Direction.Left, 1);
                     break;
                 }
-            case PillControlType.MoveRight:
+            case ControlType.MoveRight:
                 {
-                    operationSuccess = this.TryMoveRightPill(event.pill1, event.pill2);
+                    operationSuccess = this.GetElementGroupMoveSpace(event.targets, Direction.Right) > 0;
+                    if (operationSuccess)
+                        this.MoveElementGroup(event.targets, Direction.Right, 1);
                     break;
                 }
-            case PillControlType.DropDown:
+            case ControlType.DropDown:
                 {
-                    operationSuccess = this.TryDropdownPill(event.pill1, event.pill2);
+                    operationSuccess = this.GetElementGroupMoveSpace(event.targets, Direction.Down) > 0;
+                    if (operationSuccess)
+                        this.MoveElementGroup(event.targets, Direction.Down, 1);
                     break;
                 }
-            case PillControlType.Rotation:
+            case ControlType.Rotation:
                 {
-                    operationSuccess = this.TryRotatePill(event.pill1, event.pill2);
+                    operationSuccess = this.TryRotate(event.targets);
                     break;
                 }
         }
         if (!operationSuccess) {
-            var failedEvent = new PillControlFailedEvent();
-            failedEvent.pillControlType = event.pillControlType;
+            var failedEvent = new PlayerControlFailedEvent();
+            failedEvent.controlType = event.controlType;
             GameMain.GetInstance().DispatchEvent(failedEvent);
         }
     };
-    Scene.prototype.TryCreatePill = function (pill1, pill2) {
-        ;
-        //TODO：如果在sceneData中已经存在东西了，则GameOver
-        this.sceneData[pill1.posx][pill1.posy] = pill1;
-        this.sceneData[pill2.posx][pill2.posy] = pill2;
-        return true;
-    };
-    Scene.prototype.TryDropdownPill = function (pill1, pill2) {
-        var result = true;
-        if (pill1.posy > pill2.posy) {
-            //pill1在底部
-            var newPosx = pill1.posx;
-            var newPosy = pill1.posy + 1;
-            result = newPosy < Scene.Rows && this.sceneData[newPosx][newPosy] == null;
-            if (result) {
-                this.MoveElement(pill2, pill1.posx, pill1.posy);
-                this.MoveElement(pill1, newPosx, newPosy);
-            }
-        }
-        else if (pill1.posy < pill2.posy) {
-            //pill2在底部
-            var newPosx = pill2.posx;
-            var newPosy = pill2.posy + 1;
-            result = newPosy < Scene.Rows && this.sceneData[newPosx][newPosy] == null;
-            if (result) {
-                this.MoveElement(pill1, pill2.posx, pill2.posy);
-                this.MoveElement(pill2, newPosx, newPosy);
-            }
-        }
-        else {
-            //药丸是横着的
-            var newPosx1 = pill1.posx;
-            var newPosy1 = pill1.posy + 1;
-            var newPosx2 = pill2.posx;
-            var newPosy2 = pill2.posy + 1;
-            result = newPosy1 < Scene.Rows && this.sceneData[newPosx1][newPosy1] == null
-                && newPosy2 < Scene.Rows && this.sceneData[newPosx2][newPosy2] == null;
-            if (result) {
-                this.MoveElement(pill1, newPosx1, newPosy1);
-                this.MoveElement(pill2, newPosx2, newPosy2);
-            }
-        }
-        return result;
-    };
-    Scene.prototype.TryMoveLeftPill = function (pill1, pill2) {
-        var result = true;
-        if (pill1.posx < pill2.posx) {
-            //pill1在左边
-            var newPosx = pill1.posx - 1;
-            var newPosy = pill1.posy;
-            result = newPosx >= 0 && this.sceneData[newPosx][newPosy] == null;
-            if (result) {
-                this.MoveElement(pill1, newPosx, newPosy);
-                this.MoveElement(pill2, pill2.posx - 1, pill2.posy);
-            }
-        }
-        else if (pill1.posx > pill2.posx) {
-            //pill2在左边
-            var newPosx = pill2.posx - 1;
-            var newPosy = pill2.posy;
-            result = newPosx >= 0 && this.sceneData[newPosx][newPosy] == null;
-            if (result) {
-                this.MoveElement(pill2, newPosx, newPosy);
-                this.MoveElement(pill1, pill1.posx - 1, pill2.posy);
-            }
-        }
-        else {
-            //药丸是竖着的
-            var newPosx1 = pill1.posx - 1;
-            var newPosy1 = pill1.posy;
-            var newPosx2 = pill2.posx - 1;
-            var newPosy2 = pill2.posy;
-            result = newPosx1 >= 0 && this.sceneData[newPosx1][newPosy1] == null
-                && newPosx2 >= 0 && this.sceneData[newPosx2][newPosy2] == null;
-            if (result) {
-                this.MoveElement(pill1, newPosx1, newPosy1);
-                this.MoveElement(pill2, newPosx2, newPosy2);
-            }
-        }
-        return result;
-    };
-    Scene.prototype.TryMoveRightPill = function (pill1, pill2) {
-        var result = true;
-        if (pill1.posx > pill2.posx) {
-            //pill1在右边
-            var newPosx = pill1.posx + 1;
-            var newPosy = pill1.posy;
-            result = newPosx < Scene.Columns && this.sceneData[newPosx][newPosy] == null;
-            if (result) {
-                this.MoveElement(pill1, newPosx, newPosy);
-                this.MoveElement(pill2, pill2.posx + 1, pill2.posy);
-            }
-        }
-        else if (pill1.posx < pill2.posx) {
-            //pill2在左边
-            var newPosx = pill2.posx + 1;
-            var newPosy = pill2.posy;
-            result = newPosx < Scene.Columns && this.sceneData[newPosx][newPosy] == null;
-            if (result) {
-                this.MoveElement(pill2, newPosx, newPosy);
-                this.MoveElement(pill1, pill1.posx + 1, pill1.posy);
-            }
-        }
-        else {
-            //药丸是竖着的
-            var newPosx1 = pill1.posx + 1;
-            var newPosy1 = pill1.posy;
-            var newPosx2 = pill2.posx + 1;
-            var newPosy2 = pill2.posy;
-            result = newPosx1 < Scene.Columns && this.sceneData[newPosx1][newPosy1] == null
-                && newPosx2 < Scene.Columns && this.sceneData[newPosx2][newPosy2] == null;
-            if (result) {
-                this.MoveElement(pill1, newPosx1, newPosy1);
-                this.MoveElement(pill2, newPosx2, newPosy2);
-            }
-        }
-        return result;
-    };
-    Scene.prototype.TryRotatePill = function (pill1, pill2) {
+    Scene.prototype.TryRotate = function (elements) {
         return false;
     };
     //把Element移动到newPos，并把老位置制成null
@@ -227,30 +114,28 @@ var Scene = (function (_super) {
         }
         return result;
     };
-    Scene.prototype.Work = function () {
-        _super.prototype.Work.call(this);
-        this.TryEliminate();
-    };
     Scene.prototype.Update = function (deltaTime) {
         this.CheckEliminating();
     };
     //#####消除相关######
     Scene.prototype.TryEliminate = function () {
-        this.isEliminating = true;
         this.ClearEliminateInfo();
         this.EliminateElement();
         do {
             var hasMove = this.MoveAfterEliminate();
         } while (hasMove);
-        this.CheckEliminating();
-        return true;
+        var result = this.eliminateInfo.HasInfo;
+        return result;
+    };
+    Scene.prototype.FinishEliminate = function () {
+        var newEvent = new SceneEliminateFinishEvent();
+        GameMain.GetInstance().DispatchEvent(newEvent);
     };
     Scene.prototype.CheckEliminating = function () {
-        if (this.isEliminating) {
-            if (!this.eliminateInfo.HasInfo) {
-                this.isEliminating = false;
-                var newEvent = new SceneEliminateFinishEvent();
-                GameMain.GetInstance().DispatchEvent(newEvent);
+        if (this.isWorking && !this.eliminateInfo.HasInfo) {
+            var result = this.TryEliminate();
+            if (!result) {
+                this.FinishEliminate();
             }
         }
     };

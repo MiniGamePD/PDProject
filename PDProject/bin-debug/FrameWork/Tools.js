@@ -48,18 +48,18 @@ var Tools = (function () {
                 value -= moveValue;
             }
             value = Tools.Clamp(value, from, to);
+            return value;
         }
-        return value;
     };
     Tools.Clamp = function (value, p1, p2) {
         var result = value;
         if (p1 < p2) {
-            result = result < p1 ? p1 : result;
-            result = result > p2 ? p2 : result;
+            result = value < p1 ? p1 : value;
+            result = value > p2 ? p2 : value;
         }
         else if (p1 > p2) {
-            result = result > p1 ? p1 : result;
-            result = result < p2 ? p2 : result;
+            result = value > p1 ? p1 : value;
+            result = value < p2 ? p2 : value;
         }
         return result;
     };

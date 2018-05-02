@@ -1,4 +1,4 @@
-class Pill
+class Pill extends ControlableElement
 {    
     public pill1:PillRenderer;
     public pill2:PillRenderer;
@@ -7,7 +7,8 @@ class Pill
     public rotAngle:number; // 必须是0, 90，180，270中的一个值
 
     public constructor()
-    {                
+    {       
+        super();         
         this.rotAngle = 0;             
         this.pill1 = new PillRenderer();
         this.pill2 = new PillRenderer();
@@ -31,5 +32,11 @@ class Pill
         this.pill1.MoveTo(this.posx, this.posy);
         this.pill2.MoveTo(this.posx + 1, this.posy);
     }   
+
+    protected FillTargets()
+    {
+        this.targets.push(this.pill1);
+        this.targets.push(this.pill2);
+    }
 }
 
