@@ -48,6 +48,7 @@
 		"bin-debug/GameModule/SoundModule/SoundModule.js",
 		"bin-debug/Events/Common/InputEvent.js",
 		"bin-debug/GameModuleComponent/PlayerControl.js",
+		"bin-debug/GameView/EliminatingAnimation.js",
 		"bin-debug/Events/Common/PlaySoundEvent.js",
 		"bin-debug/GameView/IGameView.js",
 		"bin-debug/GameView/LobbyView.js",

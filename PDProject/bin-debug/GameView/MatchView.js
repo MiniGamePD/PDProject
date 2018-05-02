@@ -20,13 +20,34 @@ var MatchView = (function (_super) {
         this.mStageHeight = GameMain.GetInstance().GetStageHeight();
         this.LoadBackGround();
         this.PlayBgm();
+        this.eliminatingAnim = new EliminatingAnimation();
+        this.eliminatingAnim.Init(this);
         //this.LoadPillForTest();
         //GameMain.GetInstance().AddEventListener(InputEvent.EventName, this.OnInputEvent, this);
     };
     MatchView.prototype.SetScene = function (scene) {
         this.mScene = scene;
     };
-    MatchView.prototype.UpdateView = function () {
+    MatchView.prototype.UpdateView = function (deltaTime) {
+        if (this.mScene.isEliminating
+            && this.mScene.eliminateInfo.HasInfo) {
+            this.UpdateEliminating(deltaTime);
+        }
+        else {
+            this.RefreshScene();
+        }
+    };
+    MatchView.prototype.UpdateEliminating = function (deltaTime) {
+        if (this.eliminatingAnim != null) {
+            if (!this.eliminatingAnim.IsPlaying()) {
+                this.eliminatingAnim.Start(this.mScene.eliminateInfo);
+            }
+            this.eliminatingAnim.Update(deltaTime);
+        }
+    };
+    MatchView.prototype.EliminatLightning = function (deltaTime) {
+    };
+    MatchView.prototype.RefreshScene = function () {
         for (var i = 0; i < Scene.Columns; ++i) {
             for (var j = 0; j < Scene.Rows; ++j) {
                 var element = this.mScene.sceneData[i][j];
@@ -41,16 +62,20 @@ var MatchView = (function (_super) {
                         //console.log(element + " add to dis " + element.renderer.width + "," + element.renderer.height);
                     }
                     if (element.dirty) {
-                        element.renderer.x = this.mBattleGroundStartXCenter
-                            + this.mElementWidth * (element.posx);
-                        element.renderer.y = this.mBattleGroundStartYCenter
-                            + this.mElementHeight * (element.posy);
+                        element.renderer.x = this.GetRenderPosX(element.posx);
+                        element.renderer.y = this.GetRenderPosY(element.posy);
                         element.dirty = false;
                         //console.log(element + " refresh " + element.renderer.x + "," + element.renderer.y);
                     }
                 }
             }
         }
+    };
+    MatchView.prototype.GetRenderPosX = function (posx) {
+        return this.mBattleGroundStartXCenter + this.mElementWidth * posx;
+    };
+    MatchView.prototype.GetRenderPosY = function (posy) {
+        return this.mBattleGroundStartYCenter + this.mElementHeight * posy;
     };
     MatchView.prototype.LoadBackGround = function () {
         if (this.mResModule != null) {

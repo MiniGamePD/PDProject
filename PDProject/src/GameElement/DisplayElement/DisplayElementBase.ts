@@ -23,7 +23,7 @@ class DisplayElementBase {
     }
 
     protected RandomColor(): GameElementColor {
-        let random = Math.random() * 3;
+        let random = Math.random() * 2;
         if (random >= 0 && random < 1) {
             return GameElementColor.red;
         }

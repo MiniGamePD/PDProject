@@ -208,12 +208,14 @@ class Scene extends GameModuleComponentBase {
         return result;
     }
 
+    public Work()
+    {
+        super.Work();
+        this.TryEliminate();
+    }
+
     public Update(deltaTime: number) {
-        if (this.isWorking && !this.isEliminating) {
-            this.TryEliminate();
-            let newEvent = new SceneEliminateFinishEvent();
-            GameMain.GetInstance().DispatchEvent(newEvent);
-        }
+        this.CheckEliminating();
     }
 
     //#####消除相关######
@@ -224,9 +226,21 @@ class Scene extends GameModuleComponentBase {
         do {
             var hasMove = this.MoveAfterEliminate();
         } while(hasMove)
-        //TODO:消除的表现结束之后，才把isEliminating设成false
-        this.isEliminating = false;
+        this.CheckEliminating();
         return true;
+    }
+
+    public CheckEliminating()
+    {
+        if (this.isEliminating)
+        {
+            if (!this.eliminateInfo.HasInfo)
+            {
+                this.isEliminating = false;
+                let newEvent = new SceneEliminateFinishEvent();
+                GameMain.GetInstance().DispatchEvent(newEvent);
+            }
+        }
     }
 
     // 重置eliminateInfo

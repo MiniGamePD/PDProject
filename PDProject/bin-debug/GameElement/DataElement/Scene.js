@@ -227,12 +227,12 @@ var Scene = (function (_super) {
         }
         return result;
     };
+    Scene.prototype.Work = function () {
+        _super.prototype.Work.call(this);
+        this.TryEliminate();
+    };
     Scene.prototype.Update = function (deltaTime) {
-        if (this.isWorking && !this.isEliminating) {
-            this.TryEliminate();
-            var newEvent = new SceneEliminateFinishEvent();
-            GameMain.GetInstance().DispatchEvent(newEvent);
-        }
+        this.CheckEliminating();
     };
     //#####消除相关######
     Scene.prototype.TryEliminate = function () {
@@ -242,9 +242,17 @@ var Scene = (function (_super) {
         do {
             var hasMove = this.MoveAfterEliminate();
         } while (hasMove);
-        //TODO:消除的表现结束之后，才把isEliminating设成false
-        this.isEliminating = false;
+        this.CheckEliminating();
         return true;
+    };
+    Scene.prototype.CheckEliminating = function () {
+        if (this.isEliminating) {
+            if (!this.eliminateInfo.HasInfo) {
+                this.isEliminating = false;
+                var newEvent = new SceneEliminateFinishEvent();
+                GameMain.GetInstance().DispatchEvent(newEvent);
+            }
+        }
     };
     // 重置eliminateInfo
     Scene.prototype.ClearEliminateInfo = function () {

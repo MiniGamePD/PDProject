@@ -6,8 +6,8 @@ class LobbyView extends GameView
     {
         let stageWidth = GameMain.GetInstance().GetStageWidth();
         let stageHeight = GameMain.GetInstance().GetStageHeight();
-        
-        this.textField = new egret.TextField();       
+
+        this.textField = new egret.TextField();
         this.textField.x = 0;
         this.textField.y = stageHeight / 4;
         this.textField.width = stageWidth;
@@ -19,18 +19,18 @@ class LobbyView extends GameView
         this.textField.text = "Pocket Doctor";
         this.addChild(this.textField);
 
-        var shape:egret.Shape = new egret.Shape();
+        var shape: egret.Shape = new egret.Shape();
         shape.graphics.beginFill(0x00A2E8);
-        shape.graphics.drawRect(stageWidth / 2 - 100, stageHeight / 5 * 3, 200, 100 );
-        shape.graphics.endFill();        
-        this.addChild( shape );
+        shape.graphics.drawRect(stageWidth / 2 - 100, stageHeight / 5 * 3, 200, 100);
+        shape.graphics.endFill();
+        this.addChild(shape);
 
         //设置显示对象可以相应触摸事件
         shape.touchEnabled = true;
         //注册事件
-        shape.addEventListener( egret.TouchEvent.TOUCH_TAP, this.OnClickStartGame, this );
+        shape.addEventListener(egret.TouchEvent.TOUCH_TAP, this.OnClickStartGame, this);
 
-        var text:egret.TextField = new  egret.TextField();
+        var text: egret.TextField = new egret.TextField();
         text.text = "start game";
         text.x = 0;
         text.y = stageHeight / 5 * 3;
@@ -49,11 +49,12 @@ class LobbyView extends GameView
         GameMain.GetInstance().SwitchGameState(GameStateType.Match);
     }
 
-     private PlayBgm(){
+    private PlayBgm()
+    {
         // if (this.mSoundModule != null){
         //     this.mSoundModule.PlaySound("bgm_mp3", -1);
         // }
-        var event:PlaySoundEvent = new PlaySoundEvent("bgm_mp3", -1);        
-        GameMain.GetInstance().DispatchEvent(event);   
+        var event: PlaySoundEvent = new PlaySoundEvent("bgm_mp3", -1);
+        GameMain.GetInstance().DispatchEvent(event);
     }
 }

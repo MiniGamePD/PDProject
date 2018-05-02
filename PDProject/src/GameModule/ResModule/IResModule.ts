@@ -1,4 +1,5 @@
-interface IResModule extends IModule{
+interface IResModule extends IModule
+{
 
 	/**
 	 * 获取资源
@@ -8,5 +9,5 @@ interface IResModule extends IModule{
 	/**
      * 根据name关键字创建一个Bitmap对象。
      */
-    CreateBitmapByName(key: string): egret.Bitmap;
+	CreateBitmapByName(key: string): egret.Bitmap;
 }

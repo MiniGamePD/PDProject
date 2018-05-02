@@ -1,33 +1,33 @@
 class MatchModule extends GameViewModule
-{		
-	private matchState:MatchState = MatchState.None;
-    private scene:Scene;
-	private playerControl:PlayerControl;
+{
+	private matchState: MatchState = MatchState.None;
+	private scene: Scene;
+	private playerControl: PlayerControl;
 
-    protected CreateView(): boolean
+	protected CreateView(): boolean
 	{
 		GameMain.GetInstance().AddEventListener(PlayerControlFinishEvent.EventName, this.OnPlayerControlFinish, this);
 		GameMain.GetInstance().AddEventListener(SceneEliminateFinishEvent.EventName, this.OnSceneElininateFinish, this);
 		GameMain.GetInstance().AddEventListener(GameOverEvent.EventName, this.OnGameOver, this);
 
 		this.scene = new Scene();
-        this.scene.Init();
+		this.scene.Init();
 
 		let view = new MatchView();
 		view.SetScene(this.scene);
 		view.CreateView();
 		this.gameViewList.push(view);
-    
+
 		this.playerControl = new PlayerControl();
 		this.playerControl.Init();
 
 		//TODO:应该先从Init事件开始
 		this.OnInitFinish();
-		 
+
 		return true;
 	}
 
-	public ReleaseView():void
+	public ReleaseView(): void
 	{
 		super.ReleaseView();
 		this.scene.Release();
@@ -40,17 +40,17 @@ class MatchModule extends GameViewModule
 		GameMain.GetInstance().RemoveEventListener(GameOverEvent.EventName, this.OnGameOver, this);
 	}
 
-	public SwitchForeOrBack(from: GameStateType, to: GameStateType):void
+	public SwitchForeOrBack(from: GameStateType, to: GameStateType): void
 	{
-		this.isForeground = to == GameStateType.Match;	
+		this.isForeground = to == GameStateType.Match;
 	}
-    		
-    public Update(deltaTime: number):void
-    {        
-        super.Update(deltaTime);
+
+	public Update(deltaTime: number): void
+	{
+		super.Update(deltaTime);
 		this.scene.Update(deltaTime);
 		this.playerControl.Update(deltaTime);
-    }
+	}
 
 	private OnInitFinish()
 	{
@@ -61,14 +61,14 @@ class MatchModule extends GameViewModule
 		this.scene.Sleep();
 	}
 
-	private OnPlayerControlFinish(event:PlayerControlFinishEvent)
+	private OnPlayerControlFinish(event: PlayerControlFinishEvent)
 	{
 		this.matchState = MatchState.Eliminate;
 		this.playerControl.Sleep();
 		this.scene.Work();
 	}
 
-	private OnSceneElininateFinish(event:SceneEliminateFinishEvent)
+	private OnSceneElininateFinish(event: SceneEliminateFinishEvent)
 	{
 		this.matchState = MatchState.PlayerControl;
 		let pill = new Pill();//TODO
@@ -77,7 +77,7 @@ class MatchModule extends GameViewModule
 		this.scene.Sleep();
 	}
 
-	private OnGameOver(event:GameOverEvent)
+	private OnGameOver(event: GameOverEvent)
 	{
 
 	}
@@ -85,9 +85,9 @@ class MatchModule extends GameViewModule
 
 enum MatchState
 {
-    None,    
+	None,
 	Init, //预先生成一些细菌
-    PlayerControl, //该状态下玩家可控制药丸旋转、下落
-    Eliminate, //消除阶段，计算刚才玩家的操作是否产生消除，以及处理消除的各种效果
-    GameOver //拜拜了
+	PlayerControl, //该状态下玩家可控制药丸旋转、下落
+	Eliminate, //消除阶段，计算刚才玩家的操作是否产生消除，以及处理消除的各种效果
+	GameOver //拜拜了
 }
