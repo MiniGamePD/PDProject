@@ -77,4 +77,38 @@ class Tools
 		}
 		return result;
 	}
+
+	// 顺时针旋转
+	public static RotateCW(center: number[], pos: number[]): number[]
+	{
+		if (center.length != 2 && pos.length != 2)
+		{
+			if (DEBUG)
+			{
+				console.assert(false, "Can not move element while elements not in scene!");
+			}
+		}
+		var target: number[];
+		target.push(center[0] - (pos[1] - center[1]));
+		target.push(center[1] + (pos[0] - center[0]));
+
+		return target;
+	}
+
+	// 逆时针旋转
+	public static RotateACW(center: number[], pos: number[]): number[]
+	{
+		if (center.length != 2 && pos.length != 2)
+		{
+			if (DEBUG)
+			{
+				console.assert(false, "Can not move element while elements not in scene!");
+			}
+		}
+		var target: number[];
+		target.push(center[0] + (pos[1] - center[1]));
+		target.push(center[1] - (pos[0] - center[0]));
+
+		return target;
+	}
 }
