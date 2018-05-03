@@ -43,6 +43,7 @@ var PlayerControl = (function (_super) {
                 this.DispatchControlEvent(ControlType.MoveRight);
             }
             else if (key == InputKey.Down) {
+                this.dropdownTimer += 1000;
             }
             else if (key == InputKey.Rotate) {
                 this.DispatchControlEvent(ControlType.Rotation);
@@ -86,7 +87,7 @@ var PlayerControl = (function (_super) {
         event.targets = this.target.GetControledElements();
         GameMain.GetInstance().DispatchEvent(event);
     };
-    PlayerControl.DropdownInterval = 200; //每隔多久药丸下落一格    
+    PlayerControl.DropdownInterval = 1000; //每隔多久药丸下落一格
     return PlayerControl;
 }(GameModuleComponentBase));
 __reflect(PlayerControl.prototype, "PlayerControl");
