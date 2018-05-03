@@ -97,6 +97,21 @@ class MatchView extends GameView
         }
     }
 
+    public RefreshTextrue(): void
+    {
+        for (var i = 0; i < Scene.Columns; ++i)
+        {
+            for (var j = 0; j < Scene.Rows; ++j)
+            {
+                let element = this.mScene.sceneData[i][j];
+                if (element != null && element.dirty)
+                {
+                    element.RefreshTexture();
+                }
+            }
+        }
+    }
+
     public GetRenderPosX(posx: number): number
     {
         return this.mBattleGroundStartXCenter + this.mElementWidth * posx;

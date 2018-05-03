@@ -28,6 +28,7 @@ var EliminatingAnimation = (function () {
                     this.UpdateLightning(deltaTime);
                     if (this.runningTime >= EliminatingAnimation.LightningStateTime) {
                         this.DeleteEliminatElements();
+                        this.matchView.RefreshTextrue();
                         this.EnterState(EliminatingAnimState.MoveDown);
                     }
                     break;

@@ -16,7 +16,9 @@ var Pill = (function (_super) {
         _this.pill1 = new PillRenderer();
         _this.pill2 = new PillRenderer();
         _this.pill1.SetPillType(PillElementType.left);
+        _this.pill1.RefreshTexture();
         _this.pill2.SetPillType(PillElementType.right);
+        _this.pill2.RefreshTexture();
         _this.pill1.BindElement(_this.pill2);
         //坐标表示药丸左下角块的坐标, 初始坐标在瓶子正中间的最上方
         _this.MoveTo(3, 0);

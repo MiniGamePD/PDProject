@@ -11,11 +11,12 @@ class PillRenderer extends DisplayElementBase
 
     public SetPillType(pillType: PillElementType){
         this.mPillType = pillType;
-        this.RefreshTexture();
+        this.dirty = true;
     }
 
-    private RefreshTexture():void
+    public RefreshTexture():void
     {
+        super.RefreshTexture();
         let texture: egret.Texture;
         let path = "pd_res_json.Pill_";
         if (this.mPillType == PillElementType.Single){

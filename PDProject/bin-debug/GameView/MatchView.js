@@ -70,6 +70,16 @@ var MatchView = (function (_super) {
             }
         }
     };
+    MatchView.prototype.RefreshTextrue = function () {
+        for (var i = 0; i < Scene.Columns; ++i) {
+            for (var j = 0; j < Scene.Rows; ++j) {
+                var element = this.mScene.sceneData[i][j];
+                if (element != null && element.dirty) {
+                    element.RefreshTexture();
+                }
+            }
+        }
+    };
     MatchView.prototype.GetRenderPosX = function (posx) {
         return this.mBattleGroundStartXCenter + this.mElementWidth * posx;
     };

@@ -28,6 +28,8 @@ var DisplayElementBase = (function () {
             return GameElementColor.yellow;
         }
     };
+    DisplayElementBase.prototype.RefreshTexture = function () {
+    };
     DisplayElementBase.prototype.GetTexture = function (path) {
         if (this.resModule == null) {
             this.resModule = GameMain.GetInstance().GetModule(ModuleType.RES);
