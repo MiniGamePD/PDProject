@@ -3,9 +3,9 @@ class Scene extends GameModuleComponentBase
 {
     public static readonly Columns: number = 8;
     public static readonly Rows: number = 16;
+    public static readonly EliminateMinCount = 3; //触发消除的最小数量
     public sceneData: DisplayElementBase[][] = []; //左上角是00    
     public eliminateInfo: EliminateInfo;
-    public isEliminating: boolean = false;
 
     public Init(): void 
     {
@@ -86,24 +86,36 @@ class Scene extends GameModuleComponentBase
     }
 
     public Update(deltaTime: number) {
-        if (this.isWorking && !this.isEliminating) {
-            this.TryEliminate();
-            let newEvent = new SceneEliminateFinishEvent();
-            GameMain.GetInstance().DispatchEvent(newEvent);
-        }
+        this.CheckEliminating();
     }
 
     //#####消除相关######
     public TryEliminate(): boolean {
-        this.isEliminating = true;
         this.ClearEliminateInfo();
         this.EliminateElement();
         do {
             var hasMove = this.MoveAfterEliminate();
         } while(hasMove)
-        //TODO:消除的表现结束之后，才把isEliminating设成false
-        this.isEliminating = false;
-        return true;
+        var result = this.eliminateInfo.HasInfo;
+        return result;
+    }
+
+    private FinishEliminate()
+    {
+        let newEvent = new SceneEliminateFinishEvent();
+        GameMain.GetInstance().DispatchEvent(newEvent);
+    }
+
+    public CheckEliminating()
+    {
+        if (this.isWorking && !this.eliminateInfo.HasInfo)
+        {
+            var result = this.TryEliminate();
+            if (!result)
+            {
+                this.FinishEliminate();
+            }
+        }
     }
 
     // 重置eliminateInfo
@@ -320,8 +332,8 @@ class Scene extends GameModuleComponentBase
             }
         }
 
-        if (cloumnCount >= 3
-            || rowCount >= 3) {
+        if (cloumnCount >= Scene.EliminateMinCount
+            || rowCount >= Scene.EliminateMinCount) {
             needEliminate = true;
         }
 

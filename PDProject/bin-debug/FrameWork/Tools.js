@@ -32,6 +32,38 @@ var Tools = (function () {
         }
         return targetPosY;
     };
+    Tools.IsZero = function (value) {
+        return Math.abs(value) < Tools.ZeroValue;
+    };
+    Tools.MoveNumber = function (from, to, moveValue) {
+        if (Tools.IsZero(from - to)) {
+            return to;
+        }
+        else {
+            var value = from;
+            if (from < to) {
+                value += moveValue;
+            }
+            else {
+                value -= moveValue;
+            }
+            value = Tools.Clamp(value, from, to);
+            return value;
+        }
+    };
+    Tools.Clamp = function (value, p1, p2) {
+        var result = value;
+        if (p1 < p2) {
+            result = value < p1 ? p1 : value;
+            result = value > p2 ? p2 : value;
+        }
+        else if (p1 > p2) {
+            result = value > p1 ? p1 : value;
+            result = value < p2 ? p2 : value;
+        }
+        return result;
+    };
+    Tools.ZeroValue = 0.00001;
     return Tools;
 }());
 __reflect(Tools.prototype, "Tools");

@@ -35,6 +35,10 @@ class DisplayElementBase {
         }
     }
 
+    public RefreshTexture():void
+    {
+    }
+
     protected GetTexture(path: string): egret.Texture {
         if (this.resModule == null) {
             this.resModule = <IResModule>GameMain.GetInstance().GetModule(ModuleType.RES);

@@ -19,9 +19,10 @@ var PillRenderer = (function (_super) {
     }
     PillRenderer.prototype.SetPillType = function (pillType) {
         this.mPillType = pillType;
-        this.RefreshTexture();
+        this.dirty = true;
     };
     PillRenderer.prototype.RefreshTexture = function () {
+        _super.prototype.RefreshTexture.call(this);
         var texture;
         var path = "pd_res_json.Pill_";
         if (this.mPillType == PillElementType.Single) {

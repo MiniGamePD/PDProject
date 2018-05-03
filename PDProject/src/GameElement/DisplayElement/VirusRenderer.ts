@@ -9,7 +9,7 @@ class VirusRenderer extends DisplayElementBase
         this.RefreshTexture();
     }
 
-    private RefreshTexture():void
+    public RefreshTexture():void
     {
         let texture: egret.Texture;
         let path = "pd_res_json.Virus_";

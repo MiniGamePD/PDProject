@@ -13,7 +13,9 @@ class Pill extends ControlableElement
         this.pill1 = new PillRenderer();
         this.pill2 = new PillRenderer();
         this.pill1.SetPillType(PillElementType.left);
+        this.pill1.RefreshTexture();
         this.pill2.SetPillType(PillElementType.right);
+        this.pill2.RefreshTexture();
         this.pill1.BindElement(this.pill2);        
         //坐标表示药丸左下角块的坐标, 初始坐标在瓶子正中间的最上方
         this.MoveTo(3,0);

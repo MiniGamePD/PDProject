@@ -49,7 +49,11 @@ class PlayerControl extends GameModuleComponentBase
 			}
 			else if (key == InputKey.Down)
 			{
+<<<<<<< HEAD
+				//加速下降
+=======
 				this.dropdownTimer += PlayerControl.DropdownInterval;
+>>>>>>> 239cf0d3daa6e798826e7ae22e6ab0b32f89178b
 			}
 			else if (key == InputKey.Rotate)
 			{

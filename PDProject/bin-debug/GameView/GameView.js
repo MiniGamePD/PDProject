@@ -14,7 +14,7 @@ var GameView = (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     GameView.prototype.CreateView = function () { };
-    GameView.prototype.UpdateView = function () { };
+    GameView.prototype.UpdateView = function (deltaTime) { };
     GameView.prototype.ReleaseView = function () { };
     GameView.prototype.GetDisplayObjectContainer = function () {
         return this;

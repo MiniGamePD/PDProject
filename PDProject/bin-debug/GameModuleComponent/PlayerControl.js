@@ -15,11 +15,11 @@ var PlayerControl = (function (_super) {
     }
     PlayerControl.prototype.Init = function () {
         GameMain.GetInstance().AddEventListener(InputEvent.EventName, this.OnInputEvent, this);
-        GameMain.GetInstance().AddEventListener(PillControlFailedEvent.EventName, this.OnPillControlFailed, this);
+        GameMain.GetInstance().AddEventListener(SceneElementControlFailedEvent.EventName, this.OnPlayerControlFailed, this);
     };
     PlayerControl.prototype.Release = function () {
         GameMain.GetInstance().RemoveEventListener(InputEvent.EventName, this.OnInputEvent, this);
-        GameMain.GetInstance().AddEventListener(PillControlFailedEvent.EventName, this.OnPillControlFailed, this);
+        GameMain.GetInstance().RemoveEventListener(SceneElementControlFailedEvent.EventName, this.OnPlayerControlFailed, this);
     };
     PlayerControl.prototype.SetTarget = function (target) {
         this.target = target;
@@ -27,7 +27,7 @@ var PlayerControl = (function (_super) {
     PlayerControl.prototype.Work = function () {
         _super.prototype.Work.call(this);
         this.dropdownTimer = 0;
-        this.DispatchPillControlEvent(PillControlType.Create);
+        this.DispatchControlEvent(SceneElementControlType.Add);
     };
     PlayerControl.prototype.Sleep = function () {
         _super.prototype.Sleep.call(this);
@@ -37,15 +37,16 @@ var PlayerControl = (function (_super) {
         if (this.target != null) {
             var key = event.Key;
             if (key == InputKey.Left) {
-                this.DispatchPillControlEvent(PillControlType.MoveLeft);
+                this.DispatchControlEvent(SceneElementControlType.Move, Direction.Left, 1);
             }
             else if (key == InputKey.Right) {
-                this.DispatchPillControlEvent(PillControlType.MoveRight);
+                this.DispatchControlEvent(SceneElementControlType.Move, Direction.Right, 1);
             }
             else if (key == InputKey.Down) {
+                this.dropdownTimer += PlayerControl.DropdownInterval;
             }
             else if (key == InputKey.Rotate) {
-                this.DispatchPillControlEvent(PillControlType.Rotation);
+                this.DispatchControlEvent(SceneElementControlType.Rotation);
             }
         }
     };
@@ -59,35 +60,36 @@ var PlayerControl = (function (_super) {
         if (this.dropdownTimer >= PlayerControl.DropdownInterval) {
             //即使时间很长，超过两个MatchModule.PillDropdownInterval，也还是移动一格，否则卡了，就忽然间下降很多，体验不好
             this.dropdownTimer = 0;
-            this.DispatchPillControlEvent(PillControlType.DropDown);
+            this.DispatchControlEvent(SceneElementControlType.Move, Direction.Down, 1);
         }
     };
-    PlayerControl.prototype.OnPillControlFailed = function (event) {
+    PlayerControl.prototype.OnPlayerControlFailed = function (event) {
         if (this.isWorking && this.target == null) {
             if (true) {
-                console.error("PillRenderer DropDown Failed While Player Control Is Not Working");
+                console.error("Control Failed While Player Control Is Not Working");
             }
             return;
         }
-        if (event.pillControlType == PillControlType.DropDown) {
+        if (event.controlType == SceneElementControlType.Move && event.moveDir == Direction.Down) {
             //下落到不能再下落了，就进入消除状态        
             var event_1 = new PlayerControlFinishEvent();
             GameMain.GetInstance().DispatchEvent(event_1);
         }
-        else if (event.pillControlType == PillControlType.Create) {
-            //已经无法创建新的药丸，就进入死亡状态
+        else if (event.controlType == SceneElementControlType.Add) {
+            //已经无法创建新的元素了，就进入死亡状态
             var event_2 = new GameOverEvent();
             GameMain.GetInstance().DispatchEvent(event_2);
         }
     };
-    PlayerControl.prototype.DispatchPillControlEvent = function (pillControlType) {
-        var event = new PillControlEvent();
-        event.pillControlType = pillControlType;
-        event.pill1 = this.target.pill1;
-        event.pill2 = this.target.pill2;
+    PlayerControl.prototype.DispatchControlEvent = function (controlType, moveDir, moveStep) {
+        var event = new SceneElementControlEvent();
+        event.controlType = controlType;
+        event.moveDir = moveDir;
+        event.moveStep = moveStep;
+        event.targets = this.target.GetControledElements();
         GameMain.GetInstance().DispatchEvent(event);
     };
-    PlayerControl.DropdownInterval = 200; //每隔多久药丸下落一格    
+    PlayerControl.DropdownInterval = 1000; //每隔多久药丸下落一格
     return PlayerControl;
 }(GameModuleComponentBase));
 __reflect(PlayerControl.prototype, "PlayerControl");
