@@ -7,13 +7,13 @@ class PlayerControl extends GameModuleComponentBase
     public Init():void
     {
         GameMain.GetInstance().AddEventListener(InputEvent.EventName, this.OnInputEvent, this);
-        GameMain.GetInstance().AddEventListener(PlayerControlFailedEvent.EventName, this.OnPlayerControlFailed, this);
+        GameMain.GetInstance().AddEventListener(SceneElementControlFailedEvent.EventName, this.OnPlayerControlFailed, this);
     }
 
     public Release():void
     {
         GameMain.GetInstance().RemoveEventListener(InputEvent.EventName, this.OnInputEvent, this);
-        GameMain.GetInstance().RemoveEventListener(PlayerControlFailedEvent.EventName, this.OnPlayerControlFailed, this);
+        GameMain.GetInstance().RemoveEventListener(SceneElementControlFailedEvent.EventName, this.OnPlayerControlFailed, this);
     }
 
     public SetTarget(target:ControlableElement)
@@ -25,7 +25,7 @@ class PlayerControl extends GameModuleComponentBase
     {
         super.Work();
         this.dropdownTimer = 0;
-        this.DispatchControlEvent(ControlType.Create);
+        this.DispatchControlEvent(SceneElementControlType.Add);
     }
 
     public Sleep()
@@ -41,19 +41,19 @@ class PlayerControl extends GameModuleComponentBase
 			var key = event.Key;
 			if (key == InputKey.Left)
 			{
-                this.DispatchControlEvent(ControlType.MoveLeft);
+                this.DispatchControlEvent(SceneElementControlType.Move, Direction.Left, 1);
 			}
 			else if (key == InputKey.Right)
 			{
-                this.DispatchControlEvent(ControlType.MoveRight);
+                this.DispatchControlEvent(SceneElementControlType.Move, Direction.Right, 1);
 			}
 			else if (key == InputKey.Down)
 			{
-				
+				//加速下降
 			}
 			else if (key == InputKey.Rotate)
 			{
-                this.DispatchControlEvent(ControlType.Rotation);
+                this.DispatchControlEvent(SceneElementControlType.Rotation);
 			}
 		}
     }
@@ -73,28 +73,28 @@ class PlayerControl extends GameModuleComponentBase
         {
             //即使时间很长，超过两个MatchModule.PillDropdownInterval，也还是移动一格，否则卡了，就忽然间下降很多，体验不好
             this.dropdownTimer = 0;
-            this.DispatchControlEvent(ControlType.DropDown);                
+            this.DispatchControlEvent(SceneElementControlType.Move, Direction.Down, 1);                
         }
     }
 
-    protected OnPlayerControlFailed(event:PlayerControlFailedEvent)
+    protected OnPlayerControlFailed(event:SceneElementControlEvent)
     {
         if(this.isWorking && this.target == null)
         {
              if(DEBUG)
             {
-                console.error("Player Control Failed While Player Control Is Not Working");
+                console.error("Control Failed While Player Control Is Not Working");
             }
             return;
         }        
 
-        if(event.controlType == ControlType.DropDown)
+        if(event.controlType == SceneElementControlType.Move && event.moveDir == Direction.Down)
         {
             //下落到不能再下落了，就进入消除状态        
             let event = new PlayerControlFinishEvent();            
             GameMain.GetInstance().DispatchEvent(event);
         }
-        else if(event.controlType == ControlType.Create)
+        else if(event.controlType == SceneElementControlType.Add)
         {
             //已经无法创建新的元素了，就进入死亡状态
             let event = new GameOverEvent();            
@@ -102,21 +102,14 @@ class PlayerControl extends GameModuleComponentBase
         }
     }
 
-    private DispatchControlEvent(controlType:ControlType)
+    private DispatchControlEvent(controlType:SceneElementControlType, moveDir?:Direction, moveStep?:number)
     {
-        let event = new PlayerControlEvent();
+        let event = new SceneElementControlEvent();
         event.controlType = controlType;
+        event.moveDir = moveDir;
+        event.moveStep = moveStep;
         event.targets = this.target.GetControledElements();
         GameMain.GetInstance().DispatchEvent(event);        
     }
-}
-
-enum ControlType
-{
-    Create,
-    MoveLeft,
-    MoveRight,
-    DropDown,
-    Rotation,
 }
 

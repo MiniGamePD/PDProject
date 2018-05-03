@@ -19,46 +19,32 @@ class Scene extends GameModuleComponentBase
             }
         }
 
-        GameMain.GetInstance().AddEventListener(PlayerControlEvent.EventName, this.ProcessControl, this);
+        GameMain.GetInstance().AddEventListener(SceneElementControlEvent.EventName, this.ProcessControlCmd, this);
     }
 
     public Release() 
     {
-        GameMain.GetInstance().RemoveEventListener(PlayerControlEvent.EventName, this.ProcessControl, this);
+        GameMain.GetInstance().RemoveEventListener(SceneElementControlEvent.EventName, this.ProcessControlCmd, this);
     }
 
-    private ProcessControl(event: PlayerControlEvent) 
+    private ProcessControlCmd(event: SceneElementControlEvent) 
     {
         let operationSuccess: boolean = true;
         switch (event.controlType) 
         {
-            case ControlType.Create:
+            case SceneElementControlType.Add:
                 {
                     operationSuccess = this.AddElementGroup(event.targets);
                     break;
                 }
-            case ControlType.MoveLeft:
+            case SceneElementControlType.Move:
                 {
-                    operationSuccess = this.GetElementGroupMoveSpace(event.targets, Direction.Left) > 0;
+                    operationSuccess = this.GetElementGroupMoveSpace(event.targets, event.moveDir) >= event.moveStep;
                     if(operationSuccess)
-                        this.MoveElementGroup(event.targets, Direction.Left, 1);
+                        this.MoveElementGroup(event.targets, event.moveDir, event.moveStep);
                     break;
                 }
-            case ControlType.MoveRight:
-                {
-                    operationSuccess = this.GetElementGroupMoveSpace(event.targets, Direction.Right) > 0;
-                    if(operationSuccess)
-                        this.MoveElementGroup(event.targets, Direction.Right, 1);
-                    break;
-                }
-            case ControlType.DropDown:
-                {
-                    operationSuccess = this.GetElementGroupMoveSpace(event.targets, Direction.Down) > 0;
-                    if(operationSuccess)
-                        this.MoveElementGroup(event.targets, Direction.Down, 1);
-                    break;
-                }
-            case ControlType.Rotation:
+            case SceneElementControlType.Rotation:
                 {
                     operationSuccess = this.TryRotate(event.targets);
                     break;
@@ -67,8 +53,10 @@ class Scene extends GameModuleComponentBase
 
         if (!operationSuccess) 
         {
-            let failedEvent = new PlayerControlFailedEvent();
+            let failedEvent = new SceneElementControlFailedEvent();
             failedEvent.controlType = event.controlType;
+            failedEvent.moveDir = event.moveDir;
+            failedEvent.moveStep = event.moveStep;
             GameMain.GetInstance().DispatchEvent(failedEvent);
         }
     }
@@ -404,7 +392,15 @@ class Scene extends GameModuleComponentBase
     }
 }
 
-enum Direction {
+enum SceneElementControlType
+{
+    Add,
+    Move,
+    Rotation,
+}
+
+enum Direction 
+{
     Left,
     Right,
     Up,
