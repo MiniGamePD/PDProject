@@ -14,7 +14,5 @@ abstract class ControlableElement
         return this.targets;
     }
 
-    public abstract GetRotateCenter(): number[];
-
     protected abstract FillTargets();
 }

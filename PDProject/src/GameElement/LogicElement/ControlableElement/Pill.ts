@@ -26,11 +26,6 @@ class Pill extends ControlableElement
         return false;
     }
 
-    public GetRotateCenter(): number[]
-    {
-        return [this.pill1.posx, this.pill1.posy];
-    }
-
     protected MoveTo(posx:number, posy:number):void
     {
         this.posx = posx;
