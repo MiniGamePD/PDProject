@@ -3,6 +3,7 @@ class Scene extends GameModuleComponentBase
 {
     public static readonly Columns: number = 8;
     public static readonly Rows: number = 16;
+    public static readonly EliminateMinCount = 3; //触发消除的最小数量
     public sceneData: DisplayElementBase[][] = []; //左上角是00    
     public eliminateInfo: EliminateInfo;
 
@@ -343,8 +344,8 @@ class Scene extends GameModuleComponentBase
             }
         }
 
-        if (cloumnCount >= 3
-            || rowCount >= 3) {
+        if (cloumnCount >= Scene.EliminateMinCount
+            || rowCount >= Scene.EliminateMinCount) {
             needEliminate = true;
         }
 

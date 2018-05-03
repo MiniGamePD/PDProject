@@ -311,8 +311,8 @@ var Scene = (function (_super) {
                 break;
             }
         }
-        if (cloumnCount >= 3
-            || rowCount >= 3) {
+        if (cloumnCount >= Scene.EliminateMinCount
+            || rowCount >= Scene.EliminateMinCount) {
             needEliminate = true;
         }
         return needEliminate;
@@ -374,6 +374,7 @@ var Scene = (function (_super) {
     };
     Scene.Columns = 8;
     Scene.Rows = 16;
+    Scene.EliminateMinCount = 4; //触发消除的最小数量
     return Scene;
 }(GameModuleComponentBase));
 __reflect(Scene.prototype, "Scene");
