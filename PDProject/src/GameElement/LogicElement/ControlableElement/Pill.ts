@@ -2,8 +2,6 @@ class Pill extends ControlableElement
 {    
     public pill1:PillRenderer;
     public pill2:PillRenderer;
-    public posx:number;
-    public posy:number;
     public rotAngle:number; // 必须是0, 90，180，270中的一个值
 
     public constructor()

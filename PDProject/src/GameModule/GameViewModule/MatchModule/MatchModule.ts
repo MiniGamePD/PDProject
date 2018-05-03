@@ -21,8 +21,7 @@ class MatchModule extends GameViewModule
 		this.playerControl = new PlayerControl();
 		this.playerControl.Init();
 
-		//TODO:应该先从Init事件开始
-		this.OnInitFinish();
+		this.InitMatch();
 
 		return true;
 	}
@@ -50,6 +49,39 @@ class MatchModule extends GameViewModule
 		super.Update(deltaTime);
 		this.scene.Update(deltaTime);
 		this.playerControl.Update(deltaTime);
+	}
+
+	private InitMatch()
+	{
+		this.matchState = MatchState.Init;
+
+		let virusArray:Virus[] = [];
+		for(var i = 0; i < 8; ++i)
+		{
+			while(true)
+			{
+				let posx = Math.floor(Math.random() * Scene.Columns);
+				let posy = Math.floor(Math.random() * Scene.Rows);
+
+				let find = false;
+				for(var j = 0; j < virusArray.length; ++j)
+				{
+					if(virusArray[j].posx == posx || virusArray[j].posy == posy || posy <= 2)
+					{
+						find = true;
+						break;
+					}
+				}
+
+				if(!find)
+				{
+					virusArray.push(new Virus(posx, posy));
+					break;
+				}
+			}
+		}
+
+		this.OnInitFinish();
 	}
 
 	private OnInitFinish()
