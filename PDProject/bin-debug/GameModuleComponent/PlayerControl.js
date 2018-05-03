@@ -43,7 +43,7 @@ var PlayerControl = (function (_super) {
                 this.DispatchControlEvent(ControlType.MoveRight);
             }
             else if (key == InputKey.Down) {
-                this.dropdownTimer += 1000;
+                this.dropdownTimer += PlayerControl.DropdownInterval;
             }
             else if (key == InputKey.Rotate) {
                 this.DispatchControlEvent(ControlType.Rotation);
