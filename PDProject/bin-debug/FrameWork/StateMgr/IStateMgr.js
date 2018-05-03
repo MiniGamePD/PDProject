@@ -6,4 +6,3 @@ var GameStateType;
     GameStateType[GameStateType["Match"] = 3] = "Match";
     GameStateType[GameStateType["Result"] = 4] = "Result";
 })(GameStateType || (GameStateType = {}));
-//# sourceMappingURL=IStateMgr.js.map

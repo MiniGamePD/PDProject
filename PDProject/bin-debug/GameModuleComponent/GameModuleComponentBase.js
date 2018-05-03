@@ -24,4 +24,3 @@ var GameModuleComponentBase = (function (_super) {
     return GameModuleComponentBase;
 }(egret.EventDispatcher));
 __reflect(GameModuleComponentBase.prototype, "GameModuleComponentBase");
-//# sourceMappingURL=GameModuleComponentBase.js.map

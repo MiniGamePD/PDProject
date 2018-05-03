@@ -19,4 +19,3 @@ var SceneEliminateFinishEvent = (function (_super) {
     return SceneEliminateFinishEvent;
 }(egret.Event));
 __reflect(SceneEliminateFinishEvent.prototype, "SceneEliminateFinishEvent");
-//# sourceMappingURL=SceneEliminateFinish.js.map

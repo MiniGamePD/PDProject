@@ -43,4 +43,3 @@ var VirusRenderer = (function (_super) {
     return VirusRenderer;
 }(DisplayElementBase));
 __reflect(VirusRenderer.prototype, "VirusRenderer");
-//# sourceMappingURL=VirusRenderer.js.map

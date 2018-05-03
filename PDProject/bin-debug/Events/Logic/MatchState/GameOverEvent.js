@@ -19,4 +19,3 @@ var GameOverEvent = (function (_super) {
     return GameOverEvent;
 }(egret.Event));
 __reflect(GameOverEvent.prototype, "GameOverEvent");
-//# sourceMappingURL=GameOverEvent.js.map

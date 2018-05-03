@@ -61,4 +61,3 @@ var LobbyView = (function (_super) {
     return LobbyView;
 }(GameView));
 __reflect(LobbyView.prototype, "LobbyView");
-//# sourceMappingURL=LobbyView.js.map

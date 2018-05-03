@@ -19,4 +19,3 @@ var SceneElementControlEvent = (function (_super) {
     return SceneElementControlEvent;
 }(egret.Event));
 __reflect(SceneElementControlEvent.prototype, "SceneElementControlEvent");
-//# sourceMappingURL=SceneElementControlEvent.js.map

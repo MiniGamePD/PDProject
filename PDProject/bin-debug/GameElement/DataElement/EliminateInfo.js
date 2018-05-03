@@ -28,4 +28,3 @@ var EliminateMoveInfo = (function () {
     return EliminateMoveInfo;
 }());
 __reflect(EliminateMoveInfo.prototype, "EliminateMoveInfo");
-//# sourceMappingURL=EliminateInfo.js.map

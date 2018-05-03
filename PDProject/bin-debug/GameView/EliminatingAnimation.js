@@ -99,4 +99,3 @@ var EliminatingAnimState;
     EliminatingAnimState[EliminatingAnimState["Lightning"] = 1] = "Lightning";
     EliminatingAnimState[EliminatingAnimState["MoveDown"] = 2] = "MoveDown";
 })(EliminatingAnimState || (EliminatingAnimState = {}));
-//# sourceMappingURL=EliminatingAnimation.js.map

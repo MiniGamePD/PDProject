@@ -93,4 +93,3 @@ var PlayerControl = (function (_super) {
     return PlayerControl;
 }(GameModuleComponentBase));
 __reflect(PlayerControl.prototype, "PlayerControl");
-//# sourceMappingURL=PlayerControl.js.map

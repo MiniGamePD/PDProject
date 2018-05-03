@@ -26,4 +26,3 @@ var LobbyModule = (function (_super) {
     return LobbyModule;
 }(GameViewModule));
 __reflect(LobbyModule.prototype, "LobbyModule");
-//# sourceMappingURL=LobbyModule.js.map

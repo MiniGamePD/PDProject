@@ -67,4 +67,3 @@ var Tools = (function () {
     return Tools;
 }());
 __reflect(Tools.prototype, "Tools");
-//# sourceMappingURL=Tools.js.map

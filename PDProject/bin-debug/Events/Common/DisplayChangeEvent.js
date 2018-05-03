@@ -21,4 +21,3 @@ var DisplayChangeEvent = (function (_super) {
     return DisplayChangeEvent;
 }(egret.Event));
 __reflect(DisplayChangeEvent.prototype, "DisplayChangeEvent");
-//# sourceMappingURL=DisplayChangeEvent.js.map

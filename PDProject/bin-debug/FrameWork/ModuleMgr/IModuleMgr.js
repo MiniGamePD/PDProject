@@ -7,4 +7,3 @@ var ModuleType;
     ModuleType[ModuleType["MATCH"] = 4] = "MATCH";
     ModuleType[ModuleType["MAX"] = 5] = "MAX";
 })(ModuleType || (ModuleType = {}));
-//# sourceMappingURL=IModuleMgr.js.map

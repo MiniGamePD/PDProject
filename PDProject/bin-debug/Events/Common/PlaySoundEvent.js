@@ -22,4 +22,3 @@ var PlaySoundEvent = (function (_super) {
     return PlaySoundEvent;
 }(egret.Event));
 __reflect(PlaySoundEvent.prototype, "PlaySoundEvent");
-//# sourceMappingURL=PlaySoundEvent.js.map

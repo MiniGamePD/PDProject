@@ -22,4 +22,3 @@ var GameView = (function (_super) {
     return GameView;
 }(egret.DisplayObjectContainer));
 __reflect(GameView.prototype, "GameView", ["IGameView"]);
-//# sourceMappingURL=GameView.js.map

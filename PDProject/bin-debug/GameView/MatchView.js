@@ -164,4 +164,3 @@ var MatchView = (function (_super) {
     return MatchView;
 }(GameView));
 __reflect(MatchView.prototype, "MatchView");
-//# sourceMappingURL=MatchView.js.map

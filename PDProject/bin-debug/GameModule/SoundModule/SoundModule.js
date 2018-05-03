@@ -43,4 +43,3 @@ var SoundModule = (function (_super) {
     return SoundModule;
 }(ModuleBase));
 __reflect(SoundModule.prototype, "SoundModule", ["ISoundModule", "IModule"]);
-//# sourceMappingURL=SoundModule.js.map

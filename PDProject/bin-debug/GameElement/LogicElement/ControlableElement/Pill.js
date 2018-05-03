@@ -41,4 +41,3 @@ var Pill = (function (_super) {
     return Pill;
 }(ControlableElement));
 __reflect(Pill.prototype, "Pill");
-//# sourceMappingURL=Pill.js.map

@@ -19,4 +19,3 @@ var SceneElementControlFailedEvent = (function (_super) {
     return SceneElementControlFailedEvent;
 }(egret.Event));
 __reflect(SceneElementControlFailedEvent.prototype, "SceneElementControlFailedEvent");
-//# sourceMappingURL=SceneElementControlFailedEvent.js.map

@@ -95,4 +95,3 @@ var ResModule = (function (_super) {
     return ResModule;
 }(ModuleBase));
 __reflect(ResModule.prototype, "ResModule", ["IResModule", "IModule"]);
-//# sourceMappingURL=ResModule.js.map

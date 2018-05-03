@@ -7,4 +7,3 @@ var Virus = (function () {
     return Virus;
 }());
 __reflect(Virus.prototype, "Virus");
-//# sourceMappingURL=Virus.js.map

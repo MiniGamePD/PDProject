@@ -73,4 +73,3 @@ var PillElementType;
     PillElementType[PillElementType["right"] = 1] = "right";
     PillElementType[PillElementType["Single"] = 2] = "Single";
 })(PillElementType || (PillElementType = {}));
-//# sourceMappingURL=PillRenderer.js.map

@@ -24,4 +24,3 @@ var ModuleBase = (function (_super) {
     return ModuleBase;
 }(egret.EventDispatcher));
 __reflect(ModuleBase.prototype, "ModuleBase");
-//# sourceMappingURL=ModuleBase.js.map

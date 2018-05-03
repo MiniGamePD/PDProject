@@ -24,4 +24,3 @@ var StateMgr = (function () {
     return StateMgr;
 }());
 __reflect(StateMgr.prototype, "StateMgr", ["IStateMgr"]);
-//# sourceMappingURL=StateMgr.js.map

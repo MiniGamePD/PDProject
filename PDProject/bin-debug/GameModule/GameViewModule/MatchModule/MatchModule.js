@@ -81,4 +81,3 @@ var MatchState;
     MatchState[MatchState["Eliminate"] = 3] = "Eliminate";
     MatchState[MatchState["GameOver"] = 4] = "GameOver"; //拜拜了
 })(MatchState || (MatchState = {}));
-//# sourceMappingURL=MatchModule.js.map

@@ -19,4 +19,3 @@ var PlayerControlFinishEvent = (function (_super) {
     return PlayerControlFinishEvent;
 }(egret.Event));
 __reflect(PlayerControlFinishEvent.prototype, "PlayerControlFinishEvent");
-//# sourceMappingURL=PlayerControlFinishEvent.js.map

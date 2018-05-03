@@ -42,4 +42,3 @@ var GameViewModule = (function (_super) {
     return GameViewModule;
 }(ModuleBase));
 __reflect(GameViewModule.prototype, "GameViewModule", ["IModule"]);
-//# sourceMappingURL=GameViewModule.js.map

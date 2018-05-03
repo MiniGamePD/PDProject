@@ -23,4 +23,3 @@ var InputEvent = (function (_super) {
     return InputEvent;
 }(egret.Event));
 __reflect(InputEvent.prototype, "InputEvent");
-//# sourceMappingURL=InputEvent.js.map

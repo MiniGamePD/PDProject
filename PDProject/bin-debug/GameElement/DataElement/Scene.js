@@ -379,4 +379,3 @@ var Direction;
     Direction[Direction["Up"] = 2] = "Up";
     Direction[Direction["Down"] = 3] = "Down";
 })(Direction || (Direction = {}));
-//# sourceMappingURL=Scene.js.map
