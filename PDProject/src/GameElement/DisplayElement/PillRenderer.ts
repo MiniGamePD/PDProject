@@ -4,25 +4,27 @@ class PillRenderer extends DisplayElementBase
     public constructor()
     {
         super();
-        this.renderer = new egret.Bitmap();       
-        this.color = this.RandomColor(); 
+        this.renderer = new egret.Bitmap();
+        this.color = this.RandomColor();
         this.canDrop = true;
     }
 
-    public SetPillType(pillType: PillElementType){
+    public SetPillType(pillType: PillElementType)
+    {
         this.mPillType = pillType;
         this.dirty = true;
     }
 
-    public RefreshTexture():void
+    public RefreshTexture(): void
     {
         super.RefreshTexture();
         let texture: egret.Texture;
         let path = "pd_res_json.Pill_";
-        if (this.mPillType == PillElementType.Single){
+        if (this.mPillType == PillElementType.Single)
+        {
             path += "Single_"
         }
-        switch(this.color)
+        switch (this.color)
         {
             case GameElementColor.red:
                 path += "Red";
@@ -34,39 +36,69 @@ class PillRenderer extends DisplayElementBase
                 path += "Yellow";
                 break;
             default:
-                if(DEBUG)
+                if (DEBUG)
                 {
                     console.log("Unknow Color:" + this.color);
-                }    
+                }
                 break;
         }
         texture = this.GetTexture(path);
-		this.renderer.texture = texture;
-        if (this.mPillType == PillElementType.right){
-            this.renderer.rotation = 180;
+        this.renderer.texture = texture;
+
+        var textureRotate = 0;
+        switch (this.mPillType)
+        {
+            case PillElementType.left:
+                {
+                    textureRotate = 0;
+                    break;
+                }
+            case PillElementType.right:
+                {
+                    textureRotate = 180;
+                    break;
+                }
+            case PillElementType.up:
+                {
+                    textureRotate = 90;
+                    break;
+                }
+            case PillElementType.down:
+                {
+                    textureRotate = 270;
+                    break;
+                }
         }
+
+        this.renderer.rotation = textureRotate;
     }
 
     // 删除捆绑元素后，重新计算药丸的类型
-    public UnbindElement(element: DisplayElementBase): boolean{
+    public UnbindElement(element: DisplayElementBase): boolean
+    {
         var result = super.UnbindElement(element);
         if (result
-            && this.GetBindElements().length == 0){
-                this.SetPillType(PillElementType.Single);
+            && this.GetBindElements().length == 0)
+        {
+            this.SetPillType(PillElementType.Single);
         }
         return result;
     }
 
     // 删除捆绑元素后，重新计算药丸的类型
-    public UnbindAllElement(){
+    public UnbindAllElement()
+    {
         super.UnbindAllElement();
         this.SetPillType(PillElementType.Single);
     }
 
 }
 
-enum PillElementType {
+enum PillElementType
+{
     left,   //左边
     right,  //右边
+    up,     //上边
+    down,   //下边
     Single, //独立
 }

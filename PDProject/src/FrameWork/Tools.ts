@@ -88,7 +88,7 @@ class Tools
 				console.assert(false, "Can not move element while elements not in scene!");
 			}
 		}
-		var target: number[];
+		var target: number[] = [];
 		target.push(center[0] - (pos[1] - center[1]));
 		target.push(center[1] + (pos[0] - center[0]));
 
@@ -105,7 +105,7 @@ class Tools
 				console.assert(false, "Can not move element while elements not in scene!");
 			}
 		}
-		var target: number[];
+		var target: number[] = [];
 		target.push(center[0] + (pos[1] - center[1]));
 		target.push(center[1] - (pos[0] - center[0]));
 

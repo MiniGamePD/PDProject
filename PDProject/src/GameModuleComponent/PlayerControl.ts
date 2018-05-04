@@ -105,10 +105,10 @@ class PlayerControl extends GameModuleComponentBase
     private DispatchControlEvent(controlType:SceneElementControlType, moveDir?:Direction, moveStep?:number)
     {
         let event = new SceneElementControlEvent();
+        event.controlTarget = this.target;
         event.controlType = controlType;
         event.moveDir = moveDir;
         event.moveStep = moveStep;
-        event.targets = this.target.GetControledElements();
         GameMain.GetInstance().DispatchEvent(event);        
     }
 }

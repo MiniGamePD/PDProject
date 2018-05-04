@@ -30,25 +30,31 @@ class Scene extends GameModuleComponentBase
     private ProcessControlCmd(event: SceneElementControlEvent) 
     {
         let operationSuccess: boolean = true;
-        switch (event.controlType) 
+        if (event.controlTarget != null)
         {
-            case SceneElementControlType.Add:
-                {
-                    operationSuccess = this.AddElementGroup(event.targets);
-                    break;
-                }
-            case SceneElementControlType.Move:
-                {
-                    operationSuccess = this.GetElementGroupMoveSpace(event.targets, event.moveDir) >= event.moveStep;
-                    if(operationSuccess)
-                        this.MoveElementGroup(event.targets, event.moveDir, event.moveStep);
-                    break;
-                }
-            case SceneElementControlType.Rotation:
-                {
-                    operationSuccess = this.TryRotate(event.targets);
-                    break;
-                }
+            var elementList = event.controlTarget.GetControledElements();
+            switch (event.controlType) 
+            {
+                case SceneElementControlType.Add:
+                    {
+                        operationSuccess = this.AddElementGroup(elementList);
+                        break;
+                    }
+                case SceneElementControlType.Move:
+                    {
+                        operationSuccess = this.GetElementGroupMoveSpace(elementList, event.moveDir) >= event.moveStep;
+                        if(operationSuccess)
+                            this.MoveElementGroup(elementList, event.moveDir, event.moveStep);
+                        break;
+                    }
+                case SceneElementControlType.Rotation:
+                    {
+                        operationSuccess = this.IsCanRotateAcwTarget(event.controlTarget);
+                        if (operationSuccess)
+                            this.RotateAcwTarget(event.controlTarget);
+                        break;
+                    }
+            }
         }
 
         if (!operationSuccess) 
@@ -402,6 +408,69 @@ class Scene extends GameModuleComponentBase
         }
         return result;
     }
+
+    // 是否可以逆时针旋转目标
+    public IsCanRotateAcwTarget(target: ControlableElement): boolean {
+        var canRotate = false;
+        if (target != null)
+        {
+            var elements = target.GetControledElements();
+
+            var result = this.RemoveElementGroup(elements);
+            if (DEBUG) {
+                console.assert(result, "Can not query rotate while elements not in scene!");
+            }
+
+            canRotate = true;
+            var targetPosList = target.GetRotateACWPosList();
+            for (var i = 1; i < targetPosList.length; i += 2)
+            {
+                var posX = targetPosList[i - 1];
+                var posY = targetPosList[i];
+                canRotate = canRotate && this.IsPosLegal(posX, posY) && this.GetElement(posX, posY) == null
+            }
+
+            result = this.AddElementGroup(elements);
+            if (DEBUG) {
+                console.assert(result, "Can not add elements to scene after query rotate!");
+            }
+        }
+        return canRotate;
+    }
+
+    // 是否可以逆时针旋转目标
+    public RotateAcwTarget(target: ControlableElement): boolean {
+        var result = false;
+        if (target != null)
+        {
+            var elements = target.GetControledElements();
+            var targetPosList = target.GetRotateACWPosList();
+            if (elements.length * 2 == targetPosList.length)
+            {
+                result = this.RemoveElementGroup(elements);
+                if (DEBUG) {
+                    console.assert(result, "Can not rotate while elements not in scene!");
+                }
+                
+                var elementIndex = 0;
+                for (var i = 1; i < targetPosList.length; i += 2)
+                {
+                    elements[elementIndex].posx = targetPosList[i - 1];
+                    elements[elementIndex].posy = targetPosList[i];
+                    ++elementIndex;
+                }
+
+                target.OnRotateACW();
+
+                result = this.AddElementGroup(elements);
+                if (DEBUG) {
+                    console.assert(result, "Can not add elements to scene after rotate!");
+                }
+            }
+        }
+        return result;
+    }
+
 }
 
 enum SceneElementControlType
