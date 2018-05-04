@@ -57,10 +57,20 @@ class Scene extends GameModuleComponentBase
             }
         }
 
-        if (!operationSuccess) 
+        if (operationSuccess) 
+        {
+            let successEvent = new SceneElementControlSuccessEvent();
+            successEvent.controlType = event.controlType;
+            successEvent.controlTarget = event.controlTarget;
+            successEvent.moveDir = event.moveDir;
+            successEvent.moveStep = event.moveStep;
+            GameMain.GetInstance().DispatchEvent(successEvent);
+        }
+        else 
         {
             let failedEvent = new SceneElementControlFailedEvent();
             failedEvent.controlType = event.controlType;
+            failedEvent.controlTarget = event.controlTarget;
             failedEvent.moveDir = event.moveDir;
             failedEvent.moveStep = event.moveStep;
             GameMain.GetInstance().DispatchEvent(failedEvent);

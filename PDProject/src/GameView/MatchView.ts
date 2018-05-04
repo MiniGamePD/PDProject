@@ -26,6 +26,9 @@ class MatchView extends GameView
 
         this.eliminatingAnim = new EliminatingAnimation();
         this.eliminatingAnim.Init(this);
+        
+        GameMain.GetInstance().AddEventListener(SceneElementControlSuccessEvent.EventName, this.ProcessControlSuccess, this);
+
 
         //this.LoadPillForTest();
         //GameMain.GetInstance().AddEventListener(InputEvent.EventName, this.OnInputEvent, this);
@@ -46,6 +49,11 @@ class MatchView extends GameView
         {
             this.RefreshScene();
         }
+    }
+
+    private ProcessControlSuccess(event: SceneElementControlSuccessEvent)
+    {
+        this.RefreshScene();
     }
 
     private UpdateEliminating(deltaTime: number)
