@@ -4,7 +4,7 @@ class Scene extends GameModuleComponentBase
     public static readonly Columns: number = 8;
     public static readonly Rows: number = 16;
     public static readonly EliminateMinCount = 3; //触发消除的最小数量
-    public sceneData: DisplayElementBase[][] = []; //左上角是00    
+    public sceneData: SceneElementBase[][] = []; //左上角是00    
     public eliminateInfo: EliminateInfo;
 
     private controlSuccessEvent: SceneElementControlSuccessEvent;
@@ -87,12 +87,12 @@ class Scene extends GameModuleComponentBase
         }
     }
 
-    private TryRotate(elements: DisplayElementBase[]): boolean {
+    private TryRotate(elements: SceneElementBase[]): boolean {
         return false;
     }
 
     //把Element移动到newPos，并把老位置制成null
-    private MoveElement(element: DisplayElementBase, newPosx: number, newPosy: number): boolean {
+    private MoveElement(element: SceneElementBase, newPosx: number, newPosy: number): boolean {
         var result = false;
         if (this.IsPosLegal(newPosx, newPosy)
             && this.sceneData[newPosx][newPosy] == null) {
@@ -215,7 +215,7 @@ class Scene extends GameModuleComponentBase
     //     }
     // }
 
-    private mGroupElementTemp: DisplayElementBase[] = [];
+    private mGroupElementTemp: SceneElementBase[] = [];
     //根据消除的元素列表，把上面元素往下移
     private MoveAfterEliminate(): boolean {
         var hasMove = false;
@@ -262,7 +262,7 @@ class Scene extends GameModuleComponentBase
     }
 
     // 获取某个坐标的元素
-    private GetElement(posX: number, posY: number): DisplayElementBase {
+    private GetElement(posX: number, posY: number): SceneElementBase {
         if (this.IsPosLegal(posX, posY)) {
             return this.sceneData[posX][posY];
         }
@@ -278,7 +278,7 @@ class Scene extends GameModuleComponentBase
     }
 
     // 把一个元素，从Data中移除
-    private RemoveElement(element: DisplayElementBase): boolean {
+    private RemoveElement(element: SceneElementBase): boolean {
         if (element != null) {
             var posX = element.posx;
             var posY = element.posy;
@@ -292,7 +292,7 @@ class Scene extends GameModuleComponentBase
     }
 
     // 把一个组元素，从Data中移除
-    private RemoveElementGroup(elements: DisplayElementBase[]): boolean {
+    private RemoveElementGroup(elements: SceneElementBase[]): boolean {
         var result = true;
         for (var i = 0; i < elements.length; ++i) {
             result = result && this.RemoveElement(elements[i])
@@ -301,7 +301,7 @@ class Scene extends GameModuleComponentBase
     }
 
     // 把一个组元素，根据自带坐标，加到scene中
-    private AddElementGroup(elements: DisplayElementBase[]): boolean {
+    private AddElementGroup(elements: SceneElementBase[]): boolean {
         var result = true;
         for (var i = 0; i < elements.length; ++i) {
             result = result && this.AddElement(elements[i])
@@ -310,7 +310,7 @@ class Scene extends GameModuleComponentBase
     }
 
     // 把一个元素，根据自带坐标，加到scene中
-    private AddElement(element: DisplayElementBase): boolean {
+    private AddElement(element: SceneElementBase): boolean {
         if (element != null) {
             var posX = element.posx;
             var posY = element.posy;
@@ -324,7 +324,7 @@ class Scene extends GameModuleComponentBase
     }
 
     // 判断一个元素是否需要被消除(横竖方向满足相邻的3个相同颜色的块)
-    private NeedEliminate(element: DisplayElementBase): boolean {
+    private NeedEliminate(element: SceneElementBase): boolean {
         var needEliminate: boolean = false;
         var cloumnCount: number = 1;
         var rowCount: number = 1;
@@ -381,7 +381,7 @@ class Scene extends GameModuleComponentBase
     }
     //#####消除相关######
 
-    public GetElementGroupMoveSpace(elements: DisplayElementBase[], dir: Direction): number {
+    public GetElementGroupMoveSpace(elements: SceneElementBase[], dir: Direction): number {
         var space = 0;
         var result = this.RemoveElementGroup(elements);
         if (DEBUG) {
@@ -408,7 +408,7 @@ class Scene extends GameModuleComponentBase
         return space;
     }
 
-    public GetElementMoveSpace(element: DisplayElementBase, dir: Direction): number {
+    public GetElementMoveSpace(element: SceneElementBase, dir: Direction): number {
         var space = 0;
         if (element != null) {
             var posX = Tools.MoveScenePosX(element.posx, dir, 1);
@@ -424,7 +424,7 @@ class Scene extends GameModuleComponentBase
     }
 
     // 把一组元素，往某个方向移动
-    public MoveElementGroup(elements: DisplayElementBase[], dir: Direction, step: number): boolean {
+    public MoveElementGroup(elements: SceneElementBase[], dir: Direction, step: number): boolean {
         var result = this.RemoveElementGroup(elements);
         if (DEBUG) {
             console.assert(result, "Can not move element while elements not in scene!");

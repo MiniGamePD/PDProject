@@ -109,7 +109,7 @@ class EliminatingAnimation
 		}
 	}
 
-	private MoveRenderDown(moveValue: number, element: DisplayElementBase)
+	private MoveRenderDown(moveValue: number, element: SceneElementBase)
 	{
 		var result = false;
 		if (element != null)

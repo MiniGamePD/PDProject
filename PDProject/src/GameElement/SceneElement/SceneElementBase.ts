@@ -1,4 +1,6 @@
-class DisplayElementBase {
+//在scene中占一个格子的元素，处理其逻辑和显示相关
+class SceneElementBase
+{
     public posx: number = 0;
     public posy: number = 0;
     public canDrop: boolean = true;
@@ -7,7 +9,7 @@ class DisplayElementBase {
     public dirty: boolean;
     public hasAddToDisplayList: boolean;
     private resModule: IResModule;
-    private bindedElements: DisplayElementBase[];
+    private bindedElements: SceneElementBase[];
 
     public constructor() {
         this.bindedElements = [];
@@ -47,12 +49,12 @@ class DisplayElementBase {
     }
 
     // 返回捆绑元素的列表
-    public GetBindElements(): DisplayElementBase[] {
+    public GetBindElements(): SceneElementBase[] {
         return this.bindedElements;
     }
 
     // 和某个元素绑定（双向）
-    public BindElement(element: DisplayElementBase): boolean {
+    public BindElement(element: SceneElementBase): boolean {
         if (element != null) {
             let index = this.bindedElements.indexOf(element);
             if (index < 0) {
@@ -65,7 +67,7 @@ class DisplayElementBase {
     }
 
     // 和某个元素解除绑定（双向）
-    public UnbindElement(element: DisplayElementBase): boolean {
+    public UnbindElement(element: SceneElementBase): boolean {
         if (element != null) {
             let index = this.bindedElements.indexOf(element);
             if (index >= 0) {

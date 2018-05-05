@@ -1,4 +1,4 @@
-abstract class ControlableElement extends LogicElementBase
+abstract class ControlableElement extends GameplayElementBase
 {
     // 【逆时针】旋转的处理。处理旋转后各个元素的贴图方向
     public abstract OnRotateACW();

@@ -1,4 +1,4 @@
-class PillRenderer extends DisplayElementBase
+class ScenePill extends SceneElementBase
 {
     public mPillType: PillElementType;
     public constructor()
@@ -74,7 +74,7 @@ class PillRenderer extends DisplayElementBase
     }
 
     // 删除捆绑元素后，重新计算药丸的类型
-    public UnbindElement(element: DisplayElementBase): boolean
+    public UnbindElement(element: SceneElementBase): boolean
     {
         var result = super.UnbindElement(element);
         if (result

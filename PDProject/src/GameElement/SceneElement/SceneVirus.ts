@@ -1,4 +1,4 @@
-class VirusRenderer extends DisplayElementBase
+class LogicVirus extends SceneElementBase
 {
     public constructor()
     {

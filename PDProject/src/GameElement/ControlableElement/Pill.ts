@@ -1,7 +1,7 @@
 class Pill extends ControlableElement
 {    
-    public pill1:PillRenderer;
-    public pill2:PillRenderer;
+    public pill1:ScenePill;
+    public pill2:ScenePill;
     public rotAngle:number; // 必须是0, 90，180，270中的一个值
     public rotatePosListTemp: number[];
 
@@ -9,8 +9,8 @@ class Pill extends ControlableElement
     {       
         super();         
         this.rotAngle = 0;             
-        this.pill1 = new PillRenderer();
-        this.pill2 = new PillRenderer();
+        this.pill1 = new ScenePill();
+        this.pill2 = new ScenePill();
         this.pill1.SetPillType(PillElementType.left);
         this.pill1.RefreshTexture();
         this.pill2.SetPillType(PillElementType.right);
