@@ -13,6 +13,8 @@ class MatchView extends GameView
     private mRedPill: egret.Bitmap;
     private eliminatingAnim: EliminatingAnimation;
 
+    private scoreItem: MatchScoreItem;
+
     public CreateView(): void
     {
         this.mResModule = <IResModule>GameMain.GetInstance().GetModule(ModuleType.RES);
@@ -21,6 +23,10 @@ class MatchView extends GameView
         this.mStageHeight = GameMain.GetInstance().GetStageHeight();
 
         this.LoadBackGround();
+
+        this.scoreItem = new MatchScoreItem();
+        this.scoreItem.Init();
+        this.addChild(this.scoreItem);
 
         this.PlayBgm();
 
@@ -49,6 +55,8 @@ class MatchView extends GameView
         {
             this.RefreshScene();
         }
+
+        this.scoreItem.Update(deltaTime);
     }
 
     private ProcessControlSuccess(event: SceneElementControlSuccessEvent)

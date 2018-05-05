@@ -7,6 +7,10 @@ class Scene extends GameModuleComponentBase
     public sceneData: DisplayElementBase[][] = []; //左上角是00    
     public eliminateInfo: EliminateInfo;
 
+    private controlSuccessEvent: SceneElementControlSuccessEvent;
+    private controlFailedEvent: SceneElementControlFailedEvent;
+    private eliminateEvent: EliminateEvent;
+
     public Init(): void 
     {
         this.eliminateInfo = new EliminateInfo();
@@ -18,6 +22,10 @@ class Scene extends GameModuleComponentBase
                 this.sceneData[i].push(null);
             }
         }
+
+        this.controlSuccessEvent = new SceneElementControlSuccessEvent();
+        this.controlFailedEvent = new SceneElementControlFailedEvent();
+        this.eliminateEvent = new EliminateEvent();
 
         GameMain.GetInstance().AddEventListener(SceneElementControlEvent.EventName, this.ProcessControlCmd, this);
     }
@@ -59,21 +67,21 @@ class Scene extends GameModuleComponentBase
 
         if (operationSuccess) 
         {
-            let successEvent = new SceneElementControlSuccessEvent();
-            successEvent.controlType = event.controlType;
-            successEvent.controlTarget = event.controlTarget;
-            successEvent.moveDir = event.moveDir;
-            successEvent.moveStep = event.moveStep;
-            GameMain.GetInstance().DispatchEvent(successEvent);
+            this.controlSuccessEvent = new SceneElementControlSuccessEvent();
+            this.controlSuccessEvent.controlType = event.controlType;
+            this.controlSuccessEvent.controlTarget = event.controlTarget;
+            this.controlSuccessEvent.moveDir = event.moveDir;
+            this.controlSuccessEvent.moveStep = event.moveStep;
+            GameMain.GetInstance().DispatchEvent(this.controlSuccessEvent);
         }
         else 
         {
-            let failedEvent = new SceneElementControlFailedEvent();
-            failedEvent.controlType = event.controlType;
-            failedEvent.controlTarget = event.controlTarget;
-            failedEvent.moveDir = event.moveDir;
-            failedEvent.moveStep = event.moveStep;
-            GameMain.GetInstance().DispatchEvent(failedEvent);
+            this.controlFailedEvent = new SceneElementControlFailedEvent();
+            this.controlFailedEvent.controlType = event.controlType;
+            this.controlFailedEvent.controlTarget = event.controlTarget;
+            this.controlFailedEvent.moveDir = event.moveDir;
+            this.controlFailedEvent.moveStep = event.moveStep;
+            GameMain.GetInstance().DispatchEvent(this.controlFailedEvent);
         }
     }
 
@@ -131,6 +139,20 @@ class Scene extends GameModuleComponentBase
             {
                 this.FinishEliminate();
             }
+            else
+            {
+                this.DispatchEliminateEvent();
+            }
+        }
+    }
+
+    private DispatchEliminateEvent()
+    {
+        if (this.eliminateInfo != null
+            && this.eliminateInfo.HasInfo)
+        {
+            this.eliminateEvent.eliminateInfo = this.eliminateInfo;
+            GameMain.GetInstance().DispatchEvent(this.eliminateEvent);
         }
     }
 

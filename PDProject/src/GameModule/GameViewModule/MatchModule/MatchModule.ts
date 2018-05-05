@@ -3,6 +3,7 @@ class MatchModule extends GameViewModule
 	private matchState: MatchState = MatchState.None;
 	private scene: Scene;
 	private playerControl: PlayerControl;
+	private matchScore: MatchScore;
 
 	protected CreateView(): boolean
 	{
@@ -20,6 +21,9 @@ class MatchModule extends GameViewModule
 
 		this.playerControl = new PlayerControl();
 		this.playerControl.Init();
+
+		this.matchScore = new MatchScore();
+		this.matchScore.Init();
 
 		//TODO:应该先从Init事件开始
 		this.OnInitFinish();
