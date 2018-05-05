@@ -77,7 +77,7 @@ class PlayerControl extends GameModuleComponentBase
         }
     }
 
-    protected OnPlayerControlFailed(event:SceneElementControlEvent)
+    protected OnPlayerControlFailed(event:SceneElementControlFailedEvent)
     {
         if(this.isWorking && this.target == null)
         {
@@ -106,6 +106,7 @@ class PlayerControl extends GameModuleComponentBase
     {
         let event = new SceneElementControlEvent();
         event.controlTarget = this.target;
+        event.displayElements = this.target.GetDisplayElements();
         event.controlType = controlType;
         event.moveDir = moveDir;
         event.moveStep = moveStep;

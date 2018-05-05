@@ -38,31 +38,33 @@ class Scene extends GameModuleComponentBase
     private ProcessControlCmd(event: SceneElementControlEvent) 
     {
         let operationSuccess: boolean = true;
-        if (event.controlTarget != null)
+      
+        var elementList = event.displayElements;
+        switch (event.controlType) 
         {
-            var elementList = event.controlTarget.GetControledElements();
-            switch (event.controlType) 
-            {
-                case SceneElementControlType.Add:
-                    {
-                        operationSuccess = this.AddElementGroup(elementList);
-                        break;
-                    }
-                case SceneElementControlType.Move:
-                    {
-                        operationSuccess = this.GetElementGroupMoveSpace(elementList, event.moveDir) >= event.moveStep;
-                        if(operationSuccess)
-                            this.MoveElementGroup(elementList, event.moveDir, event.moveStep);
-                        break;
-                    }
-                case SceneElementControlType.Rotation:
-                    {
-                        operationSuccess = this.IsCanRotateAcwTarget(event.controlTarget);
-                        if (operationSuccess)
-                            this.RotateAcwTarget(event.controlTarget);
-                        break;
-                    }
-            }
+            case SceneElementControlType.Add:
+                {
+                    console.log("add " + elementList.length);
+                    operationSuccess = this.AddElementGroup(elementList);
+                    break;
+                }
+            case SceneElementControlType.Move:
+                {
+                    operationSuccess = this.GetElementGroupMoveSpace(elementList, event.moveDir) >= event.moveStep;
+                    if(operationSuccess)
+                        this.MoveElementGroup(elementList, event.moveDir, event.moveStep);
+                    break;
+                }
+            case SceneElementControlType.Rotation:
+                {
+                    operationSuccess = event.controlTarget != null && this.IsCanRotateAcwTarget(event.controlTarget);
+                    if (operationSuccess)
+                        this.RotateAcwTarget(event.controlTarget);
+                    break;
+                }
+            default:
+                operationSuccess = false;
+                break;
         }
 
         if (operationSuccess) 
@@ -446,7 +448,7 @@ class Scene extends GameModuleComponentBase
         var canRotate = false;
         if (target != null)
         {
-            var elements = target.GetControledElements();
+            var elements = target.GetDisplayElements();
 
             var result = this.RemoveElementGroup(elements);
             if (DEBUG) {
@@ -475,7 +477,7 @@ class Scene extends GameModuleComponentBase
         var result = false;
         if (target != null)
         {
-            var elements = target.GetControledElements();
+            var elements = target.GetDisplayElements();
             var targetPosList = target.GetRotateACWPosList();
             if (elements.length * 2 == targetPosList.length)
             {
