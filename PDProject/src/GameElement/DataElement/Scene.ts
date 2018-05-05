@@ -39,7 +39,7 @@ class Scene extends GameModuleComponentBase
     {
         let operationSuccess: boolean = true;
       
-        var elementList = event.displayElements;
+        var elementList = event.sceneElements;
         switch (event.controlType) 
         {
             case SceneElementControlType.Add:
@@ -448,7 +448,7 @@ class Scene extends GameModuleComponentBase
         var canRotate = false;
         if (target != null)
         {
-            var elements = target.GetDisplayElements();
+            var elements = target.GetSceneElements();
 
             var result = this.RemoveElementGroup(elements);
             if (DEBUG) {
@@ -477,7 +477,7 @@ class Scene extends GameModuleComponentBase
         var result = false;
         if (target != null)
         {
-            var elements = target.GetDisplayElements();
+            var elements = target.GetSceneElements();
             var targetPosList = target.GetRotateACWPosList();
             if (elements.length * 2 == targetPosList.length)
             {

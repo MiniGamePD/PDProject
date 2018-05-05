@@ -5,7 +5,7 @@ class SceneElementControlEvent extends egret.Event
     public controlTarget:ControlableElement;
     public moveDir:Direction;
     public moveStep:number;
-    public displayElements:SceneElementBase[];
+    public sceneElements:SceneElementBase[];
     public constructor(bubbles:boolean=false, cancelable:boolean=false)
     {
         super(SceneElementControlEvent.EventName,bubbles,cancelable);           

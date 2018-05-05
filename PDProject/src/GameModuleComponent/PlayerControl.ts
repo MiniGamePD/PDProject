@@ -106,7 +106,7 @@ class PlayerControl extends GameModuleComponentBase
     {
         let event = new SceneElementControlEvent();
         event.controlTarget = this.target;
-        event.displayElements = this.target.GetDisplayElements();
+        event.sceneElements = this.target.GetSceneElements();
         event.controlType = controlType;
         event.moveDir = moveDir;
         event.moveStep = moveStep;

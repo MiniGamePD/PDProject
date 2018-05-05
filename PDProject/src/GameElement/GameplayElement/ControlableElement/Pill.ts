@@ -72,10 +72,10 @@ class Pill extends ControlableElement
         this.pill2.MoveTo(this.posx + 1, this.posy);
     }   
 
-    protected FillDisplayElementArray()
+    protected FillSceneElementArray()
     {
-        this.displayElements.push(this.pill1);
-        this.displayElements.push(this.pill2);
+        this.sceneElements.push(this.pill1);
+        this.sceneElements.push(this.pill2);
     }
 }
 

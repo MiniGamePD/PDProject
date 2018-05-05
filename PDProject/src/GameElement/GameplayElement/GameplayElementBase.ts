@@ -4,19 +4,19 @@ abstract class GameplayElementBase
     public posx:number;
     public posy:number;
 
-    protected displayElements:SceneElementBase[] = [];
-    private displayElementsFilled:boolean = false;
+    protected sceneElements:SceneElementBase[] = [];
+    private sceneElementFilled:boolean = false;
 
-    public GetDisplayElements():SceneElementBase[]
+    public GetSceneElements():SceneElementBase[]
     {
-        if(!this.displayElementsFilled)
+        if(!this.sceneElementFilled)
         {
-            this.FillDisplayElementArray();
-            this.displayElementsFilled = true;
+            this.FillSceneElementArray();
+            this.sceneElementFilled = true;
         }    
 
-        return this.displayElements;
+        return this.sceneElements;
     }
 
-    protected abstract FillDisplayElementArray();
+    protected abstract FillSceneElementArray();
 }

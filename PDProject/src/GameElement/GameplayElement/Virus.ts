@@ -13,15 +13,15 @@ class Virus extends GameplayElementBase
 
         let event = new SceneElementControlEvent();
         event.controlType = SceneElementControlType.Add;
-        event.displayElements = this.GetDisplayElements();
+        event.sceneElements = this.GetSceneElements();
         GameMain.GetInstance().DispatchEvent(event);
 
         if(DEBUG)
             console.log("create virus " + posx + " " + posy);
     }
 
-    protected FillDisplayElementArray()
+    protected FillSceneElementArray()
     {
-        this.displayElements.push(this.virusRenderer);
+        this.sceneElements.push(this.virusRenderer);
     }
 }
