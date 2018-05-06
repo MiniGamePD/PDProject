@@ -14,8 +14,10 @@ class ControlableElementCreator extends GameplayElementCreator
         this.paramDic[ControlableElementCreateType.AllRandomPill] = this.allRandomPillParams;
 
         this.normalParams = [];
-        this.normalParams.push(new InternalCreator<Pill>(0, 0.8, GameElementColor.random, Pill));
-        this.normalParams.push(new InternalCreator<Vitamins>(0.8, 1, GameElementColor.random, Vitamins));
+        this.normalParams.push(new InternalCreator<Pill>(0, 0.7, GameElementColor.random, Pill));
+        this.normalParams.push(new InternalCreator<Vitamins>(0.7, 0.85, GameElementColor.random, Vitamins));
+        this.normalParams.push(new InternalCreator<RowEliminater>(0.85, 1, GameElementColor.random, RowEliminater));
+
         this.paramDic[ControlableElementCreateType.Normal] = this.normalParams;
     }
 
