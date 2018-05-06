@@ -107,8 +107,19 @@ class MatchModule extends GameViewModule
 	private OnSceneElininateFinish(event: SceneEliminateFinishEvent)
 	{
 		this.matchState = MatchState.PlayerControl;
-		let pill = new Pill();//TODO
-		this.playerControl.SetTarget(pill);
+
+		let control:ControlableElement = null;
+		let random = Math.random();
+		if(random > 0.8)
+		{
+			control = new Vitamins();
+		}
+		else
+		{
+			control = new Pill();
+		}
+
+		this.playerControl.SetTarget(control);
 		this.playerControl.Work();
 		this.scene.Sleep();
 	}

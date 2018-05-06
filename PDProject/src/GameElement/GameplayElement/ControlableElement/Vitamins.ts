@@ -6,6 +6,8 @@ class Vitamins extends EliminateTool
     public constructor()
     {
         super();
+        this.sceneVitamins = new SceneVitamins(this);
+        this.sceneVitamins.MoveTo(3,0);
         this.eliminateType = EliminateType.Range;
     }
 

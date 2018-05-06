@@ -44,7 +44,6 @@ class Scene extends GameModuleComponentBase
         {
             case SceneElementControlType.Add:
                 {
-                    console.log("add " + elementList.length);
                     operationSuccess = this.AddElementGroup(elementList);
                     break;
                 }
