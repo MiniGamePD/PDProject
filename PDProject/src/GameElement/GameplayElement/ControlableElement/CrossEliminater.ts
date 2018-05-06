@@ -2,6 +2,7 @@
 class CrossEliminater extends EliminateTool
 {
     private sceneCrossEliminater:SceneCrossEliminater;
+    private range: number;
 
     public constructor()
     {
@@ -9,6 +10,7 @@ class CrossEliminater extends EliminateTool
         this.sceneCrossEliminater = new SceneCrossEliminater(this);
         this.sceneCrossEliminater.MoveTo(3,0);
         this.eliminateType = EliminateType.Cloumn;
+        this.range = Math.max(Scene.Rows, Scene.Columns);
     }
 
     //todo
@@ -21,5 +23,14 @@ class CrossEliminater extends EliminateTool
     protected FillSceneElementArray()
     {
         this.sceneElements.push(this.sceneCrossEliminater);
+    }
+
+    public OnOnEliminate():boolean
+    {
+        var specialEliminateEvent = new SpecialEliminateRequestEvent();
+        specialEliminateEvent.triggerElement = this.sceneCrossEliminater;
+        specialEliminateEvent.targetPosList = Tools.GetCrossPosList(this.sceneCrossEliminater.posx, this.sceneCrossEliminater.posy, this.range);
+        GameMain.GetInstance().DispatchEvent(specialEliminateEvent);
+        return true;
     }
 }

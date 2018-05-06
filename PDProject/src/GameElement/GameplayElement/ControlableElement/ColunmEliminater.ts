@@ -2,6 +2,7 @@
 class ColumnEliminater extends EliminateTool
 {
     private sceneColumnEliminater:SceneColunmEliminater;
+    private range: number;
 
     public constructor()
     {
@@ -9,6 +10,7 @@ class ColumnEliminater extends EliminateTool
         this.sceneColumnEliminater = new SceneColunmEliminater(this);
         this.sceneColumnEliminater.MoveTo(3,0);
         this.eliminateType = EliminateType.Cloumn;
+        this.range = Scene.Rows;
     }
 
     //todo
@@ -21,5 +23,14 @@ class ColumnEliminater extends EliminateTool
     protected FillSceneElementArray()
     {
         this.sceneElements.push(this.sceneColumnEliminater);
+    }
+
+    public OnOnEliminate():boolean
+    {
+        var specialEliminateEvent = new SpecialEliminateRequestEvent();
+        specialEliminateEvent.triggerElement = this.sceneColumnEliminater;
+        specialEliminateEvent.targetPosList = Tools.GetColunmPosList(this.sceneColumnEliminater.posx, this.sceneColumnEliminater.posy, this.range);
+        GameMain.GetInstance().DispatchEvent(specialEliminateEvent);
+        return true;
     }
 }

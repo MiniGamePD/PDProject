@@ -7,13 +7,14 @@ class SceneVitamins extends SceneElementBase
         this.color = this.RandomColor(); 
         this.canDrop = true;
         this.RefreshTexture();
+        this.eliminateMinCount = Scene.EliminateMinCount;
     }
 
     public RefreshTexture():void
     {
         let texture: egret.Texture;
         //todo
-        let path = "pd_res_json.Virus_";
+        let path = "pd_res_json.Vitamins_";
         switch(this.color)
         {
             case GameElementColor.red:
