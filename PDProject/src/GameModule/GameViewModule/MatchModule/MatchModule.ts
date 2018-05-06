@@ -7,6 +7,7 @@ class MatchModule extends GameViewModule
 	private gameplayElementFactory:GameplayElementFactory;
 	private creatorWorkParam:CreatorWorkParam;
 	private controlableElementCreator: ControlableElementCreator;
+	private npcElementCreator: NpcElementCreator;
 	
 
 	protected CreateView(): boolean
@@ -32,6 +33,7 @@ class MatchModule extends GameViewModule
 		this.creatorWorkParam = new CreatorWorkParam();
 		this.gameplayElementFactory = new GameplayElementFactory();
 		this.controlableElementCreator = new ControlableElementCreator(this.gameplayElementFactory);
+		this.npcElementCreator = new NpcElementCreator(this.gameplayElementFactory);
 
 		this.InitMatch();
 
@@ -67,31 +69,11 @@ class MatchModule extends GameViewModule
 	{
 		this.matchState = MatchState.Init;
 
-		let virusArray:Virus[] = [];
-		for(var i = 0; i < 8; ++i)
-		{
-			while(true)
-			{
-				let posx = Math.floor(Math.random() * Scene.Columns);
-				let posy = Math.floor(Math.random() * Scene.Rows);
-
-				let find = false;
-				for(var j = 0; j < virusArray.length; ++j)
-				{
-					if(virusArray[j].posx == posx || virusArray[j].posy == posy || posy <= 2)
-					{
-						find = true;
-						break;
-					}
-				}
-
-				if(!find)
-				{
-					virusArray.push(new Virus(posx, posy));
-					break;
-				}
-			}
-		}
+		this.creatorWorkParam.paramIndex = NpcElementCreateType.RandomVirus;
+		this.creatorWorkParam.createNum = 8;
+		let npcElements:NpcElement[] = this.npcElementCreator.Work(this.creatorWorkParam);
+		this.npcElementCreator.ArrangePos(npcElements);
+		this.npcElementCreator.Sleep();
 
 		this.OnInitFinish();
 	}

@@ -1,23 +1,24 @@
-class Virus extends GameplayElementBase
+class Virus extends NpcElement
 {
     private virusRenderer:SceneVirus;
 
-    public constructor(posx:number, posy:number)
+    public constructor()
     {
         super();
-        this.posx = posx;
-        this.posy = posy;
         this.virusRenderer = new SceneVirus(this);
         this.virusRenderer.RefreshTexture();
-        this.virusRenderer.MoveTo(this.posx, this.posy);
+    }
+
+    public MoveTo(posx:number, posy:number)
+    {
+        this.posx = posx;
+        this.posy = posy;
+        this.virusRenderer.MoveTo(posx, posy);
 
         let event = new SceneElementControlEvent();
         event.controlType = SceneElementControlType.Add;
         event.sceneElements = this.GetSceneElements();
         GameMain.GetInstance().DispatchEvent(event);
-
-        if(DEBUG)
-            console.log("create virus " + posx + " " + posy);
     }
 
     protected FillSceneElementArray()

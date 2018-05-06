@@ -22,11 +22,6 @@ class ControlableElementCreator extends GameplayElementCreator
 
         this.paramDic[ControlableElementCreateType.Normal] = this.normalParams;
     }
-
-    public Work(param:any):any
-    {
-        return super.Work(param);
-    }
 }
 
 enum ControlableElementCreateType
