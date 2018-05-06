@@ -1,4 +1,4 @@
-class LogicVirus extends SceneElementBase
+class SceneVirus extends SceneElementBase
 {
     public constructor(owner:GameplayElementBase)
     {

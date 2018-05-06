@@ -1,13 +1,13 @@
 class Virus extends GameplayElementBase
 {
-    private virusRenderer:LogicVirus;
+    private virusRenderer:SceneVirus;
 
     public constructor(posx:number, posy:number)
     {
         super();
         this.posx = posx;
         this.posy = posy;
-        this.virusRenderer = new LogicVirus(this);
+        this.virusRenderer = new SceneVirus(this);
         this.virusRenderer.RefreshTexture();
         this.virusRenderer.MoveTo(this.posx, this.posy);
 
