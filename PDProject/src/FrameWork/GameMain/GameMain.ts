@@ -131,12 +131,14 @@ class GameMain implements IGameMain {
 	{
 		if(this.mEgretMain.hasEventListener(event.$type))
 		{
-			console.log(event.$type + " dispatch event " + this.mEgretMain.willTrigger(event.$type));
+			if(DEBUG)
+				console.log(event.$type + " dispatch event " + this.mEgretMain.willTrigger(event.$type));
 			this.mEgretMain.dispatchEvent(event);
 		}
 		else
 		{
-			console.log(event.$type + " has no lisenter");
+			if(DEBUG)
+				console.log(event.$type + " has no lisenter");
 		}		
 	}
 
