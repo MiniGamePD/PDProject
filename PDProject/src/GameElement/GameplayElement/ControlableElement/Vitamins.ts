@@ -2,10 +2,12 @@
 class Vitamins extends EliminateTool
 {
     private sceneVitamins:SceneVitamins;
+    private range:number; //范围
 
     public constructor()
     {
         super();
+        this.range = 1;
         this.sceneVitamins = new SceneVitamins(this);
         this.sceneVitamins.MoveTo(3,0);
         this.eliminateType = EliminateType.Range;
@@ -27,7 +29,7 @@ class Vitamins extends EliminateTool
     {
         var specialEliminateEvent = new SpecialEliminateRequestEvent();
         specialEliminateEvent.triggerElement = this.sceneVitamins;
-        specialEliminateEvent.targetPosList = Tools.GetSquareRangePosList(this.sceneVitamins.posx, this.sceneVitamins.posy, 1);
+        specialEliminateEvent.targetPosList = Tools.GetSquareRangePosList(this.sceneVitamins.posx, this.sceneVitamins.posy, this.range);
         GameMain.GetInstance().DispatchEvent(specialEliminateEvent);
         return true;
     }

@@ -11,6 +11,7 @@ class SceneElementBase
     private resModule: IResModule;
     private bindedElements: SceneElementBase[];
     protected owner:GameplayElementBase;
+    public eliminateMinCount: number;
 
     public constructor(owner:GameplayElementBase) 
     {

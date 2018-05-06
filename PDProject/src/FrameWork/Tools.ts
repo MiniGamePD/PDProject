@@ -125,4 +125,45 @@ class Tools
 		}
 		return target;
 	}
+
+	// 计算以某个点为中心，range为单边扩充数量的一列坐标
+	public static GetColunmPosList(centerX: number, centerY: number, range: number): number[]
+	{
+		var target: number[] = [];
+		for (var y = -range; y <= range; ++y)
+		{
+			target.push(centerX , centerY + y);
+		}
+		return target;
+	}
+
+	// 计算以某个点为中心，range为单边扩充数量的一行坐标
+	public static GetRowPosList(centerX: number, centerY: number, range: number): number[]
+	{
+		var target: number[] = [];
+		for (var x = -range; x <= range; ++x)
+		{
+			target.push(centerX + x , centerY);
+		}
+		return target;
+	}
+
+	// 计算以某个点为中心，range为单边扩充数量的一行和一列坐标
+	public static GetCrossPosList(centerX: number, centerY: number, range: number): number[]
+	{
+		var target: number[] = [];
+		for (var y = -range; y <= range; ++y)
+		{
+			target.push(centerX , centerY + y);
+		}
+
+		for (var x = -range; x <= range; ++x)
+		{
+			if (x != 0)
+			{
+				target.push(centerX + x, centerY);
+			}
+		}
+		return target;
+	}
 }

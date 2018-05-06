@@ -459,8 +459,8 @@ class Scene extends GameModuleComponentBase
             }
         }
 
-        if (cloumnCount >= Scene.EliminateMinCount
-            || rowCount >= Scene.EliminateMinCount)
+        if (cloumnCount >= element.eliminateMinCount
+            || rowCount >= element.eliminateMinCount)
         {
             needEliminate = true;
         }
@@ -548,7 +548,9 @@ class Scene extends GameModuleComponentBase
     public IsCanRotateAcwTarget(elements: SceneElementBase[], targetPosList: number[]): boolean
     {
         var canRotate = false;
-        if (elements.length * 2 == targetPosList.length)
+        if (elements != null
+            && targetPosList != null
+            && elements.length * 2 == targetPosList.length)
         {
             var result = this.RemoveElementGroup(elements);
             if (DEBUG)
@@ -578,7 +580,9 @@ class Scene extends GameModuleComponentBase
     {
         var result = false;
 
-        if (elements.length * 2 == targetPosList.length)
+        if (elements != null
+            && targetPosList != null
+            && elements.length * 2 == targetPosList.length)
         {
             result = this.RemoveElementGroup(elements);
             if (DEBUG)

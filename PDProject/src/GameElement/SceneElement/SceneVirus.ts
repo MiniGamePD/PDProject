@@ -6,6 +6,7 @@ class SceneVirus extends SceneElementBase
         this.renderer = new egret.Bitmap();       
         this.color = this.RandomColor(); 
         this.canDrop = false;
+        this.eliminateMinCount = Scene.EliminateMinCount;
         this.RefreshTexture();
     }
 

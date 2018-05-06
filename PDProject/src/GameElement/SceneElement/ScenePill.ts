@@ -7,6 +7,7 @@ class ScenePill extends SceneElementBase
         this.renderer = new egret.Bitmap();
         this.color = this.RandomColor();
         this.canDrop = true;
+        this.eliminateMinCount = Scene.EliminateMinCount;
     }
 
     public SetPillType(pillType: PillElementType)

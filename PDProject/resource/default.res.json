@@ -25,7 +25,7 @@
 			"url": "assets/pd_res.json",
 			"type": "sheet",
 			"name": "pd_res_json",
-			"subkeys": "BackGround,Bottle,Pill_Blue,Pill_Red,Pill_Single_Blue,Pill_Single_Red,Pill_Single_Yellow,Pill_Yellow,Virus_Blue,Virus_Red,Virus_Yellow"
+			"subkeys": "BackGround,Bottle,ColunmEliminater,CrossEliminater,Pill_Blue,Pill_Red,Pill_Single_Blue,Pill_Single_Red,Pill_Single_Yellow,Pill_Yellow,RowEliminater,Virus_Blue,Virus_Red,Virus_Yellow,Vitamins_Blue,Vitamins_Red,Vitamins_Yellow"
 		},
 		{
 			"url": "assets/bgm.mp3",
