@@ -2,7 +2,7 @@ class GameModuleComponentBase extends egret.EventDispatcher
 {
     protected isWorking:boolean = false;
 
-    public Work()
+    public Work(param?:any):any
     {
         this.isWorking = true;
     }

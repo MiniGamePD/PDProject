@@ -100,8 +100,10 @@ class SceneElementBase
     }
 }
 
-enum GameElementColor {
+enum GameElementColor 
+{
     red,
     blue,
     yellow,
+    random,
 }

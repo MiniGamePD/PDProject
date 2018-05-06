@@ -4,6 +4,10 @@ class MatchModule extends GameViewModule
 	private scene: Scene;
 	private playerControl: PlayerControl;
 	private matchScore: MatchScore;
+	private gameplayElementFactory:GameplayElementFactory;
+	private creatorWorkParam:CreatorWorkParam;
+	private controlableElementCreator: ControlableElementCreator;
+	
 
 	protected CreateView(): boolean
 	{
@@ -24,6 +28,10 @@ class MatchModule extends GameViewModule
 
 		this.matchScore = new MatchScore();
 		this.matchScore.Init();
+
+		this.creatorWorkParam = new CreatorWorkParam();
+		this.gameplayElementFactory = new GameplayElementFactory();
+		this.controlableElementCreator = new ControlableElementCreator(this.gameplayElementFactory);
 
 		this.InitMatch();
 
@@ -91,8 +99,12 @@ class MatchModule extends GameViewModule
 	private OnInitFinish()
 	{
 		this.matchState = MatchState.PlayerControl;
-		let pill = new Pill();//TODO
-		this.playerControl.SetTarget(pill);
+
+		this.creatorWorkParam.paramIndex = ControlableElementCreateType.AllRandomPill;
+		this.creatorWorkParam.createNum = 1;
+		let controlElement:ControlableElement = this.controlableElementCreator.Work(this.creatorWorkParam);
+		this.controlableElementCreator.Sleep();
+		this.playerControl.SetTarget(controlElement);
 		this.playerControl.Work();
 		this.scene.Sleep();
 	}
@@ -108,19 +120,14 @@ class MatchModule extends GameViewModule
 	{
 		this.matchState = MatchState.PlayerControl;
 
-		let control:ControlableElement = null;
-		let random = Math.random();
-		if(random > 0.8)
-		{
-			control = new Vitamins();
-		}
-		else
-		{
-			control = new Pill();
-		}
+		this.creatorWorkParam.paramIndex = ControlableElementCreateType.Normal;
+		this.creatorWorkParam.createNum = 1;
+		let controlElement:ControlableElement = this.controlableElementCreator.Work(this.creatorWorkParam);
+		this.controlableElementCreator.Sleep();
 
-		this.playerControl.SetTarget(control);
+		this.playerControl.SetTarget(controlElement);
 		this.playerControl.Work();
+
 		this.scene.Sleep();
 	}
 
