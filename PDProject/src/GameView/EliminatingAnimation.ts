@@ -81,6 +81,15 @@ class EliminatingAnimation
 			{
 				this.eliminateInfo.EliminatedElements[i].renderer.alpha = alpha;
 			}
+
+			var scale = needHide ? 0.5 : 1.5;
+			for (var i = 0; i < this.eliminateInfo.SpecialEliminatedElement.length; ++i)
+			{
+				this.eliminateInfo.SpecialEliminatedElement[i].renderer.alpha = 1;
+				this.eliminateInfo.SpecialEliminatedElement[i].renderer.scaleX = scale;
+				this.eliminateInfo.SpecialEliminatedElement[i].renderer.scaleY = scale;
+			}
+		
 		}
 	}
 

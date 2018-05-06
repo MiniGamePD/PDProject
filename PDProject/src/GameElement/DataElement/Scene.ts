@@ -28,11 +28,13 @@ class Scene extends GameModuleComponentBase
         this.eliminateEvent = new EliminateEvent();
 
         GameMain.GetInstance().AddEventListener(SceneElementControlEvent.EventName, this.ProcessControlCmd, this);
+        GameMain.GetInstance().AddEventListener(SpecialEliminateRequestEvent.EventName, this.ProcessSpecialEliminateRequest, this);
     }
 
     public Release() 
     {
         GameMain.GetInstance().RemoveEventListener(SceneElementControlEvent.EventName, this.ProcessControlCmd, this);
+        GameMain.GetInstance().RemoveEventListener(SpecialEliminateRequestEvent.EventName, this.ProcessSpecialEliminateRequest, this);
     }
 
     private ProcessControlCmd(event: SceneElementControlEvent) 
@@ -166,6 +168,21 @@ class Scene extends GameModuleComponentBase
         }
     }
 
+    // 判断某个元素是否在消除列表里面
+    private IsElementInEliminateList(element: SceneElementBase): boolean
+    {
+        var inList = false;
+        for (var count = 0; count < this.eliminateInfo.EliminatedElements.length; ++count)
+        {
+            if (element == this.eliminateInfo.EliminatedElements[count])
+            {
+                inList = true;
+                break;
+            }            
+        }
+        return inList;
+    }
+
     // 计算消除元素，把消除的元素放到this.eliminateInfo.EliminatedElements列表
     private EliminateElement()
     {
@@ -176,11 +193,13 @@ class Scene extends GameModuleComponentBase
             {
                 var element = cloumnList[iRow];
                 if (element != null
+                    && !this.IsElementInEliminateList(element)
                     && this.NeedEliminate(element))
                 {
                     this.eliminateInfo.EliminatedElements.push(element);
                     element.UnbindAllElement();
                     this.eliminateInfo.HasInfo = true;
+                    element.OnEliminate();
                 }
             }
         }
@@ -192,8 +211,31 @@ class Scene extends GameModuleComponentBase
             {
                 var eliminatedElement = this.eliminateInfo.EliminatedElements[count];
                 this.RemoveElement(eliminatedElement);
-                eliminatedElement.renderer.alpha = 0; // TODO：这里后面改成View里面做动画，现在暂时直接隐藏了
             }
+        }
+    }
+
+    // 处理特殊消除要求
+    private ProcessSpecialEliminateRequest(event: SpecialEliminateRequestEvent)
+    {
+        if (event != null
+            && event.targetPosList != null)
+        {
+        this.eliminateInfo.SpecialEliminatedElement.push(event.triggerElement);
+        for (var i = 1; i < event.targetPosList.length; i += 2)
+        {
+            var posx = event.targetPosList[i - 1];
+            var posy = event.targetPosList[i];
+            var element = this.GetElement(posx, posy);
+            if (element != null
+                && !this.IsElementInEliminateList(element))
+            {
+                this.eliminateInfo.EliminatedElements.push(element);
+                element.UnbindAllElement();
+                this.eliminateInfo.HasInfo = true;
+                element.OnEliminate();
+            }
+        }
         }
     }
 

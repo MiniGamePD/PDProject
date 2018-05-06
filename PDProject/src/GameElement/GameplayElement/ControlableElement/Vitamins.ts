@@ -22,4 +22,13 @@ class Vitamins extends EliminateTool
     {
         this.sceneElements.push(this.sceneVitamins);
     }
+
+    public OnOnEliminate():boolean
+    {
+        var specialEliminateEvent = new SpecialEliminateRequestEvent();
+        specialEliminateEvent.triggerElement = this.sceneVitamins;
+        specialEliminateEvent.targetPosList = Tools.GetSquareRangePosList(this.sceneVitamins.posx, this.sceneVitamins.posy, 1);
+        GameMain.GetInstance().DispatchEvent(specialEliminateEvent);
+        return true;
+    }
 }

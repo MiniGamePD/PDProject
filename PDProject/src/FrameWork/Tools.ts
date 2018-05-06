@@ -111,4 +111,18 @@ class Tools
 
 		return target;
 	}
+
+	// 计算以某个点为中心，range为外围圈数的一个正方形的列表
+	public static GetSquareRangePosList(centerX: number, centerY: number, range: number): number[]
+	{
+		var target: number[] = [];
+		for (var x = -range; x <= range; ++x)
+		{
+			for (var y = -range; y<= range; ++y)
+			{
+				target.push(centerX + x, centerY + y);
+			}
+		}
+		return target;
+	}
 }
