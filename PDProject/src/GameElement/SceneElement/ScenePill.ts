@@ -1,9 +1,9 @@
 class ScenePill extends SceneElementBase
 {
     public mPillType: PillElementType;
-    public constructor()
+    public constructor(owner:GameplayElementBase)
     {
-        super();
+        super(owner);
         this.renderer = new egret.Bitmap();
         this.color = this.RandomColor();
         this.canDrop = true;

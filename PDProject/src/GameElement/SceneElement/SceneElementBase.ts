@@ -1,4 +1,4 @@
-//在scene中占一个格子的元素，处理其逻辑和显示相关
+//在scene中占一个格子的元素，处理显示相关，和一些与消除相关逻辑，并转发gameplay的逻辑给到GameplayElement层
 class SceneElementBase
 {
     public posx: number = 0;
@@ -10,8 +10,11 @@ class SceneElementBase
     public hasAddToDisplayList: boolean;
     private resModule: IResModule;
     private bindedElements: SceneElementBase[];
+    protected owner:GameplayElementBase;
 
-    public constructor() {
+    public constructor(owner:GameplayElementBase) 
+    {
+        this.owner = owner;
         this.bindedElements = [];
     }
 
@@ -90,6 +93,11 @@ class SceneElementBase
         this.bindedElements = [];
     }
 
+    //处理一个scene element被消除之后的逻辑，返回true来让scene继续进入消除检测
+    public OnEliminate():boolean
+    {
+        return this.owner.OnOnEliminate();
+    }
 }
 
 enum GameElementColor {

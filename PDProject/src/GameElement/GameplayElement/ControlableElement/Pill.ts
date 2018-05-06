@@ -9,8 +9,8 @@ class Pill extends ControlableElement
     {       
         super();         
         this.rotAngle = 0;             
-        this.pill1 = new ScenePill();
-        this.pill2 = new ScenePill();
+        this.pill1 = new ScenePill(this);
+        this.pill2 = new ScenePill(this);
         this.pill1.SetPillType(PillElementType.left);
         this.pill1.RefreshTexture();
         this.pill2.SetPillType(PillElementType.right);
