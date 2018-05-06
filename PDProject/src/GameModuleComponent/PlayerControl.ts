@@ -8,12 +8,14 @@ class PlayerControl extends GameModuleComponentBase
     {
         GameMain.GetInstance().AddEventListener(InputEvent.EventName, this.OnInputEvent, this);
         GameMain.GetInstance().AddEventListener(SceneElementControlFailedEvent.EventName, this.OnPlayerControlFailed, this);
+        GameMain.GetInstance().AddEventListener(SceneElementControlSuccessEvent.EventName, this.OnPlayerControlSuccess, this);
     }
 
     public Release():void
     {
         GameMain.GetInstance().RemoveEventListener(InputEvent.EventName, this.OnInputEvent, this);
         GameMain.GetInstance().RemoveEventListener(SceneElementControlFailedEvent.EventName, this.OnPlayerControlFailed, this);
+        GameMain.GetInstance().RemoveEventListener(SceneElementControlSuccessEvent.EventName, this.OnPlayerControlSuccess, this);
     }
 
     public SetTarget(target:ControlableElement)
@@ -77,6 +79,16 @@ class PlayerControl extends GameModuleComponentBase
         }
     }
 
+    protected OnPlayerControlSuccess(event:SceneElementControlSuccessEvent)
+    {
+        if (event != null
+            && event.controlType == SceneElementControlType.Rotation
+            && this.target != null)
+        {
+            this.target.OnRotateACW();            
+        }
+    }
+
     protected OnPlayerControlFailed(event:SceneElementControlFailedEvent)
     {
         if(this.isWorking && this.target == null)
@@ -105,11 +117,14 @@ class PlayerControl extends GameModuleComponentBase
     private DispatchControlEvent(controlType:SceneElementControlType, moveDir?:Direction, moveStep?:number)
     {
         let event = new SceneElementControlEvent();
-        event.controlTarget = this.target;
         event.sceneElements = this.target.GetSceneElements();
         event.controlType = controlType;
         event.moveDir = moveDir;
         event.moveStep = moveStep;
+        if (controlType == SceneElementControlType.Rotation)
+        {
+            event.rotateTargetPosList = this.target.GetRotateACWPosList();
+        }
         GameMain.GetInstance().DispatchEvent(event);        
     }
 }
