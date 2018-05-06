@@ -12,6 +12,7 @@ class SceneElementBase
     private bindedElements: SceneElementBase[];
     protected owner:GameplayElementBase;
     public eliminateMinCount: number;
+    public eliminateSound: string;
 
     public constructor(owner:GameplayElementBase) 
     {

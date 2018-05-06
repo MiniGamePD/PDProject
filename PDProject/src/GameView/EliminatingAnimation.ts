@@ -12,6 +12,8 @@ class EliminatingAnimation
 	private moveDownFinish: boolean;
 	private isLightningHide: boolean;
 
+	private playSoundEvent: PlaySoundEvent;
+
 	public Init(view: MatchView)
 	{
 		this.matchView = view;
@@ -33,6 +35,7 @@ class EliminatingAnimation
 		this.isLightningHide = false;
 		this.eliminateInfo = eliminateInfo;
 		this.EnterState(EliminatingAnimState.Lightning);
+		this.PlayEliminateSound();
 	}
 
 	public Update(deltaTime: number)
@@ -131,6 +134,31 @@ class EliminatingAnimation
 			element.renderer.y = Tools.MoveNumber(element.renderer.y, targetRenderPosY, moveValue);
 		}
 		return result;
+	}
+
+	private PlaySound(sound: string)
+	{
+		if (this.playSoundEvent == null)
+		{
+			this.playSoundEvent = new PlaySoundEvent(sound, 1);
+		}
+		this.playSoundEvent.Key = sound;
+        GameMain.GetInstance().DispatchEvent(this.playSoundEvent);
+	}
+
+	private PlayEliminateSound()
+	{
+		this.PlaySound("Eliminate2_mp3");
+		for (var i = 0; i < this.eliminateInfo.EliminatedElements.length; ++i)
+		{
+			var element = this.eliminateInfo.EliminatedElements[i];
+			if (element != null
+				&& element.eliminateSound != null
+				&& element.eliminateSound != "")
+			{
+				this.PlaySound(element.eliminateSound);
+			}
+		}
 	}
 }
 

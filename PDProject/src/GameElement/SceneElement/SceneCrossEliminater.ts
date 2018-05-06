@@ -8,6 +8,7 @@ class SceneCrossEliminater extends SceneElementBase
         this.color = GameElementColor.random;
         this.eliminateMinCount = 1;
         this.RefreshTexture();
+        this.eliminateSound = "EliminateRow_mp3";
     }
 
     public RefreshTexture():void

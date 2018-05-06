@@ -8,6 +8,7 @@ class SceneVitamins extends SceneElementBase
         this.canDrop = true;
         this.RefreshTexture();
         this.eliminateMinCount = Scene.EliminateMinCount;
+        this.eliminateSound = "Boom_mp3";
     }
 
     public RefreshTexture():void

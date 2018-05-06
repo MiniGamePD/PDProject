@@ -3,6 +3,7 @@ class PlayerControl extends GameModuleComponentBase
     public static readonly DropdownInterval:number = 1000;//每隔多久药丸下落一格
     private dropdownTimer:number;
     public target:ControlableElement;
+	private playSoundEvent: PlaySoundEvent;
 
     public Init():void
     {
@@ -102,6 +103,7 @@ class PlayerControl extends GameModuleComponentBase
 
         if(event.controlType == SceneElementControlType.Move && event.moveDir == Direction.Down)
         {
+            this.PlaySound("OnDown_mp3");
             //下落到不能再下落了，就进入消除状态        
             let event = new PlayerControlFinishEvent();            
             GameMain.GetInstance().DispatchEvent(event);
@@ -127,5 +129,15 @@ class PlayerControl extends GameModuleComponentBase
         }
         GameMain.GetInstance().DispatchEvent(event);        
     }
+
+    private PlaySound(sound: string)
+	{
+		if (this.playSoundEvent == null)
+		{
+			this.playSoundEvent = new PlaySoundEvent(sound, 1);
+		}
+		this.playSoundEvent.Key = sound;
+        GameMain.GetInstance().DispatchEvent(this.playSoundEvent);
+	}
 }
 

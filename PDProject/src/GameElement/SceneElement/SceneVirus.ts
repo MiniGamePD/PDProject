@@ -8,6 +8,7 @@ class SceneVirus extends SceneElementBase
         this.canDrop = false;
         this.eliminateMinCount = Scene.EliminateMinCount;
         this.RefreshTexture();
+        this.eliminateSound = "VirusEliminate_mp3";
     }
 
     public RefreshTexture():void
