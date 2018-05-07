@@ -69,10 +69,12 @@ class MatchModule extends GameViewModule
 	{
 		this.matchState = MatchState.Init;
 
+		let sceneEmptyBlocks = this.scene.GetEmptyBlocks(0, 2);
+
 		this.creatorWorkParam.paramIndex = NpcElementCreateType.RandomVirus;
 		this.creatorWorkParam.createNum = 8;
 		let npcElements:NpcElement[] = this.npcElementCreator.Work(this.creatorWorkParam);
-		this.npcElementCreator.ArrangePos(npcElements);
+		this.npcElementCreator.ArrangePos(npcElements, sceneEmptyBlocks);
 		this.npcElementCreator.Sleep();
 
 		this.OnInitFinish();

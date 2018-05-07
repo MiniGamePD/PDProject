@@ -608,6 +608,41 @@ class Scene extends GameModuleComponentBase
         return result;
     }
 
+    public GetEmptyBlocks(startX:number, startY:number, endX?:number, endY?:number):number[][]
+    {
+        let result:number[][] = undefined;
+
+        if(endX == undefined)
+            endX = Scene.Columns - 1;
+        if(endY == undefined)
+            endY = Scene.Rows - 1;
+
+        if(startX <= endX || startY <= endY)
+        {
+            result = [];
+            //X is Column
+            for(var i = startX; i <= endX; ++i)
+            {
+                //Y is Row
+                for(var j = startY; j <= endY; ++j)
+                {
+                    if(this.sceneData[i][j] == null)
+                    {
+                        let emptyBlock:number[] = [];
+                        emptyBlock.push(i);
+                        emptyBlock.push(j);
+                        result.push(emptyBlock);
+                    }
+                }
+            }
+        }
+        else
+        {
+            console.error("GetEmptyBlock With Invalid Range:" + startX + "," + startY + "," + endX + "," + endY);
+        }
+
+        return result;
+    }
 }
 
 enum SceneElementControlType

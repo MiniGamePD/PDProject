@@ -13,37 +13,23 @@ class NpcElementCreator extends GameplayElementCreator
         this.paramDic[NpcElementCreateType.RandomVirus] = this.randomVirusParams;
     }
 
-    public ArrangePos(elements:GameplayElementBase[])
+    public ArrangePos(elements:GameplayElementBase[], sceneEmptyBlocks:number[][])
     {
+		if(sceneEmptyBlocks == undefined || elements.length > sceneEmptyBlocks.length)
+		{
+			console.error("Not Enough Empty Blocks For New Npcs");
+			return;
+		}
+
         let npcArray:NpcElement[] = [];
         for(var i = 0; i < elements.length; ++i)
         {
-            npcArray.push(<NpcElement>elements[i]);
+			let npc:NpcElement = <NpcElement>elements[i];
+			let randomIndex = Math.floor(Math.random() * sceneEmptyBlocks.length);
+			let pos:number[] = sceneEmptyBlocks.splice(randomIndex, 1)[0];
+			console.log("Scene Empty Block Length : " + sceneEmptyBlocks.length);
+			npc.MoveTo(pos[0], pos[1]);
         }
-		for(var i = 0; i < npcArray.length; ++i)
-		{
-			while(true)
-			{
-				let posx = Math.floor(Math.random() * Scene.Columns);
-				let posy = Math.floor(Math.random() * Scene.Rows);
-
-				let find = false;
-				for(var j = 0; j < npcArray.length; ++j)
-				{
-					if(npcArray[j].posx == posx || npcArray[j].posy == posy || posy <= 2)
-					{
-						find = true;
-						break;
-					}
-				}
-
-				if(!find)
-				{
-					npcArray[i].MoveTo(posx, posy);
-					break;
-				}
-			}
-		}
     }
 }
 
