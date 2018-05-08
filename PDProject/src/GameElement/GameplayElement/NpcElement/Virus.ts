@@ -14,11 +14,6 @@ class Virus extends NpcElement
         this.posx = posx;
         this.posy = posy;
         this.virusRenderer.MoveTo(posx, posy);
-
-        let event = new SceneElementControlEvent();
-        event.controlType = SceneElementControlType.Add;
-        event.sceneElements = this.GetSceneElements();
-        GameMain.GetInstance().DispatchEvent(event);
     }
 
     protected FillSceneElementArray()

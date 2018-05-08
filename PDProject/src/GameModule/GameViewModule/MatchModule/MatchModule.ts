@@ -3,6 +3,7 @@ class MatchModule extends GameViewModule
 	private matchState: MatchState = MatchState.None;
 	private scene: Scene;
 	private playerControl: PlayerControl;
+	private npcControl: NpcControl;
 	private matchScore: MatchScore;
 	private gameplayElementFactory:GameplayElementFactory;
 	private creatorWorkParam:CreatorWorkParam;
@@ -26,6 +27,8 @@ class MatchModule extends GameViewModule
 
 		this.playerControl = new PlayerControl();
 		this.playerControl.Init();
+
+		this.npcControl = new NpcControl();
 
 		this.matchScore = new MatchScore();
 		this.matchScore.Init();
@@ -74,8 +77,9 @@ class MatchModule extends GameViewModule
 		this.creatorWorkParam.paramIndex = NpcElementCreateType.RandomVirus;
 		this.creatorWorkParam.createNum = 8;
 		let npcElements:NpcElement[] = this.npcElementCreator.Work(this.creatorWorkParam);
-		this.npcElementCreator.ArrangePos(npcElements, sceneEmptyBlocks);
 		this.npcElementCreator.Sleep();
+
+		this.npcControl.ArrangePos(npcElements, sceneEmptyBlocks);
 
 		this.OnInitFinish();
 	}
