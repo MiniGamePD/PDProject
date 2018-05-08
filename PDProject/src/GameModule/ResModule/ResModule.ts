@@ -4,7 +4,7 @@ class ResModule extends ModuleBase implements IResModule
 	public Init(): boolean
 	{
 		this.isForeground = true;
-		this.LoadResource();
+		// this.LoadResource();
 		return true;
 	}
 
@@ -21,6 +21,11 @@ class ResModule extends ModuleBase implements IResModule
 	public SwitchForeOrBack(from: GameStateType, to: GameStateType): void
 	{
 		this.isForeground = true;
+	}
+
+	public StartLoadResource(): void
+	{
+		this.LoadResource();
 	}
 
 	public async LoadResource()

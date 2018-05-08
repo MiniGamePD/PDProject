@@ -1,16 +1,31 @@
 class LobbyView extends GameView
 {
+    private mResModule: IResModule;
+    private mStageWidth: number;
+    private mStageHeight: number;
     private textField: egret.TextField;
 
     public CreateView(): void
     {
-        let stageWidth = GameMain.GetInstance().GetStageWidth();
-        let stageHeight = GameMain.GetInstance().GetStageHeight();
+        this.mResModule = <IResModule>GameMain.GetInstance().GetModule(ModuleType.RES);
+        this.mStageWidth = GameMain.GetInstance().GetStageWidth();
+        this.mStageHeight = GameMain.GetInstance().GetStageHeight();
+
+        this.LoadBackGround();
+        this.PlayBgm();
+    }
+
+    private LoadBackGround()
+    {
+        let bg = this.mResModule.CreateBitmapByName("pd_res_json.BackGround");
+        this.addChild(bg);
+        bg.width = this.mStageWidth;
+        bg.height = this.mStageHeight;
 
         this.textField = new egret.TextField();
         this.textField.x = 0;
-        this.textField.y = stageHeight / 4;
-        this.textField.width = stageWidth;
+        this.textField.y = this.mStageHeight / 4;
+        this.textField.width = this.mStageWidth;
         this.textField.height = 100;
         this.textField.rotation = -5;
         this.textField.fontFamily = "Impact";
@@ -19,9 +34,10 @@ class LobbyView extends GameView
         this.textField.text = "Pocket Doctor";
         this.addChild(this.textField);
 
+
         var shape: egret.Shape = new egret.Shape();
         shape.graphics.beginFill(0x00A2E8);
-        shape.graphics.drawRect(stageWidth / 2 - 100, stageHeight / 5 * 3, 200, 100);
+        shape.graphics.drawRect(this.mStageWidth / 2 - 100, this.mStageHeight / 5 * 3, 200, 100);
         shape.graphics.endFill();
         this.addChild(shape);
 
@@ -33,14 +49,12 @@ class LobbyView extends GameView
         var text: egret.TextField = new egret.TextField();
         text.text = "start game";
         text.x = 0;
-        text.y = stageHeight / 5 * 3;
+        text.y = this.mStageHeight / 5 * 3;
         text.textAlign = egret.HorizontalAlign.CENTER;
         text.verticalAlign = egret.VerticalAlign.MIDDLE;
-        text.width = stageWidth;
+        text.width = this.mStageWidth;
         text.height = 100;
         this.addChild(text);
-
-        // this.PlayBgm();
     }
 
     private OnClickStartGame(): void
@@ -51,9 +65,6 @@ class LobbyView extends GameView
 
     private PlayBgm()
     {
-        // if (this.mSoundModule != null){
-        //     this.mSoundModule.PlaySound("bgm_mp3", -1);
-        // }
         var event: PlaySoundEvent = new PlaySoundEvent("bgm_mp3", -1);
         GameMain.GetInstance().DispatchEvent(event);
     }

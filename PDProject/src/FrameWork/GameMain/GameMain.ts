@@ -50,7 +50,7 @@ class GameMain implements IGameMain {
 		this.mModuleMgr = new ModuleMgr();
 		this.mModuleMgr.Init();
 
-		this.SwitchGameState(GameStateType.Lobby);
+		this.SwitchGameState(GameStateType.Init);
 	}
 
 	//更新
