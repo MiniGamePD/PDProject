@@ -25,17 +25,6 @@ class LoadingView extends GameView
         this.textField.text = "Pocket Doctor";
         this.addChild(this.textField);
 
-        var shape: egret.Shape = new egret.Shape();
-        shape.graphics.beginFill(0x00A2E8);
-        shape.graphics.drawRect(stageWidth / 2 - 100, stageHeight / 5 * 3, 200, 100);
-        shape.graphics.endFill();
-        this.addChild(shape);
-
-        //设置显示对象可以相应触摸事件
-        shape.touchEnabled = true;
-        //注册事件
-        shape.addEventListener(egret.TouchEvent.TOUCH_TAP, this.OnClickStartGame, this);
-
         this.loadingText = new egret.TextField();
         this.loadingText.text = "Loading...";
         this.loadingText.x = 0;
@@ -47,14 +36,10 @@ class LoadingView extends GameView
         this.addChild(this.loadingText);
 	}
 
-	private SetProgress(rate: number)
+	public SetProgress(rate: number)
 	{
-		this.loadingText.text = "Loading... " + rate.toPrecision();
+		var text = "Loading... " + rate.toFixed(0) + "%";
+		this.loadingText.text = text
+		egret.log(text);
 	}
-
-    private OnClickStartGame(): void
-    {
-        egret.log("OnClickStartGame");
-		// this.OnLoadingComplete();
-    }
 }

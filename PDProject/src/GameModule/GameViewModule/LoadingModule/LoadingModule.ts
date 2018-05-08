@@ -5,14 +5,14 @@ class LoadingModule extends GameViewModule
 
 	protected CreateView(): boolean
 	{
-		let view = new LoadingView();
-		view.CreateView();
-		this.gameViewList.push(view);
+		this.loadingView = new LoadingView();
+		this.loadingView .CreateView();
+		this.gameViewList.push(this.loadingView);
 
 		this.RegisterLoadingEvent();
 		this.resModule = <IResModule>GameMain.GetInstance().GetModule(ModuleType.RES);
 		this.resModule.StartLoadResource();
-		
+
 		super.Init();
 		return true;
 	}
@@ -59,8 +59,8 @@ class LoadingModule extends GameViewModule
 	private OnResourceProgress(event: RES.ResourceEvent)
 	{
 		var rate = event.itemsLoaded / event.itemsTotal;
-		egret.log("OnResourceProgress, rate = " + rate);
-
+		// egret.log("OnResourceProgress, rate = " + rate);
+		this.loadingView.SetProgress(rate * 100);
 	}
 
 	private OnResourceLoadErr(event: RES.ResourceEvent)
