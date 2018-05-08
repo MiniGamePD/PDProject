@@ -7,6 +7,8 @@ class Virus extends NpcElement
         super();
         this.virusRenderer = new SceneVirus(this);
         this.virusRenderer.RefreshTexture();
+
+        this.bornType = NpcBornType.Normal;
     }
 
     public MoveTo(posx:number, posy:number)
