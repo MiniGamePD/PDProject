@@ -15,6 +15,9 @@ class MatchView extends GameView
 
     private scoreItem: MatchScoreItem;
 
+    private gameOverPage: egret.Sprite;
+
+
     public CreateView(): void
     {
         this.mResModule = <IResModule>GameMain.GetInstance().GetModule(ModuleType.RES);
@@ -34,10 +37,13 @@ class MatchView extends GameView
         this.eliminatingAnim.Init(this);
         
         GameMain.GetInstance().AddEventListener(SceneElementControlSuccessEvent.EventName, this.ProcessControlSuccess, this);
+        GameMain.GetInstance().AddEventListener(GameOverEvent.EventName, this.OnGameOver, this);
+    }
 
-
-        //this.LoadPillForTest();
-        //GameMain.GetInstance().AddEventListener(InputEvent.EventName, this.OnInputEvent, this);
+    public ReleaseView(): void 
+    {
+        GameMain.GetInstance().RemoveEventListener(SceneElementControlSuccessEvent.EventName, this.ProcessControlSuccess, this);
+        GameMain.GetInstance().RemoveEventListener(GameOverEvent.EventName, this.OnGameOver, this);
     }
 
     public SetScene(scene: Scene)
@@ -182,55 +188,6 @@ class MatchView extends GameView
         }
     }
 
-    private LoadPillForTest()
-    {
-        if (this.mResModule != null)
-        {
-            this.mRedPill = this.mResModule.CreateBitmapByName("pd_res_json.Pill_Red");
-            this.addChild(this.mRedPill);
-            this.mRedPill.x = this.mStageWidth / 2;
-            this.mRedPill.y = this.mStageHeight / 2;
-
-            let bluePill = this.mResModule.CreateBitmapByName("pd_res_json.Pill_Blue");
-            this.addChild(bluePill);
-            bluePill.x = this.mStageWidth / 2;
-            bluePill.y = this.mStageHeight / 2 + 50;
-
-            let yellowPill = this.mResModule.CreateBitmapByName("pd_res_json.Pill_Yellow");
-            this.addChild(yellowPill);
-            yellowPill.x = this.mStageWidth / 2;
-            yellowPill.y = this.mStageHeight / 2 + 100;
-        }
-    }
-
-    private OnInputEvent(event: InputEvent): void
-    {
-        if (this.mRedPill != null)
-        {
-            var key = event.Key;
-            if (key == InputKey.Left)
-            {
-                this.mRedPill.x -= 10;
-            }
-            else if (key == InputKey.Right)
-            {
-                this.mRedPill.x += 10;
-            }
-            else if (key == InputKey.Up)
-            {
-                this.mRedPill.y -= 20;
-            }
-            else if (key == InputKey.Down)
-            {
-                this.mRedPill.y += 20;
-            }
-            else if (key == InputKey.Rotate)
-            {
-                this.mRedPill.rotation += 90;
-            }
-        }
-    }
-
     private PlayBgm()
     {
         // if (this.mSoundModule != null){
@@ -238,5 +195,35 @@ class MatchView extends GameView
         // }
         var event: PlaySoundEvent = new PlaySoundEvent("bgm_mp3", -1);
         GameMain.GetInstance().DispatchEvent(event);
+    }
+
+    private OnGameOver(event:GameOverEvent)
+    {
+        this.CreateGameOverPage();
+
+        this.addChild(this.gameOverPage);
+    }
+
+    private CreateGameOverPage()
+    {
+        if(this.gameOverPage == undefined)
+        {
+            this.gameOverPage = new egret.Sprite();
+            this.gameOverPage.graphics.beginFill(0x000000, 0.8);
+            this.gameOverPage.graphics.drawRect(0,0,this.mStageWidth, this.mStageHeight);
+            this.gameOverPage.graphics.endFill();
+
+            let textField = new egret.TextField();
+            textField.x = 0;
+            textField.y = this.mStageHeight / 4;
+            textField.width = this.mStageWidth;
+            textField.height = 100;
+            textField.rotation = -5;
+            textField.fontFamily = "Impact";
+            textField.size *= 2;
+            textField.textAlign = "center";
+            textField.text = "Game Over";
+            this.gameOverPage.addChild(textField);
+        }
     }
 }

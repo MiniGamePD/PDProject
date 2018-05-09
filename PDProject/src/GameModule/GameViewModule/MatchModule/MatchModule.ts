@@ -114,7 +114,11 @@ class MatchModule extends GameViewModule
 
 	private OnGameOver(event: GameOverEvent)
 	{
+		this.matchState = MatchState.GameOver;
 
+		this.playerControl.Sleep();
+		this.npcControl.Sleep();
+		this.scene.Sleep();
 	}
 }
 
