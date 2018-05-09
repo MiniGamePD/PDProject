@@ -224,6 +224,33 @@ class MatchView extends GameView
             textField.textAlign = "center";
             textField.text = "Game Over";
             this.gameOverPage.addChild(textField);
+
+            var shape: egret.Shape = new egret.Shape();
+            shape.graphics.beginFill(0x00A2E8);
+            shape.graphics.drawRect(this.mStageWidth / 2 - 100, this.mStageHeight / 5 * 3, 200, 100);
+            shape.graphics.endFill();
+            this.gameOverPage.addChild(shape);
+
+            //设置显示对象可以相应触摸事件
+            shape.touchEnabled = true;
+            //注册事件
+            shape.addEventListener(egret.TouchEvent.TOUCH_TAP, this.OnClickBackToLobby, this);
+
+            var text: egret.TextField = new egret.TextField();
+            text.text = "回到大厅";
+            text.x = 0;
+            text.y = this.mStageHeight / 5 * 3;
+            text.textAlign = egret.HorizontalAlign.CENTER;
+            text.verticalAlign = egret.VerticalAlign.MIDDLE;
+            text.width = this.mStageWidth;
+            text.height = 100;
+            this.gameOverPage.addChild(text);
         }
+    }
+
+    private OnClickBackToLobby(): void
+    {
+        egret.log("OnClickBackToLobby");
+        //GameMain.GetInstance().SwitchGameState(GameStateType.Match);
     }
 }
