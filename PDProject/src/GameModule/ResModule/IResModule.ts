@@ -1,5 +1,9 @@
 interface IResModule extends IModule
 {
+	/**
+	 * 开始加载资源
+	 */
+	StartLoadResource(): void;
 
 	/**
 	 * 获取资源

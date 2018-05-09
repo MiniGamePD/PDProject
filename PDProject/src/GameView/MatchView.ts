@@ -28,7 +28,7 @@ class MatchView extends GameView
         this.scoreItem.Init();
         this.addChild(this.scoreItem);
 
-        this.PlayBgm();
+        // this.PlayBgm();
 
         this.eliminatingAnim = new EliminatingAnimation();
         this.eliminatingAnim.Init(this);
