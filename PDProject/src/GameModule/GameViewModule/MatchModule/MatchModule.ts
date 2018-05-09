@@ -6,8 +6,6 @@ class MatchModule extends GameViewModule
 	private npcControl: NpcControl;
 	private matchScore: MatchScore;
 	private gameplayElementFactory:GameplayElementFactory;
-	private creatorWorkParam:CreatorWorkParam;
-	private controlableElementCreator: ControlableElementCreator;
 	private controlWorkParam: GameplayControlWorkParam;
 
 	private difficulty:number; //游戏的难度系数，随着时间增长
@@ -30,7 +28,7 @@ class MatchModule extends GameViewModule
 
 		this.gameplayElementFactory = new GameplayElementFactory();
 
-		this.playerControl = new PlayerControl();
+		this.playerControl = new PlayerControl(this.gameplayElementFactory);
 		this.playerControl.Init();
 
 		this.npcControl = new NpcControl(this.gameplayElementFactory);
@@ -40,8 +38,6 @@ class MatchModule extends GameViewModule
 		this.matchScore.Init();
 		
 		this.controlWorkParam = new GameplayControlWorkParam();
-		this.creatorWorkParam = new CreatorWorkParam();
-		this.controlableElementCreator = new ControlableElementCreator(this.gameplayElementFactory);
 
 		this.InitMatch();
 
@@ -87,7 +83,9 @@ class MatchModule extends GameViewModule
 	private StartSceneEliminate(event: PlayerControlFinishEvent)
 	{
 		this.matchState = MatchState.Eliminate;
+
 		this.playerControl.Sleep();
+
 		this.scene.Work();
 	}
 
@@ -95,11 +93,11 @@ class MatchModule extends GameViewModule
 	{
 		this.matchState = MatchState.NpcControl;
 
+		this.scene.Sleep();
+
 		this.controlWorkParam.difficulty = this.difficulty;
 		this.controlWorkParam.turn = this.turn;
 		this.npcControl.Work(this.controlWorkParam);
-
-		this.scene.Sleep();
 	}
 
 	private StartPlayerControl(event: NpcControlFinishEvent)
@@ -107,15 +105,11 @@ class MatchModule extends GameViewModule
 		this.matchState = MatchState.PlayerControl;
 		this.turn++;
 
-		this.creatorWorkParam.paramIndex = ControlableElementCreateType.Normal;
-		this.creatorWorkParam.createNum = 1;
-		let controlElement:ControlableElement = this.controlableElementCreator.Work(this.creatorWorkParam);
-		this.controlableElementCreator.Sleep();
+		this.npcControl.Sleep();
 
-		this.playerControl.SetTarget(controlElement);
-		this.playerControl.Work();
-
-		this.scene.Sleep();
+		this.controlWorkParam.difficulty = this.difficulty;
+		this.controlWorkParam.turn = this.turn;
+		this.playerControl.Work(this.controlWorkParam);
 	}
 
 	private OnGameOver(event: GameOverEvent)

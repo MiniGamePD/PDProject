@@ -4,6 +4,15 @@ class PlayerControl extends GameModuleComponentBase
     private dropdownTimer:number;
     public target:ControlableElement;
 	private playSoundEvent: PlaySoundEvent;
+    private controlableElementCreator: ControlableElementCreator;
+    private creatorWorkParam:CreatorWorkParam;
+
+    public constructor(gameplayElementFactory:GameplayElementFactory)
+    {
+        super();
+        this.creatorWorkParam = new CreatorWorkParam();
+        this.controlableElementCreator = new ControlableElementCreator(gameplayElementFactory);
+    }
 
     public Init():void
     {
@@ -19,14 +28,24 @@ class PlayerControl extends GameModuleComponentBase
         GameMain.GetInstance().RemoveEventListener(SceneElementControlSuccessEvent.EventName, this.OnPlayerControlSuccess, this);
     }
 
-    public SetTarget(target:ControlableElement)
+    public Work(param?:any):any
     {
-        this.target = target;
-    }
-    
-    public Work()
-    {
-        super.Work();
+        super.Work(param);
+
+        let controlWorkParam:GameplayControlWorkParam = param;
+
+        if(controlWorkParam.turn == 1)
+        {
+            this.creatorWorkParam.paramIndex = ControlableElementCreateType.AllRandomPill;
+        }
+        else
+        {
+            this.creatorWorkParam.paramIndex = ControlableElementCreateType.Normal;
+        }
+
+	    this.creatorWorkParam.createNum = 1;
+		this.target = this.controlableElementCreator.Work(this.creatorWorkParam);
+
         this.dropdownTimer = 0;
         this.DispatchControlEvent(SceneElementControlType.Add);
     }
