@@ -53,7 +53,7 @@ class NpcControl extends GameModuleComponentBase
 
 		this.creatorWorkParam.paramIndex = NpcElementCreateType.RandomVirus;
 		this.creatorWorkParam.createNum = 8;
-		let npcElements:NpcElement[] = this.npcElementCreator.Work(this.creatorWorkParam);
+		let npcElements:NpcElement[] = this.npcElementCreator.CreateElement(this.creatorWorkParam);
 
 		this.ArrangePos(npcElements, sceneEmptyBlocks);
     }

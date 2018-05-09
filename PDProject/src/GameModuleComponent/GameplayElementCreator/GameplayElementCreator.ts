@@ -1,38 +1,33 @@
-abstract class GameplayElementCreator extends GameModuleComponentBase
+abstract class GameplayElementCreator
 {
     private gameplayElementFactory:GameplayElementFactory;
     protected paramDic:InternalCreatorBase[][];
 
     public constructor(gameplayElementFactory:GameplayElementFactory)
     {
-        super();
         this.gameplayElementFactory = gameplayElementFactory;
     }
 
-    public Work(param:any):any
+    public CreateElement(param:CreatorWorkParam):any
     {
-        super.Work(param);
-
-        let workParam:CreatorWorkParam = param;
-
-        let paramIndex:number = workParam.paramIndex;
-        let params = this.paramDic[paramIndex];
+        let paramIndex:number = param.paramIndex;
+        let createParams = this.paramDic[paramIndex];
 
         let element:GameplayElementBase = null;
 		let random = Math.random();
-        for(var i = 0; i < params.length; ++i)
+        for(var i = 0; i < createParams.length; ++i)
         {
-            let internalCreator:InternalCreatorBase = params[i];
+            let internalCreator:InternalCreatorBase = createParams[i];
             if(internalCreator.ProbabilityMatch(random))
             {
-                if(workParam.createNum == 1)
+                if(param.createNum == 1)
                 {
                     return internalCreator.CreateElement(this.gameplayElementFactory);
                 }
                 else
                 {
                     let result:GameplayElementBase[] = [];
-                    for(var i = 0; i < workParam.createNum; ++i)
+                    for(var i = 0; i < param.createNum; ++i)
                     {
                         result.push(internalCreator.CreateElement(this.gameplayElementFactory));
                     }
@@ -41,7 +36,7 @@ abstract class GameplayElementCreator extends GameModuleComponentBase
             }
         }
 
-		console.error("Can't Create GameplayElement for " + workParam.paramIndex);
+		console.error("Can't Create GameplayElement for " + param.paramIndex);
     }
 }
 

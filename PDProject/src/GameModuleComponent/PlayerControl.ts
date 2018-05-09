@@ -44,7 +44,7 @@ class PlayerControl extends GameModuleComponentBase
         }
 
 	    this.creatorWorkParam.createNum = 1;
-		this.target = this.controlableElementCreator.Work(this.creatorWorkParam);
+		this.target = this.controlableElementCreator.CreateElement(this.creatorWorkParam);
 
         this.dropdownTimer = 0;
         this.DispatchControlEvent(SceneElementControlType.Add);
