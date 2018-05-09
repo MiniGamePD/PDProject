@@ -8,13 +8,16 @@ class MatchModule extends GameViewModule
 	private gameplayElementFactory:GameplayElementFactory;
 	private creatorWorkParam:CreatorWorkParam;
 	private controlableElementCreator: ControlableElementCreator;
-	private npcElementCreator: NpcElementCreator;
-	
+	private controlWorkParam: GameplayControlWorkParam;
+
+	private difficulty:number; //游戏的难度系数，随着时间增长
+	private turn:number; //回合数
 
 	protected CreateView(): boolean
 	{
-		GameMain.GetInstance().AddEventListener(PlayerControlFinishEvent.EventName, this.OnPlayerControlFinish, this);
-		GameMain.GetInstance().AddEventListener(SceneEliminateFinishEvent.EventName, this.OnSceneElininateFinish, this);
+		GameMain.GetInstance().AddEventListener(PlayerControlFinishEvent.EventName, this.StartSceneEliminate, this);
+		GameMain.GetInstance().AddEventListener(SceneEliminateFinishEvent.EventName, this.StartNpcControl, this);
+		GameMain.GetInstance().AddEventListener(NpcControlFinishEvent.EventName, this.StartPlayerControl, this);
 		GameMain.GetInstance().AddEventListener(GameOverEvent.EventName, this.OnGameOver, this);
 
 		this.scene = new Scene();
@@ -25,18 +28,20 @@ class MatchModule extends GameViewModule
 		view.CreateView();
 		this.gameViewList.push(view);
 
+		this.gameplayElementFactory = new GameplayElementFactory();
+
 		this.playerControl = new PlayerControl();
 		this.playerControl.Init();
 
-		this.npcControl = new NpcControl();
+		this.npcControl = new NpcControl(this.gameplayElementFactory);
+		this.npcControl.Init();
 
 		this.matchScore = new MatchScore();
 		this.matchScore.Init();
-
+		
+		this.controlWorkParam = new GameplayControlWorkParam();
 		this.creatorWorkParam = new CreatorWorkParam();
-		this.gameplayElementFactory = new GameplayElementFactory();
 		this.controlableElementCreator = new ControlableElementCreator(this.gameplayElementFactory);
-		this.npcElementCreator = new NpcElementCreator(this.gameplayElementFactory);
 
 		this.InitMatch();
 
@@ -50,9 +55,12 @@ class MatchModule extends GameViewModule
 		this.scene = null;
 		this.playerControl.Release();
 		this.playerControl = null;
+		this.npcControl.Release();
+		this.npcControl = null;
 
-		GameMain.GetInstance().RemoveEventListener(PlayerControlFinishEvent.EventName, this.OnPlayerControlFinish, this);
-		GameMain.GetInstance().RemoveEventListener(SceneEliminateFinishEvent.EventName, this.OnSceneElininateFinish, this);
+		GameMain.GetInstance().RemoveEventListener(PlayerControlFinishEvent.EventName, this.StartSceneEliminate, this);
+		GameMain.GetInstance().RemoveEventListener(SceneEliminateFinishEvent.EventName, this.StartNpcControl, this);
+		GameMain.GetInstance().RemoveEventListener(NpcControlFinishEvent.EventName, this.StartPlayerControl, this);
 		GameMain.GetInstance().RemoveEventListener(GameOverEvent.EventName, this.OnGameOver, this);
 	}
 
@@ -66,47 +74,38 @@ class MatchModule extends GameViewModule
 		super.Update(deltaTime);
 		this.scene.Update(deltaTime);
 		this.playerControl.Update(deltaTime);
+		this.npcControl.Update(deltaTime);
 	}
 
 	private InitMatch()
 	{
-		this.matchState = MatchState.Init;
-
-		let sceneEmptyBlocks = this.scene.GetEmptyBlocks(0, 2);
-
-		this.creatorWorkParam.paramIndex = NpcElementCreateType.RandomVirus;
-		this.creatorWorkParam.createNum = 8;
-		let npcElements:NpcElement[] = this.npcElementCreator.Work(this.creatorWorkParam);
-		this.npcElementCreator.Sleep();
-
-		this.npcControl.ArrangePos(npcElements, sceneEmptyBlocks);
-
-		this.OnInitFinish();
+		this.difficulty = 0;
+		this.turn = 0;
+		this.StartNpcControl(null);
 	}
 
-	private OnInitFinish()
-	{
-		this.matchState = MatchState.PlayerControl;
-
-		this.creatorWorkParam.paramIndex = ControlableElementCreateType.AllRandomPill;
-		this.creatorWorkParam.createNum = 1;
-		let controlElement:ControlableElement = this.controlableElementCreator.Work(this.creatorWorkParam);
-		this.controlableElementCreator.Sleep();
-		this.playerControl.SetTarget(controlElement);
-		this.playerControl.Work();
-		this.scene.Sleep();
-	}
-
-	private OnPlayerControlFinish(event: PlayerControlFinishEvent)
+	private StartSceneEliminate(event: PlayerControlFinishEvent)
 	{
 		this.matchState = MatchState.Eliminate;
 		this.playerControl.Sleep();
 		this.scene.Work();
 	}
 
-	private OnSceneElininateFinish(event: SceneEliminateFinishEvent)
+	private StartNpcControl(event: SceneEliminateFinishEvent)
+	{
+		this.matchState = MatchState.NpcControl;
+
+		this.controlWorkParam.difficulty = this.difficulty;
+		this.controlWorkParam.turn = this.turn;
+		this.npcControl.Work(this.controlWorkParam);
+
+		this.scene.Sleep();
+	}
+
+	private StartPlayerControl(event: NpcControlFinishEvent)
 	{
 		this.matchState = MatchState.PlayerControl;
+		this.turn++;
 
 		this.creatorWorkParam.paramIndex = ControlableElementCreateType.Normal;
 		this.creatorWorkParam.createNum = 1;
@@ -128,7 +127,8 @@ class MatchModule extends GameViewModule
 enum MatchState
 {
 	None,
-	Init, //预先生成一些细菌
+	Init, //游戏开始
+	NpcControl, //处理Npc的AI，是否要生成新的Npc
 	PlayerControl, //该状态下玩家可控制药丸旋转、下落
 	Eliminate, //消除阶段，计算刚才玩家的操作是否产生消除，以及处理消除的各种效果
 	GameOver //拜拜了

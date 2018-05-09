@@ -29,12 +29,14 @@ class Scene extends GameModuleComponentBase
 
         GameMain.GetInstance().AddEventListener(SceneElementControlEvent.EventName, this.ProcessControlCmd, this);
         GameMain.GetInstance().AddEventListener(SpecialEliminateRequestEvent.EventName, this.ProcessSpecialEliminateRequest, this);
+        GameMain.GetInstance().AddEventListener(SceneElementAccessEvent.EventName, this.OnAccessSceneElements, this);
     }
 
     public Release() 
     {
         GameMain.GetInstance().RemoveEventListener(SceneElementControlEvent.EventName, this.ProcessControlCmd, this);
         GameMain.GetInstance().RemoveEventListener(SpecialEliminateRequestEvent.EventName, this.ProcessSpecialEliminateRequest, this);
+        GameMain.GetInstance().RemoveEventListener(SceneElementAccessEvent.EventName, this.OnAccessSceneElements, this);
     }
 
     private ProcessControlCmd(event: SceneElementControlEvent) 
@@ -608,7 +610,34 @@ class Scene extends GameModuleComponentBase
         return result;
     }
 
-    public GetEmptyBlocks(startX:number, startY:number, endX?:number, endY?:number):number[][]
+    private OnAccessSceneElements(event:SceneElementAccessEvent)
+    {
+        let queryElementBlocks:number[][] = null;
+
+        switch(event.accessType)
+        {
+            case SceneElementAccessType.GetEmptyBlocks:
+            {
+                queryElementBlocks = this.GetEmptyBlocks(event.startX, event.startY, event.endX, event.endY);
+                break;
+            }
+            default:
+            {
+                console.error("Unknow access type " + event.accessType);
+                break;
+            }
+        }
+
+        if(queryElementBlocks != null)
+        {
+            let answerEvent = new SceneElementAccessAnswerEvent();
+            answerEvent.accessType = event.accessType;
+            answerEvent.queryElementBlocks = queryElementBlocks;
+            GameMain.GetInstance().DispatchEvent(answerEvent);
+        }
+    }
+
+    private GetEmptyBlocks(startX:number, startY:number, endX?:number, endY?:number):number[][]
     {
         let result:number[][] = undefined;
 
@@ -650,6 +679,11 @@ enum SceneElementControlType
     Add,
     Move,
     Rotation,
+}
+
+enum SceneElementAccessType
+{
+    GetEmptyBlocks,
 }
 
 enum Direction 

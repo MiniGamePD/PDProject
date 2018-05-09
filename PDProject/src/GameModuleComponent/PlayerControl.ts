@@ -61,9 +61,9 @@ class PlayerControl extends GameModuleComponentBase
 		}
     }
 
-    public Update(deltaTime:number)
+    protected UpdateInternal(deltaTime:number)
     {
-        if(this.isWorking && this.target != null)
+        if(this.target != null)
 		{
             this.TryDropdown(deltaTime);
         }
