@@ -10,7 +10,6 @@ class MatchView extends GameView
     private mElementWidth: number;
     private mElementHeight: number;
     private mBattleGround: egret.Sprite;
-    private mRedPill: egret.Bitmap;
     private eliminatingAnim: EliminatingAnimation;
 
     private scoreItem: MatchScoreItem;
@@ -44,6 +43,15 @@ class MatchView extends GameView
     {
         GameMain.GetInstance().RemoveEventListener(SceneElementControlSuccessEvent.EventName, this.ProcessControlSuccess, this);
         GameMain.GetInstance().RemoveEventListener(GameOverEvent.EventName, this.OnGameOver, this);
+    }
+
+    private ResetView()
+    {
+        let bottle = this.mBattleGround.getChildAt(0);
+        this.mBattleGround.removeChildren();
+        this.mBattleGround.addChild(bottle);
+
+        this.scoreItem.Reset();   
     }
 
     public SetScene(scene: Scene)
@@ -304,7 +312,17 @@ class MatchView extends GameView
 
     private OnClickPlayAgain(): void
     {
+        if(DEBUG)
+        {
+            egret.log("OnClickPlayAgain");
+        }
 
+        this.removeChild(this.gameOverPage);    
+
+        this.ResetView();
+       
+        let event = new ReplayGameEvent();
+        GameMain.GetInstance().DispatchEvent(event);
     }
 
     private OnClickRevive(): void

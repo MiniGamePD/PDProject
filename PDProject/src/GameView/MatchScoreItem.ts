@@ -38,4 +38,9 @@ class MatchScoreItem extends egret.DisplayObjectContainer
 	{
 		this.scoreText.text = score.toString();
 	}
+
+	public Reset()
+	{
+		this.SetScore(0);
+	}
 }

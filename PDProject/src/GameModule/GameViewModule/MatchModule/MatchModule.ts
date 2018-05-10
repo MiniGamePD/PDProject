@@ -11,20 +11,45 @@ class MatchModule extends GameViewModule
 	private difficulty:number; //游戏的难度系数，随着时间增长
 	private turn:number; //回合数
 
+	private matchView:MatchView;
+
 	protected CreateView(): boolean
 	{
 		GameMain.GetInstance().AddEventListener(PlayerControlFinishEvent.EventName, this.StartSceneEliminate, this);
 		GameMain.GetInstance().AddEventListener(SceneEliminateFinishEvent.EventName, this.StartNpcControl, this);
 		GameMain.GetInstance().AddEventListener(NpcControlFinishEvent.EventName, this.StartPlayerControl, this);
 		GameMain.GetInstance().AddEventListener(GameOverEvent.EventName, this.OnGameOver, this);
+		GameMain.GetInstance().AddEventListener(ReplayGameEvent.EventName, this.OnReplayGame, this);
 
+		this.InitComponents();
+
+		this.matchView = new MatchView();
+		this.matchView.SetScene(this.scene);
+		this.matchView.CreateView();
+		this.gameViewList.push(this.matchView);
+
+		this.InitMatch();
+
+		return true;
+	}
+
+	public ReleaseView(): void
+	{
+		super.ReleaseView();
+		
+		this.DeInitComponents();
+
+		GameMain.GetInstance().RemoveEventListener(PlayerControlFinishEvent.EventName, this.StartSceneEliminate, this);
+		GameMain.GetInstance().RemoveEventListener(SceneEliminateFinishEvent.EventName, this.StartNpcControl, this);
+		GameMain.GetInstance().RemoveEventListener(NpcControlFinishEvent.EventName, this.StartPlayerControl, this);
+		GameMain.GetInstance().RemoveEventListener(GameOverEvent.EventName, this.OnGameOver, this);
+		GameMain.GetInstance().RemoveEventListener(ReplayGameEvent.EventName, this.OnReplayGame, this);
+	}
+
+	private InitComponents()
+	{
 		this.scene = new Scene();
 		this.scene.Init();
-
-		let view = new MatchView();
-		view.SetScene(this.scene);
-		view.CreateView();
-		this.gameViewList.push(view);
 
 		this.gameplayElementFactory = new GameplayElementFactory();
 
@@ -39,25 +64,18 @@ class MatchModule extends GameViewModule
 		
 		this.controlWorkParam = new GameplayControlWorkParam();
 
-		this.InitMatch();
-
-		return true;
+		this.difficulty = 0;
+		this.turn = 0;
 	}
 
-	public ReleaseView(): void
+	private DeInitComponents()
 	{
-		super.ReleaseView();
 		this.scene.Release();
 		this.scene = null;
 		this.playerControl.Release();
 		this.playerControl = null;
 		this.npcControl.Release();
 		this.npcControl = null;
-
-		GameMain.GetInstance().RemoveEventListener(PlayerControlFinishEvent.EventName, this.StartSceneEliminate, this);
-		GameMain.GetInstance().RemoveEventListener(SceneEliminateFinishEvent.EventName, this.StartNpcControl, this);
-		GameMain.GetInstance().RemoveEventListener(NpcControlFinishEvent.EventName, this.StartPlayerControl, this);
-		GameMain.GetInstance().RemoveEventListener(GameOverEvent.EventName, this.OnGameOver, this);
 	}
 
 	public SwitchForeOrBack(from: GameStateType, to: GameStateType): void
@@ -119,6 +137,14 @@ class MatchModule extends GameViewModule
 		this.playerControl.Sleep();
 		this.npcControl.Sleep();
 		this.scene.Sleep();
+	}
+
+	private OnReplayGame(event: ReplayGameEvent)
+	{
+		this.DeInitComponents();
+		this.InitComponents();
+		this.matchView.SetScene(this.scene);
+		this.InitMatch();
 	}
 }
 
