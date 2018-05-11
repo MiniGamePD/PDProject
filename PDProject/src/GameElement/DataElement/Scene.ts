@@ -11,6 +11,8 @@ class Scene extends GameModuleComponentBase
     private controlFailedEvent: SceneElementControlFailedEvent;
     private eliminateEvent: EliminateEvent;
 
+    private eliminateColor: GameElementColor;
+
     public Init(): void 
     {
         this.eliminateInfo = new EliminateInfo();
@@ -22,6 +24,8 @@ class Scene extends GameModuleComponentBase
                 this.sceneData[i].push(null);
             }
         }
+
+        this.eliminateColor = GameElementColor.random;
 
         this.controlSuccessEvent = new SceneElementControlSuccessEvent();
         this.controlFailedEvent = new SceneElementControlFailedEvent();
@@ -116,6 +120,12 @@ class Scene extends GameModuleComponentBase
         this.CheckEliminating();
     }
 
+    // 设置下一次消除，先消除某种特定颜色的
+    public SetEliminateByColor(color: GameElementColor)
+    {
+        this.eliminateColor = color;
+    }
+
     //#####消除相关######
     public TryEliminate(): boolean
     {
@@ -140,6 +150,7 @@ class Scene extends GameModuleComponentBase
         if (this.isWorking && !this.eliminateInfo.HasInfo)
         {
             var result = this.TryEliminate();
+            this.eliminateColor = GameElementColor.random;
             if (!result)
             {
                 this.FinishEliminate();
@@ -400,7 +411,7 @@ class Scene extends GameModuleComponentBase
     }
 
     // 判断一个元素是否需要被消除(横竖方向满足相邻的3个相同颜色的块)
-    private NeedEliminate(element: SceneElementBase): boolean
+    private NeedEliminateByBorder(element: SceneElementBase): boolean
     {
         var needEliminate: boolean = false;
         var cloumnCount: number = 1;
@@ -467,6 +478,32 @@ class Scene extends GameModuleComponentBase
             needEliminate = true;
         }
 
+        return needEliminate;
+    }
+
+    // 判断一个元素是否需要被消除(按指定颜色)
+    private NeedEliminateByColor(element: SceneElementBase, color: GameElementColor): boolean
+    {
+        if (element != null
+            && element.color == color)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    // 判断一个元素是否需要被消除
+    private NeedEliminate(element: SceneElementBase): boolean
+    {
+        var needEliminate: boolean = false;
+        if (this.eliminateColor == GameElementColor.random)
+        {
+            needEliminate = this.NeedEliminateByBorder(element);
+        }
+        else
+        {
+            needEliminate = this.NeedEliminateByColor(element, this.eliminateColor);
+        }
         return needEliminate;
     }
     //#####消除相关######
