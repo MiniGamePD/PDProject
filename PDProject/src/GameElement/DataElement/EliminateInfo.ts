@@ -43,3 +43,24 @@ class EliminateMoveInfo {
 		this.EndPosY = endPosY
 	}
 }
+
+enum EliminateMethodType
+{
+	Normal = 0, //普通的三消方案
+	SpecificColor, //特定颜色
+	SpecificRegion, //特定区域
+}
+
+class EliminateMethod
+{
+	public methodType: EliminateMethodType;
+
+	public specificColor: GameElementColor; //特定颜色
+
+	public specificRegion: number[];
+
+	public Reset()
+	{
+		this.methodType = EliminateMethodType.Normal;
+	}
+}
