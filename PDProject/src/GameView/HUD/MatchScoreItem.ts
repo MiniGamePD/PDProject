@@ -19,9 +19,7 @@ class MatchScoreItem extends egret.DisplayObjectContainer
 		this.scoreText.text = "0";
 		this.addChild(this.scoreText);
 
-
 		GameMain.GetInstance().AddEventListener(MatchScoreChangeEvent.EventName, this.OnScoreChange, this);
-
 	}
 
 	public Update(deltaTime: number)

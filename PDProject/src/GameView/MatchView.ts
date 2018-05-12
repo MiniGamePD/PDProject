@@ -12,8 +12,6 @@ class MatchView extends GameView
     private mBattleGround: egret.Sprite;
     private eliminatingAnim: EliminatingAnimation;
 
-    private scoreItem: MatchScoreItem;
-
     private gameOverPage: egret.Sprite;
     private hud:MatchHUD;
 
@@ -26,10 +24,6 @@ class MatchView extends GameView
 
         this.LoadBackGround();
         this.CreateHUD();
-
-        this.scoreItem = new MatchScoreItem();
-        this.scoreItem.Init();
-        this.addChild(this.scoreItem);
 
         // this.PlayBgm();
 
@@ -54,7 +48,7 @@ class MatchView extends GameView
         this.mBattleGround.removeChildren();
         this.mBattleGround.addChild(bottle);
 
-        this.scoreItem.Reset();   
+        this.hud.Reset();   
     }
 
     public SetScene(scene: Scene)
@@ -73,7 +67,7 @@ class MatchView extends GameView
             this.RefreshScene();
         }
 
-        this.scoreItem.Update(deltaTime);
+        this.hud.Update(deltaTime);
     }
 
     private ProcessControlSuccess(event: SceneElementControlSuccessEvent)
