@@ -1,7 +1,7 @@
 {
 	"groups": [
 		{
-			"keys": "bgm_mp3,pd_res_json,Boom_mp3,Eliminate_mp3,EliminateRow_mp3,OnDown_mp3,VirusEliminate_mp3,newParticle_json,newParticle_png,EnemySinisterSmile1_mp3,EnemySinisterSmile2_mp3,EnemySinisterSmile3_mp3,EnemySinisterSmile4_mp3,VirusBorn_mp3",
+			"keys": "bgm_mp3,pd_res_json,Boom_mp3,Eliminate_mp3,EliminateRow_mp3,OnDown_mp3,VirusEliminate_mp3,newParticle_json,newParticle_png,EnemySinisterSmile1_mp3,EnemySinisterSmile2_mp3,EnemySinisterSmile3_mp3,EnemySinisterSmile4_mp3,VirusBorn_mp3,BossSkill_mp3,GameOver_mp3,Go_mp3,Ready_mp3",
 			"name": "preload"
 		}
 	],
@@ -91,6 +91,26 @@
 			"name": "VirusBorn_mp3",
 			"type": "sound",
 			"url": "assets/VirusBorn.mp3"
+		},
+		{
+			"name": "BossSkill_mp3",
+			"type": "sound",
+			"url": "assets/BossSkill.mp3"
+		},
+		{
+			"name": "GameOver_mp3",
+			"type": "sound",
+			"url": "assets/GameOver.mp3"
+		},
+		{
+			"name": "Go_mp3",
+			"type": "sound",
+			"url": "assets/Go.mp3"
+		},
+		{
+			"name": "Ready_mp3",
+			"type": "sound",
+			"url": "assets/Ready.mp3"
 		}
 	]
 }
