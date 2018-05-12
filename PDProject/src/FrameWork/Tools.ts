@@ -166,4 +166,22 @@ class Tools
 		}
 		return target;
 	}
+
+	// 计算某两个左边的构成的区域的坐标点
+	public static GetRegionPosList(startX: number, startY: number, endX: number, endY: number): number[]
+	{
+		var target: number[] = [];
+		var minX = Math.min(startX, endX);
+		var maxX = Math.max(startX, endX);
+		var minY = Math.min(startY, endY);
+		var maxY = Math.max(startY, endY);
+		for (var x = minX; x <= maxX; ++x)
+		{
+			for (var y = minY; y <= maxY; ++y)
+			{
+				target.push(x, y);
+			}
+		}
+		return target;
+	}
 }

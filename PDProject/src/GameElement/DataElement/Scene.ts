@@ -154,6 +154,10 @@ class Scene extends GameModuleComponentBase
             do
             {
                 var hasMove = this.MoveAfterEliminate();
+                if (hasMove)
+                {
+                    this.eliminateInfo.HasInfo = true;
+                }
             } while (hasMove)
         }
         var result = this.eliminateInfo.HasInfo;
@@ -545,7 +549,7 @@ class Scene extends GameModuleComponentBase
         }
         else if (this.eliminateMethod.methodType == EliminateMethodType.SpecificRegion)
         {
-            needEliminate = this.NeedEliminateByRegion(element, this.eliminateMethod.specificRegion/**/);
+            needEliminate = this.NeedEliminateByRegion(element, this.eliminateMethod.specificRegion);
         }
         return needEliminate;
     }

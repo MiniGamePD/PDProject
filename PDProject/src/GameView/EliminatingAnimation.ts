@@ -34,8 +34,15 @@ class EliminatingAnimation
 		this.moveDownFinish = false;
 		this.isLightningHide = false;
 		this.eliminateInfo = eliminateInfo;
-		this.EnterState(EliminatingAnimState.Lightning);
-		this.PlayEliminateSound();
+		if (this.eliminateInfo.EliminatedElements.length > 0)
+		{
+			this.EnterState(EliminatingAnimState.Lightning);
+			this.PlayEliminateSound();
+		}
+		else
+		{
+			this.EnterState(EliminatingAnimState.MoveDown);
+		}
 	}
 
 	public Update(deltaTime: number)
