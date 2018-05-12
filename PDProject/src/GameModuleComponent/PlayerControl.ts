@@ -7,6 +7,8 @@ class PlayerControl extends GameModuleComponentBase
     private controlableElementCreator: ControlableElementCreator;
     private creatorWorkParam:CreatorWorkParam;
 
+    private startWorkTimer:egret.Timer;
+
     public constructor(gameplayElementFactory:GameplayElementFactory)
     {
         super();
@@ -30,24 +32,42 @@ class PlayerControl extends GameModuleComponentBase
 
     public Work(param?:any):any
     {
-        super.Work(param);
+        
 
         let controlWorkParam:GameplayControlWorkParam = param;
 
+        
         if(controlWorkParam.turn == 1)
         {
             this.creatorWorkParam.paramIndex = ControlableElementCreateType.AllRandomPill;
+            this.creatorWorkParam.createNum = 1;
+		    this.target = this.controlableElementCreator.CreateElement(this.creatorWorkParam);
+
+            //等待ready go结束
+            this.startWorkTimer = new egret.Timer(1500, 1);
+            this.startWorkTimer.addEventListener(egret.TimerEvent.TIMER, this.ReallyStartWork, this);
+            this.startWorkTimer.start();
+
+            let event = new HUDEvent();
+            event.eventType = HUDEventType.ShowReadyGo;
+            GameMain.GetInstance().DispatchEvent(event);
         }
         else
         {
             this.creatorWorkParam.paramIndex = ControlableElementCreateType.Normal;
+            this.creatorWorkParam.createNum = 1;
+		    this.target = this.controlableElementCreator.CreateElement(this.creatorWorkParam);
+
+            this.ReallyStartWork();
         }
+    }
 
-	    this.creatorWorkParam.createNum = 1;
-		this.target = this.controlableElementCreator.CreateElement(this.creatorWorkParam);
-
+    private ReallyStartWork()
+    {
+        this.startWorkTimer = null;
         this.dropdownTimer = 0;
         this.DispatchControlEvent(SceneElementControlType.Add);
+        super.Work();
     }
 
     public Sleep()

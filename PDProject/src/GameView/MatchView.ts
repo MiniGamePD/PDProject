@@ -15,7 +15,7 @@ class MatchView extends GameView
     private scoreItem: MatchScoreItem;
 
     private gameOverPage: egret.Sprite;
-
+    private hud:MatchHUD;
 
     public CreateView(): void
     {
@@ -25,6 +25,7 @@ class MatchView extends GameView
         this.mStageHeight = GameMain.GetInstance().GetStageHeight();
 
         this.LoadBackGround();
+        this.CreateHUD();
 
         this.scoreItem = new MatchScoreItem();
         this.scoreItem.Init();
@@ -41,6 +42,8 @@ class MatchView extends GameView
 
     public ReleaseView(): void 
     {
+        this.DeleteHUD();
+
         GameMain.GetInstance().RemoveEventListener(SceneElementControlSuccessEvent.EventName, this.ProcessControlSuccess, this);
         GameMain.GetInstance().RemoveEventListener(GameOverEvent.EventName, this.OnGameOver, this);
     }
@@ -187,13 +190,30 @@ class MatchView extends GameView
 
             this.mBattleGround.addChild(bottle);
 
-            console.log(battleRect);
+            if(DEBUG)
+                console.log(battleRect);
 
             this.mElementWidth = battleRect.width / Scene.Columns;
             this.mElementHeight = battleRect.height / Scene.Rows;
             this.mBattleGroundStartXCenter = battleRect.x + this.mElementWidth / 2;
             this.mBattleGroundStartYCenter = battleRect.y + this.mElementHeight / 2;
         }
+    }
+
+    private CreateHUD()
+    {
+        this.hud = new MatchHUD();
+        this.hud.width = this.mStageWidth;
+        this.hud.height = this.mStageHeight;
+        this.hud.x = this.hud.y = 0;
+        this.hud.Init();
+        this.addChild(this.hud);
+    }
+
+    private DeleteHUD()
+    {
+        this.hud.Release();
+        this.hud = null;
     }
 
     private PlayBgm()
@@ -205,6 +225,7 @@ class MatchView extends GameView
         GameMain.GetInstance().DispatchEvent(event);
     }
 
+    //####### Game Over ##########
     private OnGameOver(event:GameOverEvent)
     {
         this.CreateGameOverPage();
@@ -332,4 +353,5 @@ class MatchView extends GameView
     {
 
     }
+    //####### Game Over ##########
 }
