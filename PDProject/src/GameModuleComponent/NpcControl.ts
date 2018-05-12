@@ -8,8 +8,13 @@ class NpcControl extends GameModuleComponentBase
     //用于将npc一个一个添加进场景中的表现
     private tobeAddToSceneNpcArray:NpcElement[];
     private sceneEmptyBlocks:number[][];
-    private addNpcTimer:number;
     private addNpcToSceneInterval:number;
+
+    //如果创建了Npc，则播放一个很贱的笑声
+    private npcSmileSound:string;
+
+    private npcControlTimer:number;
+    private npcControlState:NpcControlState;
 
     public constructor(gameplayElementFactory:GameplayElementFactory)
     {
@@ -28,35 +33,6 @@ class NpcControl extends GameModuleComponentBase
         GameMain.GetInstance().RemoveEventListener(SceneElementAccessAnswerEvent.EventName, this.OnReciveSceneData, this);
     }
 
-    protected UpdateInternal(deltaTime:number)
-    { 
-        if(this.tobeAddToSceneNpcArray != null && this.tobeAddToSceneNpcArray.length > 0)
-        {
-            this.addNpcTimer += deltaTime;
-            if(this.addNpcTimer >= this.addNpcToSceneInterval)
-            {
-                let index = this.tobeAddToSceneNpcArray.length - 1;
-                let npc = this.tobeAddToSceneNpcArray[index];
-                this.ArrangePos(npc, this.sceneEmptyBlocks);
-                this.tobeAddToSceneNpcArray.splice(index, 1);
-                this.addNpcTimer = 0;
-                this.addNpcToSceneInterval -= addNpcToSceneIntervalStep;
-                this.addNpcToSceneInterval = Math.max(this.addNpcToSceneInterval, addNpcToSceneIntervalMin);
-            }
-        }
-        else
-        {
-            this.addNpcTimer = 0;
-            this.tobeAddToSceneNpcArray = null;
-            this.sceneEmptyBlocks = null;
-            this.addNpcToSceneInterval = addNpcToSceneIntervalMax;
-
-            let event = new NpcControlFinishEvent();
-            GameMain.GetInstance().DispatchEvent(event);
-            this.isWorking = false;
-        }
-    }
-
     public Work(param?:any):any
     {
         super.Work(param);
@@ -65,7 +41,12 @@ class NpcControl extends GameModuleComponentBase
         //Todo:thinking
 
         if(controlWorkParam.turn % createEnemyTurnNum != 0)
+        {
+            this.npcControlState = NpcControlState.NpcControlFinish;
             return;
+        }    
+
+        this.npcSmileSound = null;
 
         let event = new SceneElementAccessEvent();
         event.accessType = SceneElementAccessType.GetEmptyBlocks;
@@ -81,8 +62,89 @@ class NpcControl extends GameModuleComponentBase
 		this.creatorWorkParam.paramIndex = NpcElementCreateType.RandomVirus;
 		this.creatorWorkParam.createNum = 8;
 		this.tobeAddToSceneNpcArray = this.npcElementCreator.CreateElement(this.creatorWorkParam);
-        this.addNpcTimer = 0;
+        
+        this.npcControlTimer = 0;
+        
+        this.npcControlState = NpcControlState.AddNpcToScene;
         this.addNpcToSceneInterval = addNpcToSceneIntervalMax;
+
+        this.npcSmileSound = "EnemySinisterSmile1_mp3";
+    }
+
+    protected UpdateInternal(deltaTime:number)
+    { 
+        switch(this.npcControlState)
+        {
+            case NpcControlState.AddNpcToScene:
+                this.UpdateAddNpcToScene(deltaTime);
+                break;
+            case NpcControlState.PlaySinisterSmileSound:
+                this.UpdatePlaySinisterSmileSound(deltaTime);
+                break;
+            case NpcControlState.NpcControlFinish:
+                this.UpdateNpcControlFinish(deltaTime);
+                break;
+        }
+    }
+
+    private UpdateAddNpcToScene(deltaTime:number)
+    {
+        if(this.tobeAddToSceneNpcArray != null && this.tobeAddToSceneNpcArray.length > 0)
+        {
+            this.npcControlTimer += deltaTime;
+            if(this.npcControlTimer >= this.addNpcToSceneInterval)
+            {
+                let index = this.tobeAddToSceneNpcArray.length - 1;
+                let npc = this.tobeAddToSceneNpcArray[index];
+                this.ArrangePos(npc, this.sceneEmptyBlocks);
+                this.tobeAddToSceneNpcArray.splice(index, 1);
+                this.npcControlTimer = 0;
+                this.addNpcToSceneInterval -= addNpcToSceneIntervalStep;
+                this.addNpcToSceneInterval = Math.max(this.addNpcToSceneInterval, addNpcToSceneIntervalMin);
+            }
+        }
+        else
+        {
+            this.tobeAddToSceneNpcArray = null;
+            this.sceneEmptyBlocks = null;
+
+            if(this.npcSmileSound != null)
+            {
+                this.npcControlState = NpcControlState.PlaySinisterSmileSound;
+            }
+            else
+            {
+                this.npcControlState = NpcControlState.NpcControlFinish;
+            }
+        }
+    }
+
+    private UpdatePlaySinisterSmileSound(deltaTime:number)
+    {
+        if(this.npcSmileSound != null)
+        {
+            this.npcControlTimer = playEnemySinisterSmileTime;    
+
+            let event = new PlaySoundEvent(this.npcSmileSound, 1);
+            GameMain.GetInstance().DispatchEvent(event);
+
+            this.npcSmileSound = null;
+        }
+        else
+        {
+            this.npcControlTimer -= deltaTime;
+            if(this.npcControlTimer <= 0)
+            {
+                this.npcControlState = NpcControlState.NpcControlFinish;
+            }
+        }
+    }
+
+    private UpdateNpcControlFinish(delteTime:number)
+    {
+        this.npcControlState = NpcControlState.None;
+        let event = new NpcControlFinishEvent();
+        GameMain.GetInstance().DispatchEvent(event);
     }
 
     private ArrangePos(npc:NpcElement, sceneEmptyBlocks:number[][])
@@ -127,4 +189,12 @@ class NpcControl extends GameModuleComponentBase
     {
 
     }
+}
+
+enum NpcControlState
+{
+    None,
+    AddNpcToScene,
+    PlaySinisterSmileSound,
+    NpcControlFinish,
 }
