@@ -1,10 +1,10 @@
 class MatchHUD extends egret.DisplayObjectContainer
 {
-    private readyGo:ReadyGoHUD;
+    private readyGo:ReadyGoItem;
 
     public Init()
     {
-        this.readyGo = new ReadyGoHUD(this.width/2, this.height/4, 200, 200, -10);
+        this.readyGo = new ReadyGoItem(this.width/2, this.height/4, 200, 200, -10);
 
         this.addChild(this.readyGo);
 

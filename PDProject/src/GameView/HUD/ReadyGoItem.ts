@@ -1,4 +1,4 @@
-class ReadyGoHUD extends egret.DisplayObjectContainer
+class ReadyGoItem extends egret.DisplayObjectContainer
 {
     private ready:egret.TextField;
     private go:egret.TextField;
