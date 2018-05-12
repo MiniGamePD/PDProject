@@ -210,6 +210,9 @@ class MatchView extends GameView
         this.CreateGameOverPage();
 
         this.addChild(this.gameOverPage);
+
+        var soundEvent: PlaySoundEvent = new PlaySoundEvent("GameOver_mp3", 1);
+        GameMain.GetInstance().DispatchEvent(soundEvent);
     }
 
     private CreateGameOverPage()
