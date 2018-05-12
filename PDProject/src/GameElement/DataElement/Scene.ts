@@ -11,7 +11,8 @@ class Scene extends GameModuleComponentBase
     private controlFailedEvent: SceneElementControlFailedEvent;
     private eliminateEvent: EliminateEvent;
 
-    private eliminateColor: GameElementColor;
+    private eliminateMethod: EliminateMethod;
+    private eliminateUnMove: boolean;
 
     public Init(): void 
     {
@@ -25,7 +26,10 @@ class Scene extends GameModuleComponentBase
             }
         }
 
-        this.eliminateColor = GameElementColor.random;
+        this.eliminateMethod = new EliminateMethod();
+        this.eliminateMethod.Reset();
+
+        this.eliminateUnMove = false;
 
         this.controlSuccessEvent = new SceneElementControlSuccessEvent();
         this.controlFailedEvent = new SceneElementControlFailedEvent();
@@ -123,7 +127,21 @@ class Scene extends GameModuleComponentBase
     // 设置下一次消除，先消除某种特定颜色的
     public SetEliminateByColor(color: GameElementColor)
     {
-        this.eliminateColor = color;
+        this.eliminateMethod.methodType = EliminateMethodType.SpecificColor;
+        this.eliminateMethod.specificColor = color;
+    }
+
+    // 设置下一次消除，先消除某区域
+    public SetEliminateByRegion(region: number[])
+    {
+        this.eliminateMethod.methodType = EliminateMethodType.SpecificRegion;
+        this.eliminateMethod.specificRegion = region;
+    }
+
+    // 设置下一次消除后，不进行下落
+    public SetNextEliminateUnMove()
+    {
+        this.eliminateUnMove = true;
     }
 
     //#####消除相关######
@@ -131,10 +149,13 @@ class Scene extends GameModuleComponentBase
     {
         this.ClearEliminateInfo();
         this.EliminateElement();
-        do
+        if (!this.eliminateUnMove)
         {
-            var hasMove = this.MoveAfterEliminate();
-        } while (hasMove)
+            do
+            {
+                var hasMove = this.MoveAfterEliminate();
+            } while (hasMove)
+        }
         var result = this.eliminateInfo.HasInfo;
         return result;
     }
@@ -150,9 +171,10 @@ class Scene extends GameModuleComponentBase
         if (this.isWorking && !this.eliminateInfo.HasInfo)
         {
             var result = this.TryEliminate();
-            this.eliminateColor = GameElementColor.random;
+            this.eliminateMethod.Reset();
             if (!result)
             {
+                this.eliminateUnMove = false;
                 this.FinishEliminate();
             }
             else
@@ -191,7 +213,7 @@ class Scene extends GameModuleComponentBase
             {
                 inList = true;
                 break;
-            }            
+            }
         }
         return inList;
     }
@@ -234,21 +256,21 @@ class Scene extends GameModuleComponentBase
         if (event != null
             && event.targetPosList != null)
         {
-        this.eliminateInfo.SpecialEliminatedElement.push(event.triggerElement);
-        for (var i = 1; i < event.targetPosList.length; i += 2)
-        {
-            var posx = event.targetPosList[i - 1];
-            var posy = event.targetPosList[i];
-            var element = this.GetElement(posx, posy);
-            if (element != null
-                && !this.IsElementInEliminateList(element))
+            this.eliminateInfo.SpecialEliminatedElement.push(event.triggerElement);
+            for (var i = 1; i < event.targetPosList.length; i += 2)
             {
-                this.eliminateInfo.EliminatedElements.push(element);
-                element.UnbindAllElement();
-                this.eliminateInfo.HasInfo = true;
-                element.OnEliminate();
+                var posx = event.targetPosList[i - 1];
+                var posy = event.targetPosList[i];
+                var element = this.GetElement(posx, posy);
+                if (element != null
+                    && !this.IsElementInEliminateList(element))
+                {
+                    this.eliminateInfo.EliminatedElements.push(element);
+                    element.UnbindAllElement();
+                    this.eliminateInfo.HasInfo = true;
+                    element.OnEliminate();
+                }
             }
-        }
         }
     }
 
@@ -492,17 +514,38 @@ class Scene extends GameModuleComponentBase
         return false;
     }
 
+    // 判断一个元素是否需要被消除(按指定区域)
+    private NeedEliminateByRegion(element: SceneElementBase, region: number[]): boolean
+    {
+        if (element != null && region != null)
+        {
+            for (var i = 1; i < region.length; i += 2)
+            {
+                if (element.posx == region[i - 1]
+                    && element.posy == region[i])
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     // 判断一个元素是否需要被消除
     private NeedEliminate(element: SceneElementBase): boolean
     {
         var needEliminate: boolean = false;
-        if (this.eliminateColor == GameElementColor.random)
+        if (this.eliminateMethod.methodType == EliminateMethodType.Normal)
         {
             needEliminate = this.NeedEliminateByBorder(element);
         }
-        else
+        else if (this.eliminateMethod.methodType == EliminateMethodType.SpecificColor)
         {
-            needEliminate = this.NeedEliminateByColor(element, this.eliminateColor);
+            needEliminate = this.NeedEliminateByColor(element, this.eliminateMethod.specificColor);
+        }
+        else if (this.eliminateMethod.methodType == EliminateMethodType.SpecificRegion)
+        {
+            needEliminate = this.NeedEliminateByRegion(element, this.eliminateMethod.specificRegion/**/);
         }
         return needEliminate;
     }
@@ -647,25 +690,25 @@ class Scene extends GameModuleComponentBase
         return result;
     }
 
-    private OnAccessSceneElements(event:SceneElementAccessEvent)
+    private OnAccessSceneElements(event: SceneElementAccessEvent)
     {
-        let queryElementBlocks:number[][] = null;
+        let queryElementBlocks: number[][] = null;
 
-        switch(event.accessType)
+        switch (event.accessType)
         {
             case SceneElementAccessType.GetEmptyBlocks:
-            {
-                queryElementBlocks = this.GetEmptyBlocks(event.startX, event.startY, event.endX, event.endY);
-                break;
-            }
+                {
+                    queryElementBlocks = this.GetEmptyBlocks(event.startX, event.startY, event.endX, event.endY);
+                    break;
+                }
             default:
-            {
-                console.error("Unknow access type " + event.accessType);
-                break;
-            }
+                {
+                    console.error("Unknow access type " + event.accessType);
+                    break;
+                }
         }
 
-        if(queryElementBlocks != null)
+        if (queryElementBlocks != null)
         {
             let answerEvent = new SceneElementAccessAnswerEvent();
             answerEvent.accessType = event.accessType;
@@ -674,27 +717,27 @@ class Scene extends GameModuleComponentBase
         }
     }
 
-    private GetEmptyBlocks(startX:number, startY:number, endX?:number, endY?:number):number[][]
+    private GetEmptyBlocks(startX: number, startY: number, endX?: number, endY?: number): number[][]
     {
-        let result:number[][] = undefined;
+        let result: number[][] = undefined;
 
-        if(endX == undefined)
+        if (endX == undefined)
             endX = Scene.Columns - 1;
-        if(endY == undefined)
+        if (endY == undefined)
             endY = Scene.Rows - 1;
 
-        if(startX <= endX || startY <= endY)
+        if (startX <= endX || startY <= endY)
         {
             result = [];
             //X is Column
-            for(var i = startX; i <= endX; ++i)
+            for (var i = startX; i <= endX; ++i)
             {
                 //Y is Row
-                for(var j = startY; j <= endY; ++j)
+                for (var j = startY; j <= endY; ++j)
                 {
-                    if(this.sceneData[i][j] == null)
+                    if (this.sceneData[i][j] == null)
                     {
-                        let emptyBlock:number[] = [];
+                        let emptyBlock: number[] = [];
                         emptyBlock.push(i);
                         emptyBlock.push(j);
                         result.push(emptyBlock);
