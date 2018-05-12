@@ -9,6 +9,7 @@ class Virus extends NpcElement
         this.virusRenderer.RefreshTexture();
 
         this.bornType = NpcBornType.Normal;
+        this.bornSound = "VirusBorn_mp3";
     }
 
     public MoveTo(posx:number, posy:number)
@@ -21,5 +22,10 @@ class Virus extends NpcElement
     protected FillSceneElementArray()
     {
         this.sceneElements.push(this.virusRenderer);
+    }
+
+    public PlayAnim(animType:NpcAnimType)
+    {
+        
     }
 }
