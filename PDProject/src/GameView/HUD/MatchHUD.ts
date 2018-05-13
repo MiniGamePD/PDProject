@@ -17,6 +17,7 @@ class MatchHUD extends egret.DisplayObjectContainer
         this.addChild(this.gameover);
 
         GameMain.GetInstance().AddEventListener(HUDEvent.EventName, this.OnHUDEvent, this);
+        GameMain.GetInstance().AddEventListener(GameOverEvent.EventName, this.OnGameOver, this);
     }
 
     public Release()
@@ -24,6 +25,7 @@ class MatchHUD extends egret.DisplayObjectContainer
         this.readyGo = null;
 
         GameMain.GetInstance().RemoveEventListener(HUDEvent.EventName, this.OnHUDEvent, this);
+        GameMain.GetInstance().RemoveEventListener(GameOverEvent.EventName, this.OnGameOver, this);
     }
 
     public Reset()
@@ -37,6 +39,11 @@ class MatchHUD extends egret.DisplayObjectContainer
         this.score.Update(deltaTime);
     }
 
+    private OnGameOver(event:GameOverEvent)
+    {
+        this.gameover.Show();
+    }
+
     private OnHUDEvent(event:HUDEvent)
     {
         switch(event.eventType)
@@ -44,17 +51,21 @@ class MatchHUD extends egret.DisplayObjectContainer
             case HUDEventType.ShowReadyGo:
                 this.ShowReadyGo();
                 break;
+            case HUDEventType.ChangeScore:
+                this.ChangeScore(event.param);
+                break;
             //Add More..
         }
     }
 
-    public ShowReadyGo()
+    private ShowReadyGo()
     {
         this.readyGo.Play();
     }
 
-    public ShowGameOver()
+    private ChangeScore(param:any)
     {
-        this.gameover.Show();
+        let score:number = <number>param;
+        this.score.SetScore(score);
     }
 }

@@ -30,7 +30,6 @@ class MatchView extends GameView
         this.eliminatingAnim.Init(this);
         
         GameMain.GetInstance().AddEventListener(SceneElementControlSuccessEvent.EventName, this.ProcessControlSuccess, this);
-        GameMain.GetInstance().AddEventListener(GameOverEvent.EventName, this.OnGameOver, this);
         GameMain.GetInstance().AddEventListener(ReplayGameEvent.EventName, this.OnReplayGame, this);
     }
 
@@ -39,7 +38,6 @@ class MatchView extends GameView
         this.DeleteHUD();
 
         GameMain.GetInstance().RemoveEventListener(SceneElementControlSuccessEvent.EventName, this.ProcessControlSuccess, this);
-        GameMain.GetInstance().RemoveEventListener(GameOverEvent.EventName, this.OnGameOver, this);
         GameMain.GetInstance().RemoveEventListener(ReplayGameEvent.EventName, this.OnReplayGame, this);
     }
 
@@ -220,18 +218,8 @@ class MatchView extends GameView
         GameMain.GetInstance().DispatchEvent(event);
     }
 
-    //####### Game Over ##########
-    private OnGameOver(event:GameOverEvent)
-    {
-        this.hud.ShowGameOver();
-
-        var soundEvent: PlaySoundEvent = new PlaySoundEvent("GameOver_mp3", 1);
-        GameMain.GetInstance().DispatchEvent(soundEvent);
-    }
-
     private OnReplayGame(event:ReplayGameEvent)
     {
         this.ResetView();
     }
-    //####### Game Over ##########
 }

@@ -76,6 +76,8 @@ class MatchModule extends GameViewModule
 		this.playerControl = null;
 		this.npcControl.Release();
 		this.npcControl = null;
+		this.matchScore.Release();
+		this.matchScore = null;
 	}
 
 	public SwitchForeOrBack(from: GameStateType, to: GameStateType): void

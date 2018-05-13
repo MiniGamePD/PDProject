@@ -104,6 +104,9 @@ class GameOverItem extends egret.DisplayObjectContainer
         this.addChild(this.backToLobbyButton);
         this.addChild(this.replayButton);
         this.addChild(this.reviveButton);
+
+        var soundEvent: PlaySoundEvent = new PlaySoundEvent("GameOver_mp3", 1);
+        GameMain.GetInstance().DispatchEvent(soundEvent);
     }
 
     public Hide()

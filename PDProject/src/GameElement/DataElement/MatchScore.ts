@@ -1,14 +1,17 @@
 class MatchScore 
 {
 	public curScore: number;
-	private scoreChangeEvent: MatchScoreChangeEvent
 
 	public Init()
 	{
 		this.curScore = 0;
-		this.scoreChangeEvent = new MatchScoreChangeEvent();
 
 		GameMain.GetInstance().AddEventListener(EliminateEvent.EventName, this.OnEliminateEvent, this)
+	}
+
+	public Release()
+	{
+		GameMain.GetInstance().RemoveEventListener(EliminateEvent.EventName, this.OnEliminateEvent, this);
 	}
 
 	private OnEliminateEvent(event: EliminateEvent)
@@ -25,8 +28,9 @@ class MatchScore
 
 	private DispatchScoreChangeEvent(targetScore: number, changeValue: number)
 	{
-		this.scoreChangeEvent.targetScore = this.curScore;
-		this.scoreChangeEvent.changeValue = changeValue;
-		GameMain.GetInstance().DispatchEvent(this.scoreChangeEvent);
+		let event = new HUDEvent();
+		event.eventType = HUDEventType.ChangeScore;
+		event.param = this.curScore;
+		GameMain.GetInstance().DispatchEvent(event);
 	}
 }

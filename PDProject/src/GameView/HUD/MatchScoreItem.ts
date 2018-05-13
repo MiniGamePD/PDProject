@@ -18,8 +18,6 @@ class MatchScoreItem extends egret.DisplayObjectContainer
 		this.scoreText.textAlign = "left";
 		this.scoreText.text = "0";
 		this.addChild(this.scoreText);
-
-		GameMain.GetInstance().AddEventListener(MatchScoreChangeEvent.EventName, this.OnScoreChange, this);
 	}
 
 	public Update(deltaTime: number)
@@ -27,12 +25,7 @@ class MatchScoreItem extends egret.DisplayObjectContainer
 
 	}
 
-    private OnScoreChange(event: MatchScoreChangeEvent)
-    {
-        this.SetScore(event.targetScore);
-    }
-
-	private SetScore(score: number)
+	public SetScore(score: number)
 	{
 		this.scoreText.text = score.toString();
 	}
