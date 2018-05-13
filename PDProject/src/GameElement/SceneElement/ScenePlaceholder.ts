@@ -8,5 +8,6 @@ class ScenePlaceholder extends SceneElementBase
         this.color = owner.color;
         this.canDrop = false;
         this.eliminateMinCount = Scene.EliminateMinCount;
+        this.elementType = SceneElementType.PlaceHolder;
     }
 }

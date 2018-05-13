@@ -8,6 +8,7 @@ class ScenePill extends SceneElementBase
         this.color = this.RandomColor();
         this.canDrop = true;
         this.eliminateMinCount = Scene.EliminateMinCount;
+        this.elementType = SceneElementType.Pill;
     }
 
     public SetPillType(pillType: PillElementType)

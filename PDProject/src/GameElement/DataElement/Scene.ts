@@ -124,18 +124,52 @@ class Scene extends GameModuleComponentBase
         this.CheckEliminating();
     }
 
-    // 设置下一次消除，先消除某种特定颜色的
-    public SetEliminateByColor(color: GameElementColor)
+    // 设置下一次消除方法
+    public SetEliminateMethodNext(methodType: EliminateMethodType, color?: GameElementColor, region?: number[], elementType?: EliminateElementType)
     {
-        this.eliminateMethod.methodType = EliminateMethodType.SpecificColor;
-        this.eliminateMethod.specificColor = color;
-    }
+        this.eliminateMethod.methodType = methodType;
 
-    // 设置下一次消除，先消除某区域
-    public SetEliminateByRegion(region: number[])
-    {
-        this.eliminateMethod.methodType = EliminateMethodType.SpecificRegion;
-        this.eliminateMethod.specificRegion = region;
+        if (elementType != null)
+            this.eliminateMethod.eliminateElementType = elementType;
+
+        var hasSetParam = false;
+
+        switch (methodType)
+        {
+            case EliminateMethodType.SpecificColor:
+            {
+                if (color != null && color != undefined)
+                {
+                    this.eliminateMethod.specificColor = color;
+                    hasSetParam = true;
+                }
+                break;
+            }
+            case EliminateMethodType.SpecificRegion:
+            {
+                if (region != null && region != undefined)
+                {
+                    this.eliminateMethod.specificRegion = region;
+                    hasSetParam = true;
+                }
+                break;
+            }
+            case EliminateMethodType.SpecificRegionAndColor:
+            {
+                if (color != null && color != undefined && region != null && region != undefined)
+                {
+                    this.eliminateMethod.specificColor = color;
+                    this.eliminateMethod.specificRegion = region;
+                    hasSetParam = true;
+                }
+                break;
+            }
+        }
+
+        if (DEBUG)
+        {
+            console.assert(hasSetParam, "Scene SetEliminateMethodNext() param error!");
+        }
     }
 
     // 设置下一次消除后，不进行下落
@@ -535,21 +569,63 @@ class Scene extends GameModuleComponentBase
         return false;
     }
 
+    // 判断一个element是否属于对应的消除类型
+    private IsEliminateType(element: SceneElementBase, type: EliminateElementType): boolean
+    {
+        var result = false;
+        if(element != null)
+        {
+            switch (type)
+            {
+                case EliminateElementType.Normal:
+                {
+                    result = true;
+                    break;
+                }
+                case EliminateElementType.PillOnly:
+                {
+                    result = element.ElementType() == SceneElementType.Pill
+                    break;
+                }
+                case EliminateElementType.VirusOnly:
+                {
+                    result = element.ElementType() == SceneElementType.Virus
+                    break;
+                }
+                case EliminateElementType.PillAndVirus:
+                {
+                    result = element.ElementType() == SceneElementType.Pill 
+                        || element.ElementType() == SceneElementType.Virus;
+                    break;
+                }
+            }
+        }
+        return result;
+    }
+
     // 判断一个元素是否需要被消除
     private NeedEliminate(element: SceneElementBase): boolean
     {
         var needEliminate: boolean = false;
-        if (this.eliminateMethod.methodType == EliminateMethodType.Normal)
+        if (this.IsEliminateType(element, this.eliminateMethod.eliminateElementType))
         {
-            needEliminate = this.NeedEliminateByBorder(element);
-        }
-        else if (this.eliminateMethod.methodType == EliminateMethodType.SpecificColor)
-        {
-            needEliminate = this.NeedEliminateByColor(element, this.eliminateMethod.specificColor);
-        }
-        else if (this.eliminateMethod.methodType == EliminateMethodType.SpecificRegion)
-        {
-            needEliminate = this.NeedEliminateByRegion(element, this.eliminateMethod.specificRegion);
+            if (this.eliminateMethod.methodType == EliminateMethodType.Normal)
+            {
+                needEliminate = this.NeedEliminateByBorder(element);
+            }
+            else if (this.eliminateMethod.methodType == EliminateMethodType.SpecificColor)
+            {
+                needEliminate = this.NeedEliminateByColor(element, this.eliminateMethod.specificColor);
+            }
+            else if (this.eliminateMethod.methodType == EliminateMethodType.SpecificRegion)
+            {
+                needEliminate = this.NeedEliminateByRegion(element, this.eliminateMethod.specificRegion);
+            }
+            else if (this.eliminateMethod.methodType == EliminateMethodType.SpecificRegionAndColor)
+            {
+                needEliminate = this.NeedEliminateByColor(element, this.eliminateMethod.specificColor)
+                                && this.NeedEliminateByRegion(element, this.eliminateMethod.specificRegion);
+            }
         }
         return needEliminate;
     }

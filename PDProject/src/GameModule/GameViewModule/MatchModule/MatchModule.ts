@@ -108,12 +108,9 @@ class MatchModule extends GameViewModule
 		// if (this.turn == 3)
 		// {
 		// 	var pos = Tools.GetRegionPosList(0, 5, 5, 10);
-		// 	this.scene.SetEliminateByRegion(pos);
-		// 	this.scene.SetNextEliminateUnMove();			
-		// }
-		// if (this.turn == 3)
-		// {
-		// 	this.scene.SetEliminateByColor(GameElementColor.blue);
+		// 	// this.scene.SetEliminateMethodNext(EliminateMethodType.SpecificRegionAndColor, GameElementColor.blue, pos);
+		// 	// this.scene.SetEliminateMethodNext(EliminateMethodType.SpecificColor, GameElementColor.blue);
+		// 	this.scene.SetEliminateMethodNext(EliminateMethodType.SpecificColor, GameElementColor.blue, null, EliminateElementType.PillOnly);
 		// 	this.scene.SetNextEliminateUnMove();			
 		// }
 		this.scene.Work();
