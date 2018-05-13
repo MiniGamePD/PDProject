@@ -4,6 +4,7 @@ class EliminateInfo {
 		this.EliminatedElements = [];
 		this.MoveElements = [];
 		this.SpecialEliminatedElement = [];
+		this.EliminatedPlaceHolderElement = [];
 	}
 
 	// 是否有消除数据
@@ -15,6 +16,9 @@ class EliminateInfo {
 	// 特殊消除的元素
 	public SpecialEliminatedElement: SceneElementBase[];
 
+	// 触发了消除的PlaceHolder
+	public EliminatedPlaceHolderElement: SceneElementBase[];
+
 	// 消除后，需要移动的元素列表
 	public MoveElements: EliminateMoveInfo[];
 
@@ -24,6 +28,7 @@ class EliminateInfo {
 		this.EliminatedElements = [];
 		this.MoveElements = [];
 		this.SpecialEliminatedElement = [];
+		this.EliminatedPlaceHolderElement = [];
 	}
 }
 
