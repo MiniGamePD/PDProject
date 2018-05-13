@@ -12,7 +12,6 @@ class MatchView extends GameView
     private mBattleGround: egret.Sprite;
     private eliminatingAnim: EliminatingAnimation;
 
-    private gameOverPage: egret.Sprite;
     private hud:MatchHUD;
 
     public CreateView(): void
@@ -32,6 +31,7 @@ class MatchView extends GameView
         
         GameMain.GetInstance().AddEventListener(SceneElementControlSuccessEvent.EventName, this.ProcessControlSuccess, this);
         GameMain.GetInstance().AddEventListener(GameOverEvent.EventName, this.OnGameOver, this);
+        GameMain.GetInstance().AddEventListener(ReplayGameEvent.EventName, this.OnReplayGame, this);
     }
 
     public ReleaseView(): void 
@@ -40,6 +40,7 @@ class MatchView extends GameView
 
         GameMain.GetInstance().RemoveEventListener(SceneElementControlSuccessEvent.EventName, this.ProcessControlSuccess, this);
         GameMain.GetInstance().RemoveEventListener(GameOverEvent.EventName, this.OnGameOver, this);
+        GameMain.GetInstance().RemoveEventListener(ReplayGameEvent.EventName, this.OnReplayGame, this);
     }
 
     private ResetView()
@@ -222,130 +223,15 @@ class MatchView extends GameView
     //####### Game Over ##########
     private OnGameOver(event:GameOverEvent)
     {
-        this.CreateGameOverPage();
-
-        this.addChild(this.gameOverPage);
+        this.hud.ShowGameOver();
 
         var soundEvent: PlaySoundEvent = new PlaySoundEvent("GameOver_mp3", 1);
         GameMain.GetInstance().DispatchEvent(soundEvent);
     }
 
-    private CreateGameOverPage()
+    private OnReplayGame(event:ReplayGameEvent)
     {
-        if(this.gameOverPage == undefined)
-        {
-            this.gameOverPage = new egret.Sprite();
-            this.gameOverPage.graphics.beginFill(0x000000, 0.8);
-            this.gameOverPage.graphics.drawRect(0,0,this.mStageWidth, this.mStageHeight);
-            this.gameOverPage.graphics.endFill();
-
-            let textField = new egret.TextField();
-            textField.x = 0;
-            textField.y = this.mStageHeight / 4;
-            textField.width = this.mStageWidth;
-            textField.height = 100;
-            textField.rotation = -5;
-            textField.fontFamily = "Impact";
-            textField.size *= 2;
-            textField.textAlign = "center";
-            textField.text = "Game Over";
-            this.gameOverPage.addChild(textField);
-
-            //回到大厅
-            var shape: egret.Shape = new egret.Shape();
-            shape.graphics.beginFill(0x00A2E8);
-            shape.graphics.drawRect(this.mStageWidth / 2 - 100, this.mStageHeight / 5 * 4, 200, 100);
-            shape.graphics.endFill();
-            this.gameOverPage.addChild(shape);
-
-            //设置显示对象可以相应触摸事件
-            shape.touchEnabled = true;
-            //注册事件
-            shape.addEventListener(egret.TouchEvent.TOUCH_TAP, this.OnClickBackToLobby, this);
-
-            var text: egret.TextField = new egret.TextField();
-            text.text = "回到大厅";
-            text.x = 0;
-            text.y = this.mStageHeight / 5 * 4;
-            text.textAlign = egret.HorizontalAlign.CENTER;
-            text.verticalAlign = egret.VerticalAlign.MIDDLE;
-            text.width = this.mStageWidth;
-            text.height = 100;
-            this.gameOverPage.addChild(text);
-
-             //再玩一次
-            var shape: egret.Shape = new egret.Shape();
-            shape.graphics.beginFill(0x00A2E8);
-            shape.graphics.drawRect(this.mStageWidth / 2 - 100, this.mStageHeight / 5 * 3, 200, 100);
-            shape.graphics.endFill();
-            this.gameOverPage.addChild(shape);
-
-            //设置显示对象可以相应触摸事件
-            shape.touchEnabled = true;
-            //注册事件
-            shape.addEventListener(egret.TouchEvent.TOUCH_TAP, this.OnClickPlayAgain, this);
-
-            var text: egret.TextField = new egret.TextField();
-            text.text = "再玩一次";
-            text.x = 0;
-            text.y = this.mStageHeight / 5 * 3;
-            text.textAlign = egret.HorizontalAlign.CENTER;
-            text.verticalAlign = egret.VerticalAlign.MIDDLE;
-            text.width = this.mStageWidth;
-            text.height = 100;
-            this.gameOverPage.addChild(text);
-
-            //看广告复活
-            var shape: egret.Shape = new egret.Shape();
-            shape.graphics.beginFill(0x00A2E8);
-            shape.graphics.drawRect(this.mStageWidth / 2 - 100, this.mStageHeight / 5 * 2, 200, 100);
-            shape.graphics.endFill();
-            this.gameOverPage.addChild(shape);
-
-            //设置显示对象可以相应触摸事件
-            shape.touchEnabled = true;
-            //注册事件
-            shape.addEventListener(egret.TouchEvent.TOUCH_TAP, this.OnClickRevive, this);
-
-            var text: egret.TextField = new egret.TextField();
-            text.text = "看广告复活";
-            text.x = 0;
-            text.y = this.mStageHeight / 5 * 2;
-            text.textAlign = egret.HorizontalAlign.CENTER;
-            text.verticalAlign = egret.VerticalAlign.MIDDLE;
-            text.width = this.mStageWidth;
-            text.height = 100;
-            this.gameOverPage.addChild(text);
-        }
-    }
-
-    private OnClickBackToLobby(): void
-    {
-        if(DEBUG)
-        {
-            egret.log("OnClickBackToLobby");
-        }
-        GameMain.GetInstance().SwitchGameState(GameStateType.Lobby);
-    }
-
-    private OnClickPlayAgain(): void
-    {
-        if(DEBUG)
-        {
-            egret.log("OnClickPlayAgain");
-        }
-
-        this.removeChild(this.gameOverPage);    
-
         this.ResetView();
-       
-        let event = new ReplayGameEvent();
-        GameMain.GetInstance().DispatchEvent(event);
-    }
-
-    private OnClickRevive(): void
-    {
-
     }
     //####### Game Over ##########
 }

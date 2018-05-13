@@ -2,6 +2,7 @@ class MatchHUD extends egret.DisplayObjectContainer
 {
     private readyGo:ReadyGoItem;
     private score:MatchScoreItem;
+    private gameover:GameOverItem;
 
     public Init()
     {
@@ -11,6 +12,9 @@ class MatchHUD extends egret.DisplayObjectContainer
         this.score = new MatchScoreItem();
         this.score.Init();
         this.addChild(this.score);
+
+        this.gameover = new GameOverItem(this.width, this.height);
+        this.addChild(this.gameover);
 
         GameMain.GetInstance().AddEventListener(HUDEvent.EventName, this.OnHUDEvent, this);
     }
@@ -25,6 +29,7 @@ class MatchHUD extends egret.DisplayObjectContainer
     public Reset()
     {
         this.score.Reset();
+        this.gameover.Hide();
     }
 
     public Update(deltaTime:number)
@@ -43,8 +48,13 @@ class MatchHUD extends egret.DisplayObjectContainer
         }
     }
 
-    private ShowReadyGo()
+    public ShowReadyGo()
     {
         this.readyGo.Play();
+    }
+
+    public ShowGameOver()
+    {
+        this.gameover.Show();
     }
 }
