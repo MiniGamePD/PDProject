@@ -1,7 +1,8 @@
 class NpcControl extends GameModuleComponentBase
 {
-    private enemyArray:NpcElement[];
-    private bossArray:NpcElement[];  
+    //保存这个数组，后面这些npc需要通过NpcControl来触发技能
+    private skillNpcArray:NpcElement[];  
+
     private creatorWorkParam:CreatorWorkParam;
 	private npcElementCreator: NpcElementCreator;
 
@@ -23,16 +24,19 @@ class NpcControl extends GameModuleComponentBase
         super();
         this.creatorWorkParam = new CreatorWorkParam();
         this.npcElementCreator = new NpcElementCreator(gameplayElementFactory);
+        this.skillNpcArray = [];
     }
 
     public Init():void
     {
         GameMain.GetInstance().AddEventListener(SceneElementAccessAnswerEvent.EventName, this.OnReciveSceneData, this);
+        GameMain.GetInstance().AddEventListener(SceneElementControlFailedEvent.EventName, this.OnAddElementToSceneFailed, this);
     }
 
     public Release():void
     {
         GameMain.GetInstance().RemoveEventListener(SceneElementAccessAnswerEvent.EventName, this.OnReciveSceneData, this);
+        GameMain.GetInstance().RemoveEventListener(SceneElementControlFailedEvent.EventName, this.OnAddElementToSceneFailed, this);
     }
 
     public Work(param?:any):any
@@ -48,32 +52,11 @@ class NpcControl extends GameModuleComponentBase
         }
 
         let controlWorkParam:GameplayControlWorkParam = param;
-         //Todo:thinking
-        if(controlWorkParam.turn % createEnemyTurnNum != 0)
-        {
-            this.npcControlState = NpcControlState.NpcControlFinish;
-            return;
-        }    
 
         this.npcSmileSound = null;
 
-        if(controlWorkParam.turn < 10)
-        {
-            //创建普通小怪
-            this.creatorWorkParam.paramIndex = NpcElementCreateType.RandomVirus;
-		    this.creatorWorkParam.createNum = 8;
-		    this.tobeAddToSceneNpcArray = this.npcElementCreator.CreateElement(this.creatorWorkParam);
-
-            //向scene询问空的格子，用来放置新生成的小怪
-            let event = new SceneElementAccessEvent();
-            event.accessType = SceneElementAccessType.GetEmptyBlocks;
-            event.startX = 0;
-            event.startY = 2;
-            GameMain.GetInstance().DispatchEvent(event);
-
-            this.npcSmileSound = "EnemySinisterSmile1_mp3"; 
-        }
-        else
+        if(controlWorkParam.turn != 0 && controlWorkParam.turn % createSkillBossTurnNum == 0 
+            && this.skillNpcArray.length < skillBossMaxNum)
         {
             //创建boss
             this.creatorWorkParam.paramIndex = NpcElementCreateType.RandomSuperVirus;
@@ -89,7 +72,31 @@ class NpcControl extends GameModuleComponentBase
             GameMain.GetInstance().DispatchEvent(event);
 
             this.npcSmileSound = "EnemySinisterSmile2_mp3"; 
+            return;
+        }    
+
+        if(controlWorkParam.turn % createEnemyTurnNum == 0)
+        {
+            //创建普通小怪
+            this.creatorWorkParam.paramIndex = NpcElementCreateType.RandomVirus;
+		    this.creatorWorkParam.createNum = 8;
+		    this.tobeAddToSceneNpcArray = this.npcElementCreator.CreateElement(this.creatorWorkParam);
+
+            //向scene询问空的格子，用来放置新生成的小怪
+            let event = new SceneElementAccessEvent();
+            event.accessType = SceneElementAccessType.GetEmptyBlocks;
+            event.startX = 0;
+            event.startY = 2;
+            GameMain.GetInstance().DispatchEvent(event);
+
+            this.npcSmileSound = "EnemySinisterSmile1_mp3"; 
+            return;
         }
+
+        //TODO：Boss SKill
+
+        //npc 啥事也不做
+        this.npcControlState = NpcControlState.NpcControlFinish;
     }
 
     private OnReciveSceneData(event:SceneElementAccessAnswerEvent)
@@ -219,9 +226,9 @@ class NpcControl extends GameModuleComponentBase
         {
             this.ArrangePosForNormalNpc(npc, querySceneBlocks);
         }
-        else if(npc.bornType == NpcBornType.Destroy)
+        else if(npc.bornType == NpcBornType.DestroyObstruction)
         {
-            result = this.ArrangePosForDestroyNpc(npc, querySceneBlocks);
+            result = this.ArrangePosForDestroyObstructionNpc(npc, querySceneBlocks);
         }
         return result;
     }
@@ -239,7 +246,7 @@ class NpcControl extends GameModuleComponentBase
         npc.MoveTo(pos[0], pos[1]);
     }
 
-    private ArrangePosForDestroyNpc(npc:NpcElement, querySceneBlocks:number[][]):number[]
+    private ArrangePosForDestroyObstructionNpc(npc:NpcElement, querySceneBlocks:number[][]):number[]
     {
         if(querySceneBlocks == undefined || querySceneBlocks == null)
 		{
@@ -259,7 +266,7 @@ class NpcControl extends GameModuleComponentBase
         }
         else
         {
-            console.error("Not Enough Space For Destroy Born Type NPC");
+            console.error("Not Enough Space For Destroy Obstruction Born Type NPC");
         }
         return result;
     }
@@ -323,6 +330,20 @@ class NpcControl extends GameModuleComponentBase
         GameMain.GetInstance().DispatchEvent(event);
 
         npc.PlaySound(NpcSoundType.Born);
+
+        //默认是会成功的，不成功会报错，所以这里就直接添加到逻辑数组里去了
+        if(npc.hasSkill)
+        {
+            this.skillNpcArray.push(npc);
+        }
+    }
+
+    private OnAddElementToSceneFailed(event:SceneElementControlFailedEvent)
+    {
+        if(!event.playerControl)
+        {
+            console.error("NpcControl Add Element To Scene Failed");
+        }
     }
 }
 

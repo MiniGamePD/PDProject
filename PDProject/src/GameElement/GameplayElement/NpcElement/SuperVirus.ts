@@ -10,6 +10,8 @@ class SuperVirus extends NpcElement
     {
         super();
 
+        this.hasSkill = true;
+
         this.color = this.RandomColor();
         this.health = 3;
 
@@ -26,7 +28,7 @@ class SuperVirus extends NpcElement
 
         this.ArrangeSceneElementsPosByColor();
 
-        this.bornType = NpcBornType.Destroy;
+        this.bornType = NpcBornType.DestroyObstruction;
         this.bornSound = "VirusBorn_mp3";
 
         this.hasReduceHealthThisRound = false;

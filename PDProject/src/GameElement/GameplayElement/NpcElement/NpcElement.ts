@@ -2,6 +2,7 @@ abstract class NpcElement extends GameplayElementBase
 {
     public bornType:NpcBornType;
     protected bornSound:string;
+    public hasSkill:boolean = false;
 
     public MoveTo(posx:number, posy:number){}
 
@@ -25,7 +26,7 @@ abstract class NpcElement extends GameplayElementBase
 enum NpcBornType
 {
     Normal, //普通出生方式，寻找一个足够大的空位出生
-    Destroy, //霸道的出生方式，将同一列的其他元素全部销毁之后，落在scene的最底部
+    DestroyObstruction, //霸道的出生方式，销毁即将出生位置的所有东西后出生
 }
 
 enum NpcAnimType
