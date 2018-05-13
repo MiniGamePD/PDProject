@@ -283,9 +283,24 @@ class Scene extends GameModuleComponentBase
             for (var count = 0; count < this.eliminateInfo.EliminatedElements.length; ++count)
             {
                 var eliminatedElement = this.eliminateInfo.EliminatedElements[count];
-                this.RemoveElement(eliminatedElement);
+                if (this.IsNeedRemoveAfterEliminate(eliminatedElement))
+                {
+                    this.RemoveElement(eliminatedElement);
+                }
             }
         }
+    }
+
+    // 把元素触发消除后，是否需要从Scene中移除
+    private IsNeedRemoveAfterEliminate(element: SceneElementBase)
+    {
+        if (element != null
+            && element.ElementType() != SceneElementType.None
+            && element.ElementType() != SceneElementType.PlaceHolder)
+        {
+            return true;
+        }
+        return false;
     }
 
     // 处理特殊消除要求
@@ -311,6 +326,8 @@ class Scene extends GameModuleComponentBase
             }
         }
     }
+
+    private 
 
     // // 根据消除的元素列表，把上面元素往下移
     // private MoveAfterEliminate() {
