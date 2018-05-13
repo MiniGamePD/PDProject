@@ -7,6 +7,8 @@ abstract class GameplayElementBase
     protected sceneElements:SceneElementBase[] = [];
     private sceneElementFilled:boolean = false;
 
+    public color:GameElementColor;
+
     public GetSceneElements():SceneElementBase[]
     {
         if(!this.sceneElementFilled)
@@ -25,4 +27,21 @@ abstract class GameplayElementBase
     }
 
     protected abstract FillSceneElementArray();
+
+    protected RandomColor(): GameElementColor 
+    {
+        let random = Math.random() * 3;
+        if (random >= 0 && random < 1) 
+        {
+            return GameElementColor.red;
+        }
+        else if (random >= 1 && random < 2) 
+        {
+            return GameElementColor.blue;
+        }
+        else 
+        {
+            return GameElementColor.yellow;
+        }
+    }
 }

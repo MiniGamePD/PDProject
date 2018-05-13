@@ -1,10 +1,9 @@
 class SceneSuperVirus extends ScenePlaceholder
 {
-    public constructor(owner:GameplayElementBase, color:GameElementColor)
+    public constructor(owner:GameplayElementBase)
     {
-        super(owner, color);
+        super(owner);
         this.renderer = new egret.Bitmap();       
-        this.color = color;
         this.canDrop = false;
         this.eliminateMinCount = Scene.EliminateMinCount;
         this.RefreshTexture();

@@ -20,13 +20,22 @@ class SceneElementBase
         this.bindedElements = [];
     }
 
-    public MoveTo(posx: number, posy: number) {
+    public MoveTo(posx: number, posy: number) 
+    {
         if (this.posx != posx
-            || this.posy != posy) {
+            || this.posy != posy) 
+        {
             this.posx = posx;
             this.posy = posy;
             this.dirty = true;
         }
+    }
+
+    public Move(posx: number, posy: number) 
+    {
+        this.posx += posx;
+        this.posy += posy;
+        this.dirty = true;
     }
 
     protected RandomColor(): GameElementColor {

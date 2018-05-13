@@ -702,7 +702,12 @@ class Scene extends GameModuleComponentBase
         {
             case SceneElementAccessType.GetEmptyBlocks:
                 {
-                    queryElementBlocks = this.GetEmptyBlocks(event.startX, event.startY, event.endX, event.endY);
+                    queryElementBlocks = this.GetSpecifiedBlocks(this.IsEmptyElement, event.startX, event.startY, event.endX, event.endY);
+                    break;
+                }
+            case SceneElementAccessType.GetPlaceholderBlocks:
+                {
+                    queryElementBlocks = this.GetSpecifiedBlocks(this.IsPlaceholderElement, event.startX, event.startY, event.endX, event.endY);
                     break;
                 }
             default:
@@ -721,7 +726,17 @@ class Scene extends GameModuleComponentBase
         }
     }
 
-    private GetEmptyBlocks(startX: number, startY: number, endX?: number, endY?: number): number[][]
+    private IsEmptyElement(element:SceneElementBase):boolean
+    {
+        return element == null;
+    }
+
+    private IsPlaceholderElement(element:SceneElementBase):boolean
+    {
+        return element != null && element != undefined && element instanceof ScenePlaceholder;
+    }
+
+    private GetSpecifiedBlocks(condition:Function, startX: number, startY: number, endX?: number, endY?: number): number[][]
     {
         let result: number[][] = undefined;
 
@@ -739,19 +754,19 @@ class Scene extends GameModuleComponentBase
                 //Y is Row
                 for (var j = startY; j <= endY; ++j)
                 {
-                    if (this.sceneData[i][j] == null)
+                    if (condition(this.sceneData[i][j]))
                     {
-                        let emptyBlock: number[] = [];
-                        emptyBlock.push(i);
-                        emptyBlock.push(j);
-                        result.push(emptyBlock);
+                        let block: number[] = [];
+                        block.push(i);
+                        block.push(j);
+                        result.push(block);
                     }
                 }
             }
         }
         else
         {
-            console.error("GetEmptyBlock With Invalid Range:" + startX + "," + startY + "," + endX + "," + endY);
+            console.error("GetSpecifiedBlocks With Invalid Range:" + startX + "," + startY + "," + endX + "," + endY);
         }
 
         return result;
@@ -768,6 +783,7 @@ enum SceneElementControlType
 enum SceneElementAccessType
 {
     GetEmptyBlocks,
+    GetPlaceholderBlocks,
 }
 
 enum Direction 
