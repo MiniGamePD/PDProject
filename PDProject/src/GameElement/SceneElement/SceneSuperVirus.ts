@@ -6,6 +6,7 @@ class SceneSuperVirus extends ScenePlaceholder
         this.renderer = new egret.Bitmap();       
         this.canDrop = false;
         this.eliminateMinCount = Scene.EliminateMinCount;
+        this.elementType = SceneElementType.SuperVirus;
         this.RefreshTexture();
     }
 

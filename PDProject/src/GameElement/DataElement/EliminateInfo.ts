@@ -44,23 +44,37 @@ class EliminateMoveInfo {
 	}
 }
 
+// 消除方案
 enum EliminateMethodType
 {
 	Normal = 0, //普通的三消方案
 	SpecificColor, //特定颜色
 	SpecificRegion, //特定区域
+	SpecificRegionAndColor, //特定区域的特定颜色
+}
+
+// 要消除的元素类型
+enum EliminateElementType
+{
+	Normal,	  		//普通的三消方案	
+	PillOnly,		//只是药丸
+	VirusOnly,		//只是病毒
+	PillAndVirus,	//药丸和病毒
 }
 
 class EliminateMethod
 {
-	public methodType: EliminateMethodType;
+	public methodType: EliminateMethodType; //消除方案
+
+	public eliminateElementType: EliminateElementType; //要消除的元素类型
 
 	public specificColor: GameElementColor; //特定颜色
 
-	public specificRegion: number[];
+	public specificRegion: number[]; //特定区域列表
 
 	public Reset()
 	{
 		this.methodType = EliminateMethodType.Normal;
+		this.eliminateElementType = EliminateElementType.Normal;
 	}
 }

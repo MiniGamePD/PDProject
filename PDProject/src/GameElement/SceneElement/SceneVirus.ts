@@ -7,6 +7,7 @@ class SceneVirus extends SceneElementBase
         this.color = this.RandomColor(); 
         this.canDrop = false;
         this.eliminateMinCount = Scene.EliminateMinCount;
+        this.elementType = SceneElementType.Virus;
         this.RefreshTexture();
         this.eliminateSound = "VirusEliminate_mp3";
     }

@@ -6,6 +6,7 @@ class SceneVitamins extends SceneElementBase
         this.renderer = new egret.Bitmap();       
         this.color = this.RandomColor(); 
         this.canDrop = true;
+        this.elementType = SceneElementType.Vitamins;
         this.RefreshTexture();
         this.eliminateMinCount = Scene.EliminateMinCount;
         this.eliminateSound = "Boom_mp3";

@@ -13,11 +13,17 @@ class SceneElementBase
     protected owner:GameplayElementBase;
     public eliminateMinCount: number;
     public eliminateSound: string;
+    protected elementType: SceneElementType;
 
     public constructor(owner:GameplayElementBase) 
     {
         this.owner = owner;
         this.bindedElements = [];
+    }
+
+    public ElementType(): SceneElementType
+    {
+        return this.elementType;
     }
 
     public MoveTo(posx: number, posy: number) 
@@ -117,4 +123,17 @@ enum GameElementColor
     blue,
     yellow,
     random,
+}
+
+enum SceneElementType
+{
+    None,
+    Pill,
+    Virus,
+    Vitamins,
+    ColunmEliminater,
+    RowEliminater,
+    CrossEliminater,
+    PlaceHolder,
+    SuperVirus,
 }
