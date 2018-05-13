@@ -33,5 +33,7 @@ class SceneSuperVirus extends ScenePlaceholder
         }
         texture = this.GetTexture(path);
 		this.renderer.texture = texture;
+        this.renderer.width *= 2;
+        this.renderer.height *= 2;
     }
 }

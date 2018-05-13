@@ -1,8 +1,5 @@
 class SuperVirus extends NpcElement
 {
-    public blockWidth:number;
-    public blockHeight:number;
-
     private virusRenderer:SceneSuperVirus;
     private placeholderArray:ScenePlaceholder[];
 
@@ -16,12 +13,12 @@ class SuperVirus extends NpcElement
         this.virusRenderer.RefreshTexture();
 
         this.placeholderArray = [];
+        //每个super virus都由八个元素组成，renderer固定都放在第一个
+        this.placeholderArray.push(this.virusRenderer);
         for(var i = 0; i < 7; ++i)
         {
             this.placeholderArray.push(new ScenePlaceholder(this));
         }
-        //renderer固定都放在最后一个
-        this.placeholderArray.push(this.virusRenderer);
 
         this.ArrangeSceneElementsPosByColor();
 
@@ -62,6 +59,9 @@ class SuperVirus extends NpcElement
             // @@
             // @@
             // @@
+            this.blockWidth = 2;
+            this.blockHeight = 4;
+
             this.placeholderArray[0].MoveTo(0,0);
             this.placeholderArray[1].MoveTo(1,0);
             this.placeholderArray[2].MoveTo(0,1);
@@ -77,20 +77,26 @@ class SuperVirus extends NpcElement
             // @@@
             // @ @
             // @@@
+            this.blockWidth = 3;
+            this.blockHeight = 3;
+
             this.placeholderArray[0].MoveTo(0,0);
             this.placeholderArray[1].MoveTo(1,0);
             this.placeholderArray[2].MoveTo(2,0);
             this.placeholderArray[3].MoveTo(0,1);
             this.placeholderArray[4].MoveTo(2,1);
-            this.placeholderArray[5].MoveTo(0,3);
-            this.placeholderArray[6].MoveTo(1,3);
-            this.placeholderArray[7].MoveTo(2,3);
+            this.placeholderArray[5].MoveTo(0,2);
+            this.placeholderArray[6].MoveTo(1,2);
+            this.placeholderArray[7].MoveTo(2,2);
         }
         else if(this.color == GameElementColor.yellow)
         {
             //4x2
             // @@@@
             // @@@@
+            this.blockWidth = 4;
+            this.blockHeight = 2;
+
             this.placeholderArray[0].MoveTo(0,0);
             this.placeholderArray[1].MoveTo(1,0);
             this.placeholderArray[2].MoveTo(2,0);
