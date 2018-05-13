@@ -147,7 +147,7 @@ class PlayerControl extends GameModuleComponentBase
             let event = new PlayerControlFinishEvent();            
             GameMain.GetInstance().DispatchEvent(event);
         }
-        else if(event.controlType == SceneElementControlType.Add)
+        else if(event.controlType == SceneElementControlType.Add && event.playerControl)
         {
             //已经无法创建新的元素了，就进入死亡状态
             let event = new GameOverEvent();            
@@ -162,6 +162,7 @@ class PlayerControl extends GameModuleComponentBase
         event.controlType = controlType;
         event.moveDir = moveDir;
         event.moveStep = moveStep;
+        event.playerControl = true;
         if (controlType == SceneElementControlType.Rotation)
         {
             event.rotateTargetPosList = this.target.GetRotateACWPosList();

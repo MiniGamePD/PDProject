@@ -17,7 +17,7 @@ class MatchModule extends GameViewModule
 	{
 		GameMain.GetInstance().AddEventListener(PlayerControlFinishEvent.EventName, this.StartSceneEliminate, this);
 		GameMain.GetInstance().AddEventListener(SceneEliminateFinishEvent.EventName, this.StartNpcControl, this);
-		GameMain.GetInstance().AddEventListener(NpcControlFinishEvent.EventName, this.StartPlayerControl, this);
+		GameMain.GetInstance().AddEventListener(NpcControlFinishEvent.EventName, this.OnNpcControlFinish, this);
 		GameMain.GetInstance().AddEventListener(GameOverEvent.EventName, this.OnGameOver, this);
 		GameMain.GetInstance().AddEventListener(ReplayGameEvent.EventName, this.OnReplayGame, this);
 
@@ -134,7 +134,7 @@ class MatchModule extends GameViewModule
 	private StartPlayerControl()
 	{
 		this.matchState = MatchState.PlayerControl;
-		this.turn++;
+		this.AddTurn();
 
 		this.npcControl.Sleep();
 
@@ -146,9 +146,7 @@ class MatchModule extends GameViewModule
 	private StartSpecialSceneEliminate(event: NpcControlFinishEvent)
 	{
 		this.matchState = MatchState.SpecialEliminate;
-
 		this.npcControl.Sleep();
-		//var pos = Tools.GetRegionPosList(0, 5, 5, 10);
 		this.scene.SetEliminateMethodNext(event.specialEliminateMethod.methodType, 
 			event.specialEliminateMethod.specificColor,
 			event.specialEliminateMethod.specificRegion,
@@ -172,6 +170,15 @@ class MatchModule extends GameViewModule
 		this.InitComponents();
 		this.matchView.SetScene(this.scene);
 		this.InitMatch();
+	}
+
+	private AddTurn()
+	{
+		this.turn++;
+		let event = new HUDEvent();
+		event.eventType = HUDEventType.ChangeStep;
+		event.param = this.turn;
+		GameMain.GetInstance().DispatchEvent(event);
 	}
 }
 

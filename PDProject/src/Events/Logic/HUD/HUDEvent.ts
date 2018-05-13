@@ -13,4 +13,5 @@ enum HUDEventType
 {
     ShowReadyGo,
     ChangeScore,
+    ChangeStep,
 }

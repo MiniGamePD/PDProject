@@ -7,7 +7,6 @@ class NpcControl extends GameModuleComponentBase
 
     //用于将npc一个一个添加进场景中的表现
     private tobeAddToSceneNpcArray:NpcElement[];
-    private querySceneBlocks:number[][];
     private addNpcToSceneInterval:number;
 
     //如果创建了Npc，则播放一个很贱的笑声
@@ -15,6 +14,9 @@ class NpcControl extends GameModuleComponentBase
 
     private npcControlTimer:number;
     private npcControlState:NpcControlState;
+
+    //用于消除创建NPC的阻碍元素
+    private obstruction:number[];
 
     public constructor(gameplayElementFactory:GameplayElementFactory)
     {
@@ -37,6 +39,14 @@ class NpcControl extends GameModuleComponentBase
     {
         super.Work(param);
 
+        if(this.npcControlState == NpcControlState.DestroyObstruction)
+        {
+            //接上一次NpcControl的操作，直接跳转到AddNpcToScene
+            this.obstruction = null;
+            this.npcControlState = NpcControlState.AddNpcToScene;
+            return;
+        }
+
         let controlWorkParam:GameplayControlWorkParam = param;
          //Todo:thinking
         if(controlWorkParam.turn % createEnemyTurnNum != 0)
@@ -47,7 +57,7 @@ class NpcControl extends GameModuleComponentBase
 
         this.npcSmileSound = null;
 
-        if(controlWorkParam.turn != 0)
+        if(controlWorkParam.turn < 10)
         {
             //创建普通小怪
             this.creatorWorkParam.paramIndex = NpcElementCreateType.RandomVirus;
@@ -84,11 +94,28 @@ class NpcControl extends GameModuleComponentBase
 
     private OnReciveSceneData(event:SceneElementAccessAnswerEvent)
     {
-        this.querySceneBlocks = event.queryElementBlocks;
+        this.obstruction = [];
+        for(var i = 0; i < this.tobeAddToSceneNpcArray.length; ++i)
+        {
+            let npc:NpcElement = this.tobeAddToSceneNpcArray[i];
+            let subObstruction = this.ArrangePos(npc, event.queryElementBlocks);
+            if(subObstruction != null)
+            {
+                this.obstruction = this.obstruction.concat(subObstruction);
+            }
+        }
 
         this.npcControlTimer = 0;
-        this.npcControlState = NpcControlState.AddNpcToScene;
         this.addNpcToSceneInterval = addNpcToSceneIntervalMax;
+
+        if(this.obstruction.length > 0)
+        {
+            this.npcControlState = NpcControlState.DestroyObstruction;
+        }
+        else
+        {
+            this.npcControlState = NpcControlState.AddNpcToScene;
+        }
     }
 
     protected UpdateInternal(deltaTime:number)
@@ -104,6 +131,9 @@ class NpcControl extends GameModuleComponentBase
             case NpcControlState.NpcControlFinish:
                 this.UpdateNpcControlFinish(deltaTime);
                 break;
+            case NpcControlState.DestroyObstruction:
+                this.UpdateDestroyObstruction(deltaTime);
+                break;
         }
     }
 
@@ -116,7 +146,7 @@ class NpcControl extends GameModuleComponentBase
             {
                 let index = this.tobeAddToSceneNpcArray.length - 1;
                 let npc = this.tobeAddToSceneNpcArray[index];
-                this.ArrangePos(npc, this.querySceneBlocks);
+                this.AddNpcToScene(npc);
                 this.tobeAddToSceneNpcArray.splice(index, 1);
                 this.npcControlTimer = 0;
                 this.addNpcToSceneInterval -= addNpcToSceneIntervalStep;
@@ -126,7 +156,6 @@ class NpcControl extends GameModuleComponentBase
         else
         {
             this.tobeAddToSceneNpcArray = null;
-            this.querySceneBlocks = null;
 
             if(this.npcSmileSound != null)
             {
@@ -167,22 +196,36 @@ class NpcControl extends GameModuleComponentBase
         GameMain.GetInstance().DispatchEvent(event);
     }
 
-    private ArrangePos(npc:NpcElement, querySceneBlocks:number[][])
+    private UpdateDestroyObstruction(delteTime:number)
+    {
+        let event = new NpcControlFinishEvent();
+        event.specialEliminateMethod = new EliminateMethod();
+        event.specialEliminateMethod.methodType = EliminateMethodType.SpecificRegion;
+        event.specialEliminateMethod.specificRegion = this.obstruction;
+        event.specialEliminateMethod.eliminateElementType = EliminateElementType.PillAndVirus;
+        GameMain.GetInstance().DispatchEvent(event);
+
+        console.log("Destroy Obstruction");
+    }
+
+    private ArrangePos(npc:NpcElement, querySceneBlocks:number[][]):number[]
     {
 		if(querySceneBlocks == undefined || querySceneBlocks == null)
 		{
 			console.error("Query Scene Blocks Failed");
-			return;
+			return null;
 		}
 
+        let result = null;
         if(npc.bornType == NpcBornType.Normal)
         {
             this.ArrangePosForNormalNpc(npc, querySceneBlocks);
         }
         else if(npc.bornType == NpcBornType.Destroy)
         {
-            this.ArrangePosForDestroyNpc(npc, querySceneBlocks);
+            result = this.ArrangePosForDestroyNpc(npc, querySceneBlocks);
         }
+        return result;
     }
 
     private ArrangePosForNormalNpc(npc:NpcElement, querySceneBlocks:number[][])
@@ -195,40 +238,32 @@ class NpcControl extends GameModuleComponentBase
 
         let randomIndex = Math.floor(Math.random() * querySceneBlocks.length);
         let pos:number[] = querySceneBlocks.splice(randomIndex, 1)[0];
-        npc.PlaySound(NpcSoundType.Born);
         npc.MoveTo(pos[0], pos[1]);
-
-        let event = new SceneElementControlEvent();
-        event.controlType = SceneElementControlType.Add;
-        event.sceneElements = npc.GetSceneElements();
-        GameMain.GetInstance().DispatchEvent(event);
     }
 
-    private ArrangePosForDestroyNpc(npc:NpcElement, querySceneBlocks:number[][])
+    private ArrangePosForDestroyNpc(npc:NpcElement, querySceneBlocks:number[][]):number[]
     {
         if(querySceneBlocks == undefined || querySceneBlocks == null)
 		{
 			console.error("Can't Get Placeholder Array In Scene?");
-			return;
+			return null;
 		}
 
+        let result:number[] = null;
         let validPos:number[][] = this.GetValidPosForDestroyNpc(npc, querySceneBlocks);
         if(validPos.length > 0)
         {
             let randomIndex = Math.floor(Math.random() * validPos.length);
             let pos:number[] = validPos.splice(randomIndex, 1)[0];
-            npc.PlaySound(NpcSoundType.Born);
             npc.MoveTo(pos[0], pos[1]);
 
-            let event = new SceneElementControlEvent();
-            event.controlType = SceneElementControlType.Add;
-            event.sceneElements = npc.GetSceneElements();
-            GameMain.GetInstance().DispatchEvent(event);
+            result = Tools.GetRegionPosList(pos[0], pos[1], pos[0] + npc.blockWidth - 1, pos[1] + npc.blockHeight - 1);
         }
         else
         {
             console.error("Not Enough Space For Destroy Born Type NPC");
         }
+        return result;
     }
 
     private GetValidPosForDestroyNpc(npc:NpcElement, querySceneBlocks:number[][]):number[][]
@@ -278,11 +313,23 @@ class NpcControl extends GameModuleComponentBase
 
         return result;
     }
+
+    private AddNpcToScene(npc:NpcElement)
+    {
+        let event = new SceneElementControlEvent();
+        event.controlType = SceneElementControlType.Add;
+        event.sceneElements = npc.GetSceneElements();
+        event.playerControl = false;
+        GameMain.GetInstance().DispatchEvent(event);
+
+        npc.PlaySound(NpcSoundType.Born);
+    }
 }
 
 enum NpcControlState
 {
     None,
+    DestroyObstruction,
     AddNpcToScene,
     PlaySinisterSmileSound,
     NpcControlFinish,

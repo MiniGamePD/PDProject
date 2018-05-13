@@ -84,6 +84,7 @@ class Scene extends GameModuleComponentBase
             this.controlSuccessEvent.controlType = event.controlType;
             this.controlSuccessEvent.moveDir = event.moveDir;
             this.controlSuccessEvent.moveStep = event.moveStep;
+            this.controlSuccessEvent.playerControl = event.playerControl;
             GameMain.GetInstance().DispatchEvent(this.controlSuccessEvent);
         }
         else 
@@ -92,6 +93,7 @@ class Scene extends GameModuleComponentBase
             this.controlFailedEvent.controlType = event.controlType;
             this.controlFailedEvent.moveDir = event.moveDir;
             this.controlFailedEvent.moveStep = event.moveStep;
+            this.controlFailedEvent.playerControl = event.playerControl;
             GameMain.GetInstance().DispatchEvent(this.controlFailedEvent);
         }
     }
