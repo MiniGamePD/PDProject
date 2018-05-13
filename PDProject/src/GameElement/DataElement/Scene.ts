@@ -269,7 +269,14 @@ class Scene extends GameModuleComponentBase
                     && !this.IsElementInEliminateList(element)
                     && this.NeedEliminate(element))
                 {
-                    this.eliminateInfo.EliminatedElements.push(element);
+                    if (this.IsPlaceHolder(element))
+                    {
+                        this.eliminateInfo.EliminatedPlaceHolderElement.push(element);
+                    }
+                    else
+                    {
+                        this.eliminateInfo.EliminatedElements.push(element);
+                    }
                     element.UnbindAllElement();
                     this.eliminateInfo.HasInfo = true;
                     element.OnEliminate();
@@ -318,7 +325,14 @@ class Scene extends GameModuleComponentBase
                 if (element != null
                     && !this.IsElementInEliminateList(element))
                 {
-                    this.eliminateInfo.EliminatedElements.push(element);
+                    if (this.IsPlaceHolder(element))
+                    {
+                        this.eliminateInfo.EliminatedPlaceHolderElement.push(element);
+                    }
+                    else
+                    {
+                        this.eliminateInfo.EliminatedElements.push(element);
+                    }
                     element.UnbindAllElement();
                     this.eliminateInfo.HasInfo = true;
                     element.OnEliminate();
@@ -487,12 +501,20 @@ class Scene extends GameModuleComponentBase
         return false;
     }
 
+    // 判断这个
+    public IsPlaceHolder(element: SceneElementBase): boolean
+    {
+        return element != null && element.ElementType() == SceneElementType.PlaceHolder;
+    }
+
     // 判断一个元素是否需要被消除(横竖方向满足相邻的3个相同颜色的块)
     private NeedEliminateByBorder(element: SceneElementBase): boolean
     {
         var needEliminate: boolean = false;
         var cloumnCount: number = 1;
         var rowCount: number = 1;
+        var cloumnPlaceHolderCount = this.IsPlaceHolder(element) ? 1 : 0;
+        var rowPlaceHolderCount = this.IsPlaceHolder(element) ? 1 : 0;
         for (var up = element.posy - 1; up >= 0; --up)
         {
             var e = this.GetElement(element.posx, up);
@@ -500,6 +522,7 @@ class Scene extends GameModuleComponentBase
                 && e.color == element.color)
             {
                 ++cloumnCount;
+                cloumnPlaceHolderCount += this.IsPlaceHolder(e) ? 1 : 0;
             }
             else
             {
@@ -514,6 +537,7 @@ class Scene extends GameModuleComponentBase
                 && e.color == element.color)
             {
                 ++cloumnCount;
+                cloumnPlaceHolderCount += this.IsPlaceHolder(e) ? 1 : 0;
             }
             else
             {
@@ -528,6 +552,7 @@ class Scene extends GameModuleComponentBase
                 && e.color == element.color)
             {
                 ++rowCount;
+                rowPlaceHolderCount += this.IsPlaceHolder(e) ? 1 : 0;
             }
             else
             {
@@ -542,11 +567,21 @@ class Scene extends GameModuleComponentBase
                 && e.color == element.color)
             {
                 ++rowCount;
+                rowPlaceHolderCount += this.IsPlaceHolder(e) ? 1 : 0;
             }
             else
             {
                 break;
             }
+        }
+        if (cloumnPlaceHolderCount > 0)
+        {
+            cloumnCount = cloumnCount - cloumnPlaceHolderCount + 1;  //一个方向的placeholder只算一个
+        }
+
+        if (rowPlaceHolderCount > 0)
+        {
+            rowCount = rowCount - rowPlaceHolderCount + 1; //一个方向的placeholder只算一个
         }
 
         if (cloumnCount >= element.eliminateMinCount
