@@ -1,7 +1,7 @@
 {
 	"groups": [
 		{
-			"keys": "bgm_mp3,pd_res_json,Boom_mp3,Eliminate_mp3,EliminateRow_mp3,OnDown_mp3,VirusEliminate_mp3,newParticle_json,newParticle_png,EnemySinisterSmile1_mp3,EnemySinisterSmile2_mp3,EnemySinisterSmile3_mp3,EnemySinisterSmile4_mp3,VirusBorn_mp3,BossSkill_mp3,GameOver_mp3,Go_mp3,Ready_mp3",
+			"keys": "bgm_mp3,pd_res_json,Boom_mp3,Eliminate_mp3,EliminateRow_mp3,OnDown_mp3,VirusEliminate_mp3,newParticle_json,newParticle_png,EnemySinisterSmile1_mp3,EnemySinisterSmile2_mp3,EnemySinisterSmile3_mp3,EnemySinisterSmile4_mp3,VirusBorn_mp3,BossSkill_mp3,GameOver_mp3,Go_mp3,Ready_mp3,Boss_Blue_png,Boss_Red_png,Boss_Yellow_png",
 			"name": "preload"
 		}
 	],
@@ -111,6 +111,21 @@
 			"name": "Ready_mp3",
 			"type": "sound",
 			"url": "assets/Ready.mp3"
+		},
+		{
+			"name": "Boss_Blue_png",
+			"type": "image",
+			"url": "assets/Boss_Blue.png"
+		},
+		{
+			"name": "Boss_Red_png",
+			"type": "image",
+			"url": "assets/Boss_Red.png"
+		},
+		{
+			"name": "Boss_Yellow_png",
+			"type": "image",
+			"url": "assets/Boss_Yellow.png"
 		}
 	]
 }
