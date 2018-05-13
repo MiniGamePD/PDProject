@@ -1,7 +1,7 @@
 {
 	"groups": [
 		{
-			"keys": "bgm_mp3,pd_res_json,Boom_mp3,Eliminate_mp3,EliminateRow_mp3,OnDown_mp3,VirusEliminate_mp3,newParticle_json,newParticle_png,EnemySinisterSmile1_mp3,EnemySinisterSmile2_mp3,EnemySinisterSmile3_mp3,EnemySinisterSmile4_mp3,VirusBorn_mp3,BossSkill_mp3,GameOver_mp3,Go_mp3,Ready_mp3,Boss_Blue_png,Boss_Red_png,Boss_Yellow_png",
+			"keys": "bgm_mp3,pd_res_json,Boom_mp3,Eliminate_mp3,EliminateRow_mp3,OnDown_mp3,VirusEliminate_mp3,newParticle_json,newParticle_png,EnemySinisterSmile1_mp3,EnemySinisterSmile2_mp3,EnemySinisterSmile3_mp3,EnemySinisterSmile4_mp3,VirusBorn_mp3,BossSkill_mp3,GameOver_mp3,Go_mp3,Ready_mp3",
 			"name": "preload"
 		}
 	],
@@ -25,7 +25,7 @@
 			"url": "assets/pd_res.json",
 			"type": "sheet",
 			"name": "pd_res_json",
-			"subkeys": "BackGround,Bottle,ColunmEliminater,CrossEliminater,Pill_Blue,Pill_Red,Pill_Single_Blue,Pill_Single_Red,Pill_Single_Yellow,Pill_Yellow,RowEliminater,Virus_Blue,Virus_Red,Virus_Yellow,Vitamins_Blue,Vitamins_Red,Vitamins_Yellow"
+			"subkeys": "BackGround,Boss_Blue,Boss_Red,Boss_Yellow,Bottle,ColunmEliminater,CrossEliminater,Pill_Blue,Pill_Red,Pill_Single_Blue,Pill_Single_Red,Pill_Single_Yellow,Pill_Yellow,RowEliminater,Virus_Blue,Virus_Red,Virus_Yellow,Vitamins_Blue,Vitamins_Red,Vitamins_Yellow"
 		},
 		{
 			"url": "assets/bgm.mp3",
@@ -68,64 +68,49 @@
 			"name": "newParticle_png"
 		},
 		{
-			"name": "EnemySinisterSmile1_mp3",
+			"url": "assets/EnemySinisterSmile1.mp3",
 			"type": "sound",
-			"url": "assets/EnemySinisterSmile1.mp3"
+			"name": "EnemySinisterSmile1_mp3"
 		},
 		{
-			"name": "EnemySinisterSmile2_mp3",
+			"url": "assets/EnemySinisterSmile2.mp3",
 			"type": "sound",
-			"url": "assets/EnemySinisterSmile2.mp3"
+			"name": "EnemySinisterSmile2_mp3"
 		},
 		{
-			"name": "EnemySinisterSmile3_mp3",
+			"url": "assets/EnemySinisterSmile3.mp3",
 			"type": "sound",
-			"url": "assets/EnemySinisterSmile3.mp3"
+			"name": "EnemySinisterSmile3_mp3"
 		},
 		{
-			"name": "EnemySinisterSmile4_mp3",
+			"url": "assets/EnemySinisterSmile4.mp3",
 			"type": "sound",
-			"url": "assets/EnemySinisterSmile4.mp3"
+			"name": "EnemySinisterSmile4_mp3"
 		},
 		{
-			"name": "VirusBorn_mp3",
+			"url": "assets/VirusBorn.mp3",
 			"type": "sound",
-			"url": "assets/VirusBorn.mp3"
+			"name": "VirusBorn_mp3"
 		},
 		{
-			"name": "BossSkill_mp3",
+			"url": "assets/BossSkill.mp3",
 			"type": "sound",
-			"url": "assets/BossSkill.mp3"
+			"name": "BossSkill_mp3"
 		},
 		{
-			"name": "GameOver_mp3",
+			"url": "assets/GameOver.mp3",
 			"type": "sound",
-			"url": "assets/GameOver.mp3"
+			"name": "GameOver_mp3"
 		},
 		{
-			"name": "Go_mp3",
+			"url": "assets/Go.mp3",
 			"type": "sound",
-			"url": "assets/Go.mp3"
+			"name": "Go_mp3"
 		},
 		{
-			"name": "Ready_mp3",
+			"url": "assets/Ready.mp3",
 			"type": "sound",
-			"url": "assets/Ready.mp3"
-		},
-		{
-			"name": "Boss_Blue_png",
-			"type": "image",
-			"url": "assets/Boss_Blue.png"
-		},
-		{
-			"name": "Boss_Red_png",
-			"type": "image",
-			"url": "assets/Boss_Red.png"
-		},
-		{
-			"name": "Boss_Yellow_png",
-			"type": "image",
-			"url": "assets/Boss_Yellow.png"
+			"name": "Ready_mp3"
 		}
 	]
 }
