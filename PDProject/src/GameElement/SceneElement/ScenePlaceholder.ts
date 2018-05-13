@@ -18,4 +18,14 @@ class ScenePlaceholder extends SceneElementBase
         this.eliminateMinCount = Scene.EliminateMinCount;
         this.elementType = SceneElementType.PlaceHolder;
     }
+
+    public BlockWidth():number
+    {
+        return 1;
+    }
+
+    public BlockHeight():number
+    {
+        return 1;
+    }
 }

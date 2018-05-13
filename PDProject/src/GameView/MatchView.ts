@@ -102,8 +102,8 @@ class MatchView extends GameView
                 {
                     if (!element.hasAddToDisplayList)
                     {
-                        element.renderer.width = this.mElementWidth;
-                        element.renderer.height = this.mElementHeight;
+                        element.renderer.width = this.mElementWidth * element.BlockWidth();
+                        element.renderer.height = this.mElementHeight * element.BlockHeight();
                         element.renderer.anchorOffsetX = this.mElementWidth / 2;
                         element.renderer.anchorOffsetY = this.mElementHeight / 2;
                         this.mBattleGround.addChild(element.renderer);

@@ -41,7 +41,7 @@ class MatchModule extends GameViewModule
 
 		GameMain.GetInstance().RemoveEventListener(PlayerControlFinishEvent.EventName, this.StartSceneEliminate, this);
 		GameMain.GetInstance().RemoveEventListener(SceneEliminateFinishEvent.EventName, this.StartNpcControl, this);
-		GameMain.GetInstance().RemoveEventListener(NpcControlFinishEvent.EventName, this.StartPlayerControl, this);
+		GameMain.GetInstance().RemoveEventListener(NpcControlFinishEvent.EventName, this.OnNpcControlFinish, this);
 		GameMain.GetInstance().RemoveEventListener(GameOverEvent.EventName, this.OnGameOver, this);
 		GameMain.GetInstance().RemoveEventListener(ReplayGameEvent.EventName, this.OnReplayGame, this);
 	}
@@ -105,14 +105,6 @@ class MatchModule extends GameViewModule
 		this.matchState = MatchState.Eliminate;
 
 		this.playerControl.Sleep();
-		// if (this.turn == 3)
-		// {
-		// 	var pos = Tools.GetRegionPosList(0, 5, 5, 10);
-		// 	// this.scene.SetEliminateMethodNext(EliminateMethodType.SpecificRegionAndColor, GameElementColor.blue, pos);
-		// 	// this.scene.SetEliminateMethodNext(EliminateMethodType.SpecificColor, GameElementColor.blue);
-		// 	this.scene.SetEliminateMethodNext(EliminateMethodType.SpecificColor, GameElementColor.blue, null, EliminateElementType.PillOnly);
-		// 	this.scene.SetNextEliminateUnMove();			
-		// }
 		this.scene.Work();
 	}
 
@@ -127,7 +119,19 @@ class MatchModule extends GameViewModule
 		this.npcControl.Work(this.controlWorkParam);
 	}
 
-	private StartPlayerControl(event: NpcControlFinishEvent)
+	private OnNpcControlFinish(event: NpcControlFinishEvent)
+	{
+		if(event.specialEliminateMethod == null)
+		{
+			this.StartPlayerControl();
+		}
+		else
+		{
+			this.StartSpecialSceneEliminate(event);
+		}
+	}
+
+	private StartPlayerControl()
 	{
 		this.matchState = MatchState.PlayerControl;
 		this.turn++;
@@ -137,6 +141,20 @@ class MatchModule extends GameViewModule
 		this.controlWorkParam.difficulty = this.difficulty;
 		this.controlWorkParam.turn = this.turn;
 		this.playerControl.Work(this.controlWorkParam);
+	}
+
+	private StartSpecialSceneEliminate(event: NpcControlFinishEvent)
+	{
+		this.matchState = MatchState.SpecialEliminate;
+
+		this.npcControl.Sleep();
+		//var pos = Tools.GetRegionPosList(0, 5, 5, 10);
+		this.scene.SetEliminateMethodNext(event.specialEliminateMethod.methodType, 
+			event.specialEliminateMethod.specificColor,
+			event.specialEliminateMethod.specificRegion,
+			event.specialEliminateMethod.eliminateElementType);
+		this.scene.SetNextEliminateUnMove();			
+		this.scene.Work();
 	}
 
 	private OnGameOver(event: GameOverEvent)
@@ -163,6 +181,7 @@ enum MatchState
 	Init, //游戏开始
 	NpcControl, //处理Npc的AI，是否要生成新的Npc
 	PlayerControl, //该状态下玩家可控制药丸旋转、下落
+	SpecialEliminate, //特殊消除阶段，用来做一些特殊事件的（比如boss出场）的消除
 	Eliminate, //消除阶段，计算刚才玩家的操作是否产生消除，以及处理消除的各种效果
 	GameOver //拜拜了
 }

@@ -115,6 +115,16 @@ class SceneElementBase
     {
         return this.owner.OnOnEliminate();
     }
+
+    public BlockWidth():number
+    {
+        return this.owner.blockWidth;
+    }
+
+    public BlockHeight():number
+    {
+        return this.owner.blockHeight;
+    }
 }
 
 enum GameElementColor 

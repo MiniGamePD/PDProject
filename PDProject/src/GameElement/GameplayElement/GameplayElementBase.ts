@@ -3,6 +3,8 @@ abstract class GameplayElementBase
 {
     public posx:number;
     public posy:number;
+    public blockWidth:number = 1;
+    public blockHeight:number = 1;
 
     protected sceneElements:SceneElementBase[] = [];
     private sceneElementFilled:boolean = false;

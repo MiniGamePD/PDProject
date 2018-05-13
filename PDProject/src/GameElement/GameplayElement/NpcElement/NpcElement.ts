@@ -2,8 +2,6 @@ abstract class NpcElement extends GameplayElementBase
 {
     public bornType:NpcBornType;
     protected bornSound:string;
-    public blockWidth:number = 1;
-    public blockHeight:number = 1;
 
     public MoveTo(posx:number, posy:number){}
 
