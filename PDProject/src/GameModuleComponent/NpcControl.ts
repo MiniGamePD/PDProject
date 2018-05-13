@@ -202,10 +202,8 @@ class NpcControl extends GameModuleComponentBase
         event.specialEliminateMethod = new EliminateMethod();
         event.specialEliminateMethod.methodType = EliminateMethodType.SpecificRegion;
         event.specialEliminateMethod.specificRegion = this.obstruction;
-        event.specialEliminateMethod.eliminateElementType = EliminateElementType.PillAndVirus;
+        event.specialEliminateMethod.eliminateElementType = EliminateElementType.Normal;
         GameMain.GetInstance().DispatchEvent(event);
-
-        console.log("Destroy Obstruction");
     }
 
     private ArrangePos(npc:NpcElement, querySceneBlocks:number[][]):number[]
@@ -269,12 +267,14 @@ class NpcControl extends GameModuleComponentBase
     private GetValidPosForDestroyNpc(npc:NpcElement, querySceneBlocks:number[][]):number[][]
     {
         let validPos:number[][] = [];
-        for (var i = 0; i < (Scene.Columns - npc.blockWidth); ++i) 
+        for (var i = 0; i < Scene.Columns; ++i) 
         {
             validPos.push([]);
-            for (var j = 0; j < (Scene.Rows - npc.blockHeight); ++j) 
+            for (var j = 0; j < Scene.Rows; ++j) 
             {
-                validPos[i].push(1);
+                let valid:boolean = (i <= Scene.Columns - npc.blockWidth) && 
+                    (j <= Scene.Rows - npc.blockHeight) && j >= 2;
+                validPos[i].push(valid ? 1 : 0);
             }
         }
 
@@ -284,12 +284,12 @@ class NpcControl extends GameModuleComponentBase
             let pos:number[] = querySceneBlocks[i];
             let invalidStartX = pos[0] - npc.blockWidth + 1;
             invalidStartX = Math.max(0, invalidStartX);
-            let invalidStartY = pos[i] - npc.blockHeight + 1;
+            let invalidStartY = pos[1] - npc.blockHeight + 1;
             invalidStartY = Math.max(0, invalidStartY);
 
             for(var ix = invalidStartX; ix <= pos[0]; ++ix)
             {
-                for(var iy = invalidStartY; iy <= pos[i]; ++iy)
+                for(var iy = invalidStartY; iy <= pos[1]; ++iy)
                 {
                     validPos[ix][iy] = 0;
                 }
