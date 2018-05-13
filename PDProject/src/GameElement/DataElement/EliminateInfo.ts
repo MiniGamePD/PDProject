@@ -5,6 +5,7 @@ class EliminateInfo {
 		this.MoveElements = [];
 		this.SpecialEliminatedElement = [];
 		this.EliminatedPlaceHolderElement = [];
+		this.EliminatedSuperVirus = [];
 	}
 
 	// 是否有消除数据
@@ -22,6 +23,9 @@ class EliminateInfo {
 	// 消除后，需要移动的元素列表
 	public MoveElements: EliminateMoveInfo[];
 
+	// 有被消除的Boss
+	public EliminatedSuperVirus: SuperVirus[];
+
 	// 重置
 	public Reset() {
 		this.HasInfo = false;
@@ -29,6 +33,7 @@ class EliminateInfo {
 		this.MoveElements = [];
 		this.SpecialEliminatedElement = [];
 		this.EliminatedPlaceHolderElement = [];
+		this.EliminatedSuperVirus = [];
 	}
 }
 
