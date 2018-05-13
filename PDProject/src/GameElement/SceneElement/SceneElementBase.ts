@@ -145,5 +145,4 @@ enum SceneElementType
     RowEliminater,
     CrossEliminater,
     PlaceHolder,
-    SuperVirus,
 }
