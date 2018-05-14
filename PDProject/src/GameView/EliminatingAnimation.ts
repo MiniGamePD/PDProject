@@ -92,6 +92,11 @@ class EliminatingAnimation
 				this.eliminateInfo.EliminatedElements[i].renderer.alpha = alpha;
 			}
 
+			for (var i = 0; i < this.eliminateInfo.EliminatedSuperVirus.length; ++i)
+			{
+				this.eliminateInfo.EliminatedSuperVirus[i].SetRenderAlpha(alpha);
+			}
+
 			var scale = needHide ? 0.5 : 1.5;
 			for (var i = 0; i < this.eliminateInfo.SpecialEliminatedElement.length; ++i)
 			{
@@ -108,6 +113,18 @@ class EliminatingAnimation
 		for (var i = 0; i < this.eliminateInfo.EliminatedElements.length; ++i)
 		{
 			this.eliminateInfo.EliminatedElements[i].renderer.alpha = 0; //Todo 改成释放这个元素
+		}
+
+		for (var i = 0; i < this.eliminateInfo.EliminatedSuperVirus.length; ++i)
+		{
+			if (this.eliminateInfo.EliminatedSuperVirus[i].CurHealth() <= 0)
+			{
+				this.eliminateInfo.EliminatedSuperVirus[i].EliminateRelease();
+			}
+			else
+			{
+				this.eliminateInfo.EliminatedSuperVirus[i].SetRenderAlpha(1);
+			}
 		}
 	}
 

@@ -38,6 +38,7 @@ class Scene extends GameModuleComponentBase
         GameMain.GetInstance().AddEventListener(SceneElementControlEvent.EventName, this.ProcessControlCmd, this);
         GameMain.GetInstance().AddEventListener(SpecialEliminateRequestEvent.EventName, this.ProcessSpecialEliminateRequest, this);
         GameMain.GetInstance().AddEventListener(SceneElementAccessEvent.EventName, this.OnAccessSceneElements, this);
+        GameMain.GetInstance().AddEventListener(SuperVirusEliminateEvent.EventName, this.OnSuperVirusEliminateEvent, this);
     }
 
     public Release() 
@@ -45,6 +46,7 @@ class Scene extends GameModuleComponentBase
         GameMain.GetInstance().RemoveEventListener(SceneElementControlEvent.EventName, this.ProcessControlCmd, this);
         GameMain.GetInstance().RemoveEventListener(SpecialEliminateRequestEvent.EventName, this.ProcessSpecialEliminateRequest, this);
         GameMain.GetInstance().RemoveEventListener(SceneElementAccessEvent.EventName, this.OnAccessSceneElements, this);
+        GameMain.GetInstance().RemoveEventListener(SuperVirusEliminateEvent.EventName, this.OnSuperVirusEliminateEvent, this);
     }
 
     private ProcessControlCmd(event: SceneElementControlEvent) 
@@ -853,6 +855,24 @@ class Scene extends GameModuleComponentBase
             answerEvent.accessType = event.accessType;
             answerEvent.queryElementBlocks = queryElementBlocks;
             GameMain.GetInstance().DispatchEvent(answerEvent);
+        }
+    }
+
+    private OnSuperVirusEliminateEvent(event: SuperVirusEliminateEvent)
+    {
+        if (event != null
+            && event.superVirus != null)
+        {
+            if (!Tools.IsInSuperVirusList(event.superVirus, this.eliminateInfo.EliminatedSuperVirus))
+            {
+                this.eliminateInfo.EliminatedSuperVirus.push(event.superVirus);
+            }
+            
+            if (event.superVirus.CurHealth() <= 0)
+            {
+                var elements = event.superVirus.GetSceneElements()
+                this.RemoveElementGroup(elements);
+            }
         }
     }
 

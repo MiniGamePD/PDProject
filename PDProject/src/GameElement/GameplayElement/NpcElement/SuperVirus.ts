@@ -2,12 +2,16 @@ class SuperVirus extends NpcElement
 {
     private virusRenderer:SceneSuperVirus;
     private placeholderArray:ScenePlaceholder[];
+    private health: number;
+    private hasReduceHealthThisRound: boolean;
+    private eliminateEvent: SuperVirusEliminateEvent;
 
     public constructor()
     {
         super();
 
         this.color = this.RandomColor();
+        this.health = 3;
 
         this.virusRenderer = new SceneSuperVirus(this);
         this.virusRenderer.RefreshTexture();
@@ -24,6 +28,11 @@ class SuperVirus extends NpcElement
 
         this.bornType = NpcBornType.DestroyObstruction;
         this.bornSound = "VirusBorn_mp3";
+
+        this.hasReduceHealthThisRound = false;
+        
+        this.eliminateEvent = new SuperVirusEliminateEvent();
+        GameMain.GetInstance().AddEventListener(SceneEliminateFinishEvent.EventName, this.OnSceneEliminateFinishEvent, this);
     }
 
     public MoveTo(posx:number, posy:number)
@@ -48,6 +57,21 @@ class SuperVirus extends NpcElement
     public PlayAnim(animType:NpcAnimType)
     {
         
+    }
+
+    public SetRenderAlpha(alpha: number)
+    {
+        this.virusRenderer.renderer.alpha = alpha;
+    }
+
+    // 播放消除动画后，清除出场景
+    public EliminateRelease()
+    {
+        this.virusRenderer.renderer.alpha = 0;
+        for (var i = 0; i < this.placeholderArray.length; ++i)
+        {
+            this.placeholderArray[i].renderer.alpha = 0;
+        }
     }
 
     private ArrangeSceneElementsPosByColor()
@@ -106,6 +130,29 @@ class SuperVirus extends NpcElement
             this.placeholderArray[6].MoveTo(2,1);
             this.placeholderArray[7].MoveTo(3,1);
         }
+    }
+
+    public CurHealth(): number
+    {
+        return this.health;
+    }
+
+    public OnSceneEliminateFinishEvent()
+    {
+        this.hasReduceHealthThisRound = false;
+    }
+
+    public OnOnEliminate():boolean
+    {
+        if (!this.hasReduceHealthThisRound)
+        {
+            this.hasReduceHealthThisRound = true;
+            this.health -= 1;
+            this.eliminateEvent.healthChange = -1;
+            this.eliminateEvent.superVirus = this;
+            GameMain.GetInstance().DispatchEvent(this.eliminateEvent);
+        }
+        return true;
     }
 
     public SkillType():NpcSkillType

@@ -184,4 +184,22 @@ class Tools
 		}
 		return target;
 	}
+
+	// 判断一个boss是否在列表内
+	public static IsInSuperVirusList(superVirus: SuperVirus, list: SuperVirus[]): boolean
+	{
+		var result = false;
+		if (list != null)
+		{
+			for (var i = 0; i < list.length; ++i)
+			{
+				if (list[i] == superVirus)
+				{
+					result = true;
+					break;
+				}
+			}
+		}
+		return result;
+	}
 }
