@@ -13,6 +13,7 @@ class Scene extends GameModuleComponentBase
 
     private eliminateMethod: EliminateMethod;
     private eliminateUnMove: boolean;
+    private canEliminateElementList: SceneElementBase[];
 
     public Init(): void 
     {
@@ -30,6 +31,8 @@ class Scene extends GameModuleComponentBase
         this.eliminateMethod.Reset();
 
         this.eliminateUnMove = false;
+
+        this.canEliminateElementList = [];
 
         this.controlSuccessEvent = new SceneElementControlSuccessEvent();
         this.controlFailedEvent = new SceneElementControlFailedEvent();
@@ -63,6 +66,7 @@ class Scene extends GameModuleComponentBase
                 }
             case SceneElementControlType.Move:
                 {
+                    this.AddGroupCanEliminateElementList(elementList);
                     operationSuccess = this.GetElementGroupMoveSpace(elementList, event.moveDir) >= event.moveStep;
                     if (operationSuccess)
                         this.MoveElementGroup(elementList, event.moveDir, event.moveStep);
@@ -70,6 +74,7 @@ class Scene extends GameModuleComponentBase
                 }
             case SceneElementControlType.Rotation:
                 {
+                    this.AddGroupCanEliminateElementList(elementList);
                     operationSuccess = this.IsCanRotateAcwTarget(elementList, event.rotateTargetPosList);
                     if (operationSuccess)
                         this.RotateAcwTarget(elementList, event.rotateTargetPosList);
@@ -97,6 +102,43 @@ class Scene extends GameModuleComponentBase
             this.controlFailedEvent.moveStep = event.moveStep;
             this.controlFailedEvent.playerControl = event.playerControl;
             GameMain.GetInstance().DispatchEvent(this.controlFailedEvent);
+        }
+    }
+
+    // 判读一个元素是否在可消除列表
+    private InCanEliminateElementList(element: SceneElementBase): boolean
+    {
+        var result = false;
+		if (this.canEliminateElementList != null)
+		{
+			for (var i = 0; i < this.canEliminateElementList.length; ++i)
+			{
+				if (this.canEliminateElementList[i] == element)
+				{
+					result = true;
+					break;
+				}
+			}
+		}
+		return result;		    
+    }
+
+    // 把一个元素加到可消除列表
+    public AddCanEliminateElementList(element: SceneElementBase)
+    {
+        if (element != null
+            && !Tools.IsInList<SceneElementBase>(element, this.canEliminateElementList))
+        {
+            this.canEliminateElementList.push(element);
+        }
+    }
+
+    // 把一组元素加到可消除列表
+    public AddGroupCanEliminateElementList(elements: SceneElementBase[])
+    {
+        for (var i = 0; i < elements.length; ++i)
+        {
+            this.AddCanEliminateElementList(elements[i]);
         }
     }
 
@@ -204,6 +246,8 @@ class Scene extends GameModuleComponentBase
 
     private FinishEliminate()
     {
+        this.eliminateUnMove = false;
+        this.canEliminateElementList = [];
         let newEvent = new SceneEliminateFinishEvent();
         GameMain.GetInstance().DispatchEvent(newEvent);
     }
@@ -216,7 +260,6 @@ class Scene extends GameModuleComponentBase
             this.eliminateMethod.Reset();
             if (!result)
             {
-                this.eliminateUnMove = false;
                 this.FinishEliminate();
             }
             else
@@ -402,6 +445,7 @@ class Scene extends GameModuleComponentBase
                             var e = this.mGroupElementTemp[moveCount];
                             var moveInfo: EliminateMoveInfo = new EliminateMoveInfo(e, e.posx, e.posy - moveDownValue, e.posx, e.posy); // TODO：改成池子
                             this.eliminateInfo.MoveElements.push(moveInfo);
+                            this.AddCanEliminateElementList(e);
                         }
                     }
                 }
@@ -519,6 +563,8 @@ class Scene extends GameModuleComponentBase
         var rowCount: number = 1;
         var cloumnPlaceHolderCount = this.IsPlaceHolder(element) ? 1 : 0;
         var rowPlaceHolderCount = this.IsPlaceHolder(element) ? 1 : 0;
+        var cloumnCanEliminateElementCount = this.InCanEliminateElementList(element) ? 1 : 0; // 有能被消除的元素数量
+        var rowCanEliminateElementCount = this.InCanEliminateElementList(element) ? 1 : 0; // 有能被消除的元素数量
         for (var up = element.posy - 1; up >= 0; --up)
         {
             var e = this.GetElement(element.posx, up);
@@ -527,6 +573,7 @@ class Scene extends GameModuleComponentBase
             {
                 ++cloumnCount;
                 cloumnPlaceHolderCount += this.IsPlaceHolder(e) ? 1 : 0;
+                cloumnCanEliminateElementCount += this.InCanEliminateElementList(e) ? 1 : 0;
             }
             else
             {
@@ -542,6 +589,7 @@ class Scene extends GameModuleComponentBase
             {
                 ++cloumnCount;
                 cloumnPlaceHolderCount += this.IsPlaceHolder(e) ? 1 : 0;
+                cloumnCanEliminateElementCount += this.InCanEliminateElementList(e) ? 1 : 0;                
             }
             else
             {
@@ -557,6 +605,7 @@ class Scene extends GameModuleComponentBase
             {
                 ++rowCount;
                 rowPlaceHolderCount += this.IsPlaceHolder(e) ? 1 : 0;
+                rowCanEliminateElementCount += this.InCanEliminateElementList(e) ? 1 : 0;
             }
             else
             {
@@ -572,6 +621,7 @@ class Scene extends GameModuleComponentBase
             {
                 ++rowCount;
                 rowPlaceHolderCount += this.IsPlaceHolder(e) ? 1 : 0;
+                rowCanEliminateElementCount += this.InCanEliminateElementList(e) ? 1 : 0;                
             }
             else
             {
@@ -588,8 +638,8 @@ class Scene extends GameModuleComponentBase
             rowCount = rowCount - rowPlaceHolderCount + 1; //一个方向的placeholder只算一个
         }
 
-        if (cloumnCount >= element.eliminateMinCount
-            || rowCount >= element.eliminateMinCount)
+        if (cloumnCount >= element.eliminateMinCount && cloumnCanEliminateElementCount > 0  // 竖排相邻数量足够，并且竖排相邻有能被消除的元素
+            || rowCount >= element.eliminateMinCount && rowCanEliminateElementCount > 0) // 横排相邻数量足够，并且横排相邻有能被消除的元素
         {
             needEliminate = true;
         }
@@ -867,7 +917,7 @@ class Scene extends GameModuleComponentBase
             {
                 this.eliminateInfo.EliminatedSuperVirus.push(event.superVirus);
             }
-            
+
             if (event.superVirus.CurHealth() <= 0)
             {
                 var elements = event.superVirus.GetSceneElements()

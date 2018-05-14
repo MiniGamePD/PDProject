@@ -202,4 +202,22 @@ class Tools
 		}
 		return result;
 	}
+
+	// 判读一个元素是否在列表里面
+	public static IsInList<T>(t: T, list: T[])
+	{
+		var result = false;
+		if (list != null)
+		{
+			for (var i = 0; i < list.length; ++i)
+			{
+				if (list[i] == t)
+				{
+					result = true;
+					break;
+				}
+			}
+		}
+		return result;		
+	}
 }
