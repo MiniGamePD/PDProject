@@ -2,7 +2,6 @@ abstract class NpcElement extends GameplayElementBase
 {
     public bornType:NpcBornType;
     protected bornSound:string;
-    public hasSkill:boolean = false;
 
     public MoveTo(posx:number, posy:number){}
 
@@ -21,6 +20,11 @@ abstract class NpcElement extends GameplayElementBase
 		let event = new PlaySoundEvent(soundName, 1);
         GameMain.GetInstance().DispatchEvent(event);
     }
+
+    public SkillType():NpcSkillType
+    {
+        return NpcSkillType.None;
+    }
 }
 
 enum NpcBornType
@@ -38,4 +42,11 @@ enum NpcAnimType
 enum NpcSoundType
 {
     Born,
+}
+
+enum NpcSkillType
+{
+    None,
+    DestroyAllPill,
+    ChangeAllToVirusInRange,
 }

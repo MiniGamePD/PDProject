@@ -7,8 +7,6 @@ class SuperVirus extends NpcElement
     {
         super();
 
-        this.hasSkill = true;
-
         this.color = this.RandomColor();
 
         this.virusRenderer = new SceneSuperVirus(this);
@@ -107,6 +105,26 @@ class SuperVirus extends NpcElement
             this.placeholderArray[5].MoveTo(1,1);
             this.placeholderArray[6].MoveTo(2,1);
             this.placeholderArray[7].MoveTo(3,1);
+        }
+    }
+
+    public SkillType():NpcSkillType
+    {
+        if(this.color == GameElementColor.blue)
+        {
+            return NpcSkillType.DestroyAllPill;
+        }
+        else if(this.color == GameElementColor.red)
+        {
+            return NpcSkillType.ChangeAllToVirusInRange;
+        }
+        else if(this.color == GameElementColor.yellow)
+        {
+            return NpcSkillType.ChangeAllToVirusInRange;
+        }
+        else
+        {
+            return NpcSkillType.None;
         }
     }
 }

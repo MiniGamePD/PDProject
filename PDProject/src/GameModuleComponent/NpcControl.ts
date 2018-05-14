@@ -332,7 +332,7 @@ class NpcControl extends GameModuleComponentBase
         npc.PlaySound(NpcSoundType.Born);
 
         //默认是会成功的，不成功会报错，所以这里就直接添加到逻辑数组里去了
-        if(npc.hasSkill)
+        if(npc.SkillType() != NpcSkillType.None)
         {
             this.skillNpcArray.push(npc);
         }
