@@ -316,7 +316,7 @@ class Scene extends GameModuleComponentBase
                     && !this.IsElementInEliminateList(element)
                     && this.NeedEliminate(element))
                 {
-                    if (this.IsPlaceHolder(element))
+                    if (this.IsSpecifiedTypeElement(element, SceneElementType.PlaceHolder))
                     {
                         this.eliminateInfo.EliminatedPlaceHolderElement.push(element);
                     }
@@ -372,7 +372,7 @@ class Scene extends GameModuleComponentBase
                 if (element != null
                     && !this.IsElementInEliminateList(element))
                 {
-                    if (this.IsPlaceHolder(element))
+                    if (this.IsSpecifiedTypeElement(element, SceneElementType.PlaceHolder))
                     {
                         this.eliminateInfo.EliminatedPlaceHolderElement.push(element);
                     }
@@ -549,20 +549,14 @@ class Scene extends GameModuleComponentBase
         return false;
     }
 
-    // 判断这个
-    public IsPlaceHolder(element: SceneElementBase): boolean
-    {
-        return element != null && element.ElementType() == SceneElementType.PlaceHolder;
-    }
-
     // 判断一个元素是否需要被消除(横竖方向满足相邻的3个相同颜色的块)
     private NeedEliminateByBorder(element: SceneElementBase): boolean
     {
         var needEliminate: boolean = false;
         var cloumnCount: number = 1;
         var rowCount: number = 1;
-        var cloumnPlaceHolderCount = this.IsPlaceHolder(element) ? 1 : 0;
-        var rowPlaceHolderCount = this.IsPlaceHolder(element) ? 1 : 0;
+        var cloumnPlaceHolderCount = this.IsSpecifiedTypeElement(element, SceneElementType.PlaceHolder) ? 1 : 0;
+        var rowPlaceHolderCount = this.IsSpecifiedTypeElement(element, SceneElementType.PlaceHolder) ? 1 : 0;
         var cloumnCanEliminateElementCount = this.InCanEliminateElementList(element) ? 1 : 0; // 有能被消除的元素数量
         var rowCanEliminateElementCount = this.InCanEliminateElementList(element) ? 1 : 0; // 有能被消除的元素数量
         for (var up = element.posy - 1; up >= 0; --up)
@@ -572,7 +566,7 @@ class Scene extends GameModuleComponentBase
                 && e.color == element.color)
             {
                 ++cloumnCount;
-                cloumnPlaceHolderCount += this.IsPlaceHolder(e) ? 1 : 0;
+                cloumnPlaceHolderCount += this.IsSpecifiedTypeElement(e, SceneElementType.PlaceHolder) ? 1 : 0;
                 cloumnCanEliminateElementCount += this.InCanEliminateElementList(e) ? 1 : 0;
             }
             else
@@ -588,7 +582,7 @@ class Scene extends GameModuleComponentBase
                 && e.color == element.color)
             {
                 ++cloumnCount;
-                cloumnPlaceHolderCount += this.IsPlaceHolder(e) ? 1 : 0;
+                cloumnPlaceHolderCount += this.IsSpecifiedTypeElement(e, SceneElementType.PlaceHolder) ? 1 : 0;
                 cloumnCanEliminateElementCount += this.InCanEliminateElementList(e) ? 1 : 0;                
             }
             else
@@ -604,7 +598,7 @@ class Scene extends GameModuleComponentBase
                 && e.color == element.color)
             {
                 ++rowCount;
-                rowPlaceHolderCount += this.IsPlaceHolder(e) ? 1 : 0;
+                rowPlaceHolderCount += this.IsSpecifiedTypeElement(e, SceneElementType.PlaceHolder) ? 1 : 0;
                 rowCanEliminateElementCount += this.InCanEliminateElementList(e) ? 1 : 0;
             }
             else
@@ -620,7 +614,7 @@ class Scene extends GameModuleComponentBase
                 && e.color == element.color)
             {
                 ++rowCount;
-                rowPlaceHolderCount += this.IsPlaceHolder(e) ? 1 : 0;
+                rowPlaceHolderCount += this.IsSpecifiedTypeElement(e, SceneElementType.PlaceHolder) ? 1 : 0;
                 rowCanEliminateElementCount += this.InCanEliminateElementList(e) ? 1 : 0;                
             }
             else
@@ -908,7 +902,7 @@ class Scene extends GameModuleComponentBase
         }
     }
 
-    private IsSpecifiedElement(element:SceneElementBase, type:SceneElementType):boolean
+    private IsSpecifiedTypeElement(element:SceneElementBase, type:SceneElementType):boolean
     {
         if(type == SceneElementType.Empty)
         {
@@ -938,7 +932,7 @@ class Scene extends GameModuleComponentBase
                 //Y is Row
                 for (var j = startY; j <= endY; ++j)
                 {
-                    if (this.IsSpecifiedElement(this.sceneData[i][j], type))
+                    if (this.IsSpecifiedTypeElement(this.sceneData[i][j], type))
                     {
                         let block: number[] = [];
                         block.push(i);
