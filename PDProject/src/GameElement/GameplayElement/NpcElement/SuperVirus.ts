@@ -159,15 +159,15 @@ class SuperVirus extends NpcElement
     {
         if(this.color == GameElementColor.blue)
         {
-            return NpcSkillType.DestroyAllPill;
+            return NpcSkillType.AddShield;
         }
         else if(this.color == GameElementColor.red)
         {
-            return NpcSkillType.ChangeAllToVirusInRange;
+            return NpcSkillType.ChangePillToVirus;
         }
         else if(this.color == GameElementColor.yellow)
         {
-            return NpcSkillType.ChangeAllToVirusInRange;
+            return NpcSkillType.ChangeVirusColor;
         }
         else
         {

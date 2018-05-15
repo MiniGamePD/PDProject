@@ -47,6 +47,7 @@ enum NpcSoundType
 enum NpcSkillType
 {
     None,
-    DestroyAllPill,
-    ChangeAllToVirusInRange,
+    AddShield,
+    ChangePillToVirus,
+    ChangeVirusColor
 }
