@@ -66,7 +66,7 @@ class NpcControl extends GameModuleComponentBase
 
             //向scene询问已经存在的boss的格子，用来放置新生成的boss
             let event = new SceneElementAccessEvent();
-            event.accessType = SceneElementAccessType.GetPlaceholderBlocks;
+            event.accessType = SceneElementType.PlaceHolder;
             event.startX = 0;
             event.startY = 2;
             GameMain.GetInstance().DispatchEvent(event);
@@ -84,7 +84,7 @@ class NpcControl extends GameModuleComponentBase
 
             //向scene询问空的格子，用来放置新生成的小怪
             let event = new SceneElementAccessEvent();
-            event.accessType = SceneElementAccessType.GetEmptyBlocks;
+            event.accessType = SceneElementType.Empty;
             event.startX = 0;
             event.startY = 2;
             GameMain.GetInstance().DispatchEvent(event);

@@ -145,4 +145,5 @@ enum SceneElementType
     RowEliminater,
     CrossEliminater,
     PlaceHolder,
+    Empty,
 }

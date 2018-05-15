@@ -1,7 +1,7 @@
 class SceneElementAccessEvent extends egret.Event
 {
     public static EventName:string = "SceneElementAccessEvent";
-    public accessType:SceneElementAccessType;
+    public accessType:SceneElementType;
     public startX:number;
     public startY:number;
     public endX:number;

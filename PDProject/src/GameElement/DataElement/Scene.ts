@@ -879,25 +879,7 @@ class Scene extends GameModuleComponentBase
     private OnAccessSceneElements(event: SceneElementAccessEvent)
     {
         let queryElementBlocks: number[][] = null;
-
-        switch (event.accessType)
-        {
-            case SceneElementAccessType.GetEmptyBlocks:
-                {
-                    queryElementBlocks = this.GetSpecifiedBlocks(this.IsEmptyElement, event.startX, event.startY, event.endX, event.endY);
-                    break;
-                }
-            case SceneElementAccessType.GetPlaceholderBlocks:
-                {
-                    queryElementBlocks = this.GetSpecifiedBlocks(this.IsPlaceholderElement, event.startX, event.startY, event.endX, event.endY);
-                    break;
-                }
-            default:
-                {
-                    console.error("Unknow access type " + event.accessType);
-                    break;
-                }
-        }
+        queryElementBlocks = this.GetSpecifiedBlocks(event.accessType, event.startX, event.startY, event.endX, event.endY);
 
         if (queryElementBlocks != null)
         {
@@ -926,17 +908,19 @@ class Scene extends GameModuleComponentBase
         }
     }
 
-    private IsEmptyElement(element:SceneElementBase):boolean
+    private IsSpecifiedElement(element:SceneElementBase, type:SceneElementType):boolean
     {
-        return element == null;
+        if(type == SceneElementType.Empty)
+        {
+            return element == null;
+        }
+        else
+        {
+            return element != null && element != undefined && element.ElementType() == SceneElementType.PlaceHolder;
+        }
     }
 
-    private IsPlaceholderElement(element:SceneElementBase):boolean
-    {
-        return element != null && element != undefined && element instanceof ScenePlaceholder;
-    }
-
-    private GetSpecifiedBlocks(condition:Function, startX: number, startY: number, endX?: number, endY?: number): number[][]
+    private GetSpecifiedBlocks(type:SceneElementType, startX: number, startY: number, endX?: number, endY?: number): number[][]
     {
         let result: number[][] = undefined;
 
@@ -954,7 +938,7 @@ class Scene extends GameModuleComponentBase
                 //Y is Row
                 for (var j = startY; j <= endY; ++j)
                 {
-                    if (condition(this.sceneData[i][j]))
+                    if (this.IsSpecifiedElement(this.sceneData[i][j], type))
                     {
                         let block: number[] = [];
                         block.push(i);
@@ -978,12 +962,6 @@ enum SceneElementControlType
     Add,
     Move,
     Rotation,
-}
-
-enum SceneElementAccessType
-{
-    GetEmptyBlocks,
-    GetPlaceholderBlocks,
 }
 
 enum Direction 
