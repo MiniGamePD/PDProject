@@ -48,31 +48,36 @@ class ScenePill extends SceneElementBase
         this.renderer.texture = texture;
 
         var textureRotate = 0;
+        var scaleX = 1;
         switch (this.mPillType)
         {
             case PillElementType.left:
                 {
                     textureRotate = 0;
+                    scaleX = 1;
                     break;
                 }
             case PillElementType.right:
                 {
-                    textureRotate = 180;
+                    textureRotate = 0;
+                    scaleX = -1;
                     break;
                 }
             case PillElementType.up:
                 {
                     textureRotate = 90;
+                    scaleX = 1;
                     break;
                 }
             case PillElementType.down:
                 {
-                    textureRotate = 270;
+                    textureRotate = 90;
+                    scaleX = -1;
                     break;
                 }
         }
-
         this.renderer.rotation = textureRotate;
+        this.renderer.scaleX = scaleX;
     }
 
     // 删除捆绑元素后，重新计算药丸的类型
