@@ -388,8 +388,6 @@ class Scene extends GameModuleComponentBase
         }
     }
 
-    private 
-
     // // 根据消除的元素列表，把上面元素往下移
     // private MoveAfterEliminate() {
     //     if (this.eliminateInfo.HasInfo) {
@@ -949,6 +947,13 @@ class Scene extends GameModuleComponentBase
 
         return result;
     }
+
+    //#####Boss技能相关###### Begin
+    public TriggerBossSkill(skillInfo: BossSkillInfo)
+    {
+        // TODO：处理Boss技能
+    }
+    //#####Boss技能相关###### end
 }
 
 enum SceneElementControlType
