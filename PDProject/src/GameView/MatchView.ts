@@ -152,44 +152,28 @@ class MatchView extends GameView
     {
         if (this.mResModule != null)
         {
-            let bg = this.mResModule.CreateBitmapByName("pd_res_json.BackGround");
+            let bg = this.mResModule.CreateBitmapByName("pd_res_json.BackGround2");
             this.addChild(bg);
             bg.width = this.mStageWidth;
             bg.height = this.mStageHeight;
 
-            let bottle = this.mResModule.CreateBitmapByName("pd_res_json.Bottle");
-
-            bottle.x = 0;
-            bottle.y = 0;
-            //bottle.anchorOffsetX += bottle.width / 2;
-            //bottle.anchorOffsetY += bottle.height / 2;
-
-            //bottle.width = this.mStageWidth;
-            //bottle.height = this.mStageHeight;
-
             this.mBattleGround = new egret.Sprite();
-            let battleRect = new egret.Rectangle(50, 170, bottle.width - 100, bottle.height - 188);
-            this.mBattleGround.x = this.mStageWidth / 2 - battleRect.width / 2 - 25;
-            this.mBattleGround.y = this.mStageHeight / 2 - battleRect.height / 2 - 99;
-            this.mBattleGround.graphics.beginFill(0xFF0000, 0.3);
-            this.mBattleGround.graphics.drawRect(battleRect.x, battleRect.y, battleRect.width, battleRect.height);
-            this.mBattleGround.graphics.endFill();
-
-            this.mBattleGround.graphics.beginFill(0x0000FF, 0.3);
-            this.mBattleGround.graphics.drawRect(bottle.x, bottle.y, bottle.width, bottle.height);
-            this.mBattleGround.graphics.endFill();
+            let battleRect = new egret.Rectangle(128, 270, 382, 660);
+            this.mBattleGround.x = battleRect.x;
+            this.mBattleGround.y = battleRect.y;
+            // this.mBattleGround.graphics.beginFill(0xFF0000, 0.3);
+            // this.mBattleGround.graphics.drawRect(0, 0, battleRect.width, battleRect.height);
+            // this.mBattleGround.graphics.endFill();
 
             this.addChild(this.mBattleGround);
-
-            this.mBattleGround.addChild(bottle);
 
             if(DEBUG)
                 console.log(battleRect);
 
             this.mElementWidth = battleRect.width / Scene.Columns;
             this.mElementHeight = battleRect.height / Scene.Rows;
-            this.mBattleGroundStartXCenter = battleRect.x + this.mElementWidth / 2;
-            this.mBattleGroundStartYCenter = battleRect.y + this.mElementHeight / 2;
+            this.mBattleGroundStartXCenter = this.mElementWidth / 2;
+            this.mBattleGroundStartYCenter = this.mElementHeight / 2;
         }
     }
 
