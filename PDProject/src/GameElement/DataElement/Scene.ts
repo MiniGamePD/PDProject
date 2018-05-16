@@ -6,6 +6,7 @@ class Scene extends GameModuleComponentBase
     public static readonly EliminateMinCount = 3; //触发消除的最小数量
     public sceneData: SceneElementBase[][] = []; //左上角是00    
     public eliminateInfo: EliminateInfo;
+    public bossSkillInfo: BossSkillInfo;
 
     private controlSuccessEvent: SceneElementControlSuccessEvent;
     private controlFailedEvent: SceneElementControlFailedEvent;
@@ -18,6 +19,7 @@ class Scene extends GameModuleComponentBase
     public Init(): void 
     {
         this.eliminateInfo = new EliminateInfo();
+        this.bossSkillInfo = new BossSkillInfo();
         for (var i = 0; i < Scene.Columns; ++i) 
         {
             this.sceneData.push([]);
@@ -951,7 +953,11 @@ class Scene extends GameModuleComponentBase
     //#####Boss技能相关###### Begin
     public TriggerBossSkill(skillInfo: BossSkillInfo)
     {
-        // TODO：处理Boss技能
+        this.bossSkillInfo.skillCaster = skillInfo.skillCaster;
+        this.bossSkillInfo.addHealthElement = skillInfo.addHealthElement;
+        this.bossSkillInfo.elementTransList = skillInfo.elementTransList;
+        this.bossSkillInfo.elementChangeColorList = skillInfo.elementChangeColorList;
+
     }
     //#####Boss技能相关###### end
 }

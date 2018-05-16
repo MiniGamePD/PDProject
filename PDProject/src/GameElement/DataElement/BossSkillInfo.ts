@@ -23,7 +23,7 @@ class BossSkillInfo
 	// 重置
 	public Reset()
 	{
-		this.superVirus = null;
+		this.skillCaster = null;
 		this.addHealthElement = [];
 		this.elementTransList = [];
 		this.elementChangeColorList = [];
