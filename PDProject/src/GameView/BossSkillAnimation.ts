@@ -1,9 +1,9 @@
 class BossSkillAnimation
 {
-	private static readonly BossAnimDuration: number = 500;
-	private static readonly LinkElementDuration: number = 500;
-	private static readonly PreElementAnimDuration: number = 500;
-	private static readonly NewElementAnimDuration: number = 500;
+	private static readonly BossAnimDuration: number = 300;
+	private static readonly LinkElementDuration: number = 300;
+	private static readonly PreElementAnimDuration: number = 200;
+	private static readonly NewElementAnimDuration: number = 200;
 
 	private bossSkillInfo: BossSkillInfo;
 	private state: BossSkillAnimState;
@@ -15,8 +15,10 @@ class BossSkillAnimation
 
 	public Init(view: MatchView)
 	{
+		this.state = BossSkillAnimState.Init;
 		this.matchView = view;
 		this.runningTime = 0;
+		this.stateRunningTime = 0;
 		this.skillMoveEffects = [];
 	}
 
@@ -140,7 +142,7 @@ class BossSkillAnimation
 	private CreateMoveEffect(fromX: number, fromY: number, toX: number, toY: number)
 	{
 		var effect = new SkillMoveEffect();
-		effect.Init(fromX, fromY, toX, toY, BossSkillAnimation.LinkElementDuration);
+		effect.Init(fromX, fromY, toX, toY, BossSkillAnimation.LinkElementDuration, this.matchView);
 		this.skillMoveEffects.push(effect);
 	}
 

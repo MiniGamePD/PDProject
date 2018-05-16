@@ -6,14 +6,16 @@ class SkillMoveEffect {
 	private duration: number;
 	private runningTime: number;
 
+	private matchView: MatchView;
 	private shape: egret.Shape;
 
-	public Init(fromX: number, fromY: number, toX: number, toY: number, duration: number)
+	public Init(fromX: number, fromY: number, toX: number, toY: number, duration: number, matchView: MatchView)
 	{	
+		this.matchView = matchView;
 		this.startX = fromX;
 		this.startY = fromY;
 		this.endX = toX;
-		this.endX = toY;
+		this.endY = toY;
 		this.duration = duration;
 		this.runningTime = 0;
 		this.InitShape();
@@ -22,12 +24,12 @@ class SkillMoveEffect {
 	private InitShape()
 	{
 		this.shape = new egret.Shape();
-        this.shape.graphics.beginFill(0xffffff);
-        this.shape.graphics.drawRect(10, 10, 200, 100);
+        this.shape.graphics.beginFill(0xff0000);
+        this.shape.graphics.drawCircle(0, 0, 10);
         this.shape.graphics.endFill();
 		this.shape.x = this.startX;
 		this.shape.y = this.startY;
-		GameMain.GetInstance().GetGameStage().addChild(this.shape);
+		this.matchView.BattleGroundAddChild(this.shape);
 	}
 
 	public Update(deltaTime: number)
@@ -47,7 +49,7 @@ class SkillMoveEffect {
 
 	public Release()
 	{
-		GameMain.GetInstance().GetGameStage().removeChild(this.shape);
+		this.matchView.BattleGroundRemoveChild(this.shape);
 	}
 
 }

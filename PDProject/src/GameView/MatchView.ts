@@ -142,6 +142,16 @@ class MatchView extends GameView
         }
     }
 
+    public BattleGroundAddChild(child: egret.DisplayObject)
+    {
+        this.mBattleGround.addChild(child);
+    }
+
+    public BattleGroundRemoveChild(child: egret.DisplayObject)
+    {
+        this.mBattleGround.removeChild(child);
+    }
+
     public RefreshTextrue(): void
     {
         for (var i = 0; i < Scene.Columns; ++i)
