@@ -46,4 +46,6 @@ abstract class GameplayElementBase
             return GameElementColor.yellow;
         }
     }
+
+    public Update(deltaTime:number){}
 }

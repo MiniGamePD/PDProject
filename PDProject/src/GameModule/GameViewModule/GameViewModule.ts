@@ -39,7 +39,7 @@ abstract class GameViewModule extends ModuleBase implements IModule
         {
             this.gameViewList[i].ReleaseView();
         }
-        this.gameViewList.slice();
+        this.gameViewList = [];
 	}
 
     abstract SwitchForeOrBack(from: GameStateType, to: GameStateType):void;

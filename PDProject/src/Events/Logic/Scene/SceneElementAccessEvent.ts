@@ -15,6 +15,7 @@ class SceneElementAccessEvent extends egret.Event
         this.endX = Scene.Columns - 1;
         this.endY = Scene.Rows - 1;  
         this.answerType = SceneElementAccessAnswerType.Pos;
+        this.accessType = SceneElementType.None;
     }
 }
 

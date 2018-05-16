@@ -72,7 +72,7 @@ class NpcControl extends GameModuleComponentBase
             this.tobeAddToSceneNpcArray.push(this.npcElementCreator.CreateElement(this.creatorWorkParam));
 
             //向scene询问已经存在的boss的格子，用来放置新生成的boss
-            let event = new SceneElementAccessEvent();
+            var event = new SceneElementAccessEvent();
             event.accessType = SceneElementType.PlaceHolder;
             event.answerType = SceneElementAccessAnswerType.Pos;
             event.startX = 0;
@@ -90,16 +90,16 @@ class NpcControl extends GameModuleComponentBase
             let skillNpc:NpcElement = this.skillNpcArray[id];
 
             //首先向scene查询对应物体的列表
-            let event = new SceneElementAccessEvent();
+            var event = new SceneElementAccessEvent();
             event.answerType = SceneElementAccessAnswerType.Instance;
             if(skillNpc.SkillType() == NpcSkillType.AddShieldForVirus ||
                 skillNpc.SkillType() == NpcSkillType.ChangeVirusColor)
             {
-                event.accessType == SceneElementType.Virus;
+                event.accessType = SceneElementType.Virus;
             }
             else if(skillNpc.SkillType() == NpcSkillType.ChangePillToVirus)
             {
-                event.accessType == SceneElementType.Pill;
+                event.accessType = SceneElementType.Pill;
             }
             else
             {
@@ -121,7 +121,7 @@ class NpcControl extends GameModuleComponentBase
 		    this.tobeAddToSceneNpcArray = this.npcElementCreator.CreateElement(this.creatorWorkParam);
 
             //向scene询问空的格子，用来放置新生成的小怪
-            let event = new SceneElementAccessEvent();
+            var event = new SceneElementAccessEvent();
             event.accessType = SceneElementType.Empty;
             event.answerType = SceneElementAccessAnswerType.Pos;
             event.startX = 0;
@@ -225,14 +225,14 @@ class NpcControl extends GameModuleComponentBase
 
     private PrepareNpcSkillInfo(querySceneInstances:SceneElementBase[])
     {
-         let skillTargetArray:SceneElementBase[] = [];
+        let skillTargetArray:SceneElementBase[] = [];
             
         let skillTargetNum = Math.min(querySceneInstances.length, bossSkillTargetNum);
         while(skillTargetNum > 0)
         {
             skillTargetNum--;
             let id = Math.floor(Math.random() * querySceneInstances.length);
-            let sceneElement = querySceneInstances.slice(id, 1)[0];
+            let sceneElement = querySceneInstances.splice(id, 1)[0];
             skillTargetArray.push(sceneElement);
         }
 

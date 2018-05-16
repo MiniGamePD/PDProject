@@ -5,6 +5,6 @@ const playEnemySinisterSmileTime = 500; //ms
 
 const skillBossMaxNum = 8;
 const bossSkillTurnNum = 3;
-const createEnemyTurnNum = 5;
-const createSkillBossTurnNum = 10;
+const createEnemyTurnNum = 4;
+const createSkillBossTurnNum = 5;
 const bossSkillTargetNum = 5;
