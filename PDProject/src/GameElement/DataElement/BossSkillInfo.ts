@@ -1,13 +1,15 @@
-class BossSkillInfo {
-	public constructor() {
-		this.superVirus = null;
+class BossSkillInfo 
+{
+	public constructor() 
+	{
+		this.skillCaster = null;
 		this.addHealthElement = [];
 		this.elementTransList = [];
 		this.elementChangeColorList = [];
 	}
 
 	// 释放技能的Boss
-	public superVirus: SuperVirus;
+	public skillCaster: NpcElement;
 
 	// 增加血量的元素
 	public addHealthElement: SceneElementBase[];
