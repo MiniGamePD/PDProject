@@ -37,6 +37,7 @@ enum NpcAnimType
 {
     Born,
     Idel,
+    UseSkill,
 }
 
 enum NpcSoundType
