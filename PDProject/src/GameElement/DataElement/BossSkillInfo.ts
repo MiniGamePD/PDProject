@@ -2,11 +2,15 @@ class BossSkillInfo
 {
 	public constructor() 
 	{
+		this.hasInfo = false;
 		this.skillCaster = null;
 		this.addHealthElement = [];
 		this.elementTransList = [];
 		this.elementChangeColorList = [];
 	}
+
+	// 是否有技能信息
+	public hasInfo;
 
 	// 释放技能的Boss
 	public skillCaster: NpcElement;
@@ -23,6 +27,7 @@ class BossSkillInfo
 	// 重置
 	public Reset()
 	{
+		this.hasInfo = false;
 		this.skillCaster = null;
 		this.addHealthElement = [];
 		this.elementTransList = [];

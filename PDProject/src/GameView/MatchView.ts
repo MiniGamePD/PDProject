@@ -11,6 +11,7 @@ class MatchView extends GameView
     private mElementHeight: number;
     private mBattleGround: egret.Sprite;
     private eliminatingAnim: EliminatingAnimation;
+    private bossSkillAnim: BossSkillAnimation;
 
     private hud:MatchHUD;
 
@@ -25,6 +26,8 @@ class MatchView extends GameView
         this.CreateHUD();
 
         // this.PlayBgm();
+        this.bossSkillAnim = new BossSkillAnimation();
+        this.bossSkillAnim.Init(this);
 
         this.eliminatingAnim = new EliminatingAnimation();
         this.eliminatingAnim.Init(this);
@@ -57,7 +60,11 @@ class MatchView extends GameView
 
     public UpdateView(deltaTime: number): void
     {
-        if (this.mScene.eliminateInfo.HasInfo)
+        if (this.mScene.bossSkillInfo.hasInfo)
+        {
+            this.UpdateBossSkill(deltaTime);
+        }
+        else if (this.mScene.eliminateInfo.HasInfo)
         {
             this.UpdateEliminating(deltaTime);
         }
@@ -72,6 +79,18 @@ class MatchView extends GameView
     private ProcessControlSuccess(event: SceneElementControlSuccessEvent)
     {
         this.RefreshScene();
+    }
+
+    private UpdateBossSkill(deltaTime: number)
+    {
+        if (this.bossSkillAnim != null)
+        {
+            if (!this.bossSkillAnim.IsPlaying())
+            {
+                this.bossSkillAnim.Start(this.mScene.bossSkillInfo);
+            }
+            this.bossSkillAnim.Update(deltaTime);
+        }
     }
 
     private UpdateEliminating(deltaTime: number)

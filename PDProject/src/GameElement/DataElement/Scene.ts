@@ -169,7 +169,15 @@ class Scene extends GameModuleComponentBase
 
     public Update(deltaTime: number)
     {
-        this.CheckEliminating();
+        if (this.bossSkillInfo != null
+            && this.bossSkillInfo.hasInfo)
+        {
+            // 等待Boss的技能表现，表现完了之后，再进行消除流程
+        }
+        else
+        {
+            this.CheckEliminating();
+        }
     }
 
     // 设置下一次消除方法
@@ -953,11 +961,52 @@ class Scene extends GameModuleComponentBase
     //#####Boss技能相关###### Begin
     public TriggerBossSkill(skillInfo: BossSkillInfo)
     {
+        this.bossSkillInfo.hasInfo = true;
         this.bossSkillInfo.skillCaster = skillInfo.skillCaster;
         this.bossSkillInfo.addHealthElement = skillInfo.addHealthElement;
         this.bossSkillInfo.elementTransList = skillInfo.elementTransList;
+        this.ChangeElements(this.bossSkillInfo.elementTransList);
         this.bossSkillInfo.elementChangeColorList = skillInfo.elementChangeColorList;
+        this.ChangElementsColor(this.bossSkillInfo.elementChangeColorList);
+    }
 
+    // 替换场景中的元素
+    private ChangeElements(elementTransList: ElementTransInfo[])
+    {
+        if (elementTransList != null)
+        {
+            for (var i = 0; i < elementTransList.length; ++i)
+            {
+                var transInfo = elementTransList[i];
+                if (transInfo != null
+                && transInfo.fromElement != null
+                && transInfo.toElement != null)
+                {
+                    transInfo.toElement.posx = transInfo.fromElement.posx;
+                    transInfo.toElement.posy = transInfo.fromElement.posy;
+                    this.RemoveElement(transInfo.fromElement);
+                    this.AddElement(transInfo.toElement);                    
+                }
+            }
+        }
+    }
+
+    // 替换元素颜色
+    private ChangElementsColor(elementChangeColorList: ElementChangeColorInfo[])
+    {
+        if (elementChangeColorList != null)
+        {
+            for (var i = 0; i < elementChangeColorList.length; ++i)
+            {
+                var changeColorElement = elementChangeColorList[i];
+                if (changeColorElement != null
+                && changeColorElement.element != null)
+                {
+                    changeColorElement.element.color = changeColorElement.targetColor;
+                    changeColorElement.element.dirty = true;
+                }
+            }
+        }
     }
     //#####Boss技能相关###### end
 }
