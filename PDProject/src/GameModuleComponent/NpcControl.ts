@@ -248,14 +248,21 @@ class NpcControl extends GameModuleComponentBase
             {
                 this.creatorWorkParam.paramIndex = NpcElementCreateType.RandomVirus;
                 this.creatorWorkParam.createNum = skillTargetArray.length;
-                let transToElementArray = this.npcElementCreator.CreateElement(this.creatorWorkParam);
+                let transToElementArray:GameplayElementBase[] = this.npcElementCreator.CreateElement(this.creatorWorkParam);
 
                 this.curNpcSkillInfo.elementTransList = [];
                 for(var i = 0; i < skillTargetArray.length; ++i)
                 {
                     let transInfo = new ElementTransInfo();
                     transInfo.fromElement = skillTargetArray[i];
-                    transInfo.toElement = transToElementArray[i];
+
+                    var newSceneElementArray = transToElementArray[i].GetSceneElements();
+                    if(newSceneElementArray.length != 1)
+                    {
+                        console.error("Trans To Element Error");
+                    }
+
+                    transInfo.toElement = newSceneElementArray[0];
                     this.curNpcSkillInfo.elementTransList.push(transInfo);
                 }
             }
