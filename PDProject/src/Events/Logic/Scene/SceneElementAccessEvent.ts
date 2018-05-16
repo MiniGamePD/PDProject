@@ -6,6 +6,7 @@ class SceneElementAccessEvent extends egret.Event
     public startY:number;
     public endX:number;
     public endY:number;
+    public answerType:SceneElementAccessAnswerType;
     public constructor(bubbles:boolean=false, cancelable:boolean=false)
     {
         super(SceneElementAccessEvent.EventName,bubbles,cancelable);      
@@ -13,5 +14,12 @@ class SceneElementAccessEvent extends egret.Event
         this.startY = 0;
         this.endX = Scene.Columns - 1;
         this.endY = Scene.Rows - 1;  
+        this.answerType = SceneElementAccessAnswerType.Pos;
     }
+}
+
+enum SceneElementAccessAnswerType
+{
+    Pos,
+    Instance,
 }

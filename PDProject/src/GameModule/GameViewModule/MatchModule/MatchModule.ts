@@ -121,13 +121,17 @@ class MatchModule extends GameViewModule
 
 	private OnNpcControlFinish(event: NpcControlFinishEvent)
 	{
-		if(event.specialEliminateMethod == null)
+		if(event.specialEliminateMethod != null)
 		{
-			this.StartPlayerControl();
+			this.StartSpecialSceneEliminate(event);	
+		}
+		else if(event.bossSkillInfo != null)
+		{
+			this.StartNpcSkill(event);
 		}
 		else
 		{
-			this.StartSpecialSceneEliminate(event);
+			this.StartPlayerControl();
 		}
 	}
 
@@ -152,6 +156,14 @@ class MatchModule extends GameViewModule
 			event.specialEliminateMethod.specificRegion,
 			event.specialEliminateMethod.eliminateElementType);
 		this.scene.SetNextEliminateUnMove();			
+		this.scene.Work();
+	}
+
+	private StartNpcSkill(event: NpcControlFinishEvent)
+	{
+		this.matchState = MatchState.NpcSkill;
+		this.npcControl.Sleep();
+		this.scene.TriggerBossSkill(event.bossSkillInfo);		
 		this.scene.Work();
 	}
 
@@ -190,5 +202,6 @@ enum MatchState
 	PlayerControl, //该状态下玩家可控制药丸旋转、下落
 	SpecialEliminate, //特殊消除阶段，用来做一些特殊事件的（比如boss出场）的消除
 	Eliminate, //消除阶段，计算刚才玩家的操作是否产生消除，以及处理消除的各种效果
+	NpcSkill, //Npc施放技能
 	GameOver //拜拜了
 }

@@ -4,5 +4,7 @@ const addNpcToSceneIntervalStep = 50; //ms
 const playEnemySinisterSmileTime = 500; //ms
 
 const skillBossMaxNum = 8;
+const bossSkillTurnNum = 3;
 const createEnemyTurnNum = 5;
 const createSkillBossTurnNum = 10;
+const bossSkillTargetNum = 5;

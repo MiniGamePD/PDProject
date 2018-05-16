@@ -44,17 +44,9 @@ class SceneElementBase
         this.dirty = true;
     }
 
-    protected RandomColor(): GameElementColor {
-        let random = Math.random() * 3;
-        if (random >= 0 && random < 1) {
-            return GameElementColor.red;
-        }
-        else if (random >= 1 && random < 2) {
-            return GameElementColor.blue;
-        }
-        else {
-            return GameElementColor.yellow;
-        }
+    protected RandomColor(): GameElementColor 
+    {
+        return GameElementColorGenerator.RandomColor();    
     }
 
     public RefreshTexture():void
@@ -133,6 +125,33 @@ enum GameElementColor
     blue,
     yellow,
     random,
+}
+
+class GameElementColorGenerator
+{
+    public static RandomColor(iDontWantThatDolor?:GameElementColor):GameElementColor
+    {
+        let result:GameElementColor = undefined;
+        do
+        {
+            let random = Math.floor(Math.random() * 3);
+            if (random == 0) 
+            {
+                result = GameElementColor.red;
+            }
+            else if (random == 1) 
+            {
+                result = GameElementColor.blue;
+            }
+            else 
+            {
+                result = GameElementColor.yellow;
+            }
+        }
+        while(iDontWantThatDolor != undefined && result == iDontWantThatDolor)
+
+        return result;
+    }
 }
 
 enum SceneElementType

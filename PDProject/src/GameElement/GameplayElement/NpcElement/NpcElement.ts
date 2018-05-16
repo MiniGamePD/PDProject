@@ -47,7 +47,7 @@ enum NpcSoundType
 enum NpcSkillType
 {
     None,
-    AddShield,
+    AddShieldForVirus,
     ChangePillToVirus,
     ChangeVirusColor
 }

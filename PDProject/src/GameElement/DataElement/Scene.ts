@@ -872,14 +872,28 @@ class Scene extends GameModuleComponentBase
 
     private OnAccessSceneElements(event: SceneElementAccessEvent)
     {
-        let queryElementBlocks: number[][] = null;
-        queryElementBlocks = this.GetSpecifiedBlocks(event.accessType, event.startX, event.startY, event.endX, event.endY);
+        let queryAnswerArray:any = null;
+        
+        if(event.answerType == SceneElementAccessAnswerType.Pos)
+        {
+            queryAnswerArray = this.GetSpecifiedBlocks(event.accessType, event.startX, event.startY, event.endX, event.endY);
+        }
+        else if(event.answerType == SceneElementAccessAnswerType.Instance)
+        {
+            queryAnswerArray = this.GetSpecifiedElements(event.accessType, event.startX, event.startY, event.endX, event.endY);
+        }
+        else
+        {
+            console.error("Invalid AnswerType " + event.answerType);
+            return;
+        }
 
-        if (queryElementBlocks != null)
+        if (queryAnswerArray != null)
         {
             let answerEvent = new SceneElementAccessAnswerEvent();
             answerEvent.accessType = event.accessType;
-            answerEvent.queryElementBlocks = queryElementBlocks;
+            answerEvent.answerType = event.answerType;
+            answerEvent.queryAnswerArray = queryAnswerArray;
             GameMain.GetInstance().DispatchEvent(answerEvent);
         }
     }
@@ -910,7 +924,7 @@ class Scene extends GameModuleComponentBase
         }
         else
         {
-            return element != null && element != undefined && element.ElementType() == SceneElementType.PlaceHolder;
+            return element != null && element != undefined && element.ElementType() == type;
         }
     }
 
@@ -945,6 +959,40 @@ class Scene extends GameModuleComponentBase
         else
         {
             console.error("GetSpecifiedBlocks With Invalid Range:" + startX + "," + startY + "," + endX + "," + endY);
+        }
+
+        return result;
+    }
+
+    private GetSpecifiedElements(type:SceneElementType, startX: number, startY: number, endX?: number, endY?: number): SceneElementBase[]
+    {
+        let result: SceneElementBase[] = undefined;
+
+        if (endX == undefined)
+            endX = Scene.Columns - 1;
+        if (endY == undefined)
+            endY = Scene.Rows - 1;
+
+        if (startX <= endX || startY <= endY)
+        {
+            result = [];
+            //X is Column
+            for (var i = startX; i <= endX; ++i)
+            {
+                //Y is Row
+                for (var j = startY; j <= endY; ++j)
+                {
+                    let element = this.sceneData[i][j];
+                    if (this.IsSpecifiedTypeElement(element, type))
+                    {
+                        result.push(element);
+                    }
+                }
+            }
+        }
+        else
+        {
+            console.error("GetSpecifiedInstances With Invalid Range:" + startX + "," + startY + "," + endX + "," + endY);
         }
 
         return result;

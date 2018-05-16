@@ -8,9 +8,9 @@ class ScenePlaceholder extends SceneElementBase
         this.renderer = new egret.Bitmap();
 
         //For DEBUG
-        let path = "pd_res_json.Virus_Yellow";
-        this.renderer.texture = this.GetTexture(path);
-        this.renderer.alpha = 0.2;
+        // let path = "pd_res_json.Virus_Yellow";
+        // this.renderer.texture = this.GetTexture(path);
+        // this.renderer.alpha = 0.2;
         //For DEBUG
 
         this.color = owner.color;
