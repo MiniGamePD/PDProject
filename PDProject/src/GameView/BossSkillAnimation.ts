@@ -1,7 +1,7 @@
 class BossSkillAnimation
 {
 	private static readonly BossAnimDuration: number = 300;
-	private static readonly LinkElementDuration: number = 300;
+	private static readonly LinkElementDuration: number = 1000;
 	private static readonly PreElementAnimDuration: number = 200;
 	private static readonly NewElementAnimDuration: number = 200;
 

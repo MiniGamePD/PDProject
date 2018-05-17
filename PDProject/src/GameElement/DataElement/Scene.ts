@@ -1032,6 +1032,7 @@ class Scene extends GameModuleComponentBase
                 {
                     transInfo.toElement.posx = transInfo.fromElement.posx;
                     transInfo.toElement.posy = transInfo.fromElement.posy;
+                    transInfo.toElement.dirty = true;
                     this.RemoveElement(transInfo.fromElement);
                     this.AddElement(transInfo.toElement);                    
                 }
