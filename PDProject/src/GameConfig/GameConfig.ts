@@ -8,3 +8,6 @@ const bossSkillTurnNum = 3;
 const createEnemyTurnNum = 4;
 const createSkillBossTurnNum = 5;
 const bossSkillTargetNum = 5;
+
+const standerScreenWidth = 640;
+const standerScreenHeight = 1136;

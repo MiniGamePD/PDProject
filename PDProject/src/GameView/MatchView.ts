@@ -187,12 +187,22 @@ class MatchView extends GameView
             bg.height = this.mStageHeight;
 
             this.mBattleGround = new egret.Sprite();
-            let battleRect = new egret.Rectangle(128, 270, 382, 660);
+            //battle rect in stander resolution
+            let battleRect = new egret.Rectangle(128, 294, 382, 722);
+            battleRect.x = battleRect.x * this.mStageWidth / standerScreenWidth;
+            battleRect.y = battleRect.y * this.mStageHeight / standerScreenHeight;
+            battleRect.width = battleRect.width * this.mStageWidth / standerScreenWidth;
+            battleRect.height = battleRect.height * this.mStageHeight / standerScreenHeight;
+
             this.mBattleGround.x = battleRect.x;
             this.mBattleGround.y = battleRect.y;
-            // this.mBattleGround.graphics.beginFill(0xFF0000, 0.3);
-            // this.mBattleGround.graphics.drawRect(0, 0, battleRect.width, battleRect.height);
-            // this.mBattleGround.graphics.endFill();
+
+            if(DEBUG)
+            {
+                this.mBattleGround.graphics.beginFill(0xFF0000, 0.3);
+                this.mBattleGround.graphics.drawRect(0, 0, battleRect.width, battleRect.height);
+                this.mBattleGround.graphics.endFill();
+            }
 
             this.addChild(this.mBattleGround);
 
