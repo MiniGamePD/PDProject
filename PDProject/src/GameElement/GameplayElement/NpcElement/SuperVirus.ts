@@ -72,6 +72,8 @@ class SuperVirus extends NpcElement
         {
             this.placeholderArray[i].renderer.alpha = 0;
         }
+
+        GameMain.GetInstance().RemoveEventListener(SceneEliminateFinishEvent.EventName, this.OnSceneEliminateFinishEvent, this);
     }
 
     private ArrangeSceneElementsPosByColor()
