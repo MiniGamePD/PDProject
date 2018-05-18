@@ -117,7 +117,7 @@ class EliminatingAnimation
 
 		for (var i = 0; i < this.eliminateInfo.EliminatedSuperVirus.length; ++i)
 		{
-			if (this.eliminateInfo.EliminatedSuperVirus[i].CurHealth() <= 0)
+			if (!this.eliminateInfo.EliminatedSuperVirus[i].IsAlive())
 			{
 				this.eliminateInfo.EliminatedSuperVirus[i].EliminateRelease();
 			}

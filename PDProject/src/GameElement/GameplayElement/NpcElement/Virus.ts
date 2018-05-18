@@ -10,6 +10,9 @@ class Virus extends NpcElement
 
         this.bornType = NpcBornType.Normal;
         this.bornSound = "VirusBorn_mp3";
+
+        this.hp = 1;
+        this.shield = 0;
     }
 
     public MoveTo(posx:number, posy:number)

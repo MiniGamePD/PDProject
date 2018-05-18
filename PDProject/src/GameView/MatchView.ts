@@ -121,19 +121,27 @@ class MatchView extends GameView
                 {
                     if (!element.hasAddToDisplayList)
                     {
-                        element.renderer.width = this.mElementWidth * element.BlockWidth();
-                        element.renderer.height = this.mElementHeight * element.BlockHeight();
-                        element.renderer.anchorOffsetX = this.mElementWidth / 2;
-                        element.renderer.anchorOffsetY = this.mElementHeight / 2;
-                        this.mBattleGround.addChild(element.renderer);
+                        //renderer == null，应该是一个placeholder
+                        if(element.renderer != null)
+                        {
+                            element.renderer.width = this.mElementWidth * element.BlockWidth();
+                            element.renderer.height = this.mElementHeight * element.BlockHeight();
+                            element.renderer.anchorOffsetX = this.mElementWidth / 2;
+                            element.renderer.anchorOffsetY = this.mElementHeight / 2;
+                            this.mBattleGround.addChild(element.renderer);
+                        }
                         element.hasAddToDisplayList = true;
                         //console.log(element + " add to dis " + element.renderer.width + "," + element.renderer.height);
                     }
 
                     if (element.dirty)
                     {
-                        element.renderer.x = this.GetRenderPosX(element.posx);
-                        element.renderer.y = this.GetRenderPosY(element.posy);
+                        //renderer == null，应该是一个placeholder
+                        if(element.renderer != null)
+                        {
+                            element.renderer.x = this.GetRenderPosX(element.posx);
+                            element.renderer.y = this.GetRenderPosY(element.posy);
+                        }
                         element.dirty = false;
                         //console.log(element + " refresh " + element.renderer.x + "," + element.renderer.y);
                     }

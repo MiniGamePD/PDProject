@@ -1,5 +1,8 @@
 class NpcControl extends GameModuleComponentBase
 {
+    //当前所有的NPC，用于触发StartNewTurn的操作
+    private aliveNpcArray:NpcElement[];
+
     //保存这个数组，后面这些npc需要通过NpcControl来触发技能
     private skillNpcArray:NpcElement[];  
 
@@ -19,22 +22,30 @@ class NpcControl extends GameModuleComponentBase
     //用于记录当前npc的skill信息
     private curNpcSkillInfo:BossSkillInfo;
 
+    //上一回合的回合数
+    private lastTurnNum:number;
+
     public constructor(gameplayElementFactory:GameplayElementFactory)
     {
         super();
         this.creatorWorkParam = new CreatorWorkParam();
         this.npcElementCreator = new NpcElementCreator(gameplayElementFactory);
-        this.skillNpcArray = [];
     }
 
     public Init():void
     {
+        this.skillNpcArray = [];
+        this.aliveNpcArray = [];
+        this.lastTurnNum = -1;
         GameMain.GetInstance().AddEventListener(SceneElementAccessAnswerEvent.EventName, this.OnReciveSceneData, this);
         GameMain.GetInstance().AddEventListener(SceneElementControlFailedEvent.EventName, this.OnAddElementToSceneFailed, this);
     }
 
     public Release():void
     {
+        this.skillNpcArray = [];
+        this.aliveNpcArray = [];
+        this.lastTurnNum = -1;
         GameMain.GetInstance().RemoveEventListener(SceneElementAccessAnswerEvent.EventName, this.OnReciveSceneData, this);
         GameMain.GetInstance().RemoveEventListener(SceneElementControlFailedEvent.EventName, this.OnAddElementToSceneFailed, this);
     }
@@ -42,6 +53,13 @@ class NpcControl extends GameModuleComponentBase
     public Work(param?:any):any
     {
         super.Work(param);
+
+        let controlWorkParam:GameplayControlWorkParam = param;
+        if(controlWorkParam.turn > this.lastTurnNum)
+        {
+            this.OnStartNewTurn();
+            this.lastTurnNum = controlWorkParam.turn;
+        }
 
         if(this.npcControlState == NpcControlState.DestroyObstruction)
         {
@@ -56,8 +74,6 @@ class NpcControl extends GameModuleComponentBase
             this.npcControlState = NpcControlState.NpcControlFinish;
             return;
         }
-
-        let controlWorkParam:GameplayControlWorkParam = param;
 
         this.npcSmileSound = null;
         this.curNpcSkillInfo = null;
@@ -447,6 +463,7 @@ class NpcControl extends GameModuleComponentBase
         {
             this.skillNpcArray.push(npc);
         }
+        this.aliveNpcArray.push(npc);
     }
 
     private OnAddElementToSceneFailed(event:SceneElementControlFailedEvent)
@@ -454,6 +471,37 @@ class NpcControl extends GameModuleComponentBase
         if(!event.playerControl)
         {
             console.error("NpcControl Add Element To Scene Failed");
+        }
+    }
+
+    private OnStartNewTurn()
+    {
+        //将已经死掉的npc从维护列表中移除
+        this.RemoveDeadNpcFromArray(this.aliveNpcArray);
+
+        //将已经死掉的npc从技能列表中移除
+        this.RemoveDeadNpcFromArray(this.skillNpcArray);
+    }
+
+    private RemoveDeadNpcFromArray(array:NpcElement[])
+    {
+        var tobeDelete:number[] = [];
+        for(var i = 0; i < array.length; ++i)
+        {
+            var npc:NpcElement = array[i];
+            if(npc.IsAlive())
+            {
+                npc.OnStartNewTurn();
+            }
+            else
+            {
+                tobeDelete.push(i);
+            }
+        }
+
+        for(var i = 0; i < tobeDelete.length; ++i)
+        {
+            array.splice(tobeDelete[i], 1);
         }
     }
 }

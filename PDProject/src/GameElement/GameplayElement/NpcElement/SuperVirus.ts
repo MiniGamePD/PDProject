@@ -2,8 +2,6 @@ class SuperVirus extends NpcElement
 {
     private virusRenderer:SceneSuperVirus;
     private placeholderArray:ScenePlaceholder[];
-    private health: number;
-    private hasReduceHealthThisRound: boolean;
     private eliminateEvent: SuperVirusEliminateEvent;
 
     public constructor()
@@ -11,7 +9,8 @@ class SuperVirus extends NpcElement
         super();
 
         this.color = this.RandomColor();
-        this.health = 3;
+        this.hp = 3;
+        this.shield = 0;
 
         this.virusRenderer = new SceneSuperVirus(this);
         this.virusRenderer.RefreshTexture();
@@ -28,11 +27,8 @@ class SuperVirus extends NpcElement
 
         this.bornType = NpcBornType.DestroyObstruction;
         this.bornSound = "VirusBorn_mp3";
-
-        this.hasReduceHealthThisRound = false;
         
         this.eliminateEvent = new SuperVirusEliminateEvent();
-        GameMain.GetInstance().AddEventListener(SceneEliminateFinishEvent.EventName, this.OnSceneEliminateFinishEvent, this);
     }
 
     public MoveTo(posx:number, posy:number)
@@ -68,12 +64,6 @@ class SuperVirus extends NpcElement
     public EliminateRelease()
     {
         this.virusRenderer.renderer.alpha = 0;
-        for (var i = 0; i < this.placeholderArray.length; ++i)
-        {
-            this.placeholderArray[i].renderer.alpha = 0;
-        }
-
-        GameMain.GetInstance().RemoveEventListener(SceneEliminateFinishEvent.EventName, this.OnSceneEliminateFinishEvent, this);
     }
 
     private ArrangeSceneElementsPosByColor()
@@ -134,23 +124,17 @@ class SuperVirus extends NpcElement
         }
     }
 
-    public CurHealth(): number
+    public OnEliminate():boolean
     {
-        return this.health;
-    }
-
-    public OnSceneEliminateFinishEvent()
-    {
-        this.hasReduceHealthThisRound = false;
-    }
-
-    public OnOnEliminate():boolean
-    {
-        if (!this.hasReduceHealthThisRound)
+        if (!this.hasReduceHpThisRound)
         {
-            this.hasReduceHealthThisRound = true;
-            this.health -= 1;
-            this.eliminateEvent.healthChange = -1;
+            var oldHp = this.hp;
+            var oldShield = this.shield;
+
+            super.OnEliminate();
+            
+            this.eliminateEvent.hpChange = oldHp - this.hp;
+            this.eliminateEvent.shieldChange = oldShield - this.shield;
             this.eliminateEvent.superVirus = this;
             GameMain.GetInstance().DispatchEvent(this.eliminateEvent);
         }

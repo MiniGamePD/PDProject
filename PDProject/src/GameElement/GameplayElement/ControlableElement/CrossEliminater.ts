@@ -25,7 +25,7 @@ class CrossEliminater extends EliminateTool
         this.sceneElements.push(this.sceneCrossEliminater);
     }
 
-    public OnOnEliminate():boolean
+    public OnEliminate():boolean
     {
         var specialEliminateEvent = new SpecialEliminateRequestEvent();
         specialEliminateEvent.triggerElement = this.sceneCrossEliminater;

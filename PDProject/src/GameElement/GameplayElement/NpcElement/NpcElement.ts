@@ -3,6 +3,10 @@ abstract class NpcElement extends GameplayElementBase
     public bornType:NpcBornType;
     protected bornSound:string;
 
+    protected hp:number; //生命值
+    protected shield:number; //护甲值
+    protected hasReduceHpThisRound:boolean = false;
+
     public MoveTo(posx:number, posy:number){}
 
     public PlayAnim(animTYpe:NpcAnimType){}
@@ -24,6 +28,46 @@ abstract class NpcElement extends GameplayElementBase
     public SkillType():NpcSkillType
     {
         return NpcSkillType.None;
+    }
+
+    public OnEliminate():boolean
+    {
+        //一回合只受到一次伤害
+        if(this.hasReduceHpThisRound)
+        {
+            return false;
+        }
+
+        this.hasReduceHpThisRound = true;
+        if(this.shield > 0)
+        {
+            this.shield--;
+            return false;
+        }
+
+        if(this.hp > 0)
+        {
+            this.hp--;
+            this.isAlive = this.hp > 0;
+
+            if(DEBUG)
+            {
+                if(!this.isAlive)
+                {
+                    console.log(typeof(this) + " has dead");
+                }
+            }
+
+            return !this.isAlive;
+        }
+
+        console.error("An Error Npc, no shield no hp, but alive");
+        return false;
+    }
+
+    public OnStartNewTurn()
+    {
+        this.hasReduceHpThisRound = false;
     }
 }
 

@@ -25,7 +25,7 @@ class Vitamins extends EliminateTool
         this.sceneElements.push(this.sceneVitamins);
     }
 
-    public OnOnEliminate():boolean
+    public OnEliminate():boolean
     {
         var specialEliminateEvent = new SpecialEliminateRequestEvent();
         specialEliminateEvent.triggerElement = this.sceneVitamins;

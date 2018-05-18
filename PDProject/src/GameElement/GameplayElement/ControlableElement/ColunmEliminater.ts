@@ -25,7 +25,7 @@ class ColumnEliminater extends EliminateTool
         this.sceneElements.push(this.sceneColumnEliminater);
     }
 
-    public OnOnEliminate():boolean
+    public OnEliminate():boolean
     {
         var specialEliminateEvent = new SpecialEliminateRequestEvent();
         specialEliminateEvent.triggerElement = this.sceneColumnEliminater;

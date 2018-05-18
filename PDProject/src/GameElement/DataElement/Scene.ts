@@ -916,7 +916,7 @@ class Scene extends GameModuleComponentBase
                 this.eliminateInfo.EliminatedSuperVirus.push(event.superVirus);
             }
 
-            if (event.superVirus.CurHealth() <= 0)
+            if (!event.superVirus.IsAlive())
             {
                 var elements = event.superVirus.GetSceneElements()
                 this.RemoveElementGroup(elements);

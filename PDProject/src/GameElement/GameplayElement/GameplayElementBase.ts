@@ -11,6 +11,8 @@ abstract class GameplayElementBase
 
     public color:GameElementColor;
 
+    protected isAlive:boolean = true;
+
     public GetSceneElements():SceneElementBase[]
     {
         if(!this.sceneElementFilled)
@@ -23,9 +25,15 @@ abstract class GameplayElementBase
     }
 
     //处理一个scene element被消除之后的逻辑，返回true来让scene继续进入消除检测
-    public OnOnEliminate():boolean
+    public OnEliminate():boolean
     {
+        this.isAlive = false;
         return false;
+    }
+
+    public IsAlive():boolean
+    {
+        return this.isAlive;
     }
 
     protected abstract FillSceneElementArray();
