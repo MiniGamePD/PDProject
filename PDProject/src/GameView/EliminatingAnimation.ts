@@ -116,10 +116,7 @@ class EliminatingAnimation
 		var eliminatedElements:SceneElementBase[] = this.eliminateInfo.EliminatedElements;
 		for (var i = 0; i < eliminatedElements.length; ++i)
 		{
-			if(!eliminatedElements[i].IsOwnerAlive())
-			{
-				this.deadElementRendererArray.push(eliminatedElements[i].renderer);
-			}
+			this.deadElementRendererArray.push(eliminatedElements[i].renderer);
 			//for debug eliminatedElements[i].renderer.alpha = 0.5;
 		}
 

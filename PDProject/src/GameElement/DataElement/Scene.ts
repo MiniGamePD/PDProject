@@ -326,17 +326,22 @@ class Scene extends GameModuleComponentBase
                     && !this.IsElementInEliminateList(element)
                     && this.NeedEliminate(element))
                 {
-                    if (this.IsSpecifiedTypeElement(element, SceneElementType.PlaceHolder))
+                    this.eliminateInfo.HasInfo = true;
+                    var isPlaceHolder = this.IsSpecifiedTypeElement(element, SceneElementType.PlaceHolder);
+                    
+                    if (isPlaceHolder)
                     {
                         this.eliminateInfo.EliminatedPlaceHolderElement.push(element);
                     }
-                    else
+                    
+                    element.OnEliminate();
+
+                    if (!isPlaceHolder
+                        && !element.IsOwnerAlive())
                     {
+                        element.UnbindAllElement();
                         this.eliminateInfo.EliminatedElements.push(element);
                     }
-                    element.UnbindAllElement();
-                    this.eliminateInfo.HasInfo = true;
-                    element.OnEliminate();
                 }
             }
         }

@@ -28,10 +28,7 @@ abstract class GameplayElementBase
         return false;
     }
 
-    public IsAlive():boolean
-    {
-        return true;
-    }
+    public abstract IsAlive():boolean;
 
     protected abstract FillSceneElementArray();
 
