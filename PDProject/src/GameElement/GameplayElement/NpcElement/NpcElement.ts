@@ -42,27 +42,26 @@ abstract class NpcElement extends GameplayElementBase
         if(this.shield > 0)
         {
             this.shield--;
-            return false;
+            return true;
         }
 
         if(this.hp > 0)
         {
             this.hp--;
-            this.isAlive = this.hp > 0;
-
-            if(DEBUG)
-            {
-                if(!this.isAlive)
-                {
-                    console.log(typeof(this) + " has dead");
-                }
-            }
-
-            return !this.isAlive;
+            return true;
         }
 
-        console.error("An Error Npc, no shield no hp, but alive");
         return false;
+    }
+
+    public IsAlive():boolean
+    {
+        return this.shield > 0 || this.hp > 0;
+    }
+
+    public HasShield():boolean
+    {
+        return this.shield > 0;
     }
 
     public OnStartNewTurn()
