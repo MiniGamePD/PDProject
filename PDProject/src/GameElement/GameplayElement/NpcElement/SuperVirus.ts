@@ -60,12 +60,6 @@ class SuperVirus extends NpcElement
         this.virusRenderer.renderer.alpha = alpha;
     }
 
-    // 播放消除动画后，清除出场景
-    public EliminateRelease()
-    {
-        this.virusRenderer.renderer.alpha = 0;
-    }
-
     private ArrangeSceneElementsPosByColor()
     {
         if(this.color == GameElementColor.red)
@@ -159,5 +153,10 @@ class SuperVirus extends NpcElement
         {
             return NpcSkillType.None;
         }
+    }
+
+    public GetMainSceneElement():SceneSuperVirus
+    {
+        return this.virusRenderer;
     }
 }

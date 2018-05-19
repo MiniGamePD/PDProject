@@ -117,6 +117,11 @@ class SceneElementBase
     {
         return this.owner.blockHeight;
     }
+
+    public IsOwnerAlive():boolean
+    {
+        return this.owner.IsAlive();
+    }
 }
 
 enum GameElementColor 

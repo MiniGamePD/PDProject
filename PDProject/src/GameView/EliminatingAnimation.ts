@@ -14,6 +14,8 @@ class EliminatingAnimation
 
 	private playSoundEvent: PlaySoundEvent;
 
+	private deadElementRendererArray:egret.DisplayObject[];
+
 	public Init(view: MatchView)
 	{
 		this.matchView = view;
@@ -21,6 +23,7 @@ class EliminatingAnimation
 		this.state = EliminatingAnimState.Init;
 		this.runningTime = 0;
 		this.moveDownFinish = false;
+		this.deadElementRendererArray = [];
 	}
 
 	public IsPlaying(): boolean
@@ -110,20 +113,28 @@ class EliminatingAnimation
 
 	private DeleteEliminatElements()
 	{
-		for (var i = 0; i < this.eliminateInfo.EliminatedElements.length; ++i)
+		var eliminatedElements:SceneElementBase[] = this.eliminateInfo.EliminatedElements;
+		for (var i = 0; i < eliminatedElements.length; ++i)
 		{
-			this.eliminateInfo.EliminatedElements[i].renderer.alpha = 0; //Todo 改成释放这个元素
+			if(!eliminatedElements[i].IsOwnerAlive())
+			{
+				this.deadElementRendererArray.push(eliminatedElements[i].renderer);
+			}
+			//for debug eliminatedElements[i].renderer.alpha = 0.5;
 		}
 
-		for (var i = 0; i < this.eliminateInfo.EliminatedSuperVirus.length; ++i)
+		var superVirues:SuperVirus[] = this.eliminateInfo.EliminatedSuperVirus;
+		for (var i = 0; i < superVirues.length; ++i)
 		{
-			if (!this.eliminateInfo.EliminatedSuperVirus[i].IsAlive())
+			if (!superVirues[i].IsAlive())
 			{
-				this.eliminateInfo.EliminatedSuperVirus[i].EliminateRelease();
+				//for debug superVirues[i].GetMainSceneElement().renderer.alpha = 0.5;
+				this.deadElementRendererArray.push(superVirues[i].GetMainSceneElement().renderer);
 			}
 			else
 			{
-				this.eliminateInfo.EliminatedSuperVirus[i].SetRenderAlpha(1);
+				//这里好恶心，因为动画把alpha变成0了，这里还要设成1...
+				superVirues[i].GetMainSceneElement().renderer.alpha = 1;
 			}
 		}
 	}
@@ -183,6 +194,16 @@ class EliminatingAnimation
 				this.PlaySound(element.eliminateSound);
 			}
 		}
+	}
+
+	public GetDeadElementRenderArray():egret.DisplayObject[]
+	{
+		return this.deadElementRendererArray;
+	}
+
+	public ClearGetDeadElementRenderArray()
+	{
+		this.deadElementRendererArray = [];
 	}
 }
 

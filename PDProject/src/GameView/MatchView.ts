@@ -102,6 +102,20 @@ class MatchView extends GameView
                 this.eliminatingAnim.Start(this.mScene.eliminateInfo);
             }
             this.eliminatingAnim.Update(deltaTime);
+
+            //移除已经不用的DisplayObject
+            var deadElementRenderArray:egret.DisplayObject[] = this.eliminatingAnim.GetDeadElementRenderArray();
+            var count = deadElementRenderArray.length;
+            if(count > 0)
+            {
+                for(var i = 0; i < count; ++i)
+                {
+                    var displayObj:egret.DisplayObject = deadElementRenderArray[i];
+                    this.BattleGroundRemoveChild(displayObj);
+                }
+
+                this.eliminatingAnim.ClearGetDeadElementRenderArray();
+            }
         }
     }
 
