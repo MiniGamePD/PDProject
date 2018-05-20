@@ -40,6 +40,6 @@ class LoadingView extends GameView
 	{
 		var text = "Loading... " + rate.toFixed(0) + "%";
 		this.loadingText.text = text
-		egret.log(text);
+		// egret.log(text);
 	}
 }
