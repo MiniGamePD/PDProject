@@ -203,10 +203,15 @@ class MatchView extends GameView
     {
         if (this.mResModule != null)
         {
-            let bg = this.mResModule.CreateBitmapByName("pd_res_json.BackGround2");
+            let bg = this.mResModule.CreateBitmapByName("pd_res_json.BackGround");
             this.addChild(bg);
             bg.width = this.mStageWidth;
             bg.height = this.mStageHeight;
+
+            if(DEBUG)
+            {
+                console.log("stage is " + egret.Capabilities.boundingClientWidth + "x" + egret.Capabilities.boundingClientHeight);
+            }
 
             this.mBattleGround = new egret.Sprite();
             //battle rect in stander resolution
