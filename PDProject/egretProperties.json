@@ -29,7 +29,7 @@
     },
     {
       "name": "Particle",
-      "path": "/Users/dennislai/Documents/GitProject/libsrc"
+      "path": "../libsrc_particle"
     }
   ]
 }
