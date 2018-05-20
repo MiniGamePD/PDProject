@@ -14,4 +14,14 @@ interface IResModule extends IModule
      * 根据name关键字创建一个Bitmap对象。
      */
 	CreateBitmapByName(key: string): egret.Bitmap;
+
+	/**
+     * 根据name关键字创建一个ParticleSystem对象。
+     */
+	CreateParticleByKey(key: string): particle.GravityParticleSystem
+
+	/**
+     * 根据贴图名字和json配置名创建一个ParticleSystem对象。
+     */
+	CreateParticle(textureName: string, jsonName: string): particle.GravityParticleSystem
 }

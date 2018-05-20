@@ -4,6 +4,7 @@ class LobbyView extends GameView
     private mStageWidth: number;
     private mStageHeight: number;
     private textField: egret.TextField;
+    private particleSys: particle.GravityParticleSystem;
 
     public CreateView(): void
     {
@@ -55,12 +56,37 @@ class LobbyView extends GameView
         text.width = this.mStageWidth;
         text.height = 100;
         this.addChild(text);
+
+        this.PlayParticle();
     }
 
     private OnClickStartGame(): void
     {
         egret.log("OnClickStartGame");
         GameMain.GetInstance().SwitchGameState(GameStateType.Match);
+    }
+
+    private PlayParticle()
+    {
+        // var texture = RES.getRes("Virus_Red");
+        // var config = RES.getRes("newParticle_json");
+        // this.particleSys = this.mResModule.CreateParticleByKey("newParticle");
+        this.particleSys = this.mResModule.CreateParticle("Virus_Red", "newParticle");
+        this.addChild(this.particleSys);
+        this.particleSys.x = 100;
+        this.particleSys.y = this.mStageHeight / 2;
+        this.particleSys.emitterX = 0;
+        this.particleSys.emitterY = 0;
+        // this.particleSys.rotation = 180
+        this.particleSys.start();
+    }
+
+    public UpdateView(deltaTime: number): void
+    { 
+        if (this.particleSys != null)
+        {
+            this.particleSys.emitterX += deltaTime * 0.1;
+        }
     }
 
     private PlayBgm()

@@ -56,4 +56,19 @@ class ResModule extends ModuleBase implements IResModule
 		return result;
 	}
 
+	public CreateParticleByKey(key: string): particle.GravityParticleSystem
+	{
+		var textureName = key + "_png";
+        var jsonName = key;
+        return this.CreateParticle(textureName, jsonName);
+	}
+
+	public CreateParticle(textureName: string, jsonName: string): particle.GravityParticleSystem
+	{
+		var texture = RES.getRes(textureName);
+        var config = RES.getRes(jsonName + "_json");
+        var particleSys = new particle.GravityParticleSystem(texture, config);
+		return particleSys;
+	}
+
 }
