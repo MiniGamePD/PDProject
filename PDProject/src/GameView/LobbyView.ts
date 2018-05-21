@@ -71,12 +71,10 @@ class LobbyView extends GameView
         // var texture = RES.getRes("Virus_Red");
         // var config = RES.getRes("newParticle_json");
         // this.particleSys = this.mResModule.CreateParticleByKey("newParticle");
-        this.particleSys = this.mResModule.CreateParticle("Virus_Red", "newParticle");
+        this.particleSys = this.mResModule.CreateParticle("Particle_Boss_Skill_Fly", "Particle_Boss_Skill_Fly");
         this.addChild(this.particleSys);
         this.particleSys.x = 100;
         this.particleSys.y = this.mStageHeight / 2;
-        this.particleSys.emitterX = 0;
-        this.particleSys.emitterY = 0;
         // this.particleSys.rotation = 180
         this.particleSys.start();
     }
