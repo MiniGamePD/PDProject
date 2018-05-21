@@ -29,6 +29,7 @@ enum ModuleType{
 	RES = 0,
 	INPUT,
 	SOUND,
+	PROGRAM_ANIMATION,
 	LOBBY,
 	MATCH,
 	MAX

@@ -58,6 +58,8 @@ class LobbyView extends GameView
         this.addChild(text);
 
         this.PlayParticle();
+
+        this.PlayLightningAnim(text);
     }
 
     private OnClickStartGame(): void
@@ -90,6 +92,18 @@ class LobbyView extends GameView
     private PlayBgm()
     {
         var event: PlaySoundEvent = new PlaySoundEvent("bgm_mp3", -1);
+        GameMain.GetInstance().DispatchEvent(event);
+    }
+
+    private PlayLightningAnim(displayObj: egret.DisplayObject)
+    {
+        var param = new PaLightningParam;
+        param.displayObj = displayObj;
+        param.duration = 2000;
+        param.interval = 500;
+        param.hideRate = 0.5;
+        var event = new PlayProgramAnimationEvent();
+        event.param = param;
         GameMain.GetInstance().DispatchEvent(event);
     }
 }
