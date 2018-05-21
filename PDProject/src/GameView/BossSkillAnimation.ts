@@ -106,14 +106,14 @@ class BossSkillAnimation
 
 	private CreateMoveEffectList()
 	{
-		var fromX = this.matchView.GetRenderPosX(this.bossSkillInfo.skillCaster.posx);
-		var fromY = this.matchView.GetRenderPosY(this.bossSkillInfo.skillCaster.posy);
+		var fromX = Tools.GetMatchViewRenderPosX(this.bossSkillInfo.skillCaster.posx);
+		var fromY = Tools.GetMatchViewRenderPosY(this.bossSkillInfo.skillCaster.posy);
 		if (this.bossSkillInfo.addHealthElement != null)
 		{
 			for (var i = 0; i < this.bossSkillInfo.addHealthElement.length; ++i)
 			{
-				var toX = this.matchView.GetRenderPosX(this.bossSkillInfo.addHealthElement[i].posx);
-				var toY = this.matchView.GetRenderPosY(this.bossSkillInfo.addHealthElement[i].posy);
+				var toX = Tools.GetMatchViewRenderPosX(this.bossSkillInfo.addHealthElement[i].posx);
+				var toY = Tools.GetMatchViewRenderPosY(this.bossSkillInfo.addHealthElement[i].posy);
 				this.CreateMoveEffect(fromX, fromY, toX, toY);
 			}
 		}
@@ -122,8 +122,8 @@ class BossSkillAnimation
 		{
 			for (var i = 0; i < this.bossSkillInfo.elementChangeColorList.length; ++i)
 			{
-				var toX = this.matchView.GetRenderPosX(this.bossSkillInfo.elementChangeColorList[i].element.posx);
-				var toY = this.matchView.GetRenderPosY(this.bossSkillInfo.elementChangeColorList[i].element.posy);
+				var toX = Tools.GetMatchViewRenderPosX(this.bossSkillInfo.elementChangeColorList[i].element.posx);
+				var toY = Tools.GetMatchViewRenderPosY(this.bossSkillInfo.elementChangeColorList[i].element.posy);
 				this.CreateMoveEffect(fromX, fromY, toX, toY);
 			}
 		}
@@ -132,8 +132,8 @@ class BossSkillAnimation
 		{
 			for (var i = 0; i < this.bossSkillInfo.elementTransList.length; ++i)
 			{
-				var toX = this.matchView.GetRenderPosX(this.bossSkillInfo.elementTransList[i].fromElement.posx);
-				var toY = this.matchView.GetRenderPosY(this.bossSkillInfo.elementTransList[i].fromElement.posy);
+				var toX = Tools.GetMatchViewRenderPosX(this.bossSkillInfo.elementTransList[i].fromElement.posx);
+				var toY = Tools.GetMatchViewRenderPosY(this.bossSkillInfo.elementTransList[i].fromElement.posy);
 				this.CreateMoveEffect(fromX, fromY, toX, toY);
 			}
 		}

@@ -1,5 +1,20 @@
 class Tools
 {
+	public static MatchViewBattleGroundStartXCenter: number = 0; //00号元素的中心点坐标x
+	public static MatchViewBattleGroundStartYCenter: number = 0; //00号元素的中心点坐标y
+	public static MatchViewElementHeight: number = 0;
+	public static MatchViewElementWidth: number = 0;
+
+	public static GetMatchViewRenderPosX(posx: number): number
+    {
+        return Tools.MatchViewBattleGroundStartXCenter + Tools.MatchViewElementWidth * posx;
+    }
+
+	public static GetMatchViewRenderPosY(posy: number): number
+    {
+        return Tools.MatchViewBattleGroundStartYCenter + Tools.MatchViewElementHeight * posy;
+    }
+
 	public static MoveScenePosX(posX: number, dir: Direction, step: number): number
 	{
 		var targetPosX = posX;
@@ -220,4 +235,9 @@ class Tools
 		}
 		return result;		
 	}
+
+	// public static GetRotateAngle(fromX: number, fromY: number, toX: number, toY: number): number
+	// {
+	// 	Math.
+	// }
 }

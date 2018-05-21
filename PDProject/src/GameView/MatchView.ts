@@ -5,10 +5,6 @@ class MatchView extends GameView
     private mStageWidth: number;
     private mStageHeight: number;
     private mScene: Scene;
-    private mBattleGroundStartXCenter: number; //00号元素的中心点坐标x
-    private mBattleGroundStartYCenter: number; //00号元素的中心点坐标y
-    private mElementWidth: number;
-    private mElementHeight: number;
     private mBattleGround: egret.Sprite;
     private eliminatingAnim: EliminatingAnimation;
     private bossSkillAnim: BossSkillAnimation;
@@ -138,10 +134,10 @@ class MatchView extends GameView
                         //renderer == null，应该是一个placeholder
                         if(element.renderer != null)
                         {
-                            element.renderer.width = this.mElementWidth * element.BlockWidth();
-                            element.renderer.height = this.mElementHeight * element.BlockHeight();
-                            element.renderer.anchorOffsetX = this.mElementWidth / 2;
-                            element.renderer.anchorOffsetY = this.mElementHeight / 2;
+                            element.renderer.width = Tools.MatchViewElementWidth * element.BlockWidth();
+                            element.renderer.height = Tools.MatchViewElementHeight * element.BlockHeight();
+                            element.renderer.anchorOffsetX = Tools.MatchViewElementWidth / 2;
+                            element.renderer.anchorOffsetY = Tools.MatchViewElementHeight / 2;
                             this.mBattleGround.addChild(element.renderer);
                         }
                         element.hasAddToDisplayList = true;
@@ -153,8 +149,8 @@ class MatchView extends GameView
                         //renderer == null，应该是一个placeholder
                         if(element.renderer != null)
                         {
-                            element.renderer.x = this.GetRenderPosX(element.posx);
-                            element.renderer.y = this.GetRenderPosY(element.posy);
+                            element.renderer.x = Tools.GetMatchViewRenderPosX(element.posx);
+                            element.renderer.y = Tools.GetMatchViewRenderPosY(element.posy);
                         }
                         element.dirty = false;
                         //console.log(element + " refresh " + element.renderer.x + "," + element.renderer.y);
@@ -187,16 +183,6 @@ class MatchView extends GameView
                 }
             }
         }
-    }
-
-    public GetRenderPosX(posx: number): number
-    {
-        return this.mBattleGroundStartXCenter + this.mElementWidth * posx;
-    }
-
-    public GetRenderPosY(posy: number): number
-    {
-        return this.mBattleGroundStartYCenter + this.mElementHeight * posy;
     }
 
     private LoadBackGround()
@@ -236,10 +222,10 @@ class MatchView extends GameView
             if(DEBUG)
                 console.log(battleRect);
 
-            this.mElementWidth = battleRect.width / Scene.Columns;
-            this.mElementHeight = battleRect.height / Scene.Rows;
-            this.mBattleGroundStartXCenter = this.mElementWidth / 2;
-            this.mBattleGroundStartYCenter = this.mElementHeight / 2;
+            Tools.MatchViewElementWidth = battleRect.width / Scene.Columns;
+            Tools.MatchViewElementHeight = battleRect.height / Scene.Rows;
+            Tools.MatchViewBattleGroundStartXCenter = Tools.MatchViewElementWidth / 2;
+            Tools.MatchViewBattleGroundStartYCenter = Tools.MatchViewElementHeight / 2;
         }
     }
 

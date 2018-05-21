@@ -158,8 +158,8 @@ class EliminatingAnimation
 		var result = false;
 		if (element != null)
 		{
-			var targetRenderPosX = this.matchView.GetRenderPosX(element.posx);
-			var targetRenderPosY = this.matchView.GetRenderPosY(element.posy);
+			var targetRenderPosX = Tools.GetMatchViewRenderPosX(element.posx);
+			var targetRenderPosY = Tools.GetMatchViewRenderPosY(element.posy);
 			result = Math.abs(element.renderer.x - targetRenderPosX) >= moveValue
 				|| Math.abs(element.renderer.y - targetRenderPosY) >= moveValue;
 			element.renderer.x = Tools.MoveNumber(element.renderer.x, targetRenderPosX, moveValue);
