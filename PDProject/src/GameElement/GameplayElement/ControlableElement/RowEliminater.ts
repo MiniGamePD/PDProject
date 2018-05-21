@@ -8,7 +8,7 @@ class RowEliminater extends EliminateTool
     {
         super();
         this.sceneRowEliminater = new SceneRowEliminater(this);
-        this.sceneRowEliminater.MoveTo(3,0);
+        this.sceneRowEliminater.MoveTo(Scene.Columns/2-1,0);
         this.eliminateType = EliminateType.Row;
         this.range = Scene.Columns;
     }

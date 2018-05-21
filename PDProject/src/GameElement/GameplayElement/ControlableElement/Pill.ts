@@ -17,7 +17,7 @@ class Pill extends ControlableElement
         this.pill2.RefreshTexture();
         this.pill1.BindElement(this.pill2);        
         //坐标表示药丸左下角块的坐标, 初始坐标在瓶子正中间的最上方
-        this.InitPos(3,0);
+        this.InitPos(Scene.Columns/2-1,0);
     }
 
     public OnRotateACW()

@@ -1,8 +1,8 @@
 //MVC中的M
 class Scene extends GameModuleComponentBase 
 {
-    public static readonly Columns: number = 8;
-    public static readonly Rows: number = 16;
+    public static readonly Columns: number = 10;
+    public static readonly Rows: number = 14;
     public static readonly EliminateMinCount = 3; //触发消除的最小数量
     public sceneData: SceneElementBase[][] = []; //左上角是00    
     public eliminateInfo: EliminateInfo;
