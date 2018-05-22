@@ -191,8 +191,8 @@ class MatchView extends GameView
         {
             let bg = this.mResModule.CreateBitmapByName("pd_res_json.BackGround");
             this.addChild(bg);
-            bg.width = this.mStageWidth;
-            bg.height = this.mStageHeight;
+            //bg.width = this.mStageWidth;
+            //bg.height = this.mStageHeight;
 
             if(DEBUG)
             {
@@ -200,23 +200,31 @@ class MatchView extends GameView
             }
 
             var adaptedDisplayRect:egret.Rectangle = GameMain.GetInstance().GetAdaptedDisplayRect();
+            var adaptedStage = new egret.Sprite();
+            this.addChild(adaptedStage);
             if(DEBUG)
             {
-                var adaptedDisplayObj = new egret.Shape();
-                adaptedDisplayObj.graphics.beginFill(0x00FF00, 0.5);
-                adaptedDisplayObj.graphics.drawRect(adaptedDisplayRect.x, adaptedDisplayRect.y, 
-                    adaptedDisplayRect.width, adaptedDisplayRect.height);
-                adaptedDisplayObj.graphics.endFill();
-                //this.addChild(adaptedDisplayObj);
+                adaptedStage.x = adaptedDisplayRect.x;
+                adaptedStage.y = adaptedDisplayRect.y;
+                adaptedStage.width = adaptedDisplayRect.width;
+                adaptedStage.height = adaptedDisplayRect.height;
+                adaptedStage.graphics.beginFill(0x00FF00, 0.5);
+                adaptedStage.graphics.drawRect(0,0,
+                adaptedStage.width, adaptedStage.height);
+                adaptedStage.graphics.endFill();
             }
 
             this.mBattleGround = new egret.Sprite();
             //battle rect in stander resolution
             let battleRect = new egret.Rectangle(35, 280, 580, 812);
-            battleRect.x = battleRect.x * this.mStageWidth / standerScreenWidth;
-            battleRect.y = battleRect.y * this.mStageHeight / standerScreenHeight;
-            battleRect.width = battleRect.width * this.mStageWidth / standerScreenWidth;
-            battleRect.height = battleRect.height * this.mStageHeight / standerScreenHeight;
+            battleRect.x = battleRect.x * adaptedDisplayRect.width / standerScreenWidth;
+            battleRect.y = battleRect.y * adaptedDisplayRect.height / standerScreenHeight;
+            battleRect.width = battleRect.width * adaptedDisplayRect.width / standerScreenWidth;
+            battleRect.height = battleRect.height * adaptedDisplayRect.height / standerScreenHeight;
+            // battleRect.x = battleRect.x * this.mStageWidth / standerScreenWidth;
+            // battleRect.y = battleRect.y * this.mStageHeight / standerScreenHeight;
+            // battleRect.width = battleRect.width * this.mStageWidth / standerScreenWidth;
+            // battleRect.height = battleRect.height * this.mStageHeight / standerScreenHeight;
 
             this.mBattleGround.x = battleRect.x;
             this.mBattleGround.y = battleRect.y;
@@ -228,7 +236,7 @@ class MatchView extends GameView
             //     this.mBattleGround.graphics.endFill();
             // }
 
-            this.addChild(this.mBattleGround);
+            adaptedStage.addChild(this.mBattleGround);
 
             if(DEBUG)
                 console.log("BattleRect is :" + battleRect);

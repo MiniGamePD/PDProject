@@ -176,27 +176,30 @@ class GameMain implements IGameMain {
 	{
 		this.adaptedDisplayRect = new egret.Rectangle();
 
-		var screenAspect = egret.Capabilities.boundingClientWidth / egret.Capabilities.boundingClientHeight;
-		var standerAspect = standerScreenWidth / standerScreenHeight; //9:16
+		var screenWidth = egret.Capabilities.boundingClientWidth;
+		var screenHeight = egret.Capabilities.boundingClientHeight;
+
+		var screenAspect = screenWidth / screenHeight;
+		var standerAspect = standerScreenWidth / standerScreenHeight; //640:1136
 		if(screenAspect <= standerAspect)
 		{
 			//屏幕很长，iphonex
 			//有富余的高度，因此以宽度为准进行适配
-			this.adaptedDisplayRect.width = egret.Capabilities.boundingClientWidth;
-			this.adaptedDisplayRect.height = Math.ceil(this.adaptedDisplayRect.width / standerAspect);
+			this.adaptedDisplayRect.width = Math.floor(this.GameStage.stageHeight * screenAspect);
+			this.adaptedDisplayRect.height = Math.floor(this.adaptedDisplayRect.width / standerAspect);
 			//将这块显示区域，放在屏幕的中间
-			this.adaptedDisplayRect.x = 0;
-			this.adaptedDisplayRect.y = Math.ceil((egret.Capabilities.boundingClientHeight - this.adaptedDisplayRect.height) / 2);
+			this.adaptedDisplayRect.x = Math.floor((this.GameStage.stageWidth - this.adaptedDisplayRect.width) / 2);
+			this.adaptedDisplayRect.y = Math.floor((this.GameStage.stageHeight - this.adaptedDisplayRect.height) / 2);
 		}
 		else
 		{
 			//屏幕更短，ipad
 			//有富余的宽度，因此以高度为准进行适配
-			this.adaptedDisplayRect.height = egret.Capabilities.boundingClientHeight;
-			this.adaptedDisplayRect.width = Math.ceil(this.adaptedDisplayRect.height * standerAspect);
+			this.adaptedDisplayRect.height = Math.floor(this.GameStage.stageWidth / screenAspect);
+			this.adaptedDisplayRect.width = Math.floor(this.adaptedDisplayRect.height * standerAspect);
 			//将这块显示区域，放在屏幕中间
-			this.adaptedDisplayRect.y = 0;
-			this.adaptedDisplayRect.x = Math.ceil((egret.Capabilities.boundingClientWidth - this.adaptedDisplayRect.width) / 2);
+			this.adaptedDisplayRect.x = Math.floor((this.GameStage.stageWidth - this.adaptedDisplayRect.width) / 2);
+			this.adaptedDisplayRect.y = Math.floor((this.GameStage.stageHeight - this.adaptedDisplayRect.height) / 2);
 		}
 	}
 }
