@@ -9,7 +9,7 @@ class Vitamins extends EliminateTool
         super();
         this.range = 1;
         this.sceneVitamins = new SceneVitamins(this);
-        this.sceneVitamins.MoveTo(3,0);
+        this.sceneVitamins.MoveTo(Scene.Columns/2-1,0);
         this.eliminateType = EliminateType.Range;
     }
 

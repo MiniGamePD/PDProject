@@ -8,7 +8,7 @@ class CrossEliminater extends EliminateTool
     {
         super();
         this.sceneCrossEliminater = new SceneCrossEliminater(this);
-        this.sceneCrossEliminater.MoveTo(3,0);
+        this.sceneCrossEliminater.MoveTo(Scene.Columns/2-1,0);
         this.eliminateType = EliminateType.Cloumn;
         this.range = Math.max(Scene.Rows, Scene.Columns);
     }

@@ -4,6 +4,8 @@ class GameMain implements IGameMain {
 
 	//场景主舞台
 	private GameStage: egret.Stage;
+	//适配过的，用来显示非背景的主要游戏元素的显示范围
+	private adaptedDisplayRect:egret.Rectangle;
 
 	//状态机管理器
 	private mStateMgr: IStateMgr;
@@ -160,5 +162,44 @@ class GameMain implements IGameMain {
 	public GetStageHeight(): number
 	{
 		return this.GameStage.stageHeight;
+	}
+
+	public GetAdaptedDisplayRect(): egret.Rectangle
+	{
+		if(this.adaptedDisplayRect == undefined)
+			this.AdaptDisplayRect();
+
+		return this.adaptedDisplayRect;
+	}
+
+	private AdaptDisplayRect()
+	{
+		this.adaptedDisplayRect = new egret.Rectangle();
+
+		var screenWidth = egret.Capabilities.boundingClientWidth;
+		var screenHeight = egret.Capabilities.boundingClientHeight;
+
+		var screenAspect = screenWidth / screenHeight;
+		var standerAspect = standerScreenWidth / standerScreenHeight; //640:1136
+		if(screenAspect <= standerAspect)
+		{
+			//屏幕很长，iphonex
+			//有富余的高度，因此以宽度为准进行适配
+			this.adaptedDisplayRect.width = Math.floor(this.GameStage.stageHeight * screenAspect);
+			this.adaptedDisplayRect.height = Math.floor(this.adaptedDisplayRect.width / standerAspect);
+			//将这块显示区域，放在屏幕的中间
+			this.adaptedDisplayRect.x = Math.floor((this.GameStage.stageWidth - this.adaptedDisplayRect.width) / 2);
+			this.adaptedDisplayRect.y = Math.floor((this.GameStage.stageHeight - this.adaptedDisplayRect.height) / 2);
+		}
+		else
+		{
+			//屏幕更短，ipad
+			//有富余的宽度，因此以高度为准进行适配
+			this.adaptedDisplayRect.height = Math.floor(this.GameStage.stageWidth / screenAspect);
+			this.adaptedDisplayRect.width = Math.floor(this.adaptedDisplayRect.height * standerAspect);
+			//将这块显示区域，放在屏幕中间
+			this.adaptedDisplayRect.x = Math.floor((this.GameStage.stageWidth - this.adaptedDisplayRect.width) / 2);
+			this.adaptedDisplayRect.y = Math.floor((this.GameStage.stageHeight - this.adaptedDisplayRect.height) / 2);
+		}
 	}
 }

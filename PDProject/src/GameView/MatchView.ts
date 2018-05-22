@@ -6,6 +6,7 @@ class MatchView extends GameView
     private mStageHeight: number;
     private mScene: Scene;
     private mBattleGround: egret.Sprite;
+    private mBattleGroundBlocks: egret.DisplayObjectContainer;
     private eliminatingAnim: EliminatingAnimation;
     private bossSkillAnim: BossSkillAnimation;
 
@@ -42,9 +43,8 @@ class MatchView extends GameView
 
     private ResetView()
     {
-        let bottle = this.mBattleGround.getChildAt(0);
         this.mBattleGround.removeChildren();
-        this.mBattleGround.addChild(bottle);
+        this.mBattleGround.addChild(this.mBattleGroundBlocks);
 
         this.hud.Reset();   
     }
@@ -191,43 +191,80 @@ class MatchView extends GameView
         {
             let bg = this.mResModule.CreateBitmapByName("pd_res_json.BackGround");
             this.addChild(bg);
-            bg.width = this.mStageWidth;
-            bg.height = this.mStageHeight;
+            //bg.width = this.mStageWidth;
+            //bg.height = this.mStageHeight;
 
             if(DEBUG)
             {
-                console.log("stage is " + egret.Capabilities.boundingClientWidth + "x" + egret.Capabilities.boundingClientHeight);
+                console.log("stage is " + this.mStageWidth + "x" + this.mStageHeight);
+            }
+
+            var adaptedDisplayRect:egret.Rectangle = GameMain.GetInstance().GetAdaptedDisplayRect();
+            var adaptedStage = new egret.Sprite();
+            this.addChild(adaptedStage);
+            if(DEBUG)
+            {
+                adaptedStage.x = adaptedDisplayRect.x;
+                adaptedStage.y = adaptedDisplayRect.y;
+                adaptedStage.width = adaptedDisplayRect.width;
+                adaptedStage.height = adaptedDisplayRect.height;
+                adaptedStage.graphics.beginFill(0x00FF00, 0.5);
+                adaptedStage.graphics.drawRect(0,0,
+                adaptedStage.width, adaptedStage.height);
+                adaptedStage.graphics.endFill();
             }
 
             this.mBattleGround = new egret.Sprite();
             //battle rect in stander resolution
-            let battleRect = new egret.Rectangle(128, 294, 382, 722);
-            battleRect.x = battleRect.x * this.mStageWidth / standerScreenWidth;
-            battleRect.y = battleRect.y * this.mStageHeight / standerScreenHeight;
-            battleRect.width = battleRect.width * this.mStageWidth / standerScreenWidth;
-            battleRect.height = battleRect.height * this.mStageHeight / standerScreenHeight;
+            let battleRect = new egret.Rectangle(35, 280, 580, 812);
+            battleRect.x = battleRect.x * adaptedDisplayRect.width / standerScreenWidth;
+            battleRect.y = battleRect.y * adaptedDisplayRect.height / standerScreenHeight;
+            battleRect.width = battleRect.width * adaptedDisplayRect.width / standerScreenWidth;
+            battleRect.height = battleRect.height * adaptedDisplayRect.height / standerScreenHeight;
+            // battleRect.x = battleRect.x * this.mStageWidth / standerScreenWidth;
+            // battleRect.y = battleRect.y * this.mStageHeight / standerScreenHeight;
+            // battleRect.width = battleRect.width * this.mStageWidth / standerScreenWidth;
+            // battleRect.height = battleRect.height * this.mStageHeight / standerScreenHeight;
 
             Tools.MatchBattleGroundPosX = battleRect.x;
             Tools.MatchBattleGroundPosY = battleRect.y;
             this.mBattleGround.x = Tools.MatchBattleGroundPosX;
             this.mBattleGround.y = Tools.MatchBattleGroundPosY;
 
-            if(DEBUG)
-            {
-                this.mBattleGround.graphics.beginFill(0xFF0000, 0.3);
-                this.mBattleGround.graphics.drawRect(0, 0, battleRect.width, battleRect.height);
-                this.mBattleGround.graphics.endFill();
-            }
+            // if(DEBUG)
+            // {
+            //     this.mBattleGround.graphics.beginFill(0xFF0000, 0.3);
+            //     this.mBattleGround.graphics.drawRect(0, 0, battleRect.width, battleRect.height);
+            //     this.mBattleGround.graphics.endFill();
+            // }
 
-            this.addChild(this.mBattleGround);
+            adaptedStage.addChild(this.mBattleGround);
 
             if(DEBUG)
-                console.log(battleRect);
+                console.log("BattleRect is :" + battleRect);
 
             Tools.MatchViewElementWidth = battleRect.width / Scene.Columns;
             Tools.MatchViewElementHeight = battleRect.height / Scene.Rows;
             Tools.MatchViewBattleGroundStartXCenter = Tools.MatchViewElementWidth / 2;
             Tools.MatchViewBattleGroundStartYCenter = Tools.MatchViewElementHeight / 2;
+
+            this.mBattleGroundBlocks = new egret.DisplayObjectContainer();
+            this.mBattleGround.addChild(this.mBattleGroundBlocks);  
+            for(var y = 0; y < Scene.Rows; ++y)
+            {
+                for(var x = 0; x < Scene.Columns; ++x)
+                {
+                    var block = this.mResModule.CreateBitmapByName("pd_res_json.gezi");
+                    block.fillMode = egret.BitmapFillMode.SCALE;
+                    block.x = Tools.GetMatchViewRenderPosX(x);
+                    block.y = Tools.GetMatchViewRenderPosY(y);
+                    block.anchorOffsetX = Tools.MatchViewElementWidth / 2;
+                    block.anchorOffsetY = Tools.MatchViewElementHeight / 2;
+                    block.width = Tools.MatchViewElementWidth
+                    block.height = Tools.MatchViewElementHeight
+                    this.mBattleGroundBlocks.addChild(block);
+                }
+            }
         }
     }
 
