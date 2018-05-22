@@ -4,6 +4,8 @@ class Tools
 	public static MatchViewBattleGroundStartYCenter: number = 0; //00号元素的中心点坐标y
 	public static MatchViewElementHeight: number = 0;
 	public static MatchViewElementWidth: number = 0;
+	public static MatchBattleGroundPosX: number = 0;
+	public static MatchBattleGroundPosY: number = 0;
 
 	public static GetMatchViewRenderPosX(posx: number): number
     {
@@ -14,6 +16,17 @@ class Tools
     {
         return Tools.MatchViewBattleGroundStartYCenter + Tools.MatchViewElementHeight * posy;
     }
+
+	public static ElementPosToGameStagePosX(posx: number): number
+    {
+        return Tools.MatchBattleGroundPosX + this.GetMatchViewRenderPosX(posx);
+    }
+
+	public static ElementPosToGameStagePosY(posy: number): number
+    {
+        return  Tools.MatchBattleGroundPosY + this.GetMatchViewRenderPosY(posy);
+    }
+
 
 	public static MoveScenePosX(posX: number, dir: Direction, step: number): number
 	{

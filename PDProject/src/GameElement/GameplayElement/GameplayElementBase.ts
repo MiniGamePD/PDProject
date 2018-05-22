@@ -38,4 +38,6 @@ abstract class GameplayElementBase
     }
 
     public Update(deltaTime:number){}
+
+    public PlayEliminateAnim(){}
 }

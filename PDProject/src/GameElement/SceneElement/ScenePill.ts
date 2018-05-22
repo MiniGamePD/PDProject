@@ -99,6 +99,18 @@ class ScenePill extends SceneElementBase
         this.SetPillType(PillElementType.Single);
     }
 
+    public PlayEliminateAnim()
+    {
+        var param = new PaPlayParticalParam;
+        param.textureName = "Particle_Boom_Red";
+        param.jsonName = "Particle_Boom";
+        param.duration = 100;
+        param.posX = Tools.ElementPosToGameStagePosX(this.posx);
+        param.posY = Tools.ElementPosToGameStagePosX(this.posy);
+        var event = new PlayProgramAnimationEvent();
+        event.param = param;
+        GameMain.GetInstance().DispatchEvent(event);
+    }
 }
 
 enum PillElementType

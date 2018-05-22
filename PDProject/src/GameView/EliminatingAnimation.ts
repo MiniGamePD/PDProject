@@ -41,6 +41,7 @@ class EliminatingAnimation
 		{
 			this.EnterState(EliminatingAnimState.Lightning);
 			this.PlayEliminateSound();
+			this.PlayElementEliminateAnim();
 		}
 		else
 		{
@@ -79,6 +80,14 @@ class EliminatingAnimation
 	private EnterState(toState: EliminatingAnimState)
 	{
 		this.state = toState;
+	}
+
+	private PlayElementEliminateAnim()
+	{
+		for (var i = 0; i < this.eliminateInfo.EliminatedElements.length; ++i)
+		{
+			this.eliminateInfo.EliminatedElements[i].PlayEliminateAnim();
+		}
 	}
 
 	private UpdateLightning(deltaTime: number)

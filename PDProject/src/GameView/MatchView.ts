@@ -207,8 +207,10 @@ class MatchView extends GameView
             battleRect.width = battleRect.width * this.mStageWidth / standerScreenWidth;
             battleRect.height = battleRect.height * this.mStageHeight / standerScreenHeight;
 
-            this.mBattleGround.x = battleRect.x;
-            this.mBattleGround.y = battleRect.y;
+            Tools.MatchBattleGroundPosX = battleRect.x;
+            Tools.MatchBattleGroundPosY = battleRect.y;
+            this.mBattleGround.x = Tools.MatchBattleGroundPosX;
+            this.mBattleGround.y = Tools.MatchBattleGroundPosY;
 
             if(DEBUG)
             {

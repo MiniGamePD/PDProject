@@ -122,6 +122,10 @@ class SceneElementBase
     {
         return this.owner.IsAlive();
     }
+    
+    public PlayEliminateAnim()
+    {
+    }
 }
 
 enum GameElementColor 
@@ -156,6 +160,10 @@ class GameElementColorGenerator
         while(iDontWantThatDolor != undefined && result == iDontWantThatDolor)
 
         return result;
+    }
+
+    public PlayEliminateAnim()
+    {
     }
 }
 

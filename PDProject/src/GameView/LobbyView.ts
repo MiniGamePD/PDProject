@@ -57,7 +57,8 @@ class LobbyView extends GameView
         text.height = 100;
         this.addChild(text);
 
-        this.PlayParticle();
+        // this.PlayParticle();
+        this.PlayParticleAnim();
 
         this.PlayLightningAnim(text);
     }
@@ -102,6 +103,19 @@ class LobbyView extends GameView
         param.duration = 2000;
         param.interval = 500;
         param.hideRate = 0.5;
+        var event = new PlayProgramAnimationEvent();
+        event.param = param;
+        GameMain.GetInstance().DispatchEvent(event);
+    }
+
+    private PlayParticleAnim()
+    {
+        var param = new PaPlayParticalParam;
+        param.textureName = "Particle_Boom_Red";
+        param.jsonName = "Particle_Boom";
+        param.duration = 5000;
+        param.posX = 200;
+        param.posY = this.mStageHeight / 2 - 100;
         var event = new PlayProgramAnimationEvent();
         event.param = param;
         GameMain.GetInstance().DispatchEvent(event);

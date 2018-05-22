@@ -46,6 +46,10 @@ class ProgrameAnimationModule extends ModuleBase implements IProgramAnimationMod
             {
                 case ProgramAnimationType.Lightning:
                     animation = new PaLightning();
+                    break;
+                case ProgramAnimationType.PlayPartical:
+                    animation = new PaPlayPartical();
+                    break;
             }
         }
 
