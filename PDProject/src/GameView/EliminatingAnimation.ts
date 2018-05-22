@@ -99,10 +99,10 @@ class EliminatingAnimation
 		{
 			this.isLightningHide = needHide;
 			var alpha = needHide ? 0 : 1;
-			for (var i = 0; i < this.eliminateInfo.EliminatedElements.length; ++i)
-			{
-				this.eliminateInfo.EliminatedElements[i].renderer.alpha = alpha;
-			}
+			// for (var i = 0; i < this.eliminateInfo.EliminatedElements.length; ++i)
+			// {
+			// 	this.eliminateInfo.EliminatedElements[i].renderer.alpha = alpha;
+			// }
 
 			for (var i = 0; i < this.eliminateInfo.EliminatedSuperVirus.length; ++i)
 			{

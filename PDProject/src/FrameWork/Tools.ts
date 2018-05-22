@@ -249,6 +249,11 @@ class Tools
 		return result;		
 	}
 
+	// 计算两个值的差值
+	public static Lerp(from: number, to: number, rate: number): number
+	{
+		return from + (to - from) * rate;
+	}
 	// public static GetRotateAngle(fromX: number, fromY: number, toX: number, toY: number): number
 	// {
 	// 	Math.

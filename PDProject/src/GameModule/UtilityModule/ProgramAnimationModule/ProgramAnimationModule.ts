@@ -50,6 +50,9 @@ class ProgrameAnimationModule extends ModuleBase implements IProgramAnimationMod
                 case ProgramAnimationType.PlayPartical:
                     animation = new PaPlayPartical();
                     break;
+                case ProgramAnimationType.Scaling:
+                    animation = new PaScaling();
+                    break;
             }
         }
 

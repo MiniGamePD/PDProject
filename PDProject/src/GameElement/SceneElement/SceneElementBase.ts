@@ -125,6 +125,33 @@ class SceneElementBase
     
     public PlayEliminateAnim()
     {
+        this.PlayParticalEff();
+        this.PlayScaling();
+    }
+
+    private PlayParticalEff()
+    {
+        var param = new PaPlayParticalParam;
+        param.textureName = "Particle_Boom_Red";
+        param.jsonName = "Particle_Boom";
+        param.duration = 100;
+        param.posX = Tools.ElementPosToGameStagePosX(this.posx);
+        param.posY = Tools.ElementPosToGameStagePosX(this.posy);
+        var event = new PlayProgramAnimationEvent();
+        event.param = param;
+        GameMain.GetInstance().DispatchEvent(event);
+    }
+
+    protected PlayScaling()
+    {
+       var param = new PaScalingParam;
+        param.displayObj = this.renderer;
+        param.duration = 100;
+        param.targetScaleX = 0;
+        param.targetScaleY = 0;
+        var event = new PlayProgramAnimationEvent();
+        event.param = param;
+        GameMain.GetInstance().DispatchEvent(event);
     }
 }
 
