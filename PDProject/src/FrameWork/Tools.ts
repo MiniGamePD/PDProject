@@ -27,7 +27,6 @@ class Tools
         return  Tools.MatchBattleGroundPosY + this.GetMatchViewRenderPosY(posy);
     }
 
-
 	public static MoveScenePosX(posX: number, dir: Direction, step: number): number
 	{
 		var targetPosX = posX;
@@ -254,8 +253,20 @@ class Tools
 	{
 		return from + (to - from) * rate;
 	}
-	// public static GetRotateAngle(fromX: number, fromY: number, toX: number, toY: number): number
-	// {
-	// 	Math.
-	// }
+	
+	public static GetRotateAngle(fromX: number, fromY: number, toX: number, toY: number): number
+	{
+		var angle = Tools.Radians2Angle(Math.atan2(toY - fromY, toX - fromX));
+		return angle;
+	}
+
+	public static Radians2Angle(radians: number)
+	{
+		return radians * 180 / Math.PI;
+	}
+
+	public static PointDistance(fromX: number, fromY: number, toX: number, toY: number): number
+	{
+		return Math.sqrt(Math.pow(toX - fromX, 2) + Math.pow(toY - fromY, 2));
+	}
 }

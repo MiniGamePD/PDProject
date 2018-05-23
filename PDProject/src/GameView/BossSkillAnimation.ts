@@ -141,9 +141,25 @@ class BossSkillAnimation
 
 	private CreateMoveEffect(fromX: number, fromY: number, toX: number, toY: number)
 	{
-		var effect = new SkillMoveEffect();
-		effect.Init(fromX, fromY, toX, toY, BossSkillAnimation.LinkElementDuration, this.matchView);
-		this.skillMoveEffects.push(effect);
+		// var effect = new SkillMoveEffect();
+		// effect.Init(fromX, fromY, toX, toY, BossSkillAnimation.LinkElementDuration, this.matchView);
+		// this.skillMoveEffects.push(effect);
+	}
+
+	private AddMovePartical(fromX: number, fromY: number, toX: number, toY: number)
+	{
+		var param = new PaMoveParticalParam;
+	    param.textureName = "Particle_Boss_Skill_Fly";
+        param.jsonName = "Particle_Boss_Skill_Fly";
+		param.duration = BossSkillAnimation.LinkElementDuration;
+		param.stratPosX = Tools.ElementPosToGameStagePosX(fromX);
+		param.stratPosY = Tools.ElementPosToGameStagePosY(fromY);
+		param.endPosX = Tools.ElementPosToGameStagePosX(toX);
+		param.endPosY = Tools.ElementPosToGameStagePosY(toY);
+		param.isMoveEmitter = true;
+		var event = new PlayProgramAnimationEvent();
+        event.param = param;
+        GameMain.GetInstance().DispatchEvent(event);
 	}
 
 	private UpdateMoveEffect(deltaTime: number)

@@ -57,10 +57,14 @@ class LobbyView extends GameView
         text.height = 100;
         this.addChild(text);
 
-        // this.PlayParticle();
-        this.PlayParticleAnim();
+        this.PlayParticle();
+        // this.PlayParticleAnim();
+        this.AddMovePartical();
 
         this.PlayLightningAnim(text);
+
+        var angle = Tools.GetRotateAngle(0, 0, 1, 1);
+        egret.log("angle = " + angle);
     }
 
     private OnClickStartGame(): void
@@ -76,9 +80,9 @@ class LobbyView extends GameView
         // this.particleSys = this.mResModule.CreateParticleByKey("newParticle");
         this.particleSys = this.mResModule.CreateParticle("Particle_Boss_Skill_Fly", "Particle_Boss_Skill_Fly");
         this.addChild(this.particleSys);
-        this.particleSys.x = 100;
+        this.particleSys.x = this.mStageWidth / 2;
         this.particleSys.y = this.mStageHeight / 2;
-        // this.particleSys.rotation = 180
+        this.particleSys.rotation = 90
         this.particleSys.start();
     }
 
@@ -86,7 +90,7 @@ class LobbyView extends GameView
     { 
         if (this.particleSys != null)
         {
-            this.particleSys.emitterX += deltaTime * 0.1;
+            // this.particleSys.emitterX += deltaTime * 0.1;
         }
     }
 
@@ -120,4 +124,20 @@ class LobbyView extends GameView
         event.param = param;
         GameMain.GetInstance().DispatchEvent(event);
     }
+
+    private AddMovePartical()
+	{
+		var param = new PaMoveParticalParam;
+	    param.textureName = "Particle_Boss_Skill_Fly";
+        param.jsonName = "Particle_Boss_Skill_Fly";
+		param.duration = 2000;
+		param.stratPosX = 0;
+		param.stratPosY = 0;
+		param.endPosX = this.mStageWidth;
+		param.endPosY = this.mStageHeight;
+		param.isMoveEmitter = true;
+		var event = new PlayProgramAnimationEvent();
+        event.param = param;
+        GameMain.GetInstance().DispatchEvent(event);
+	}
 }
