@@ -20,7 +20,7 @@ class PaPlayPartical extends ProgramAnimationBase<PaPlayParticalParam>
 			this.particleSys = resModule.CreateParticle(this.param.textureName, this.param.jsonName);
 			this.particleSys.x = this.param.posX;
 			this.particleSys.y = this.param.posY;
-			GameMain.GetInstance().GetGameStage().addChild(this.particleSys);
+			GameMain.GetInstance().GetAdaptedStageContainer().addChild(this.particleSys);
 			this.particleSys.start();
 		}
 	}
@@ -33,7 +33,7 @@ class PaPlayPartical extends ProgramAnimationBase<PaPlayParticalParam>
 	protected OnRelease()
 	{
 		this.particleSys.stop();
-		GameMain.GetInstance().GetGameStage().removeChild(this.particleSys);
+		GameMain.GetInstance().GetAdaptedStageContainer().removeChild(this.particleSys);
 		this.particleSys = null;
 	}
 

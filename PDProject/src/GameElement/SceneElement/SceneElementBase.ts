@@ -136,7 +136,7 @@ class SceneElementBase
         param.jsonName = "Particle_Boom";
         param.duration = 100;
         param.posX = Tools.ElementPosToGameStagePosX(this.posx);
-        param.posY = Tools.ElementPosToGameStagePosX(this.posy);
+        param.posY = Tools.ElementPosToGameStagePosY(this.posy);
         var event = new PlayProgramAnimationEvent();
         event.param = param;
         GameMain.GetInstance().DispatchEvent(event);
