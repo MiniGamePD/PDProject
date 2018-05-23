@@ -57,7 +57,7 @@ class LobbyView extends GameView
         text.height = 100;
         this.addChild(text);
 
-        this.PlayParticle();
+        // this.PlayParticle();
         // this.PlayParticleAnim();
         this.AddMovePartical();
 
@@ -130,11 +130,13 @@ class LobbyView extends GameView
 		var param = new PaMoveParticalParam;
 	    param.textureName = "Particle_Boss_Skill_Fly";
         param.jsonName = "Particle_Boss_Skill_Fly";
-		param.duration = 2000;
+		param.duration = 3000;
+		param.flyDuration = 2000;
+		param.stayDuration = 0;
 		param.stratPosX = 0;
 		param.stratPosY = 0;
-		param.endPosX = this.mStageWidth;
-		param.endPosY = this.mStageHeight;
+		param.endPosX = this.mStageWidth / 2;
+		param.endPosY = this.mStageHeight / 2;
 		param.isMoveEmitter = true;
 		var event = new PlayProgramAnimationEvent();
         event.param = param;

@@ -114,7 +114,11 @@ class BossSkillAnimation
 			{
 				var toX = Tools.GetMatchViewRenderPosX(this.bossSkillInfo.addHealthElement[i].posx);
 				var toY = Tools.GetMatchViewRenderPosY(this.bossSkillInfo.addHealthElement[i].posy);
-				this.CreateMoveEffect(fromX, fromY, toX, toY);
+				// this.CreateMoveEffect(fromX, fromY, toX, toY);
+				this.AddMovePartical(this.bossSkillInfo.skillCaster.posx, 
+								this.bossSkillInfo.skillCaster.posy, 
+								this.bossSkillInfo.addHealthElement[i].posx,
+							    this.bossSkillInfo.addHealthElement[i].posy)
 			}
 		}
 
@@ -124,7 +128,11 @@ class BossSkillAnimation
 			{
 				var toX = Tools.GetMatchViewRenderPosX(this.bossSkillInfo.elementChangeColorList[i].element.posx);
 				var toY = Tools.GetMatchViewRenderPosY(this.bossSkillInfo.elementChangeColorList[i].element.posy);
-				this.CreateMoveEffect(fromX, fromY, toX, toY);
+				// this.CreateMoveEffect(fromX, fromY, toX, toY);
+				this.AddMovePartical(this.bossSkillInfo.skillCaster.posx, 
+								this.bossSkillInfo.skillCaster.posy, 
+								this.bossSkillInfo.elementChangeColorList[i].element.posx,
+							    this.bossSkillInfo.elementChangeColorList[i].element.posy)
 			}
 		}
 
@@ -134,16 +142,20 @@ class BossSkillAnimation
 			{
 				var toX = Tools.GetMatchViewRenderPosX(this.bossSkillInfo.elementTransList[i].fromElement.posx);
 				var toY = Tools.GetMatchViewRenderPosY(this.bossSkillInfo.elementTransList[i].fromElement.posy);
-				this.CreateMoveEffect(fromX, fromY, toX, toY);
+				// this.CreateMoveEffect(fromX, fromY, toX, toY);
+				this.AddMovePartical(this.bossSkillInfo.skillCaster.posx, 
+								this.bossSkillInfo.skillCaster.posy, 
+								this.bossSkillInfo.elementTransList[i].fromElement.posx,
+							    this.bossSkillInfo.elementTransList[i].fromElement.posy)
 			}
 		}
 	}
 
 	private CreateMoveEffect(fromX: number, fromY: number, toX: number, toY: number)
 	{
-		// var effect = new SkillMoveEffect();
-		// effect.Init(fromX, fromY, toX, toY, BossSkillAnimation.LinkElementDuration, this.matchView);
-		// this.skillMoveEffects.push(effect);
+		var effect = new SkillMoveEffect();
+		effect.Init(fromX, fromY, toX, toY, BossSkillAnimation.LinkElementDuration, this.matchView);
+		this.skillMoveEffects.push(effect);
 	}
 
 	private AddMovePartical(fromX: number, fromY: number, toX: number, toY: number)
@@ -151,7 +163,9 @@ class BossSkillAnimation
 		var param = new PaMoveParticalParam;
 	    param.textureName = "Particle_Boss_Skill_Fly";
         param.jsonName = "Particle_Boss_Skill_Fly";
-		param.duration = BossSkillAnimation.LinkElementDuration;
+		param.duration = 2000;
+		param.flyDuration = 1000;
+		param.stayDuration = 0;
 		param.stratPosX = Tools.ElementPosToGameStagePosX(fromX);
 		param.stratPosY = Tools.ElementPosToGameStagePosY(fromY);
 		param.endPosX = Tools.ElementPosToGameStagePosX(toX);
