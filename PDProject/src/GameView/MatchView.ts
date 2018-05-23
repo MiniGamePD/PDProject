@@ -2,9 +2,8 @@ class MatchView extends GameView
 {
     private mResModule: IResModule;
     private mSoundModule: ISoundModule
-    private mStageWidth: number;
-    private mStageHeight: number;
     private mScene: Scene;
+    private mAdaptedStage: egret.DisplayObjectContainer;
     private mBattleGround: egret.Sprite;
     private mBattleGroundBlocks: egret.DisplayObjectContainer;
     private eliminatingAnim: EliminatingAnimation;
@@ -16,8 +15,6 @@ class MatchView extends GameView
     {
         this.mResModule = <IResModule>GameMain.GetInstance().GetModule(ModuleType.RES);
         this.mSoundModule = <ISoundModule>GameMain.GetInstance().GetModule(ModuleType.SOUND);
-        this.mStageWidth = GameMain.GetInstance().GetStageWidth();
-        this.mStageHeight = GameMain.GetInstance().GetStageHeight();
 
         this.LoadBackGround();
         this.CreateHUD();
@@ -194,20 +191,16 @@ class MatchView extends GameView
             //bg.width = this.mStageWidth;
             //bg.height = this.mStageHeight;
 
-            if(DEBUG)
-            {
-                console.log("stage is " + this.mStageWidth + "x" + this.mStageHeight);
-            }
-
-            var adaptedDisplayRect:egret.Rectangle = GameMain.GetInstance().GetAdaptedDisplayRect();
+            var adaptedStageRect:egret.Rectangle = GameMain.GetInstance().GetAdaptedDisplayRect();
             var adaptedStage = new egret.Sprite();
-            this.addChild(adaptedStage);
+            this.mAdaptedStage = adaptedStage;
+            this.addChild(this.mAdaptedStage);
             if(DEBUG)
             {
-                adaptedStage.x = adaptedDisplayRect.x;
-                adaptedStage.y = adaptedDisplayRect.y;
-                adaptedStage.width = adaptedDisplayRect.width;
-                adaptedStage.height = adaptedDisplayRect.height;
+                adaptedStage.x = adaptedStageRect.x;
+                adaptedStage.y = adaptedStageRect.y;
+                adaptedStage.width = adaptedStageRect.width;
+                adaptedStage.height = adaptedStageRect.height;
                 adaptedStage.graphics.beginFill(0x00FF00, 0.5);
                 adaptedStage.graphics.drawRect(0,0,
                 adaptedStage.width, adaptedStage.height);
@@ -217,10 +210,10 @@ class MatchView extends GameView
             this.mBattleGround = new egret.Sprite();
             //battle rect in stander resolution
             let battleRect = new egret.Rectangle(35, 280, 580, 812);
-            battleRect.x = battleRect.x * adaptedDisplayRect.width / standerScreenWidth;
-            battleRect.y = battleRect.y * adaptedDisplayRect.height / standerScreenHeight;
-            battleRect.width = battleRect.width * adaptedDisplayRect.width / standerScreenWidth;
-            battleRect.height = battleRect.height * adaptedDisplayRect.height / standerScreenHeight;
+            battleRect.x = battleRect.x * adaptedStageRect.width / standerScreenWidth;
+            battleRect.y = battleRect.y * adaptedStageRect.height / standerScreenHeight;
+            battleRect.width = battleRect.width * adaptedStageRect.width / standerScreenWidth;
+            battleRect.height = battleRect.height * adaptedStageRect.height / standerScreenHeight;
             // battleRect.x = battleRect.x * this.mStageWidth / standerScreenWidth;
             // battleRect.y = battleRect.y * this.mStageHeight / standerScreenHeight;
             // battleRect.width = battleRect.width * this.mStageWidth / standerScreenWidth;
@@ -271,11 +264,11 @@ class MatchView extends GameView
     private CreateHUD()
     {
         this.hud = new MatchHUD();
-        this.hud.width = this.mStageWidth;
-        this.hud.height = this.mStageHeight;
+        this.hud.width = this.mAdaptedStage.width;
+        this.hud.height = this.mAdaptedStage.height;
         this.hud.x = this.hud.y = 0;
         this.hud.Init();
-        this.addChild(this.hud);
+        this.mAdaptedStage.addChild(this.hud);
     }
 
     private DeleteHUD()
