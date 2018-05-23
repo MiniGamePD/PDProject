@@ -56,12 +56,14 @@ class LobbyView extends GameView
         text.width = this.mStageWidth;
         text.height = 100;
         this.addChild(text);
+        
 
         // this.PlayParticle();
         // this.PlayParticleAnim();
         this.AddMovePartical();
 
         this.PlayLightningAnim(text);
+        // this.PlayMoving(text);
 
         var angle = Tools.GetRotateAngle(0, 0, 1, 1);
         egret.log("angle = " + angle);
@@ -138,8 +140,26 @@ class LobbyView extends GameView
 		param.endPosX = this.mStageWidth / 2;
 		param.endPosY = this.mStageHeight / 2;
 		param.isMoveEmitter = true;
+        param.callBack = this.MoveParticalCallBack;
 		var event = new PlayProgramAnimationEvent();
         event.param = param;
         GameMain.GetInstance().DispatchEvent(event);
 	}
+
+    private PlayMoving(displayObj: egret.DisplayObject)
+    {
+        var param = new PaMovingParam;
+        param.displayObj = displayObj;
+        param.duration = 2000;
+        param.targetPosX = this.mStageWidth / 2;
+        param.targetPosY = this.mStageHeight / 2;
+        var event = new PlayProgramAnimationEvent();
+        event.param = param;
+        GameMain.GetInstance().DispatchEvent(event);
+    }
+
+    private MoveParticalCallBack(runTime: number)
+    {
+        egret.log("MoveParticalCallBack, runTime=" + runTime);
+    }
 }

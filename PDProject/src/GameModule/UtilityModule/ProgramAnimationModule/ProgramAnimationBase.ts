@@ -41,6 +41,11 @@ abstract class ProgramAnimationBase<T extends ProgramAnimationParamBase> impleme
 	public Release(): void 
 	{
 		this.OnRelease();
+		if (this.param.callBack != undefined
+			&& this.param.callBack != null)
+		{
+			this.param.callBack(this.runningTime);
+		}
 		this.runningTime = 0;
 		this.animType = ProgramAnimationType.None;
 		this.param = null;
