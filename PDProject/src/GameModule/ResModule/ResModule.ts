@@ -67,13 +67,21 @@ class ResModule extends ModuleBase implements IResModule
 	{
 		var texture = RES.getRes(textureName);
         var config = RES.getRes(jsonName + "_json");
-        var particleSys = new particle.GravityParticleSystem(texture, config);
-		if (particleSys != null)
+		if (texture != null	&& config != null)
 		{
-			particleSys.emitterX = 0;
-			particleSys.emitterY = 0;
+			var particleSys = new particle.GravityParticleSystem(texture, config);
+			if (particleSys != null)
+			{
+				particleSys.emitterX = 0;
+				particleSys.emitterY = 0;
+			}
+			return particleSys;
 		}
-		return particleSys;
+		else if (DEBUG)
+		{
+			console.assert(false, "Can not add elements to scene after query rotate!");
+		}
+		return null;
 	}
 
 }

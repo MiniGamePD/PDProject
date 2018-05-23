@@ -24,7 +24,7 @@ class SkillMoveEffect {
 	private InitShape()
 	{
 		var resModule = <IResModule>GameMain.GetInstance().GetModule(ModuleType.RES);
-		this.particleSys = resModule.CreateParticleByKey("newParticle");
+		this.particleSys = resModule.CreateParticle("Particle_Boss_Skill_Fly", "Particle_Boss_Skill_Fly");
 		this.particleSys.x = this.startX;
 		this.particleSys.y = this.startY;
 		this.particleSys.emitterX = 0;
