@@ -130,8 +130,8 @@ class LobbyView extends GameView
     private AddMovePartical()
 	{
 		var param = new PaMoveParticalParam;
-	    param.textureName = "Particle_Boss_Skill_Fly";
-        param.jsonName = "Particle_Boss_Skill_Fly";
+	    param.textureName = "huojian";
+        param.jsonName = "huojian";
 		param.duration = 3000;
 		param.flyDuration = 2000;
 		param.stayDuration = 0;

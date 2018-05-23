@@ -8,7 +8,7 @@ class SceneElementBase
     public renderer: egret.Bitmap;
     public dirty: boolean;
     public hasAddToDisplayList: boolean;
-    private resModule: IResModule;
+    protected resModule: IResModule;
     private bindedElements: SceneElementBase[];
     protected owner:GameplayElementBase;
     public eliminateMinCount: number;
@@ -127,9 +127,10 @@ class SceneElementBase
     {
         this.PlayParticalEff();
         this.PlayScaling();
+        this.MoveOneSide();
     }
 
-    private PlayParticalEff()
+    protected PlayParticalEff()
     {
         var param = new PaPlayParticalParam;
         param.textureName = "Particle_Boom_Red";
@@ -152,6 +153,45 @@ class SceneElementBase
         var event = new PlayProgramAnimationEvent();
         event.param = param;
         GameMain.GetInstance().DispatchEvent(event);
+    }
+
+    public MoveOneSide()
+    {
+        var startX = Tools.ElementPosToGameStagePosX(this.posx);
+        var startY = Tools.ElementPosToGameStagePosY(this.posy);
+
+        var particalParam = new PaMoveParticalParam;
+        particalParam.textureName = "huojian";
+        particalParam.jsonName = "huojian";
+		particalParam.duration = 1000;
+		particalParam.flyDuration = 1000;
+		particalParam.stayDuration = 0;
+		particalParam.stratPosX = startX;
+		particalParam.stratPosY = startY - 100;
+		particalParam.endPosX = startX;
+		particalParam.endPosY = startY + 1000 - 100;
+		particalParam.isMoveEmitter = true;
+		var event = new PlayProgramAnimationEvent();
+        event.param = particalParam;
+        GameMain.GetInstance().DispatchEvent(event);
+
+        var headPic = this.resModule.CreateBitmapByName("huojian1");
+        headPic.anchorOffsetX = headPic.width / 2;
+        headPic.anchorOffsetY = headPic.height / 2;
+        headPic.x = startX;
+        headPic.y = startY;
+        GameMain.GetInstance().GetAdaptedStageContainer().addChild(headPic);
+        var movingParam = new PaMovingParam;
+        movingParam.displayObj = headPic;
+        movingParam.duration = 1000;
+        movingParam.targetPosX = startX;
+        movingParam.targetPosY = startY + 1000;
+        movingParam.needRotate = true;
+        var event = new PlayProgramAnimationEvent();
+        event.param = movingParam;
+        GameMain.GetInstance().DispatchEvent(event);
+
+        
     }
 }
 

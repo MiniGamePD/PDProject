@@ -6,6 +6,7 @@ class PaMovingParam extends ProgramAnimationParamBase
 	public duration: number; 		// 时长
 	public targetPosX: number;	// 目标X
 	public targetPosY: number;	// 目标Y
+	public needRotate: boolean; // 是否需要旋转
 }
 
 class PaMoving extends ProgramAnimationBase<PaMovingParam>
@@ -16,6 +17,11 @@ class PaMoving extends ProgramAnimationBase<PaMovingParam>
 	{
 		this.startX = this.param.displayObj.x;
 		this.startY = this.param.displayObj.y;
+		if (this.param.needRotate)
+		{
+			this.param.displayObj.rotation = 
+				Tools.GetRotateAngle(this.startX, this.startY, this.param.targetPosX, this.param.targetPosY);
+		}
 	}
 
 	protected OnUpdate(deltaTime: number)

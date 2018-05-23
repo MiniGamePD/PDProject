@@ -30,7 +30,7 @@ class PaMovePartical extends ProgramAnimationBase<PaMoveParticalParam>
 			this.particleSys.y = this.param.stratPosY;
 			this.particleSys.rotation = Tools.GetRotateAngle(this.param.stratPosX, this.param.stratPosY,
 											 this.param.endPosX, this.param.endPosY);
-			GameMain.GetInstance().GetGameStage().addChild(this.particleSys);
+			GameMain.GetInstance().GetAdaptedStageContainer().addChild(this.particleSys);
 			this.particleSys.start();
 
 			this.distance = Tools.PointDistance(this.param.stratPosX, this.param.stratPosY,
@@ -77,7 +77,7 @@ class PaMovePartical extends ProgramAnimationBase<PaMoveParticalParam>
 	protected OnRelease()
 	{
 		this.StopPartical();
-		GameMain.GetInstance().GetGameStage().removeChild(this.particleSys);
+		GameMain.GetInstance().GetAdaptedStageContainer().removeChild(this.particleSys);
 		this.particleSys = null;
 	}
 
