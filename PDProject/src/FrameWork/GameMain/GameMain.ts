@@ -6,6 +6,8 @@ class GameMain implements IGameMain {
 	private GameStage: egret.Stage;
 	//适配过的，用来显示非背景的主要游戏元素的显示范围
 	private adaptedStageRect:egret.Rectangle;
+	//适配过的stage的container
+	private adaptedStageContainer:egret.DisplayObjectContainer;
 
 	//状态机管理器
 	private mStateMgr: IStateMgr;
@@ -202,6 +204,22 @@ class GameMain implements IGameMain {
 		item.size = item.size * this.GetAdaptedStageWidth() / standerScreenWidth;
 	}
 
+	public GetAdaptedStageContainer():egret.DisplayObjectContainer
+	{
+		if(this.adaptedStageRect == undefined)
+			this.AdaptStageRect();
+
+		return this.adaptedStageContainer;
+	}
+
+	public ClearAdaptedStageContainer()
+	{
+		if(this.adaptedStageContainer != undefined)
+		{
+			this.adaptedStageContainer.removeChildren();
+		}
+	}
+
 	private AdaptStageRect()
 	{
 		this.adaptedStageRect = new egret.Rectangle();
@@ -230,6 +248,15 @@ class GameMain implements IGameMain {
 			//将这块显示区域，放在屏幕中间
 			this.adaptedStageRect.x = Math.floor((this.GameStage.stageWidth - this.adaptedStageRect.width) / 2);
 			this.adaptedStageRect.y = Math.floor((this.GameStage.stageHeight - this.adaptedStageRect.height) / 2);
+		}
+
+		if(this.adaptedStageContainer == undefined)
+		{
+			this.adaptedStageContainer = new egret.Sprite();
+			this.adaptedStageContainer.x = this.adaptedStageRect.x;
+			this.adaptedStageContainer.y = this.adaptedStageRect.y;
+			this.adaptedStageContainer.width = this.adaptedStageRect.width;
+			this.adaptedStageContainer.height = this.adaptedStageRect.height; 
 		}
 	}
 }

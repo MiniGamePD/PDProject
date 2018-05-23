@@ -33,6 +33,9 @@ class MatchView extends GameView
     public ReleaseView(): void 
     {
         this.DeleteHUD();
+        
+        this.removeChild(this.mAdaptedStage);
+        GameMain.GetInstance().ClearAdaptedStageContainer();
 
         GameMain.GetInstance().RemoveEventListener(SceneElementControlSuccessEvent.EventName, this.ProcessControlSuccess, this);
         GameMain.GetInstance().RemoveEventListener(ReplayGameEvent.EventName, this.OnReplayGame, this);
@@ -192,18 +195,14 @@ class MatchView extends GameView
             //bg.height = this.mStageHeight;
 
             var adaptedStageRect:egret.Rectangle = GameMain.GetInstance().GetAdaptedDisplayRect();
-            var adaptedStage = new egret.Sprite();
-            this.mAdaptedStage = adaptedStage;
+            this.mAdaptedStage = GameMain.GetInstance().GetAdaptedStageContainer();;
             this.addChild(this.mAdaptedStage);
             if(DEBUG)
             {
-                adaptedStage.x = adaptedStageRect.x;
-                adaptedStage.y = adaptedStageRect.y;
-                adaptedStage.width = adaptedStageRect.width;
-                adaptedStage.height = adaptedStageRect.height;
+                var adaptedStage = <egret.Sprite>this.mAdaptedStage;
                 adaptedStage.graphics.beginFill(0x00FF00, 0.5);
                 adaptedStage.graphics.drawRect(0,0,
-                adaptedStage.width, adaptedStage.height);
+                    adaptedStage.width, adaptedStage.height);
                 adaptedStage.graphics.endFill();
             }
 

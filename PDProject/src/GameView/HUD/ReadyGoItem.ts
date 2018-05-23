@@ -28,6 +28,8 @@ class ReadyGoItem extends egret.DisplayObjectContainer
         this.ready.height = this.go.height = height;
         this.ready.textAlign = this.go.textAlign = egret.HorizontalAlign.CENTER;
         this.ready.verticalAlign = this.go.verticalAlign = egret.VerticalAlign.MIDDLE;
+        GameMain.GetInstance().AdaptTextField(this.ready);
+        GameMain.GetInstance().AdaptTextField(this.go);
     }
 
     public Play()
