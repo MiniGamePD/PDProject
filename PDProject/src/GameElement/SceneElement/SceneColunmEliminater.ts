@@ -12,11 +12,8 @@ class SceneColunmEliminater extends SceneElementBase
         this.eliminateSound = "EliminateRow_mp3";
     }
 
-    public RefreshTexture():void
+    protected GetResPathByColor():string
     {
-        let texture: egret.Texture;
-        let path = "pd_res_json.ColunmEliminater";
-        texture = this.GetTexture(path);
-		this.renderer.texture = texture;
+        return "pd_res_json.ColunmEliminater";
     }
 }

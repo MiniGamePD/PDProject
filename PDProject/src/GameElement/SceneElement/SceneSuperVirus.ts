@@ -10,10 +10,9 @@ class SceneSuperVirus extends ScenePlaceholder
         this.RefreshTexture();
     }
 
-    public RefreshTexture():void
+    protected GetResPathByColor():string
     {
-        let texture: egret.Texture;
-        let path = "pd_res_json.Boss_";
+        var path = "pd_res_json.Boss_";
         switch(this.color)
         {
             case GameElementColor.red:
@@ -32,8 +31,7 @@ class SceneSuperVirus extends ScenePlaceholder
                 }    
                 break;
         }
-        texture = this.GetTexture(path);
-		this.renderer.texture = texture;
+        return path;
     }
 
     public BlockWidth():number

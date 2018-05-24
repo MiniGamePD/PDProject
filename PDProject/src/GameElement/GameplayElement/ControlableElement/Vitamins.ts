@@ -33,4 +33,12 @@ class Vitamins extends EliminateTool
         GameMain.GetInstance().DispatchEvent(specialEliminateEvent);
         return true;
     }
+
+    public GetPreViewContainer():egret.DisplayObjectContainer
+    {
+        var previewContainer = new egret.DisplayObjectContainer();
+        var preview:egret.Bitmap = this.sceneVitamins.GetPreView();
+        previewContainer.addChild(preview);
+        return previewContainer;
+    }
 }

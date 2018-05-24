@@ -12,11 +12,9 @@ class SceneVitamins extends SceneElementBase
         this.eliminateSound = "Boom_mp3";
     }
 
-    public RefreshTexture():void
+    protected GetResPathByColor():string
     {
-        let texture: egret.Texture;
-        //todo
-        let path = "pd_res_json.Vitamins_";
+        var path = "pd_res_json.Vitamins_";
         switch(this.color)
         {
             case GameElementColor.red:
@@ -35,7 +33,6 @@ class SceneVitamins extends SceneElementBase
                 }    
                 break;
         }
-        texture = this.GetTexture(path);
-		this.renderer.texture = texture;
+        return path;
     }
 }

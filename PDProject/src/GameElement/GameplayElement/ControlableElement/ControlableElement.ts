@@ -19,4 +19,6 @@ abstract class ControlableElement extends GameplayElementBase
     {
         return !this.hasEliminated;
     }
+
+    public abstract GetPreViewContainer():egret.DisplayObjectContainer
 }

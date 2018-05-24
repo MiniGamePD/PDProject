@@ -31,4 +31,10 @@ class Virus extends NpcElement
     {
         
     }
+
+    public GetPreViewContainer():egret.DisplayObjectContainer
+    {
+        console.error("Not Implement Error");
+        return null;
+    }
 }

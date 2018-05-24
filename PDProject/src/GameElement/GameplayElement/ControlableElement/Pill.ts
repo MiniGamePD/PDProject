@@ -15,7 +15,8 @@ class Pill extends ControlableElement
         this.pill1.RefreshTexture();
         this.pill2.SetPillType(PillElementType.right);
         this.pill2.RefreshTexture();
-        this.pill1.BindElement(this.pill2);        
+        this.pill1.BindElement(this.pill2);
+
         //坐标表示药丸左下角块的坐标, 初始坐标在瓶子正中间的最上方
         this.InitPos(Scene.Columns/2-1,0);
     }
@@ -76,6 +77,20 @@ class Pill extends ControlableElement
     {
         this.sceneElements.push(this.pill1);
         this.sceneElements.push(this.pill2);
+    }
+
+    public GetPreViewContainer():egret.DisplayObjectContainer
+    {
+        var previewContainer = new egret.DisplayObjectContainer();
+        var preview1:egret.Bitmap = this.pill1.GetPreView();
+        preview1.x = 0;
+        preview1.y = 0;
+        var preview2:egret.Bitmap = this.pill2.GetPreView();
+        preview2.x = Tools.MatchViewElementWidth;
+        preview2.y = 0;
+        previewContainer.addChild(preview1);
+        previewContainer.addChild(preview2);
+        return previewContainer;
     }
 }
 

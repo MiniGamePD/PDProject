@@ -3,6 +3,7 @@ class MatchHUD extends egret.DisplayObjectContainer
     private readyGo:ReadyGoItem;
     private score:MatchScoreItem;
     private gameover:GameOverItem;
+    private controlablePreview:ControlablePreviewItem;
 
     public Init()
     {
@@ -12,6 +13,9 @@ class MatchHUD extends egret.DisplayObjectContainer
         this.score = new MatchScoreItem();
         this.score.Init();
         this.addChild(this.score);
+
+        this.controlablePreview = new ControlablePreviewItem(0, 0, this.width, this.height);
+        this.addChild(this.controlablePreview);
 
         this.gameover = new GameOverItem(this.width, this.height);
         this.addChild(this.gameover);
@@ -37,6 +41,7 @@ class MatchHUD extends egret.DisplayObjectContainer
     public Update(deltaTime:number)
     {
         this.score.Update(deltaTime);
+        this.controlablePreview.Update(deltaTime);
     }
 
     private OnGameOver(event:GameOverEvent)
@@ -57,6 +62,9 @@ class MatchHUD extends egret.DisplayObjectContainer
             case HUDEventType.ChangeStep:
                 this.ChangeStep(event.param);
                 break;
+            case HUDEventType.RefreshControlablePreview:
+                this.RefreshControlablePreview(event.param);
+                break;
             //Add More..
         }
     }
@@ -76,5 +84,11 @@ class MatchHUD extends egret.DisplayObjectContainer
     {
         let step:number = <number>param;
         this.score.SetStep(step);
+    }
+
+    private RefreshControlablePreview(param:any)
+    {
+        var nextControlableElementArray:ControlableElement[] = <ControlableElement[]>param;
+        this.controlablePreview.RefreshControlablePreview(nextControlableElementArray);
     }
 }

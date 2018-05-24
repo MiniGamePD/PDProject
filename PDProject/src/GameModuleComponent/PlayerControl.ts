@@ -9,6 +9,8 @@ class PlayerControl extends GameModuleComponentBase
 
     private startWorkTimer:egret.Timer;
 
+    private nextControlableElementArray:ControlableElement[];
+
     public constructor(gameplayElementFactory:GameplayElementFactory)
     {
         super();
@@ -18,6 +20,8 @@ class PlayerControl extends GameModuleComponentBase
 
     public Init():void
     {
+        this.nextControlableElementArray = [];
+
         GameMain.GetInstance().AddEventListener(InputEvent.EventName, this.OnInputEvent, this);
         GameMain.GetInstance().AddEventListener(SceneElementControlFailedEvent.EventName, this.OnPlayerControlFailed, this);
         GameMain.GetInstance().AddEventListener(SceneElementControlSuccessEvent.EventName, this.OnPlayerControlSuccess, this);
@@ -25,6 +29,8 @@ class PlayerControl extends GameModuleComponentBase
 
     public Release():void
     {
+        this.nextControlableElementArray = null;
+
         GameMain.GetInstance().RemoveEventListener(InputEvent.EventName, this.OnInputEvent, this);
         GameMain.GetInstance().RemoveEventListener(SceneElementControlFailedEvent.EventName, this.OnPlayerControlFailed, this);
         GameMain.GetInstance().RemoveEventListener(SceneElementControlSuccessEvent.EventName, this.OnPlayerControlSuccess, this);
@@ -32,16 +38,18 @@ class PlayerControl extends GameModuleComponentBase
 
     public Work(param?:any):any
     {
-        
-
         let controlWorkParam:GameplayControlWorkParam = param;
-
         
         if(controlWorkParam.turn == 1)
         {
             this.creatorWorkParam.paramIndex = ControlableElementCreateType.AllRandomPill;
-            this.creatorWorkParam.createNum = 1;
-		    this.target = this.controlableElementCreator.CreateElement(this.creatorWorkParam);
+            this.creatorWorkParam.createNum = 3;
+            this.nextControlableElementArray = this.controlableElementCreator.CreateElement(this.creatorWorkParam);
+
+            var hudEvent = new HUDEvent();
+            hudEvent.eventType = HUDEventType.RefreshControlablePreview;
+            hudEvent.param = this.nextControlableElementArray;
+            GameMain.GetInstance().DispatchEvent(hudEvent);
 
             //等待ready go结束
             this.startWorkTimer = new egret.Timer(1500, 1);
@@ -56,7 +64,8 @@ class PlayerControl extends GameModuleComponentBase
         {
             this.creatorWorkParam.paramIndex = ControlableElementCreateType.Normal;
             this.creatorWorkParam.createNum = 1;
-		    this.target = this.controlableElementCreator.CreateElement(this.creatorWorkParam);
+            var newElement = this.controlableElementCreator.CreateElement(this.creatorWorkParam);
+		    this.nextControlableElementArray.push(newElement);
 
             this.ReallyStartWork();
         }
@@ -64,6 +73,13 @@ class PlayerControl extends GameModuleComponentBase
 
     private ReallyStartWork()
     {
+        this.target = this.nextControlableElementArray.splice(0,1)[0];
+
+        var hudEvent = new HUDEvent();
+        hudEvent.eventType = HUDEventType.RefreshControlablePreview;
+        hudEvent.param = this.nextControlableElementArray;
+        GameMain.GetInstance().DispatchEvent(hudEvent);
+
         this.startWorkTimer = null;
         this.dropdownTimer = 0;
         this.DispatchControlEvent(SceneElementControlType.Add);
