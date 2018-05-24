@@ -35,4 +35,18 @@ class SceneVirus extends SceneElementBase
         }
         return path;
     }
+
+    protected PlayParticalEff()
+    {
+        var param = new PaPlayParticalParam;
+        param.textureName = "Particle_Virus_Boom";
+        param.jsonName = "Particle_Virus_Boom";
+        param.duration = 1000;
+        param.emitDuration = 100;
+        param.posX = Tools.ElementPosToGameStagePosX(this.posx);
+        param.posY = Tools.ElementPosToGameStagePosY(this.posy);
+        var event = new PlayProgramAnimationEvent();
+        event.param = param;
+        GameMain.GetInstance().DispatchEvent(event);
+    }
 }

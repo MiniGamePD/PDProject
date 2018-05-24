@@ -1,7 +1,7 @@
 {
 	"groups": [
 		{
-			"keys": "bgm_mp3,pd_res_json,Boom_mp3,Eliminate_mp3,EliminateRow_mp3,OnDown_mp3,VirusEliminate_mp3,EnemySinisterSmile1_mp3,EnemySinisterSmile2_mp3,EnemySinisterSmile3_mp3,EnemySinisterSmile4_mp3,VirusBorn_mp3,BossSkill_mp3,GameOver_mp3,Go_mp3,Ready_mp3,Particle_Boom_Bomb_json,Particle_Boom_json,Particle_Boss_Skill_Fly_json,huojian_json",
+			"keys": "bgm_mp3,pd_res_json,Boom_mp3,Eliminate_mp3,EliminateRow_mp3,OnDown_mp3,VirusEliminate_mp3,EnemySinisterSmile1_mp3,EnemySinisterSmile2_mp3,EnemySinisterSmile3_mp3,EnemySinisterSmile4_mp3,VirusBorn_mp3,BossSkill_mp3,GameOver_mp3,Go_mp3,Ready_mp3,Particle_Boom_Bomb_json,Particle_Boom_json,Particle_Boss_Skill_Fly_json,huojian_json,Particle_Virus_Boom_json",
 			"name": "preload"
 		}
 	],
@@ -25,7 +25,7 @@
 			"url": "assets/pd_res.json",
 			"type": "sheet",
 			"name": "pd_res_json",
-			"subkeys": "BackGround,BackGround2,Boss_Blue,Boss_Red,Boss_Yellow,Bottle,Bottle2,ColunmEliminater,CrossEliminater,Particle_Boom_Blue,Particle_Boom_Bomb,Particle_Boom_Red,Particle_Boom_Yellow,Particle_Boss_Skill_Fly,Pill_Blue,Pill_Red,Pill_Single_Blue,Pill_Single_Red,Pill_Single_Yellow,Pill_Yellow,RowEliminater,Virus_Blue,Virus_Red,Virus_Yellow,Vitamins_Blue,Vitamins_Red,Vitamins_Yellow,gezi,huojian,huojian1"
+			"subkeys": "BackGround,BackGround2,Boss_Blue,Boss_Red,Boss_Yellow,Bottle,Bottle2,ColunmEliminater,CrossEliminater,Particle_Boom_Blue,Particle_Boom_Bomb,Particle_Boom_Red,Particle_Boom_Yellow,Particle_Boss_Skill_Fly,Particle_Virus_Boom,Pill_Bg,Pill_Blue,Pill_Red,Pill_Single_Blue,Pill_Single_Red,Pill_Single_Yellow,Pill_Yellow,RowEliminater,Virus_Blue,Virus_Red,Virus_Yellow,Vitamins_Blue,Vitamins_Red,Vitamins_Yellow,gezi,huojian,huojian1"
 		},
 		{
 			"url": "assets/bgm.mp3",
@@ -121,6 +121,11 @@
 			"url": "assets/huojian.json",
 			"type": "json",
 			"name": "huojian_json"
+		},
+		{
+			"name": "Particle_Virus_Boom_json",
+			"type": "json",
+			"url": "assets/Particle_Virus_Boom.json"
 		}
 	]
 }

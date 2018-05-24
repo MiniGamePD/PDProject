@@ -120,6 +120,7 @@ class LobbyView extends GameView
         param.textureName = "Particle_Boom_Red";
         param.jsonName = "Particle_Boom";
         param.duration = 5000;
+        param.emitDuration = 5000;
         param.posX = 200;
         param.posY = this.mStageHeight / 2 - 100;
         var event = new PlayProgramAnimationEvent();

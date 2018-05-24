@@ -133,7 +133,7 @@ abstract class SceneElementBase
     {
         this.PlayParticalEff();
         this.PlayScaling();
-        this.MoveOneSide();
+        // this.MoveOneSide();
     }
 
     protected PlayParticalEff()
@@ -141,7 +141,8 @@ abstract class SceneElementBase
         var param = new PaPlayParticalParam;
         param.textureName = "Particle_Boom_Red";
         param.jsonName = "Particle_Boom";
-        param.duration = 100;
+        param.duration = 1000;
+        param.emitDuration = 100;
         param.posX = Tools.ElementPosToGameStagePosX(this.posx);
         param.posY = Tools.ElementPosToGameStagePosY(this.posy);
         var event = new PlayProgramAnimationEvent();
