@@ -5,6 +5,7 @@ class PaPlayParticalParam extends ProgramAnimationParamBase
 	public textureName: string; // 粒子贴图名字
 	public jsonName: string;	// 粒子Json配置名字
 	public duration: number; 	// 总时长
+	public emitDuration: number; //粒子发射时长
 	public posX: number; 		// GameStage下的坐标X
 	public posY: number; 		// GameStage下的坐标Y
 }
@@ -12,11 +13,13 @@ class PaPlayParticalParam extends ProgramAnimationParamBase
 class PaPlayPartical extends ProgramAnimationBase<PaPlayParticalParam>
 {
 	private particleSys: particle.GravityParticleSystem;
+	private hasStopEmit: boolean;
 	protected OnInit()
 	{
 		var resModule = <IResModule>GameMain.GetInstance().GetModule(ModuleType.RES);
 		if (resModule != null)
 		{
+			this.hasStopEmit = false;
 			this.particleSys = resModule.CreateParticle(this.param.textureName, this.param.jsonName);
 			this.particleSys.x = this.param.posX;
 			this.particleSys.y = this.param.posY;
@@ -27,12 +30,24 @@ class PaPlayPartical extends ProgramAnimationBase<PaPlayParticalParam>
 
 	protected OnUpdate(deltaTime: number)
 	{
+		if (this.runningTime > this.param.emitDuration)
+		{
+			this.StopEmit();
+		}
+	}
 
+	private StopEmit()
+	{
+		if (!this.hasStopEmit)
+		{
+			this.hasStopEmit = false;
+			this.particleSys.stop();
+		}
 	}
 
 	protected OnRelease()
 	{
-		this.particleSys.stop();
+		this.particleSys.stop(true);
 		GameMain.GetInstance().GetAdaptedStageContainer().removeChild(this.particleSys);
 		this.particleSys = null;
 	}
