@@ -212,7 +212,6 @@ abstract class SceneElementBase
             preview.height = Tools.MatchViewElementHeight;
             preview.anchorOffsetX = Tools.MatchViewElementWidth / 2;
             preview.anchorOffsetY = Tools.MatchViewElementHeight / 2;
-            GameMain.GetInstance().AdapteDisplayObject(preview);
             return preview;
         }
         return null;
