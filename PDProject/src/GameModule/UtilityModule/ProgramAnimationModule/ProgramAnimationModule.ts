@@ -59,6 +59,9 @@ class ProgrameAnimationModule extends ModuleBase implements IProgramAnimationMod
                 case ProgramAnimationType.MovePartical:
                     animation = new PaMovePartical();
                     break;
+                case ProgramAnimationType.PlayDBAnimation:
+                    animation = new PaPlayDBAnimation();
+                    break;
             }
         }
 

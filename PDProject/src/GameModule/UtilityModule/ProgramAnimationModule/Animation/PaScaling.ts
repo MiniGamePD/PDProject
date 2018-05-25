@@ -6,6 +6,15 @@ class PaScalingParam extends ProgramAnimationParamBase
 	public duration: number; 		// 缩放时长
 	public targetScaleX: number;	// 缩放目标ScaleX
 	public targetScaleY: number;	// 缩放目标ScaleY
+
+	public constructor()
+	{
+		super();
+		this.displayObj = null;
+		this.duration = 0;
+		this.targetScaleX = 0;
+		this.targetScaleY = 0;
+	}
 }
 
 class PaScaling extends ProgramAnimationBase<PaScalingParam>

@@ -11,7 +11,22 @@ class PaMoveParticalParam extends ProgramAnimationParamBase
 	public stratPosY: number; 		// 开始坐标Y
 	public endPosX: number; 		// 结束坐标X
 	public endPosY: number; 		// 结束坐标Y
-	public isMoveEmitter: true;   // 是否移动发射器
+	public isMoveEmitter: boolean;   // 是否移动发射器
+
+	public constructor()
+	{
+		super();
+		this.textureName = "";
+		this.jsonName = "";
+		this.duration = 0;
+		this.flyDuration = 0;
+		this.stayDuration = 0;
+		this.stratPosX = 0;
+		this.stratPosY = 0;
+		this.endPosX = 0;
+		this.endPosY = 0;
+		this.isMoveEmitter = false;
+	}
 }
 
 class PaMovePartical extends ProgramAnimationBase<PaMoveParticalParam>

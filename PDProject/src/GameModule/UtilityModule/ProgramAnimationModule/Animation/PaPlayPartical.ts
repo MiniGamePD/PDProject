@@ -8,6 +8,17 @@ class PaPlayParticalParam extends ProgramAnimationParamBase
 	public emitDuration: number; //粒子发射时长
 	public posX: number; 		// GameStage下的坐标X
 	public posY: number; 		// GameStage下的坐标Y
+
+	public constructor()
+	{
+		super();
+		this.textureName = "";
+		this.jsonName = "";
+		this.duration = 0;
+		this.emitDuration = 0;
+		this.posX = 0;
+		this.posY = 0;
+	}
 }
 
 class PaPlayPartical extends ProgramAnimationBase<PaPlayParticalParam>

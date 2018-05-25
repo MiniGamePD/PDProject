@@ -1,12 +1,24 @@
 class PaPlayDBAnimationParam extends ProgramAnimationParamBase
 {
-	public readonly animType = ProgramAnimationType.PlayPartical;
+	public readonly animType = ProgramAnimationType.PlayDBAnimation;
 
 	public resName: string; // 粒子贴图名字
 	public animationName: string; //动画名字
 	public duration: number; 	// 总时长
+	public playTimes: number; //playTimes - 循环播放次数。 [-1: 使用动画数据默认值, 0: 无限循环播放, [1~N]: 循环播放 N 次] （默认: -1）
 	public posX: number; 		// 坐标X
 	public posY: number; 		// 坐标Y
+
+	public constructor()
+	{
+		super();
+		this.resName = "";
+		this.animationName = "";
+		this.duration = 0;
+		this.playTimes = -1;
+		this.posX = 0;
+		this.posY = 0;
+	}
 }
 
 class PaPlayDBAnimation extends ProgramAnimationBase<PaPlayDBAnimationParam>
@@ -31,7 +43,7 @@ class PaPlayDBAnimation extends ProgramAnimationBase<PaPlayDBAnimationParam>
 				GameMain.GetInstance().GetAdaptedStageContainer().addChild(this.armatureDisplay);
 				this.armatureDisplay.x = this.param.posX;
 				this.armatureDisplay.y = this.param.posY;
-				this.armatureDisplay.animation.play(this.param.animationName);
+				this.armatureDisplay.animation.play(this.param.animationName, 1);
 			}
 		}
 	}

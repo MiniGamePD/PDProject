@@ -7,6 +7,16 @@ class PaMovingParam extends ProgramAnimationParamBase
 	public targetPosX: number;	// 目标X
 	public targetPosY: number;	// 目标Y
 	public needRotate: boolean; // 是否需要旋转
+
+	public constructor()
+	{
+		super();
+		this.displayObj = null;
+		this.duration = 0;
+		this.targetPosX = 0;
+		this.targetPosY = 0;
+		this.needRotate = true;
+	}
 }
 
 class PaMoving extends ProgramAnimationBase<PaMovingParam>
