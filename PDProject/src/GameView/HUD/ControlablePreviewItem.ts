@@ -1,11 +1,16 @@
 class ControlablePreviewItem extends egret.DisplayObjectContainer
 {
-    private preview1:egret.DisplayObjectContainer;
-    private preview2:egret.DisplayObjectContainer;
+    private nextPreview:egret.DisplayObjectContainer;
+    private thirdPreview:egret.DisplayObjectContainer;
 
     private dropTargetY:number;
-    private next1Y:number;
-    private next2Y:number;
+    private gameoverTargetY:number;
+    private nextPreviewY:number;
+    private thirdPreviewY:number;
+    private previewX:number;
+
+    private nextPreviewSize:number;
+    private dropAnimDuration:number;
 
     public constructor(x:number, y:number, width:number, height:number)
     {
@@ -16,50 +21,123 @@ class ControlablePreviewItem extends egret.DisplayObjectContainer
         this.width = width;
         this.height = height;
 
-        this.dropTargetY = Tools.ElementPosToGameStagePosY(-1);
-        this.next1Y = Tools.ElementPosToGameStagePosY(-3);
-        this.next2Y = Tools.ElementPosToGameStagePosY(-4);
+        this.dropTargetY = 0;//Tools.ElementPosToGameStagePosY(0);
+        this.gameoverTargetY = -1;
+        this.nextPreviewY = -3;//Tools.ElementPosToGameStagePosY(-3);
+        this.thirdPreviewY = -4;//Tools.ElementPosToGameStagePosY(-4);
+        this.previewX = 4;//Tools.ElementPosToGameStagePosX(4);
 
-        this.preview1 = new egret.DisplayObjectContainer();
-        this.preview2 = new egret.DisplayObjectContainer();
-        this.preview1.x = this.preview2.x = Tools.ElementPosToGameStagePosX(4);
-        this.preview1.y = this.next1Y;
-        this.preview2.y = this.next2Y;
-        this.addChild(this.preview1);
-        this.addChild(this.preview2);
-
-        //var res = <IResModule>GameMain.GetInstance().GetModule(ModuleType.RES);
-        // var pill1 = res.CreateBitmapByName("pd_res_json.Virus_Red");
-        // pill1.y = this.dropTargetY;
-        // var pill2 = res.CreateBitmapByName("pd_res_json.Virus_Blue");
-        // pill2.y = this.next1Y;
-        // var pill3 = res.CreateBitmapByName("pd_res_json.Virus_Yellow");
-        // this.nextPill3.y = this.next2Y;
-        // this.preview1.x = this.preview2.x = this.nextPill3.x = Tools.ElementPosToGameStagePosX(4);
-        // this.preview1.width = this.preview2.width = this.nextPill3.width = Tools.MatchViewElementWidth;
-        // this.preview1.height = this.preview2.height = this.nextPill3.height = Tools.MatchViewElementHeight;
-        // this.preview1.anchorOffsetX = this.preview2.anchorOffsetX = this.nextPill3.anchorOffsetX = Tools.MatchViewElementWidth / 2;
-        // this.preview1.anchorOffsetY = this.preview2.anchorOffsetY = this.nextPill3.anchorOffsetY = Tools.MatchViewElementHeight / 2;
-        // this.addChild(this.preview1);
-        // this.addChild(this.preview2);
-        // this.addChild(this.nextPill3);
+        this.nextPreview = new egret.DisplayObjectContainer();
+        this.thirdPreview = new egret.DisplayObjectContainer();
+        this.nextPreview.x = this.thirdPreview.x = Tools.ElementPosToGameStagePosX(this.previewX);
+        this.nextPreview.y = Tools.ElementPosToGameStagePosY(this.nextPreviewY);
+        this.thirdPreview.y = Tools.ElementPosToGameStagePosY(this.thirdPreviewY);
+        this.addChild(this.nextPreview);
+        this.addChild(this.thirdPreview);
     }
 
-    public Play()
+    public Init()
     {
-        
+        GameMain.GetInstance().AddEventListener(SceneElementAccessAnswerEvent.EventName, this.OnReciveSceneData, this);
     }
 
-    public Update(deltaTime:number)
+    public Release()
     {
+        GameMain.GetInstance().RemoveEventListener(SceneElementAccessAnswerEvent.EventName, this.OnReciveSceneData, this);
+    }
 
+    private OnReciveSceneData(event:SceneElementAccessAnswerEvent)
+    {
+        if(event.accesser == this)
+        {
+            var gameover:boolean = false;
+            var queryAnswerArray:number[][] = event.queryAnswerArray;
+            if(this.nextPreviewSize == 2/*将要掉下来两个元素*/ 
+                && queryAnswerArray.length < 2)
+            {
+                gameover = true;   
+            }
+            else if(this.nextPreviewSize == 1/*将要掉下来一个元素*/)
+            {
+                if(queryAnswerArray.length < 1)
+                {
+                    gameover = true;
+                }
+                else if(queryAnswerArray.length == 1)
+                {
+                    var pos:number[] = queryAnswerArray[0];
+                    if(pos[0] == Scene.Columns / 2)
+                    {
+                        //如果空的是后一个，就输了
+                        gameover = true;
+                    }
+                }
+            }   
+
+            var realDropDuration = this.dropAnimDuration;
+            var nextPreviewMoveDistanceY = Tools.ElementPosToGameStagePosY(this.dropTargetY) - 
+                Tools.ElementPosToGameStagePosY(this.nextPreviewY);
+            var thirdPreviewMoveDistanceY = Tools.ElementPosToGameStagePosY(this.nextPreviewY) - 
+                Tools.ElementPosToGameStagePosY(this.thirdPreviewY);
+            if(gameover)
+            {
+                realDropDuration = this.dropAnimDuration * 
+                    (this.gameoverTargetY - this.nextPreviewY) / (this.dropTargetY - this.nextPreviewY);
+                nextPreviewMoveDistanceY = Tools.ElementPosToGameStagePosY(this.gameoverTargetY) - 
+                    Tools.ElementPosToGameStagePosY(this.nextPreviewY);
+            }
+
+            //将下一个药丸，移动到瓶口
+            var param1 = new PaMovingParam;
+            param1.displayObj = this.nextPreview.getChildAt(0);
+            param1.duration = realDropDuration;
+            param1.targetPosX = 0;
+            param1.targetPosY = nextPreviewMoveDistanceY;
+            var event1 = new PlayProgramAnimationEvent();
+            event1.param = param1;
+            GameMain.GetInstance().DispatchEvent(event1);
+
+            //将下二个药丸，移动到下一个药丸的位置
+            var param2 = new PaMovingParam;
+            param2.displayObj = this.thirdPreview.getChildAt(0);
+            param2.duration = realDropDuration;
+            param2.targetPosX = 0;
+            param2.targetPosY = thirdPreviewMoveDistanceY;
+            var event2 = new PlayProgramAnimationEvent();
+            event2.param = param2;
+            GameMain.GetInstance().DispatchEvent(event2);
+        }
+    }
+
+    public PlayDropAnim(durationInMS:number)
+    {
+        this.dropAnimDuration = durationInMS;
+
+        //向scene询问将要生成controlable element的格子是否是空，用来做动画移动位置的预判
+        var event = new SceneElementAccessEvent();
+        event.accesser = this;
+        event.accessType = SceneElementType.Empty;
+        event.answerType = SceneElementAccessAnswerType.Pos;
+        event.startX = Scene.Columns / 2 - 1;
+        event.startY = 0;
+        event.endX = Scene.Columns / 2;
+        event.endY = 0;
+        GameMain.GetInstance().DispatchEvent(event);
     }
 
     public RefreshControlablePreview(nextControlableElementArray:ControlableElement[])
     {
-        this.preview1.removeChildren();
-        this.preview1.addChild(nextControlableElementArray[0].GetPreViewContainer());
-        this.preview2.removeChildren();
-        this.preview2.addChild(nextControlableElementArray[1].GetPreViewContainer());
+        this.Reset();
+
+        this.nextPreviewSize = nextControlableElementArray[0].GetPreviewSize();
+        this.nextPreview.addChild(nextControlableElementArray[0].GetPreViewContainer());
+        this.thirdPreview.addChild(nextControlableElementArray[1].GetPreViewContainer());
+    }
+
+    public Reset()
+    {
+        this.nextPreviewSize = 0;
+        this.nextPreview.removeChildren();
+        this.thirdPreview.removeChildren();
     }
 }

@@ -15,6 +15,7 @@ class MatchHUD extends egret.DisplayObjectContainer
         this.addChild(this.score);
 
         this.controlablePreview = new ControlablePreviewItem(0, 0, this.width, this.height);
+        this.controlablePreview.Init();
         this.addChild(this.controlablePreview);
 
         this.gameover = new GameOverItem(this.width, this.height);
@@ -28,6 +29,8 @@ class MatchHUD extends egret.DisplayObjectContainer
     {
         this.readyGo = null;
 
+        this.controlablePreview.Release();
+
         GameMain.GetInstance().RemoveEventListener(HUDEvent.EventName, this.OnHUDEvent, this);
         GameMain.GetInstance().RemoveEventListener(GameOverEvent.EventName, this.OnGameOver, this);
     }
@@ -36,12 +39,12 @@ class MatchHUD extends egret.DisplayObjectContainer
     {
         this.score.Reset();
         this.gameover.Hide();
+        this.controlablePreview.Reset();
     }
 
     public Update(deltaTime:number)
     {
         this.score.Update(deltaTime);
-        this.controlablePreview.Update(deltaTime);
     }
 
     private OnGameOver(event:GameOverEvent)
@@ -64,6 +67,9 @@ class MatchHUD extends egret.DisplayObjectContainer
                 break;
             case HUDEventType.RefreshControlablePreview:
                 this.RefreshControlablePreview(event.param);
+                break;
+            case HUDEventType.PlayPreviewDropDownAnim:
+                this.PlayPreviewDropDownAnim(event.param);
                 break;
             //Add More..
         }
@@ -90,5 +96,11 @@ class MatchHUD extends egret.DisplayObjectContainer
     {
         var nextControlableElementArray:ControlableElement[] = <ControlableElement[]>param;
         this.controlablePreview.RefreshControlablePreview(nextControlableElementArray);
+    }
+
+    private PlayPreviewDropDownAnim(param:any)
+    {
+        var durationInMS:number = <number>param;
+        this.controlablePreview.PlayDropAnim(durationInMS);
     }
 }

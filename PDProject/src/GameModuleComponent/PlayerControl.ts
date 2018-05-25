@@ -53,7 +53,7 @@ class PlayerControl extends GameModuleComponentBase
 
             //等待ready go结束
             this.startWorkTimer = new egret.Timer(1500, 1);
-            this.startWorkTimer.addEventListener(egret.TimerEvent.TIMER, this.ReallyStartWork, this);
+            this.startWorkTimer.addEventListener(egret.TimerEvent.TIMER, this.PreviewDropDown, this);
             this.startWorkTimer.start();
 
             let event = new HUDEvent();
@@ -67,18 +67,28 @@ class PlayerControl extends GameModuleComponentBase
             var newElement = this.controlableElementCreator.CreateElement(this.creatorWorkParam);
 		    this.nextControlableElementArray.push(newElement);
 
-            this.ReallyStartWork();
+            this.PreviewDropDown();
         }
+    }
+
+    private PreviewDropDown()
+    {
+        var previewDropDownTimeInMS = 750;
+
+        var event = new HUDEvent();
+        event.param = previewDropDownTimeInMS;
+        event.eventType = HUDEventType.PlayPreviewDropDownAnim;
+        GameMain.GetInstance().DispatchEvent(event);
+
+        //等待preview dropdown anim结束
+        this.startWorkTimer = new egret.Timer(previewDropDownTimeInMS, 1);
+        this.startWorkTimer.addEventListener(egret.TimerEvent.TIMER, this.ReallyStartWork, this);
+        this.startWorkTimer.start();
     }
 
     private ReallyStartWork()
     {
         this.target = this.nextControlableElementArray.splice(0,1)[0];
-
-        var hudEvent = new HUDEvent();
-        hudEvent.eventType = HUDEventType.RefreshControlablePreview;
-        hudEvent.param = this.nextControlableElementArray;
-        GameMain.GetInstance().DispatchEvent(hudEvent);
 
         this.startWorkTimer = null;
         this.dropdownTimer = 0;
@@ -137,11 +147,21 @@ class PlayerControl extends GameModuleComponentBase
 
     protected OnPlayerControlSuccess(event:SceneElementControlSuccessEvent)
     {
-        if (event != null
-            && event.controlType == SceneElementControlType.Rotation
-            && this.target != null)
+        if (event != null)
         {
-            this.target.OnRotateACW();            
+            if(event.controlType == SceneElementControlType.Rotation
+                && this.target != null)
+            {
+                this.target.OnRotateACW();            
+            }
+            else if(event.controlType == SceneElementControlType.Add
+                && event.playerControl)
+            {
+                var hudEvent = new HUDEvent();
+                hudEvent.eventType = HUDEventType.RefreshControlablePreview;
+                hudEvent.param = this.nextControlableElementArray;
+                GameMain.GetInstance().DispatchEvent(hudEvent); 
+            }
         }
     }
 
