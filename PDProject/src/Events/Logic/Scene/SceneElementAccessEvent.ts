@@ -7,6 +7,7 @@ class SceneElementAccessEvent extends egret.Event
     public endX:number;
     public endY:number;
     public answerType:SceneElementAccessAnswerType;
+    public accesser:egret.EventDispatcher;
     public constructor(bubbles:boolean=false, cancelable:boolean=false)
     {
         super(SceneElementAccessEvent.EventName,bubbles,cancelable);      

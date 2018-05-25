@@ -907,6 +907,7 @@ class Scene extends GameModuleComponentBase
             answerEvent.accessType = event.accessType;
             answerEvent.answerType = event.answerType;
             answerEvent.queryAnswerArray = queryAnswerArray;
+            answerEvent.accesser = event.accesser;
             GameMain.GetInstance().DispatchEvent(answerEvent);
         }
     }

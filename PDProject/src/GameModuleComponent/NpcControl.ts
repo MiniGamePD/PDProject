@@ -93,6 +93,7 @@ class NpcControl extends GameModuleComponentBase
             event.answerType = SceneElementAccessAnswerType.Pos;
             event.startX = 0;
             event.startY = 2;
+            event.accesser = this;
             GameMain.GetInstance().DispatchEvent(event);
 
             this.npcSmileSound = "EnemySinisterSmile2_mp3"; 
@@ -107,6 +108,7 @@ class NpcControl extends GameModuleComponentBase
 
             //首先向scene查询对应物体的列表
             var event = new SceneElementAccessEvent();
+            event.accesser = this;
             event.answerType = SceneElementAccessAnswerType.Instance;
             if(skillNpc.SkillType() == NpcSkillType.AddShieldForVirus ||
                 skillNpc.SkillType() == NpcSkillType.ChangeVirusColor)
@@ -138,6 +140,7 @@ class NpcControl extends GameModuleComponentBase
 
             //向scene询问空的格子，用来放置新生成的小怪
             var event = new SceneElementAccessEvent();
+            event.accesser = this;
             event.accessType = SceneElementType.Empty;
             event.answerType = SceneElementAccessAnswerType.Pos;
             event.startX = 0;
@@ -154,13 +157,16 @@ class NpcControl extends GameModuleComponentBase
 
     private OnReciveSceneData(event:SceneElementAccessAnswerEvent)
     {
-        if(this.curNpcSkillInfo != null)
+        if(event.accesser == this)
         {
-            this.PrepareNpcSkillInfo(event.queryAnswerArray);
-        }
-        else
-        {
-            this.ArrangePosForNewNpcElements(event.queryAnswerArray);
+            if(this.curNpcSkillInfo != null)
+            {
+                this.PrepareNpcSkillInfo(event.queryAnswerArray);
+            }
+            else
+            {
+                this.ArrangePosForNewNpcElements(event.queryAnswerArray);
+            }
         }
     }
 

@@ -15,4 +15,5 @@ enum HUDEventType
     ChangeScore,
     ChangeStep,
     RefreshControlablePreview,
+    PlayPreviewDropDownAnim,
 }

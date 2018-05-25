@@ -92,5 +92,7 @@ class Pill extends ControlableElement
         previewContainer.addChild(preview2);
         return previewContainer;
     }
+
+    public GetPreviewSize():number{return 2;}
 }
 

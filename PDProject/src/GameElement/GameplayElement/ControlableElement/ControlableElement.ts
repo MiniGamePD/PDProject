@@ -21,4 +21,5 @@ abstract class ControlableElement extends GameplayElementBase
     }
 
     public abstract GetPreViewContainer():egret.DisplayObjectContainer
+    public GetPreviewSize():number{return 1;}
 }
