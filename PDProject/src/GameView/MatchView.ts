@@ -25,6 +25,8 @@ class MatchView extends GameView
 
         this.eliminatingAnim = new EliminatingAnimation();
         this.eliminatingAnim.Init(this);
+
+        this.PlayDBAnimation()
         
         GameMain.GetInstance().AddEventListener(SceneElementControlSuccessEvent.EventName, this.ProcessControlSuccess, this);
         GameMain.GetInstance().AddEventListener(ReplayGameEvent.EventName, this.OnReplayGame, this);
@@ -291,6 +293,19 @@ class MatchView extends GameView
         //     this.mSoundModule.PlaySound("bgm_mp3", -1);
         // }
         var event: PlaySoundEvent = new PlaySoundEvent("bgm_mp3", -1);
+        GameMain.GetInstance().DispatchEvent(event);
+    }
+
+    private PlayDBAnimation()
+    {
+        var param = new PaPlayDBAnimationParam;
+        param.resName = "DB_Boom_Bomb";
+        param.animationName = "Boom1";
+        param.duration = 500;
+        param.posX = Tools.ElementPosToGameStagePosX(1);
+        param.posY = Tools.ElementPosToGameStagePosY(1);
+        var event = new PlayProgramAnimationEvent();
+        event.param = param;
         GameMain.GetInstance().DispatchEvent(event);
     }
 
