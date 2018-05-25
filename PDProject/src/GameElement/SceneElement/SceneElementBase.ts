@@ -127,7 +127,6 @@ class SceneElementBase
     {
         this.PlayParticalEff();
         this.PlayScaling();
-        // this.MoveOneSide();
     }
 
     protected PlayParticalEff()
@@ -156,10 +155,13 @@ class SceneElementBase
         GameMain.GetInstance().DispatchEvent(event);
     }
 
-    public MoveOneSide()
+    public MoveOneSide(dir: Direction)
     {
         var startX = Tools.ElementPosToGameStagePosX(this.posx);
         var startY = Tools.ElementPosToGameStagePosY(this.posy);
+        var particleOffset = -100;
+        var targetOffset = Math.max(GameMain.GetInstance().GetStageHeight(), 
+                                    GameMain.GetInstance().GetStageWidth())
 
         var particalParam = new PaMoveParticalParam;
         particalParam.textureName = "huojian";
@@ -167,10 +169,10 @@ class SceneElementBase
 		particalParam.duration = 1000;
 		particalParam.flyDuration = 1000;
 		particalParam.stayDuration = 0;
-		particalParam.stratPosX = startX;
-		particalParam.stratPosY = startY - 100;
-		particalParam.endPosX = startX;
-		particalParam.endPosY = startY + 1000 - 100;
+        particalParam.stratPosX = Tools.MoveScenePosX(startX, dir, particleOffset);
+		particalParam.stratPosY = Tools.MoveScenePosY(startY, dir, particleOffset);
+		particalParam.endPosX = Tools.MoveScenePosX(startX, dir, targetOffset + particleOffset);
+		particalParam.endPosY = Tools.MoveScenePosY(startY, dir, targetOffset + particleOffset);
 		particalParam.isMoveEmitter = true;
 		var event = new PlayProgramAnimationEvent();
         event.param = particalParam;
@@ -185,8 +187,8 @@ class SceneElementBase
         var movingParam = new PaMovingParam;
         movingParam.displayObj = headPic;
         movingParam.duration = 1000;
-        movingParam.targetPosX = startX;
-        movingParam.targetPosY = startY + 1000;
+        movingParam.targetPosX = Tools.MoveScenePosX(startX, dir, targetOffset);
+        movingParam.targetPosY = Tools.MoveScenePosY(startY, dir, targetOffset);
         movingParam.needRotate = true;
         var event = new PlayProgramAnimationEvent();
         event.param = movingParam;

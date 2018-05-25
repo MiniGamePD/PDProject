@@ -19,4 +19,12 @@ class SceneRowEliminater extends SceneElementBase
         texture = this.GetTexture(path);
 		this.renderer.texture = texture;
     }
+
+    public PlayEliminateAnim()
+    {
+        this.PlayParticalEff();
+        this.PlayScaling();
+        this.MoveOneSide(Direction.Left);
+        this.MoveOneSide(Direction.Right);
+    }
 }

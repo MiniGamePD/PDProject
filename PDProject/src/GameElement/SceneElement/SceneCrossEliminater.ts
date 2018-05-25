@@ -24,6 +24,9 @@ class SceneCrossEliminater extends SceneElementBase
     {
         this.PlayParticalEff();
         this.PlayScaling();
-        this.MoveOneSide();
+        this.MoveOneSide(Direction.Up);
+        this.MoveOneSide(Direction.Down);
+        this.MoveOneSide(Direction.Left);
+        this.MoveOneSide(Direction.Right);
     }
 }

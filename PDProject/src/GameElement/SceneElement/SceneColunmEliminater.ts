@@ -19,4 +19,12 @@ class SceneColunmEliminater extends SceneElementBase
         texture = this.GetTexture(path);
 		this.renderer.texture = texture;
     }
+
+    public PlayEliminateAnim()
+    {
+        this.PlayParticalEff();
+        this.PlayScaling();
+        this.MoveOneSide(Direction.Up);
+        this.MoveOneSide(Direction.Down);
+    }
 }
