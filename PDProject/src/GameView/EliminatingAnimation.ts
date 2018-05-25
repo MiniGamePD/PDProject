@@ -125,7 +125,10 @@ class EliminatingAnimation
 		var eliminatedElements:SceneElementBase[] = this.eliminateInfo.EliminatedElements;
 		for (var i = 0; i < eliminatedElements.length; ++i)
 		{
-			this.deadElementRendererArray.push(eliminatedElements[i].renderer);
+			var element:SceneElementBase = eliminatedElements[i];
+			this.deadElementRendererArray.push(element.renderer);
+			if(element.accessory != undefined)
+				this.deadElementRendererArray.push(element.accessory);
 			//for debug eliminatedElements[i].renderer.alpha = 0.5;
 		}
 
@@ -135,7 +138,10 @@ class EliminatingAnimation
 			if (!superVirues[i].IsAlive())
 			{
 				//for debug superVirues[i].GetMainSceneElement().renderer.alpha = 0.5;
-				this.deadElementRendererArray.push(superVirues[i].GetMainSceneElement().renderer);
+				var element:SceneElementBase = superVirues[i].GetMainSceneElement();
+				this.deadElementRendererArray.push(element.renderer);
+				if(element.accessory != undefined)
+					this.deadElementRendererArray.push(element.accessory);
 			}
 			else
 			{

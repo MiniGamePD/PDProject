@@ -4,6 +4,7 @@ abstract class NpcElement extends GameplayElementBase
     protected bornSound:string;
 
     protected hp:number; //生命值
+    protected maxHp:number; //最大生命值
     protected shield:number; //护甲值
     protected hasReduceHpThisRound:boolean = false;
 
@@ -57,6 +58,11 @@ abstract class NpcElement extends GameplayElementBase
     public IsAlive():boolean
     {
         return this.shield > 0 || this.hp > 0;
+    }
+
+    public GetRemainHpPercentage():number
+    {
+        return this.hp / this.maxHp;
     }
 
     public HasShield():boolean

@@ -11,7 +11,7 @@ class Virus extends NpcElement
         this.bornType = NpcBornType.Normal;
         this.bornSound = "VirusBorn_mp3";
 
-        this.hp = 1;
+        this.hp = this.maxHp = 1;
         this.shield = 0;
     }
 
