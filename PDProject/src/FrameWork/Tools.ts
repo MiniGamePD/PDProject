@@ -260,6 +260,12 @@ class Tools
 		return angle;
 	}
 
+	public static GetRotateAngleByPoint(from: egret.Point, to: egret.Point): number
+	{
+		var angle = Tools.Radians2Angle(Math.atan2(to.y - from.y, to.x - from.x));
+		return angle;
+	}
+
 	public static Radians2Angle(radians: number)
 	{
 		return radians * 180 / Math.PI;
