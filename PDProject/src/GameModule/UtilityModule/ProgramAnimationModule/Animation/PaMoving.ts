@@ -7,6 +7,7 @@ class PaMovingParam extends ProgramAnimationParamBase
 	public targetPosX: number;	// 目标X
 	public targetPosY: number;	// 目标Y
 	public needRotate: boolean; // 是否需要旋转，朝向目标点
+	public needRemoveOnFinish: boolean; // 动画结束是否需要从场景中移除
 
 	public constructor()
 	{
@@ -16,6 +17,7 @@ class PaMovingParam extends ProgramAnimationParamBase
 		this.targetPosX = 0;
 		this.targetPosY = 0;
 		this.needRotate = false;
+		this.needRemoveOnFinish = false;
 	}
 }
 
@@ -46,7 +48,14 @@ class PaMoving extends ProgramAnimationBase<PaMovingParam>
 
 	protected OnRelease()
 	{
-
+		if (this.param.needRemoveOnFinish)
+		{
+			if (this.param.displayObj.parent != undefined 
+				&& this.param.displayObj.parent != null)
+			{
+				this.param.displayObj.parent.removeChild(this.param.displayObj);
+			}
+		}
 	}
 
 	public IsFinish()

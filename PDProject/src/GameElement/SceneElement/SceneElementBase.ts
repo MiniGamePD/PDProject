@@ -196,11 +196,10 @@ abstract class SceneElementBase
         movingParam.targetPosX = Tools.MoveScenePosX(startX, dir, targetOffset);
         movingParam.targetPosY = Tools.MoveScenePosY(startY, dir, targetOffset);
         movingParam.needRotate = true;
+        movingParam.needRemoveOnFinish = true;
         var event = new PlayProgramAnimationEvent();
         event.param = movingParam;
         GameMain.GetInstance().DispatchEvent(event);
-
-        
     }
 
     public GetPreView():egret.Bitmap
