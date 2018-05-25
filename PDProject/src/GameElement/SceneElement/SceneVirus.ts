@@ -12,10 +12,9 @@ class SceneVirus extends SceneElementBase
         this.eliminateSound = "VirusEliminate_mp3";
     }
 
-    public RefreshTexture():void
+    protected GetResPathByColor():string
     {
-        let texture: egret.Texture;
-        let path = "pd_res_json.Virus_";
+        var path = "pd_res_json.Virus_";
         switch(this.color)
         {
             case GameElementColor.red:
@@ -34,8 +33,7 @@ class SceneVirus extends SceneElementBase
                 }    
                 break;
         }
-        texture = this.GetTexture(path);
-		this.renderer.texture = texture;
+        return path;
     }
 
     protected PlayParticalEff()

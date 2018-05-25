@@ -14,4 +14,5 @@ enum HUDEventType
     ShowReadyGo,
     ChangeScore,
     ChangeStep,
+    RefreshControlablePreview,
 }

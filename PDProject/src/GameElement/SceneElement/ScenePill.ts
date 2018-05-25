@@ -20,32 +20,6 @@ class ScenePill extends SceneElementBase
     public RefreshTexture(): void
     {
         super.RefreshTexture();
-        let texture: egret.Texture;
-        let path = "pd_res_json.Pill_";
-        if (this.mPillType == PillElementType.Single)
-        {
-            path += "Single_"
-        }
-        switch (this.color)
-        {
-            case GameElementColor.red:
-                path += "Red";
-                break;
-            case GameElementColor.blue:
-                path += "Blue";
-                break;
-            case GameElementColor.yellow:
-                path += "Yellow";
-                break;
-            default:
-                if (DEBUG)
-                {
-                    console.log("Unknow Color:" + this.color);
-                }
-                break;
-        }
-        texture = this.GetTexture(path);
-        this.renderer.texture = texture;
 
         var textureRotate = 0;
         var scaleX = 1;
@@ -78,6 +52,34 @@ class ScenePill extends SceneElementBase
         }
         this.renderer.rotation = textureRotate;
         this.renderer.scaleX = scaleX;
+    }
+
+    protected GetResPathByColor():string
+    {
+        var resPath = "pd_res_json.Pill_";
+        if (this.mPillType == PillElementType.Single)
+        {
+            resPath += "Single_"
+        }
+        switch (this.color)
+        {
+            case GameElementColor.red:
+                resPath += "Red";
+                break;
+            case GameElementColor.blue:
+                resPath += "Blue";
+                break;
+            case GameElementColor.yellow:
+                resPath += "Yellow";
+                break;
+            default:
+                if (DEBUG)
+                {
+                    console.log("Unknow Color:" + this.color);
+                }
+                break;
+        }
+        return resPath;
     }
 
     // 删除捆绑元素后，重新计算药丸的类型

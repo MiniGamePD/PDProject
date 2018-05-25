@@ -1,5 +1,5 @@
 //在scene中占一个格子的元素，处理显示相关，和一些与消除相关逻辑，并转发gameplay的逻辑给到GameplayElement层
-class SceneElementBase
+abstract class SceneElementBase
 {
     public posx: number = 0;
     public posy: number = 0;
@@ -51,7 +51,13 @@ class SceneElementBase
 
     public RefreshTexture():void
     {
+        let texture: egret.Texture;
+        let path = this.GetResPathByColor();
+        texture = this.GetTexture(path);
+		this.renderer.texture = texture;
     }
+
+    protected abstract GetResPathByColor():string;
 
     protected GetTexture(path: string): egret.Texture {
         if (this.resModule == null) {
@@ -195,6 +201,22 @@ class SceneElementBase
         GameMain.GetInstance().DispatchEvent(event);
 
         
+    }
+
+    public GetPreView():egret.Bitmap
+    {
+        var resPath = this.GetResPathByColor();
+        if(resPath != null)
+        {
+            var res:IResModule = <IResModule>GameMain.GetInstance().GetModule(ModuleType.RES);
+            var preview = res.CreateBitmapByName(resPath);
+            preview.width = Tools.MatchViewElementWidth;
+            preview.height = Tools.MatchViewElementHeight;
+            preview.anchorOffsetX = Tools.MatchViewElementWidth / 2;
+            preview.anchorOffsetY = Tools.MatchViewElementHeight / 2;
+            return preview;
+        }
+        return null;
     }
 }
 

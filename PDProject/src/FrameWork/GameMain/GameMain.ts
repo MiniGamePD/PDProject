@@ -192,10 +192,14 @@ class GameMain implements IGameMain {
 
 	public AdapteDisplayObject(item:egret.DisplayObject)
 	{
-		item.x = item.x * this.GetAdaptedStageWidth() / standerScreenWidth;
-		item.y = item.y * this.GetAdaptedStageHeight() / standerScreenHeight;
-		item.width = item.width * this.GetAdaptedStageWidth() / standerScreenWidth;
-		item.height = item.height * this.GetAdaptedStageHeight() / standerScreenHeight;
+		var xFactor = this.GetAdaptedStageWidth() / standerScreenWidth;
+		var yFactor = this.GetAdaptedStageHeight() / standerScreenHeight;
+		item.x = item.x * xFactor
+		item.y = item.y * yFactor;
+		item.width = item.width * xFactor
+		item.height = item.height * yFactor
+		item.anchorOffsetX = item.anchorOffsetX * xFactor;
+		item.anchorOffsetY = item.anchorOffsetY * yFactor;
 	}
 
 	public AdaptTextField(item:egret.TextField)

@@ -159,4 +159,10 @@ class SuperVirus extends NpcElement
     {
         return this.virusRenderer;
     }
+
+    public GetPreViewContainer():egret.DisplayObjectContainer
+    {
+        console.error("Not Implement Error");
+        return null;
+    }
 }

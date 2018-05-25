@@ -28,4 +28,9 @@ class ScenePlaceholder extends SceneElementBase
     {
         return 1;
     }
+
+    protected GetResPathByColor():string
+    {
+        return null;
+    }
 }
