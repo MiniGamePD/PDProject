@@ -9,7 +9,7 @@ class SuperVirus extends NpcElement
         super();
 
         this.color = this.RandomColor();
-        this.hp = 3;
+        this.hp = this.maxHp = 3;
         this.shield = 0;
 
         this.virusRenderer = new SceneSuperVirus(this);
@@ -127,6 +127,8 @@ class SuperVirus extends NpcElement
 
             super.OnEliminate();
             
+            this.virusRenderer.SetHpBarProgress(this.GetRemainHpPercentage());
+
             this.eliminateEvent.hpChange = oldHp - this.hp;
             this.eliminateEvent.shieldChange = oldShield - this.shield;
             this.eliminateEvent.superVirus = this;

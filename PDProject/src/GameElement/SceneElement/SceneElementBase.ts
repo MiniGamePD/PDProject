@@ -14,6 +14,7 @@ abstract class SceneElementBase
     public eliminateMinCount: number;
     public eliminateSound: string;
     protected elementType: SceneElementType;
+    public accessory:egret.DisplayObjectContainer; //用来放一些除本体外的东西，比如护盾，血条
 
     public constructor(owner:GameplayElementBase) 
     {

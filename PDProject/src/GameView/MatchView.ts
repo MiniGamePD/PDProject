@@ -141,6 +141,8 @@ class MatchView extends GameView
                             element.renderer.anchorOffsetX = Tools.MatchViewElementWidth / 2;
                             element.renderer.anchorOffsetY = Tools.MatchViewElementHeight / 2;
                             this.mBattleGround.addChild(element.renderer);
+                            if(element.accessory != undefined)
+                                this.mBattleGround.addChild(element.accessory);                        
                         }
                         element.hasAddToDisplayList = true;
                         //console.log(element + " add to dis " + element.renderer.width + "," + element.renderer.height);
@@ -151,8 +153,15 @@ class MatchView extends GameView
                         //renderer == null，应该是一个placeholder
                         if(element.renderer != null)
                         {
-                            element.renderer.x = Tools.GetMatchViewRenderPosX(element.posx);
-                            element.renderer.y = Tools.GetMatchViewRenderPosY(element.posy);
+                            var x = Tools.GetMatchViewRenderPosX(element.posx);
+                            var y = Tools.GetMatchViewRenderPosY(element.posy);
+                            element.renderer.x = x;
+                            element.renderer.y = y;
+                            if(element.accessory != undefined)
+                            {
+                                element.accessory.x = x;
+                                element.accessory.y = y;
+                            }
                         }
                         element.dirty = false;
                         //console.log(element + " refresh " + element.renderer.x + "," + element.renderer.y);
