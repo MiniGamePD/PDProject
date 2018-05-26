@@ -129,6 +129,11 @@ abstract class SceneElementBase
     {
         return this.owner.IsAlive();
     }
+
+    public HasShield():boolean
+    {
+        return this.owner.HasShield();
+    } 
     
     public PlayEliminateAnim()
     {

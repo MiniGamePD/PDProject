@@ -1,6 +1,6 @@
 class ResModule extends ModuleBase implements IResModule
 {
-
+	
 	public Init(): boolean
 	{
 		this.isForeground = true;
@@ -23,17 +23,23 @@ class ResModule extends ModuleBase implements IResModule
 		this.isForeground = true;
 	}
 
-	public StartLoadResource(): void
+	public StartLoadResource(finishCallBack: Function): void
 	{
-		this.LoadResource();
+		this.LoadResource(finishCallBack);
 	}
 
-	public async LoadResource()
+	public async LoadResource(finishCallBack: Function)
 	{
 		try
 		{
 			await RES.loadConfig("resource/default.res.json", "resource/");
 			await RES.loadGroup("preload", 0, null);
+			await this.InitDragonBonesData();
+			if (finishCallBack != null
+				&& finishCallBack != undefined)
+			{
+				finishCallBack();
+			}
 			return true;
 		}
 		catch (e)
@@ -46,6 +52,21 @@ class ResModule extends ModuleBase implements IResModule
 	public GetRes(key: string): any
 	{
 		return RES.getRes(key);
+	}
+	
+	public InitDragonBonesData()
+	{
+		var dragonbonesData = RES.getRes("DB_Boom_Bomb_ske_json");
+		var textureData = RES.getRes("DB_Boom_Bomb_tex_json");
+		var texture = RES.getRes("DB_Boom_Bomb_tex_png");
+		if (dragonbonesData != null
+			&& textureData != null
+			&& texture != null)
+		{
+			let egretFactory: dragonBones.EgretFactory = dragonBones.EgretFactory.factory;
+			egretFactory.parseDragonBonesData(dragonbonesData);
+			egretFactory.parseTextureAtlasData(textureData, texture);
+		}
 	}
 
 	public CreateBitmapByName(key: string): egret.Bitmap

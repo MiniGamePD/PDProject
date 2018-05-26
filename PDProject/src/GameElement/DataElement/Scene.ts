@@ -403,31 +403,6 @@ class Scene extends GameModuleComponentBase
         }
     }
 
-    // // 根据消除的元素列表，把上面元素往下移
-    // private MoveAfterEliminate() {
-    //     if (this.eliminateInfo.HasInfo) {
-    //         for (var count = 0; count < this.eliminateInfo.EliminatedElements.length; ++count) {
-    //             var eliminatedElement = this.eliminateInfo.EliminatedElements[count];
-    //             this.RemoveElement(eliminatedElement);
-    //             eliminatedElement.renderer.alpha = 0; // TODO：这里后面改成View里面做动画，现在暂时直接隐藏了
-
-    //             var moveDownValue = this.GetNullElementCountInDown(eliminatedElement.posx, eliminatedElement.posy);
-    //             for (var upIdx = eliminatedElement.posy - 1; upIdx >= 0; --upIdx) {
-    //                 var upElement = this.GetElement(eliminatedElement.posx, upIdx);
-    //                 if (upElement != null) { // TODO：在这里加上病毒这种不可移动的判断。
-    //                     var targetPosY = upIdx + moveDownValue;
-    //                     var moveInfo: EliminateMoveInfo = new EliminateMoveInfo(upElement, upElement.posx, upElement.posy, upElement.posx, targetPosY); // TODO：改成池子
-    //                     this.eliminateInfo.MoveElements.push(moveInfo);
-    //                     this.MoveElement(upElement, upElement.posx, targetPosY);
-    //                 }
-    //                 else {
-    //                     break;
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
-
     private mGroupElementTemp: SceneElementBase[] = [];
     //根据消除的元素列表，把上面元素往下移
     private MoveAfterEliminate(): boolean

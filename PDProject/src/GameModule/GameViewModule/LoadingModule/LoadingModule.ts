@@ -11,7 +11,7 @@ class LoadingModule extends GameViewModule
 
 		this.RegisterLoadingEvent();
 		this.resModule = <IResModule>GameMain.GetInstance().GetModule(ModuleType.RES);
-		this.resModule.StartLoadResource();
+		this.resModule.StartLoadResource(this.OnFinishCallBack);
 
 		super.Init();
 		return true;
@@ -71,6 +71,11 @@ class LoadingModule extends GameViewModule
 	private OnLoadingComplete()
 	{
 		egret.log("OnLoadingComplete");
+	}
+
+	private OnFinishCallBack()
+	{
+		egret.log("OnFinishCallBack");
 		GameMain.GetInstance().SwitchGameState(GameStateType.Lobby);
 	}
 
