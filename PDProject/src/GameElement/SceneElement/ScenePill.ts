@@ -57,7 +57,7 @@ class ScenePill extends SceneElementBase
     protected GetResPathByColor():string
     {
         var resPath = "pd_res_json.Pill_";
-        if (this.mPillType == PillElementType.Single)
+        // if (this.mPillType == PillElementType.Single)
         {
             resPath += "Single_"
         }

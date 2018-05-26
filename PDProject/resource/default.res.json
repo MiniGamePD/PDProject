@@ -25,7 +25,7 @@
 			"url": "assets/pd_res.json",
 			"type": "sheet",
 			"name": "pd_res_json",
-			"subkeys": "BackGround,BackGround2,Boss_Blue,Boss_Red,Boss_Yellow,Bottle,Bottle2,ColunmEliminater,CrossEliminater,Particle_Boom_Blue,Particle_Boom_Bomb,Particle_Boom_Red,Particle_Boom_Yellow,Particle_Boss_Skill_Fly,Particle_Virus_Boom,Pill_Bg,Pill_Blue,Pill_Red,Pill_Single_Blue,Pill_Single_Red,Pill_Single_Yellow,Pill_Yellow,RowEliminater,Virus_Blue,Virus_Red,Virus_Yellow,Vitamins_Blue,Vitamins_Red,Vitamins_Yellow,gezi,huojian,huojian1"
+			"subkeys": "BackGround,BackGround2,Boss_Blue,Boss_Red,Boss_Yellow,Bottle,Bottle2,ColunmEliminater,CrossEliminater,Particle_Boom_Blue,Particle_Boom_Bomb,Particle_Boom_Red,Particle_Boom_Yellow,Particle_Boss_Skill_Fly,Particle_Virus_Boom,Pill_Bg,Pill_Blue,Pill_Red,Pill_Single_Blue,Pill_Single_Red,Pill_Single_Yellow,Pill_Yellow,RowEliminater,Shield,Virus_Blue,Virus_Red,Virus_Yellow,Vitamins_Blue,Vitamins_Red,Vitamins_Yellow,gezi,huojian,huojian1"
 		},
 		{
 			"url": "assets/bgm.mp3",
