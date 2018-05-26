@@ -900,6 +900,10 @@ class Scene extends GameModuleComponentBase
             if (!event.superVirus.IsAlive())
             {
                 var elements = event.superVirus.GetSceneElements()
+                for (var i = 0; i < elements.length; ++i)
+                {
+                    elements[i].UnbindAllElement();
+                }
                 this.RemoveElementGroup(elements);
             }
         }

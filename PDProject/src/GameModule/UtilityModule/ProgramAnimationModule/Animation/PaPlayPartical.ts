@@ -58,9 +58,14 @@ class PaPlayPartical extends ProgramAnimationBase<PaPlayParticalParam>
 
 	protected OnRelease()
 	{
-		this.particleSys.stop(true);
-		GameMain.GetInstance().GetAdaptedStageContainer().removeChild(this.particleSys);
-		this.particleSys = null;
+		if (this.particleSys != null
+		&& this.particleSys.parent != null
+		&& this.particleSys.parent != undefined)
+		{
+			this.particleSys.stop(true);
+			this.particleSys.parent.removeChild(this.particleSys);
+			this.particleSys = null;
+		}
 	}
 
 	public IsFinish()
