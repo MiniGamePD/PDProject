@@ -30,9 +30,28 @@ class SoundModule extends ModuleBase implements ISoundModule{
 		return null;
 	}
 
-	private OnPlaySoundEvent(event: PlaySoundEvent){
-		if (event != null){
-			this.PlaySound(event.Key, event.Loops);
+	public PlayBGM(key: string, loops: number):egret.SoundChannel 
+	{
+		if (this.mResModule != null){
+			var sound:egret.Sound = this.mResModule.GetRes(key);
+			sound.type = egret.Sound.MUSIC;
+			if (sound != null){
+				return sound.play(0, loops);
+			}
+		}
+		return null;
+	}
+
+	private OnPlaySoundEvent(event: PlaySoundEvent)
+	{
+		if (event != null)
+		{
+			if(event.SoundType == egret.Sound.EFFECT)
+				this.PlaySound(event.Key, event.Loops);
+			else if(event.SoundType == egret.Sound.MUSIC)
+				this.PlayBGM(event.Key, event.Loops);
+			else
+				console.error("Invalid SoundType " + event.SoundType);
 		}
 	}
 }
