@@ -65,6 +65,7 @@ class LobbyView extends GameView
         this.PlayLightningAnim(text);
         // this.PlayMoving(text);
         this.PlayDBAnimation();
+        this.PlayDynamicMoving();
 
         var angle = Tools.GetRotateAngle(0, 0, 1, 1);
         egret.log("angle = " + angle);
@@ -173,6 +174,25 @@ class LobbyView extends GameView
         param.duration = 1000;
         param.posX = this.mStageWidth / 2;
         param.posY = this.mStageHeight / 2;
+        var event = new PlayProgramAnimationEvent();
+        event.param = param;
+        GameMain.GetInstance().DispatchEvent(event);
+    }
+
+    private PlayDynamicMoving()
+    {
+        var headPic = this.mResModule.CreateBitmapByName("huojian1");
+        headPic.anchorOffsetX = headPic.width / 2;
+        headPic.anchorOffsetY = headPic.height / 2;
+        headPic.x = this.mStageWidth / 2;
+        headPic.y = this.mStageHeight * 0.256;
+        GameMain.GetInstance().GetGameStage().addChild(headPic);
+        var param = new PaDynamicMovingParam;
+        param.displayObj = headPic;
+        param.startSpeed = 100;
+        param.targetPos = new egret.Point(this.mStageWidth / 2, this.mStageHeight * 0.75);
+        param.acceleration = 100;
+        param.needRotate = true;
         var event = new PlayProgramAnimationEvent();
         event.param = param;
         GameMain.GetInstance().DispatchEvent(event);
