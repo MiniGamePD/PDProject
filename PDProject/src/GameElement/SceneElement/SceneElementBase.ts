@@ -15,11 +15,15 @@ abstract class SceneElementBase
     public eliminateSound: string;
     protected elementType: SceneElementType;
     public accessory:egret.DisplayObjectContainer; //用来放一些除本体外的东西，比如护盾，血条
+    private bubbleShield:egret.Bitmap;
 
     public constructor(owner:GameplayElementBase) 
     {
         this.owner = owner;
         this.bindedElements = [];
+        this.accessory = new egret.DisplayObjectContainer();    
+        if(this.owner.HasShield())
+            this.PlayShieldCreateAnim();
     }
 
     public ElementType(): SceneElementType
@@ -222,6 +226,31 @@ abstract class SceneElementBase
             return preview;
         }
         return null;
+    }
+
+    public PlayShieldCreateAnim()
+    {
+        if(this.bubbleShield == undefined
+        || this.bubbleShield == null)
+        {
+            var res:IResModule = <IResModule>GameMain.GetInstance().GetModule(ModuleType.RES);
+            this.bubbleShield = res.CreateBitmapByName("pd_res_json.Particle_Boom_Bomb");
+            this.bubbleShield.width = Tools.MatchViewElementWidth;
+            this.bubbleShield.height = Tools.MatchViewElementHeight;
+            this.bubbleShield.anchorOffsetX = Tools.MatchViewElementWidth / 2;
+            this.bubbleShield.anchorOffsetY = Tools.MatchViewElementHeight / 2;
+            this.accessory.addChild(this.bubbleShield);
+        }
+    }
+
+    public PlayShieldBreakAnim()
+    {
+        if(this.bubbleShield != undefined
+        && this.bubbleShield != null)
+        {
+            this.accessory.removeChild(this.bubbleShield);
+            this.bubbleShield = null;
+        }
     }
 }
 

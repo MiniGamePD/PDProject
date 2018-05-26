@@ -27,6 +27,7 @@ class ColumnEliminater extends EliminateTool
 
     public OnEliminate():boolean
     {
+        super.OnEliminate();
         var specialEliminateEvent = new SpecialEliminateRequestEvent();
         specialEliminateEvent.triggerElement = this.sceneColumnEliminater;
         specialEliminateEvent.targetPosList = Tools.GetColunmPosList(this.sceneColumnEliminater.posx, this.sceneColumnEliminater.posy, this.range);

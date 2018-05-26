@@ -241,7 +241,7 @@ class Scene extends GameModuleComponentBase
     {
         this.ClearEliminateInfo();
         this.eliminateInfo.EliminateRound = this.eliminateRound;
-        this.EliminateElement();
+        this.CalculateEliminateElement();
         if (!this.eliminateUnMove)
         {
             do
@@ -319,7 +319,7 @@ class Scene extends GameModuleComponentBase
     }
 
     // 计算消除元素，把消除的元素放到this.eliminateInfo.EliminatedElements列表
-    private EliminateElement()
+    private CalculateEliminateElement()
     {
         for (var iColumn = 0; iColumn < this.sceneData.length; ++iColumn)
         {
@@ -328,25 +328,9 @@ class Scene extends GameModuleComponentBase
             {
                 var element = cloumnList[iRow];
                 if (element != null
-                    && !this.IsElementInEliminateList(element)
                     && this.NeedEliminate(element))
                 {
-                    this.eliminateInfo.HasInfo = true;
-                    var isPlaceHolder = this.IsSpecifiedTypeElement(element, SceneElementType.PlaceHolder);
-                    
-                    if (isPlaceHolder)
-                    {
-                        this.eliminateInfo.EliminatedPlaceHolderElement.push(element);
-                    }
-                    
-                    element.OnEliminate();
-
-                    if (!isPlaceHolder
-                        && !element.IsOwnerAlive())
-                    {
-                        element.UnbindAllElement();
-                        this.eliminateInfo.EliminatedElements.push(element);
-                    }
+                    this.EliminateElement(element);
                 }
             }
         }
@@ -365,6 +349,28 @@ class Scene extends GameModuleComponentBase
         }
     }
 
+    private EliminateElement(element: SceneElementBase)
+    {
+        if (element != null
+            && !Tools.IsInList(element, this.eliminateInfo.CalculatedEliminateElement))
+        {
+            this.eliminateInfo.HasInfo = true;
+
+            this.eliminateInfo.CalculatedEliminateElement.push(element);
+            
+            element.OnEliminate();
+
+            var isPlaceHolder = this.IsSpecifiedTypeElement(element, SceneElementType.PlaceHolder);
+
+            if (!isPlaceHolder
+                && !element.IsOwnerAlive())
+            {
+                element.UnbindAllElement();
+                this.eliminateInfo.EliminatedElements.push(element);
+            }
+        }   
+    }
+
     // 把元素触发消除后，是否需要从Scene中移除
     private IsNeedRemoveAfterEliminate(element: SceneElementBase)
     {
@@ -381,7 +387,8 @@ class Scene extends GameModuleComponentBase
     private ProcessSpecialEliminateRequest(event: SpecialEliminateRequestEvent)
     {
         if (event != null
-            && event.targetPosList != null)
+            && event.targetPosList != null
+            && !Tools.IsInList(event.triggerElement, this.eliminateInfo.SpecialEliminatedElement))
         {
             this.eliminateInfo.SpecialEliminatedElement.push(event.triggerElement);
             for (var i = 1; i < event.targetPosList.length; i += 2)
@@ -389,20 +396,9 @@ class Scene extends GameModuleComponentBase
                 var posx = event.targetPosList[i - 1];
                 var posy = event.targetPosList[i];
                 var element = this.GetElement(posx, posy);
-                if (element != null
-                    && !this.IsElementInEliminateList(element))
+                if (element != null)
                 {
-                    if (this.IsSpecifiedTypeElement(element, SceneElementType.PlaceHolder))
-                    {
-                        this.eliminateInfo.EliminatedPlaceHolderElement.push(element);
-                    }
-                    else
-                    {
-                        this.eliminateInfo.EliminatedElements.push(element);
-                    }
-                    element.UnbindAllElement();
-                    this.eliminateInfo.HasInfo = true;
-                    element.OnEliminate();
+                    this.EliminateElement(element);
                 }
             }
         }
@@ -1023,6 +1019,7 @@ class Scene extends GameModuleComponentBase
                     transInfo.toElement.posx = transInfo.fromElement.posx;
                     transInfo.toElement.posy = transInfo.fromElement.posy;
                     transInfo.toElement.dirty = true;
+                    transInfo.fromElement.UnbindAllElement();
                     this.RemoveElement(transInfo.fromElement);
                     this.AddElement(transInfo.toElement);                    
                 }
