@@ -4,6 +4,7 @@ class EliminateInfo {
 		this.EliminateRound = 1;
 		this.CalculatedEliminateElement = [];
 		this.EliminatedElements = [];
+		this.ShieldBreakElements = [];
 		this.MoveElements = [];
 		this.SpecialEliminatedElement = [];
 		this.EliminatedSuperVirus = [];
@@ -18,13 +19,13 @@ class EliminateInfo {
 	// 计算过消除的元素
 	public CalculatedEliminateElement: SceneElementBase[];
 
-	// 消除元素列表
+	// 要被移除的元素列表（包括炸弹和十字消，不包括Boss和PlaceHolder）
 	public EliminatedElements: SceneElementBase[];
 
 	// 护盾破碎元素列表
 	public ShieldBreakElements: SceneElementBase[];
 
-	// 特殊消除的元素
+	// 特殊消除的元素（只是炸弹和十字消）
 	public SpecialEliminatedElement: SceneElementBase[];
 
 	// 消除后，需要移动的元素列表
@@ -37,10 +38,11 @@ class EliminateInfo {
 	public Reset() {
 		this.HasInfo = false;
 		this.EliminateRound = 1;
+		this.CalculatedEliminateElement = [];
 		this.EliminatedElements = [];
+		this.ShieldBreakElements = [];
 		this.MoveElements = [];
 		this.SpecialEliminatedElement = [];
-		this.CalculatedEliminateElement = [];
 		this.EliminatedSuperVirus = [];
 	}
 }
@@ -83,6 +85,8 @@ enum EliminateElementType
 class EliminateMethod
 {
 	public methodType: EliminateMethodType; //消除方案
+
+	public froceKill: boolean; //强制消除
 
 	public eliminateElementType: EliminateElementType; //要消除的元素类型
 

@@ -109,6 +109,11 @@ class EliminatingAnimation
 				this.eliminateInfo.EliminatedSuperVirus[i].SetRenderAlpha(alpha);
 			}
 
+			for (var i= 0; i < this.eliminateInfo.ShieldBreakElements.length; ++i)
+			{
+				this.eliminateInfo.ShieldBreakElements[i].PlayShieldBreakAnim();
+			}
+
 			// var scale = needHide ? 0.5 : 1.5;
 			// for (var i = 0; i < this.eliminateInfo.SpecialEliminatedElement.length; ++i)
 			// {
