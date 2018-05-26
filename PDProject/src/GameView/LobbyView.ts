@@ -35,6 +35,7 @@ class LobbyView extends GameView
         this.textField.text = "Pocket Doctor";
         this.addChild(this.textField);
 
+        this.mAdaptedStage = GameMain.GetInstance().GetAdaptedStageContainer();;
 
         var shape: egret.Shape = new egret.Shape();
         shape.graphics.beginFill(0x00A2E8);
