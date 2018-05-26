@@ -286,14 +286,15 @@ class MatchView extends GameView
         this.hud = null;
     }
 
-    private PlayBgm()
-    {
-        // if (this.mSoundModule != null){
-        //     this.mSoundModule.PlaySound("bgm_mp3", -1);
-        // }
-        var event: PlaySoundEvent = new PlaySoundEvent("bgm_mp3", -1);
-        GameMain.GetInstance().DispatchEvent(event);
-    }
+    // private PlayBgm()
+    // {
+    //     // if (this.mSoundModule != null){
+    //     //     this.mSoundModule.PlaySound("bgm_mp3", -1);
+    //     // }
+    //     var event: PlaySoundEvent = new PlaySoundEvent("bgm_mp3", -1);
+    //     event.SoundType = egret.Sound.MUSIC;
+    //     GameMain.GetInstance().DispatchEvent(event);
+    // }
 
     private PlayDBAnimation()
     {

@@ -102,6 +102,7 @@ class LobbyView extends GameView
     private PlayBgm()
     {
         var event: PlaySoundEvent = new PlaySoundEvent("bgm_mp3", -1);
+        event.SoundType = egret.Sound.MUSIC;
         GameMain.GetInstance().DispatchEvent(event);
     }
 
