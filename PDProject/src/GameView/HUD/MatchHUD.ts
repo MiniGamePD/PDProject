@@ -4,6 +4,7 @@ class MatchHUD extends egret.DisplayObjectContainer
     private score:MatchScoreItem;
     private gameover:GameOverItem;
     private controlablePreview:ControlablePreviewItem;
+    private fever:FeverItem;
 
     public Init()
     {
@@ -18,6 +19,10 @@ class MatchHUD extends egret.DisplayObjectContainer
         this.controlablePreview.Init();
         this.addChild(this.controlablePreview);
 
+        this.fever = new FeverItem(0, 0, this.width, this.height);
+        this.fever.Init();
+        this.addChild(this.fever);
+
         this.gameover = new GameOverItem(this.width, this.height);
         this.addChild(this.gameover);
 
@@ -30,6 +35,7 @@ class MatchHUD extends egret.DisplayObjectContainer
         this.readyGo = null;
 
         this.controlablePreview.Release();
+        this.fever.Release();
 
         GameMain.GetInstance().RemoveEventListener(HUDEvent.EventName, this.OnHUDEvent, this);
         GameMain.GetInstance().RemoveEventListener(GameOverEvent.EventName, this.OnGameOver, this);
@@ -45,6 +51,7 @@ class MatchHUD extends egret.DisplayObjectContainer
     public Update(deltaTime:number)
     {
         this.score.Update(deltaTime);
+        this.fever.Update(deltaTime);
     }
 
     private OnGameOver(event:GameOverEvent)

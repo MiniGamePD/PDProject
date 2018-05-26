@@ -5,6 +5,7 @@ class MatchModule extends GameViewModule
 	private playerControl: PlayerControl;
 	private npcControl: NpcControl;
 	private matchScore: MatchScore;
+	private feverControl: FeverControl;
 	private gameplayElementFactory:GameplayElementFactory;
 	private controlWorkParam: GameplayControlWorkParam;
 
@@ -61,6 +62,9 @@ class MatchModule extends GameViewModule
 
 		this.matchScore = new MatchScore();
 		this.matchScore.Init();
+
+		this.feverControl = new FeverControl();
+		this.feverControl.Init();
 		
 		this.controlWorkParam = new GameplayControlWorkParam();
 
@@ -78,6 +82,8 @@ class MatchModule extends GameViewModule
 		this.npcControl = null;
 		this.matchScore.Release();
 		this.matchScore = null;
+		this.feverControl.Release();
+		this.feverControl = null;
 	}
 
 	public SwitchForeOrBack(from: GameStateType, to: GameStateType): void
@@ -91,6 +97,7 @@ class MatchModule extends GameViewModule
 		this.scene.Update(deltaTime);
 		this.playerControl.Update(deltaTime);
 		this.npcControl.Update(deltaTime);
+		this.feverControl.Update(deltaTime);
 	}
 
 	private InitMatch()

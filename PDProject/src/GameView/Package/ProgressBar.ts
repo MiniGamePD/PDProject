@@ -33,5 +33,11 @@ class ProgressBar extends egret.DisplayObjectContainer
         this.progressValue = value;
         var fgMask = new egret.Rectangle(0,0,this.foreground.width * this.progressValue, this.foreground.height);
         this.foreground.mask = fgMask;
+    } 
+
+    public Adapt()
+    {
+        GameMain.GetInstance().AdapteDisplayObject(this.background);
+        GameMain.GetInstance().AdapteDisplayObject(this.foreground);
     }
 }

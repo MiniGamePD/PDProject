@@ -14,8 +14,8 @@ class InputModule extends ModuleBase implements IInputModule {
 	public Init(): boolean {
 		this.isForeground = true;
 		this.mInputEvent = new InputEvent(InputKey.Max, 0, 0);
-		let stageWidth = GameMain.GetInstance().GetStageWidth();
-		let stageHeight = GameMain.GetInstance().GetStageHeight();
+		let stageWidth = GameMain.GetInstance().GetAdaptedStageWidth();
+		let stageHeight = GameMain.GetInstance().GetAdaptedStageHeight();
 		this.mMoveEventMinDisX = stageWidth * INPUT_MOVE_EVENT_DIS_RATE;
 		this.mMoveEventMinDisY = stageHeight * INPUT_MOVE_EVENT_DIS_RATE;
 		this.RegisterTouchEvent();
