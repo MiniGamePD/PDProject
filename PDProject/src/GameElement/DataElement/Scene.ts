@@ -357,8 +357,17 @@ class Scene extends GameModuleComponentBase
             this.eliminateInfo.HasInfo = true;
 
             this.eliminateInfo.CalculatedEliminateElement.push(element);
+
+            var hasShield = element.HasShield();
             
             element.OnEliminate();
+
+            if (hasShield 
+                && !element.HasShield()
+                && !Tools.IsInList(element, this.eliminateInfo.ShieldBreakElements))
+            {
+                this.eliminateInfo.ShieldBreakElements.push(element);
+            }
 
             var isPlaceHolder = this.IsSpecifiedTypeElement(element, SceneElementType.PlaceHolder);
 
