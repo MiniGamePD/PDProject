@@ -123,24 +123,24 @@
 			"name": "huojian_json"
 		},
 		{
-			"name": "Particle_Virus_Boom_json",
+			"url": "assets/Particle_Virus_Boom.json",
 			"type": "json",
-			"url": "assets/Particle_Virus_Boom.json"
+			"name": "Particle_Virus_Boom_json"
 		},
 		{
-			"name": "DB_Boom_Bomb_ske_json",
+			"url": "assets/DB_Animation/DB_Boom_Bomb_ske.json",
 			"type": "json",
-			"url": "assets/DB_Animation/DB_Boom_Bomb_ske.json"
+			"name": "DB_Boom_Bomb_ske_json"
 		},
 		{
-			"name": "DB_Boom_Bomb_tex_json",
+			"url": "assets/DB_Animation/DB_Boom_Bomb_tex.json",
 			"type": "json",
-			"url": "assets/DB_Animation/DB_Boom_Bomb_tex.json"
+			"name": "DB_Boom_Bomb_tex_json"
 		},
 		{
-			"name": "DB_Boom_Bomb_tex_png",
+			"url": "assets/DB_Animation/DB_Boom_Bomb_tex.png",
 			"type": "image",
-			"url": "assets/DB_Animation/DB_Boom_Bomb_tex.png"
+			"name": "DB_Boom_Bomb_tex_png"
 		}
 	]
 }
