@@ -3,7 +3,6 @@ class MatchView extends GameView
     private mResModule: IResModule;
     private mSoundModule: ISoundModule
     private mScene: Scene;
-    private mAdaptedStage: egret.DisplayObjectContainer;
     private mBattleGround: egret.Sprite;
     private mBattleGroundBlocks: egret.DisplayObjectContainer;
     private eliminatingAnim: EliminatingAnimation;
@@ -206,7 +205,7 @@ class MatchView extends GameView
             //bg.height = this.mStageHeight;
 
             var adaptedStageRect:egret.Rectangle = GameMain.GetInstance().GetAdaptedDisplayRect();
-            this.mAdaptedStage = GameMain.GetInstance().GetAdaptedStageContainer();;
+            this.mAdaptedStage = GameMain.GetInstance().GetAdaptedStageContainer();
             this.addChild(this.mAdaptedStage);
             if(DEBUG)
             {
