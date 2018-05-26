@@ -1007,10 +1007,23 @@ class Scene extends GameModuleComponentBase
         this.bossSkillInfo.hasInfo = true;
         this.bossSkillInfo.skillCaster = skillInfo.skillCaster;
         this.bossSkillInfo.addHealthElement = skillInfo.addHealthElement;
+        this.AddShield(this.bossSkillInfo.addHealthElement);
         this.bossSkillInfo.elementTransList = skillInfo.elementTransList;
         this.ChangeElements(this.bossSkillInfo.elementTransList);
         this.bossSkillInfo.elementChangeColorList = skillInfo.elementChangeColorList;
         this.ChangElementsColor(this.bossSkillInfo.elementChangeColorList);
+    }
+
+    // 添加护盾
+    private AddShield(elementList: SceneElementBase[])
+    {
+        if (elementList != null)
+        {
+            for (var i = 0; i < elementList.length; ++i)
+            {
+                elementList[i].AddShield(1);
+            }
+        }
     }
 
     // 替换场景中的元素

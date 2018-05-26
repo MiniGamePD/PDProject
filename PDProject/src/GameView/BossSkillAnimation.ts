@@ -199,6 +199,14 @@ class BossSkillAnimation
 				this.bossSkillInfo.elementTransList[i].fromElement.renderer.alpha = 0; // 改成播放消除动画
 			}
 		}
+
+		if (this.bossSkillInfo.addHealthElement != null)
+		{
+			for (var i = 0; i < this.bossSkillInfo.addHealthElement.length; ++i)
+			{
+				this.bossSkillInfo.addHealthElement[i].PlayShieldCreateAnim(); // 播放生成护盾效果
+			}
+		}
 	}
 
 	private OnEnterNewElementAnim()
