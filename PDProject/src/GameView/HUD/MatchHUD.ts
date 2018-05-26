@@ -78,6 +78,9 @@ class MatchHUD extends egret.DisplayObjectContainer
             case HUDEventType.PlayPreviewDropDownAnim:
                 this.PlayPreviewDropDownAnim(event.param);
                 break;
+            case HUDEventType.SetFeverControl:
+                this.SetFeverControl(event.param);
+                break;
             //Add More..
         }
     }
@@ -109,5 +112,11 @@ class MatchHUD extends egret.DisplayObjectContainer
     {
         var durationInMS:number = <number>param;
         this.controlablePreview.PlayDropAnim(durationInMS);
+    }
+
+    private SetFeverControl(param:any)
+    {
+        var feverControl:FeverControl = <FeverControl>param;
+        this.fever.SetFeverControl(feverControl);
     }
 }

@@ -3,10 +3,13 @@ class ProgressBar extends egret.DisplayObjectContainer
     private background:egret.Bitmap;
     private foreground:egret.Bitmap;
     private progressValue:number;
+    private direction:ProgressBarDir;
 
-    public constructor(bgPath:string, bgRange:egret.Rectangle, fgPath:string, fgRange:egret.Rectangle)
+    public constructor(bgPath:string, bgRange:egret.Rectangle, fgPath:string, fgRange:egret.Rectangle, 
+        dir:ProgressBarDir = ProgressBarDir.Horizontal_L2R)
     {
         super();
+        this.direction = dir;
         this.progressValue = 1;
         var res:IResModule = <IResModule>GameMain.GetInstance().GetModule(ModuleType.RES);
         this.background = res.CreateBitmapByName(bgPath);
@@ -31,13 +34,26 @@ class ProgressBar extends egret.DisplayObjectContainer
     public SetProgress(value:number)
     {
         this.progressValue = value;
-        var fgMask = new egret.Rectangle(0,0,this.foreground.width * this.progressValue, this.foreground.height);
+        var fgMask:egret.Rectangle;
+        if(this.direction == ProgressBarDir.Horizontal_L2R)
+            fgMask = new egret.Rectangle(0,0,this.foreground.width * this.progressValue, this.foreground.height);
+        else if(this.direction == ProgressBarDir.Vertical_U2D)
+            fgMask = new egret.Rectangle(0,0,this.foreground.width, this.foreground.height * this.progressValue);
+        else
+            console.error("Invalid ProgressBarDir " + this.direction);
         this.foreground.mask = fgMask;
     } 
 
     public Adapt()
     {
+        GameMain.GetInstance().AdapteDisplayObject(this);
         GameMain.GetInstance().AdapteDisplayObject(this.background);
         GameMain.GetInstance().AdapteDisplayObject(this.foreground);
     }
+}
+
+enum ProgressBarDir
+{
+    Horizontal_L2R,
+    Vertical_U2D,
 }

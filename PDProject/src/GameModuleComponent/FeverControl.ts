@@ -1,7 +1,6 @@
 class FeverControl extends GameModuleComponentBase
 {
     private feverEnerge:number;
-    private feverProgressBar:ProgressBar;
     private basicFeverStep:number = 2;
 
     public Init()
@@ -18,10 +17,27 @@ class FeverControl extends GameModuleComponentBase
     private OnEliminateHappen(event:EliminateEvent)
     {
         this.feverEnerge += this.basicFeverStep * event.eliminateInfo.EliminateRound;
+        if(this.feverEnerge > 100)
+        {
+            this.feverEnerge = 100;
+        }
     }
 
     public Update(deltaTime:number)
     {
 
+    }
+
+    public GetFeverEnerge():number
+    {
+        return this.feverEnerge;
+    }
+
+    public AttachToHUD()
+    {
+        var event = new HUDEvent();
+        event.eventType = HUDEventType.SetFeverControl;
+        event.param = this;
+        GameMain.GetInstance().DispatchEvent(event);
     }
 }

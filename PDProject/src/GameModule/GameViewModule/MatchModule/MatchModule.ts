@@ -29,6 +29,8 @@ class MatchModule extends GameViewModule
 		this.matchView.CreateView();
 		this.gameViewList.push(this.matchView);
 
+		this.feverControl.AttachToHUD();
+
 		this.InitMatch();
 
 		return true;
@@ -188,6 +190,7 @@ class MatchModule extends GameViewModule
 		this.DeInitComponents();
 		this.InitComponents();
 		this.matchView.SetScene(this.scene);
+		this.feverControl.AttachToHUD();
 		this.InitMatch();
 	}
 
