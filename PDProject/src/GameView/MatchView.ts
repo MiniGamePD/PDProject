@@ -207,14 +207,14 @@ class MatchView extends GameView
             var adaptedStageRect:egret.Rectangle = GameMain.GetInstance().GetAdaptedDisplayRect();
             this.mAdaptedStage = GameMain.GetInstance().GetAdaptedStageContainer();
             this.addChild(this.mAdaptedStage);
-            if(DEBUG)
-            {
-                var adaptedStage = <egret.Sprite>this.mAdaptedStage;
-                adaptedStage.graphics.beginFill(0x00FF00, 0.5);
-                adaptedStage.graphics.drawRect(0,0,
-                    adaptedStage.width, adaptedStage.height);
-                adaptedStage.graphics.endFill();
-            }
+            // if(DEBUG)
+            // {
+            //     var adaptedStage = <egret.Sprite>this.mAdaptedStage;
+            //     adaptedStage.graphics.beginFill(0x00FF00, 0.5);
+            //     adaptedStage.graphics.drawRect(0,0,
+            //         adaptedStage.width, adaptedStage.height);
+            //     adaptedStage.graphics.endFill();
+            // }
 
             this.mBattleGround = new egret.Sprite();
             //battle rect in stander resolution
@@ -240,7 +240,7 @@ class MatchView extends GameView
             //     this.mBattleGround.graphics.endFill();
             // }
 
-            adaptedStage.addChild(this.mBattleGround);
+            this.mAdaptedStage.addChild(this.mBattleGround);
 
             if(DEBUG)
                 console.log("BattleRect is :" + battleRect);
