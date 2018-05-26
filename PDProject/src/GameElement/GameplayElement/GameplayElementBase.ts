@@ -16,6 +16,11 @@ abstract class GameplayElementBase
 
     public color:GameElementColor;
 
+    public constructor()
+    {
+        GameMain.GetInstance().AddEventListener(EliminateEvent.EventName, this.OnEliminateTurnFinish, this);
+    }
+
     public GetSceneElements():SceneElementBase[]
     {
         if(!this.sceneElementFilled)
@@ -56,6 +61,12 @@ abstract class GameplayElementBase
         if(this.hp > 0)
         {
             this.hp--;
+            
+            if(!this.IsAlive())
+            {
+                GameMain.GetInstance().RemoveEventListener(EliminateEvent.EventName, this.OnEliminateTurnFinish, this);
+            }
+
             return true;
         }
 
@@ -82,8 +93,16 @@ abstract class GameplayElementBase
         this.shield += shield;
     }
 
-    public OnStartNewTurn()
+    //一次大回合中的一个消除回合（多次连消算多个消除回合）
+    public OnEliminateTurnFinish(event:EliminateEvent)
     {
         this.hasReduceHpThisRound = false;
+    }
+
+    public Kill()
+    {
+        this.hp = 0;
+        this.shield = 0;
+        GameMain.GetInstance().RemoveEventListener(EliminateEvent.EventName, this.OnEliminateTurnFinish, this);
     }
 }

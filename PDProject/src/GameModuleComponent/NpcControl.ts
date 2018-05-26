@@ -504,11 +504,7 @@ class NpcControl extends GameModuleComponentBase
         for(var i = 0; i < array.length; ++i)
         {
             var npc:NpcElement = array[i];
-            if(npc.IsAlive())
-            {
-                npc.OnStartNewTurn();
-            }
-            else
+            if(!npc.IsAlive())
             {
                 tobeDelete.push(i);
             }

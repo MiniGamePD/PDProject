@@ -5,14 +5,14 @@ class Virus extends NpcElement
     public constructor()
     {
         super();
+        this.hp = this.maxHp = 1;
+        this.shield = 0;
+
         this.virusRenderer = new SceneVirus(this);
         this.virusRenderer.RefreshTexture();
 
         this.bornType = NpcBornType.Normal;
         this.bornSound = "VirusBorn_mp3";
-
-        this.hp = this.maxHp = 1;
-        this.shield = 0;
     }
 
     public MoveTo(posx:number, posy:number)
@@ -36,5 +36,14 @@ class Virus extends NpcElement
     {
         console.error("Not Implement Error");
         return null;
+    }
+
+    public AddShield(shield:number)
+    {
+        super.AddShield(shield);
+        if(this.HasShield())
+        {
+            this.virusRenderer.ShowBubbleShield();
+        }
     }
 }
