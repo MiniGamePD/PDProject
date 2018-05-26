@@ -6,7 +6,6 @@ class SceneSuperVirus extends ScenePlaceholder
     {
         super(owner);
         this.renderer = new egret.Bitmap(); 
-        this.accessory = new egret.DisplayObjectContainer();
 
         var offset = this.ArrangeHpBarPosByColor();
         offset.x *= Tools.MatchViewElementWidth;

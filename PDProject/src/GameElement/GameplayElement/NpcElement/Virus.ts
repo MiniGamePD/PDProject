@@ -37,13 +37,4 @@ class Virus extends NpcElement
         console.error("Not Implement Error");
         return null;
     }
-
-    public AddShield(shield:number)
-    {
-        super.AddShield(shield);
-        if(this.HasShield())
-        {
-            this.virusRenderer.ShowBubbleShield();
-        }
-    }
 }

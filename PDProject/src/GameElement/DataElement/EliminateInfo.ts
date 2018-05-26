@@ -2,10 +2,10 @@ class EliminateInfo {
 	public constructor() {
 		this.HasInfo = false;
 		this.EliminateRound = 1;
+		this.CalculatedEliminateElement = [];
 		this.EliminatedElements = [];
 		this.MoveElements = [];
 		this.SpecialEliminatedElement = [];
-		this.EliminatedPlaceHolderElement = [];
 		this.EliminatedSuperVirus = [];
 	}
 
@@ -15,14 +15,17 @@ class EliminateInfo {
 	// 连续消除次数（从1开始）	
 	public EliminateRound: number;
 
+	// 计算过消除的元素
+	public CalculatedEliminateElement: SceneElementBase[];
+
 	// 消除元素列表
 	public EliminatedElements: SceneElementBase[];
 
+	// 护盾破碎元素列表
+	public ShieldBreakElements: SceneElementBase[];
+
 	// 特殊消除的元素
 	public SpecialEliminatedElement: SceneElementBase[];
-
-	// 触发了消除的PlaceHolder
-	public EliminatedPlaceHolderElement: SceneElementBase[];
 
 	// 消除后，需要移动的元素列表
 	public MoveElements: EliminateMoveInfo[];
@@ -37,7 +40,7 @@ class EliminateInfo {
 		this.EliminatedElements = [];
 		this.MoveElements = [];
 		this.SpecialEliminatedElement = [];
-		this.EliminatedPlaceHolderElement = [];
+		this.CalculatedEliminateElement = [];
 		this.EliminatedSuperVirus = [];
 	}
 }

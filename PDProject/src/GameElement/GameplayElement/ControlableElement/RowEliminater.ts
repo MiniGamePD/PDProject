@@ -27,6 +27,7 @@ class RowEliminater extends EliminateTool
     
     public OnEliminate():boolean
     {
+        super.OnEliminate();
         var specialEliminateEvent = new SpecialEliminateRequestEvent();
         specialEliminateEvent.triggerElement = this.sceneRowEliminater;
         specialEliminateEvent.targetPosList = Tools.GetRowPosList(this.sceneRowEliminater.posx, this.sceneRowEliminater.posy, this.range);

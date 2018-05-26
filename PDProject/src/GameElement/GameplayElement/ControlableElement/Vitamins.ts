@@ -27,6 +27,7 @@ class Vitamins extends EliminateTool
 
     public OnEliminate():boolean
     {
+        super.OnEliminate();
         var specialEliminateEvent = new SpecialEliminateRequestEvent();
         specialEliminateEvent.triggerElement = this.sceneVitamins;
         specialEliminateEvent.targetPosList = Tools.GetSquareRangePosList(this.sceneVitamins.posx, this.sceneVitamins.posy, this.range);

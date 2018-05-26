@@ -27,6 +27,7 @@ class CrossEliminater extends EliminateTool
 
     public OnEliminate():boolean
     {
+        super.OnEliminate();
         var specialEliminateEvent = new SpecialEliminateRequestEvent();
         specialEliminateEvent.triggerElement = this.sceneCrossEliminater;
         specialEliminateEvent.targetPosList = Tools.GetCrossPosList(this.sceneCrossEliminater.posx, this.sceneCrossEliminater.posy, this.range);
