@@ -13,3 +13,5 @@ const standerScreenWidth = 640;
 const standerScreenHeight = 1136;
 
 const EliminateRoundStartIndex = 1;
+
+const FeverTime = 30000; //ms
