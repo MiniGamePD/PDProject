@@ -1,11 +1,14 @@
 class FeverControl extends GameModuleComponentBase
 {
     private feverEnerge:number;
-    private basicFeverStep:number = 2;
+    private basicFeverStep:number = 10;
+    private isInFeverState:boolean;
+    private feverTimer:egret.Timer;
 
     public Init()
     {
         this.feverEnerge = 0;
+        this.isInFeverState = false;
         GameMain.GetInstance().AddEventListener(EliminateEvent.EventName, this.OnEliminateHappen, this);
     }
 
@@ -16,16 +19,45 @@ class FeverControl extends GameModuleComponentBase
 
     private OnEliminateHappen(event:EliminateEvent)
     {
+        //event.eliminateInfo.EliminatedElements
+
+        if(this.isInFeverState)
+            return;
+
         this.feverEnerge += this.basicFeverStep * event.eliminateInfo.EliminateRound;
         if(this.feverEnerge > 100)
         {
             this.feverEnerge = 100;
+            
+            var feverEvent = new FeverEvent();
+            feverEvent.feverBegin = true; 
+            GameMain.GetInstance().DispatchEvent(feverEvent);
+
+            this.isInFeverState = true;
+
+            this.feverTimer = new egret.Timer(FeverTime, 1);
+            this.feverTimer.addEventListener(egret.TimerEvent.TIMER, this.FeverEnd, this);
+            this.feverTimer.start();
         }
+    }
+
+    private FeverEnd()
+    {
+        this.feverTimer = null;
+        this.isInFeverState = false;
+        this.feverEnerge = 0;
+
+        var feverEvent = new FeverEvent();
+        feverEvent.feverBegin = false; 
+        GameMain.GetInstance().DispatchEvent(feverEvent);
     }
 
     public Update(deltaTime:number)
     {
-
+        if(this.isInFeverState)
+        {
+            this.feverEnerge -= deltaTime / FeverTime * 100;
+        }
     }
 
     public GetFeverEnerge():number
