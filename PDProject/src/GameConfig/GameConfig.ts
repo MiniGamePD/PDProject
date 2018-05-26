@@ -11,3 +11,5 @@ const bossSkillTargetNum = 5;
 
 const standerScreenWidth = 640;
 const standerScreenHeight = 1136;
+
+const EliminateRoundStartIndex = 1;

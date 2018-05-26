@@ -6,6 +6,7 @@ class Scene extends GameModuleComponentBase
     public static readonly EliminateMinCount = 3; //触发消除的最小数量
     public sceneData: SceneElementBase[][] = []; //左上角是00    
     public eliminateInfo: EliminateInfo;
+    public eliminateRound: number = EliminateRoundStartIndex; // 连续消除次数（从1开始）	
     public bossSkillInfo: BossSkillInfo;
 
     private controlSuccessEvent: SceneElementControlSuccessEvent;
@@ -19,6 +20,7 @@ class Scene extends GameModuleComponentBase
     public Init(): void 
     {
         this.eliminateInfo = new EliminateInfo();
+        this.eliminateRound = EliminateRoundStartIndex;
         this.bossSkillInfo = new BossSkillInfo();
         for (var i = 0; i < Scene.Columns; ++i) 
         {
@@ -238,6 +240,7 @@ class Scene extends GameModuleComponentBase
     public TryEliminate(): boolean
     {
         this.ClearEliminateInfo();
+        this.eliminateInfo.EliminateRound = this.eliminateRound;
         this.EliminateElement();
         if (!this.eliminateUnMove)
         {
@@ -251,11 +254,13 @@ class Scene extends GameModuleComponentBase
             } while (hasMove)
         }
         var result = this.eliminateInfo.HasInfo;
+        this.eliminateRound++;
         return result;
     }
 
     private FinishEliminate()
     {
+        this.eliminateRound = EliminateRoundStartIndex;
         this.eliminateUnMove = false;
         this.canEliminateElementList = [];
         let newEvent = new SceneEliminateFinishEvent();

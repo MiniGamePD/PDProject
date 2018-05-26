@@ -1,6 +1,7 @@
 class EliminateInfo {
 	public constructor() {
 		this.HasInfo = false;
+		this.EliminateRound = 1;
 		this.EliminatedElements = [];
 		this.MoveElements = [];
 		this.SpecialEliminatedElement = [];
@@ -10,6 +11,9 @@ class EliminateInfo {
 
 	// 是否有消除数据
 	public HasInfo: boolean;
+
+	// 连续消除次数（从1开始）	
+	public EliminateRound: number;
 
 	// 消除元素列表
 	public EliminatedElements: SceneElementBase[];
@@ -29,6 +33,7 @@ class EliminateInfo {
 	// 重置
 	public Reset() {
 		this.HasInfo = false;
+		this.EliminateRound = 1;
 		this.EliminatedElements = [];
 		this.MoveElements = [];
 		this.SpecialEliminatedElement = [];
