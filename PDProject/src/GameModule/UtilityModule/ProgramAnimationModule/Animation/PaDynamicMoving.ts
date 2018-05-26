@@ -32,6 +32,7 @@ class PaDynamicMoving extends ProgramAnimationBase<PaDynamicMovingParam>
 		var curPos = new egret.Point(this.param.displayObj.x, this.param.displayObj.y);
 		this.velocity = this.param.targetPos.subtract(curPos);
 		this.velocity.normalize(this.param.startSpeed);
+		this.velocity.x = this.velocity.x + 100;
 		this.RotateToTarget(curPos);
 	}
 
@@ -59,10 +60,12 @@ class PaDynamicMoving extends ProgramAnimationBase<PaDynamicMovingParam>
 			}
 			else
 			{
+				this.RotateToTarget(curPos);
+				var deltaTimeSecond = deltaTime * MathTools.MilliSecond2Second;
 				var deltaVel = delta;
-				deltaVel.normalize(this.param.acceleration * deltaTime);
+				deltaVel.normalize(this.param.acceleration * deltaTimeSecond);
 				this.velocity = this.velocity.add(deltaVel);
-				var deltaMove = new egret.Point(this.velocity.x * deltaTime, this.velocity.y * deltaTime);
+				var deltaMove = new egret.Point(this.velocity.x * deltaTimeSecond, this.velocity.y * deltaTimeSecond);
 				var movedPos = curPos.add(deltaMove);
 				this.param.displayObj.x = movedPos.x;
 				this.param.displayObj.y = movedPos.y;
