@@ -28,10 +28,13 @@ class PaPlayDBAnimation extends ProgramAnimationBase<PaPlayDBAnimationParam>
 	{
 		let egretFactory: dragonBones.EgretFactory = dragonBones.EgretFactory.factory;
 		this.armatureDisplay = egretFactory.buildArmatureDisplay(this.param.animationName);
-		GameMain.GetInstance().GetAdaptedStageContainer().addChild(this.armatureDisplay);
-		this.armatureDisplay.x = this.param.posX;
-		this.armatureDisplay.y = this.param.posY;
-		this.armatureDisplay.animation.play(this.param.animationName, 1);
+		if (this.armatureDisplay != null)
+		{
+			GameMain.GetInstance().GetAdaptedStageContainer().addChild(this.armatureDisplay);
+			this.armatureDisplay.x = this.param.posX;
+			this.armatureDisplay.y = this.param.posY;
+			this.armatureDisplay.animation.play(this.param.animationName, 1);
+		}
 	}
 
 	protected OnUpdate(deltaTime: number)
@@ -41,8 +44,13 @@ class PaPlayDBAnimation extends ProgramAnimationBase<PaPlayDBAnimationParam>
 
 	protected OnRelease()
 	{
-		GameMain.GetInstance().GetAdaptedStageContainer().removeChild(this.armatureDisplay);
-		this.armatureDisplay = null;
+		if (this.armatureDisplay != null
+		&& this.armatureDisplay.parent != null
+		&& this.armatureDisplay.parent != undefined)
+		{
+			this.armatureDisplay.parent.removeChild(this.armatureDisplay);
+			this.armatureDisplay = null;
+		}
 	}
 
 	public IsFinish()
