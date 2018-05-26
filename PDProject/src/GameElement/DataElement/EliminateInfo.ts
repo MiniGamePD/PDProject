@@ -94,9 +94,21 @@ class EliminateMethod
 
 	public specificRegion: number[]; //特定区域列表
 
+	public constructor()
+	{
+		this.methodType = EliminateMethodType.Normal;
+		this.froceKill = false;
+		this.eliminateElementType = EliminateElementType.Normal;
+		this.specificColor = GameElementColor.blue;
+		this.specificRegion = [];
+	}
+
 	public Reset()
 	{
 		this.methodType = EliminateMethodType.Normal;
+		this.froceKill = false;
 		this.eliminateElementType = EliminateElementType.Normal;
 	}
+
+
 }

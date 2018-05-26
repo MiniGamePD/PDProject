@@ -183,9 +183,17 @@ class Scene extends GameModuleComponentBase
     }
 
     // 设置下一次消除方法
-    public SetEliminateMethodNext(methodType: EliminateMethodType, color?: GameElementColor, region?: number[], elementType?: EliminateElementType)
+    public SetEliminateMethodNext(methodType: EliminateMethodType, color?: GameElementColor, region?: number[], elementType?: EliminateElementType, froceKill?: boolean)
     {
         this.eliminateMethod.methodType = methodType;
+        if (froceKill != undefined)
+        {
+            this.eliminateMethod.froceKill = froceKill;
+        }
+        else
+        {
+            this.eliminateMethod.froceKill = false;
+        }
 
         if (elementType != null)
             this.eliminateMethod.eliminateElementType = elementType;
@@ -372,7 +380,7 @@ class Scene extends GameModuleComponentBase
             var isPlaceHolder = this.IsSpecifiedTypeElement(element, SceneElementType.PlaceHolder);
 
             if (!isPlaceHolder
-                && !element.IsOwnerAlive())
+            && (!element.IsOwnerAlive() || this.eliminateMethod.froceKill))
             {
                 element.UnbindAllElement();
                 this.eliminateInfo.EliminatedElements.push(element);

@@ -347,6 +347,7 @@ class NpcControl extends GameModuleComponentBase
             event.specialEliminateMethod.methodType = EliminateMethodType.SpecificRegion;
             event.specialEliminateMethod.specificRegion = obstruction;
             event.specialEliminateMethod.eliminateElementType = EliminateElementType.Normal;
+            event.specialEliminateMethod.froceKill = true;
             GameMain.GetInstance().DispatchEvent(event);
         }
         else
