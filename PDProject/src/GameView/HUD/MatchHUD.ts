@@ -81,6 +81,9 @@ class MatchHUD extends egret.DisplayObjectContainer
             case HUDEventType.SetFeverControl:
                 this.SetFeverControl(event.param);
                 break;
+            case HUDEventType.ShowFeverSprite:
+                this.ShowFeverSprite(event.param);
+                break;
             //Add More..
         }
     }
@@ -118,5 +121,10 @@ class MatchHUD extends egret.DisplayObjectContainer
     {
         var feverControl:FeverControl = <FeverControl>param;
         this.fever.SetFeverControl(feverControl);
+    }
+
+    private ShowFeverSprite(param:any)
+    {
+        this.fever.ShowFeverSprite();
     }
 }

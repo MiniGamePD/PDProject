@@ -1,8 +1,10 @@
 class FeverItem extends egret.DisplayObjectContainer
 {
     private feverProgress:ProgressBar;
+    private feverSprite:egret.Bitmap;
     private feverEnerge:number;
     private feverControl:FeverControl;
+    private feverSpriteTimer:egret.Timer;
 
     public constructor(x:number, y:number, width:number, height:number)
     {
@@ -31,6 +33,14 @@ class FeverItem extends egret.DisplayObjectContainer
 
         this.feverEnerge = 0;
         this.feverProgress.SetProgress(0);
+
+        var res:IResModule = <IResModule>GameMain.GetInstance().GetModule(ModuleType.RES);
+        this.feverSprite = res.CreateBitmapByName("pd_res_json.fever");
+        this.feverSprite.anchorOffsetX = this.feverSprite.width / 2;
+        this.feverSprite.anchorOffsetY = this.feverSprite.height / 2;
+        this.feverSprite.x = GameMain.GetInstance().GetStageWidth() / 2;
+        this.feverSprite.y = 400;
+        GameMain.GetInstance().AdapteDisplayObject(this.feverSprite);
     }
 
     public Init()
@@ -45,6 +55,32 @@ class FeverItem extends egret.DisplayObjectContainer
     public SetFeverControl(feverControl:FeverControl)
     {
         this.feverControl = feverControl;
+    }
+
+    public ShowFeverSprite()
+    {
+        this.feverSprite.scaleX = 0;
+        this.feverSprite.scaleY = 0;
+        this.addChild(this.feverSprite);
+
+        var param = new PaScalingParam;
+        param.displayObj = this.feverSprite;
+        param.duration = 500;
+        param.targetScaleX = 1;
+        param.targetScaleY = 1;
+        var event = new PlayProgramAnimationEvent();
+        event.param = param;
+        GameMain.GetInstance().DispatchEvent(event);
+
+        this.feverSpriteTimer = new egret.Timer(1500, 1);
+        this.feverSpriteTimer.addEventListener(egret.TimerEvent.TIMER, this.HideFeverSprite, this);
+        this.feverSpriteTimer.start();
+    }
+
+    private HideFeverSprite()
+    {
+        this.removeChild(this.feverSprite);
+        this.feverSpriteTimer = null;
     }
 
     public Update(delta:number)

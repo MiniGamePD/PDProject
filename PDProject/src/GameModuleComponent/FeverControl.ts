@@ -49,6 +49,10 @@ class FeverControl extends GameModuleComponentBase
             //play fever bgm
             var playSoundEvent = new PlaySoundEvent("fever_bgm_mp3", 1);
             GameMain.GetInstance().DispatchEvent(playSoundEvent);
+            //show fever sprite
+            var hudEvent = new HUDEvent();
+            hudEvent.eventType = HUDEventType.ShowFeverSprite;
+            GameMain.GetInstance().DispatchEvent(hudEvent);
         }
     }
 

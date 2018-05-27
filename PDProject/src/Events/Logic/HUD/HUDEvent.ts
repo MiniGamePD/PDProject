@@ -17,4 +17,5 @@ enum HUDEventType
     RefreshControlablePreview,
     PlayPreviewDropDownAnim,
     SetFeverControl,
+    ShowFeverSprite,
 }
