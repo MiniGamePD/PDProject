@@ -1,7 +1,7 @@
 {
 	"groups": [
 		{
-			"keys": "bgm_mp3,pd_res_json,Boom_mp3,Eliminate_mp3,EliminateRow_mp3,OnDown_mp3,VirusEliminate_mp3,EnemySinisterSmile1_mp3,EnemySinisterSmile2_mp3,EnemySinisterSmile3_mp3,EnemySinisterSmile4_mp3,VirusBorn_mp3,BossSkill_mp3,GameOver_mp3,Go_mp3,Ready_mp3,Particle_Boom_Bomb_json,Particle_Boom_json,Particle_Boss_Skill_Fly_json,huojian_json,Particle_Virus_Boom_json,DB_Boom_Bomb_ske_json,DB_Boom_Bomb_tex_json,DB_Boom_Bomb_tex_png,Pill_Boom_ske_json,Pill_Boom_tex_json,Pill_Boom_tex_png",
+			"keys": "bgm_mp3,pd_res_json,Boom_mp3,Eliminate_mp3,EliminateRow_mp3,OnDown_mp3,VirusEliminate_mp3,EnemySinisterSmile1_mp3,EnemySinisterSmile2_mp3,EnemySinisterSmile3_mp3,EnemySinisterSmile4_mp3,VirusBorn_mp3,BossSkill_mp3,GameOver_mp3,Go_mp3,Ready_mp3,Particle_Boom_Bomb_json,Particle_Boom_json,Particle_Boss_Skill_Fly_json,huojian_json,Particle_Virus_Boom_json,DB_Boom_Bomb_ske_json,DB_Boom_Bomb_tex_json,DB_Boom_Bomb_tex_png,Pill_Boom_ske_json,Pill_Boom_tex_json,Pill_Boom_tex_png,fever_bgm_mp3",
 			"name": "preload"
 		}
 	],
@@ -156,6 +156,11 @@
 			"url": "assets/DB_Animation/Pill_Boom_tex.png",
 			"type": "image",
 			"name": "Pill_Boom_tex_png"
+		},
+		{
+			"name": "fever_bgm_mp3",
+			"type": "sound",
+			"url": "assets/fever_bgm.mp3"
 		}
 	]
 }
