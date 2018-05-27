@@ -38,6 +38,17 @@ class FeverControl extends GameModuleComponentBase
             this.feverTimer = new egret.Timer(FeverTime, 1);
             this.feverTimer.addEventListener(egret.TimerEvent.TIMER, this.FeverEnd, this);
             this.feverTimer.start();
+
+            //fade out bgm
+            var soundControlEvent = new SoundControlEvent();
+            var soundModule:ISoundModule = <ISoundModule>GameMain.GetInstance().GetModule(ModuleType.SOUND);
+            soundControlEvent.channel = soundModule.GetCurrentBgmChannel();
+            soundControlEvent.controlType = SoundControlType.FadeOut;
+            soundControlEvent.controlParam = 1 / 1000;
+            GameMain.GetInstance().DispatchEvent(soundControlEvent);
+            //play fever bgm
+            var playSoundEvent = new PlaySoundEvent("fever_bgm_mp3", 1);
+            GameMain.GetInstance().DispatchEvent(playSoundEvent);
         }
     }
 
@@ -50,6 +61,14 @@ class FeverControl extends GameModuleComponentBase
         var feverEvent = new FeverEvent();
         feverEvent.feverBegin = false; 
         GameMain.GetInstance().DispatchEvent(feverEvent);
+
+        //fade in bgm
+        var soundControlEvent = new SoundControlEvent();
+        var soundModule:ISoundModule = <ISoundModule>GameMain.GetInstance().GetModule(ModuleType.SOUND);
+        soundControlEvent.channel = soundModule.GetCurrentBgmChannel();
+        soundControlEvent.controlType = SoundControlType.FadeIn;
+        soundControlEvent.controlParam = 1 / 1000;
+        GameMain.GetInstance().DispatchEvent(soundControlEvent);
     }
 
     public Update(deltaTime:number)

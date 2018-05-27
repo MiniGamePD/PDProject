@@ -76,13 +76,6 @@ class LobbyView extends GameView
     {
         egret.log("OnClickStartGame");
 
-        // var event = new SoundControlEvent();
-        // var soundModule:ISoundModule = <ISoundModule>GameMain.GetInstance().GetModule(ModuleType.SOUND);
-        // event.channel = soundModule.GetCurrentBgmChannel();
-        // event.controlType = SoundControlType.FadeOut;
-        // event.controlParam = 1 / 1000;
-        // GameMain.GetInstance().DispatchEvent(event);
-
         GameMain.GetInstance().SwitchGameState(GameStateType.Match);
     }
 
