@@ -27,6 +27,7 @@ interface IModuleMgr {
 
 enum ModuleType{
 	RES = 0,
+	LOADING,
 	INPUT,
 	SOUND,
 	PROGRAM_ANIMATION,
