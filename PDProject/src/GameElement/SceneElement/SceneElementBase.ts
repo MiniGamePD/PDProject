@@ -146,7 +146,7 @@ abstract class SceneElementBase
     
     public PlayEliminateAnim()
     {
-        this.PlayParticalEff();
+        this.PlayBoomEffect();
         this.PlayScaling();
     }
 
@@ -171,6 +171,20 @@ abstract class SceneElementBase
         param.duration = 100;
         param.targetScaleX = 0;
         param.targetScaleY = 0;
+        var event = new PlayProgramAnimationEvent();
+        event.param = param;
+        GameMain.GetInstance().DispatchEvent(event);
+    }
+
+    protected PlayBoomEffect()
+    {
+        var param = new PaPlayDBAnimationParam;
+        param.resName = "Pill_Boom";
+        param.animationName = "Pill_Boom";
+        // param.duration = 750;
+        param.playTimes = 1;
+        param.posX = Tools.ElementPosToGameStagePosX(this.posx);
+        param.posY = Tools.ElementPosToGameStagePosY(this.posy);
         var event = new PlayProgramAnimationEvent();
         event.param = param;
         GameMain.GetInstance().DispatchEvent(event);
@@ -204,6 +218,7 @@ abstract class SceneElementBase
         headPic.anchorOffsetY = headPic.height / 2;
         headPic.x = startX;
         headPic.y = startY;
+        GameMain.GetInstance().AdapteDisplayObjectScale(headPic);
         GameMain.GetInstance().GetAdaptedStageContainer().addChild(headPic);
         var movingParam = new PaMovingParam;
         movingParam.displayObj = headPic;

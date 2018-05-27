@@ -19,7 +19,7 @@ class SceneRowEliminater extends SceneElementBase
 
     public PlayEliminateAnim()
     {
-        this.PlayParticalEff();
+        // this.PlayParticalEff();
         this.PlayScaling();
         this.MoveOneSide(Direction.Left);
         this.MoveOneSide(Direction.Right);

@@ -45,6 +45,7 @@ class PaMovePartical extends ProgramAnimationBase<PaMoveParticalParam>
 			this.particleSys.y = this.param.stratPosY;
 			this.particleSys.rotation = Tools.GetRotateAngle(this.param.stratPosX, this.param.stratPosY,
 											 this.param.endPosX, this.param.endPosY);
+			// GameMain.GetInstance().AdapteDisplayObjectScale(this.particleSys);
 			GameMain.GetInstance().GetAdaptedStageContainer().addChild(this.particleSys);
 			this.particleSys.start();
 

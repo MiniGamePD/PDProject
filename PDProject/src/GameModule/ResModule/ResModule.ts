@@ -1,6 +1,6 @@
 class ResModule extends ModuleBase implements IResModule
 {
-	
+	private readonly DragonBonesRes: string[] = ["DB_Boom_Bomb", "Pill_Boom"]
 	public Init(): boolean
 	{
 		this.isForeground = true;
@@ -56,9 +56,17 @@ class ResModule extends ModuleBase implements IResModule
 	
 	public InitDragonBonesData()
 	{
-		var dragonbonesData = RES.getRes("DB_Boom_Bomb_ske_json");
-		var textureData = RES.getRes("DB_Boom_Bomb_tex_json");
-		var texture = RES.getRes("DB_Boom_Bomb_tex_png");
+		for (var i = 0; i < this.DragonBonesRes.length; ++i)
+		{
+			this.LoadDragonBonesData(this.DragonBonesRes[i]);
+		}
+	}
+
+	private LoadDragonBonesData(resName: string)
+	{
+		var dragonbonesData = RES.getRes(resName + "_ske_json");
+		var textureData = RES.getRes(resName + "_tex_json");
+		var texture = RES.getRes(resName + "_tex_png");
 		if (dragonbonesData != null
 			&& textureData != null
 			&& texture != null)
