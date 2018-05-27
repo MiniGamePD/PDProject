@@ -254,7 +254,7 @@ abstract class SceneElementBase
         || this.bubbleShield == null)
         {
             var res:IResModule = <IResModule>GameMain.GetInstance().GetModule(ModuleType.RES);
-            this.bubbleShield = res.CreateBitmapByName("pd_res_json.Particle_Boom_Bomb");
+            this.bubbleShield = res.CreateBitmapByName("pd_res_json.Shield");
             this.bubbleShield.width = Tools.MatchViewElementWidth;
             this.bubbleShield.height = Tools.MatchViewElementHeight;
             this.bubbleShield.anchorOffsetX = Tools.MatchViewElementWidth / 2;

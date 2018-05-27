@@ -161,7 +161,7 @@ class BossSkillAnimation
 	private AddMovePartical(fromX: number, fromY: number, toX: number, toY: number)
 	{
 		var param = new PaMoveParticalParam;
-	    param.textureName = "Particle_Boss_Skill_Fly";
+	    param.textureName = "Pill_Single_Blue";
         param.jsonName = "Particle_Boss_Skill_Fly";
 		param.duration = 2000;
 		param.flyDuration = 1000;
