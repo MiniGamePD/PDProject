@@ -1,10 +1,10 @@
 class ReadyGoItem extends egret.DisplayObjectContainer
 {
-    private ready:egret.TextField;
-    private go:egret.TextField;
+    private ready:egret.Bitmap;
+    private go:egret.Bitmap;
     private timer:egret.Timer;
 
-    public constructor(x:number, y:number, width:number, height:number, rot:number)
+    public constructor(x:number, y:number, width:number, height:number)
     {
         super();
 
@@ -12,24 +12,18 @@ class ReadyGoItem extends egret.DisplayObjectContainer
         this.y = y;
         this.width = width;
         this.height = height;
-        this.anchorOffsetX = width/2;
-        this.anchorOffsetY = height/2;
-        this.rotation = rot;
 
-        this.ready = new egret.TextField();
-        this.go = new egret.TextField();
-        this.ready.x = this.ready.y = this.go.x = this.go.y = 0;
-        this.ready.text = "Ready ~";
-        this.go.text = "Go !";
-        this.ready.fontFamily = this.go.fontFamily = "Impact";
-        this.ready.size = this.go.size = 60;
-        this.ready.textColor = this.go.textColor = 0xFF8D00;
-        this.ready.width = this.go.width = width;
-        this.ready.height = this.go.height = height;
-        this.ready.textAlign = this.go.textAlign = egret.HorizontalAlign.CENTER;
-        this.ready.verticalAlign = this.go.verticalAlign = egret.VerticalAlign.MIDDLE;
-        GameMain.GetInstance().AdaptTextField(this.ready);
-        GameMain.GetInstance().AdaptTextField(this.go);
+        var res:IResModule = <IResModule>GameMain.GetInstance().GetModule(ModuleType.RES);
+        this.ready = res.CreateBitmapByName("pd_res_json.ready");
+        this.go = res.CreateBitmapByName("pd_res_json.go");
+        this.ready.anchorOffsetX = this.ready.width / 2;
+        this.ready.anchorOffsetY = this.ready.height / 2;
+        this.go.anchorOffsetX = this.go.width / 2;
+        this.go.anchorOffsetY = this.go.height / 2;
+        this.ready.x = this.go.x = GameMain.GetInstance().GetStageWidth() / 2;
+        this.ready.y = this.go.y = 400;
+        GameMain.GetInstance().AdapteDisplayObject(this.ready);
+        GameMain.GetInstance().AdapteDisplayObject(this.go);
     }
 
     public Play()

@@ -8,7 +8,7 @@ class MatchHUD extends egret.DisplayObjectContainer
 
     public Init()
     {
-        this.readyGo = new ReadyGoItem(this.width/2, this.height/4, 200, 200, -10);
+        this.readyGo = new ReadyGoItem(0,0,this.width,this.height);
         this.addChild(this.readyGo);
 
         this.score = new MatchScoreItem();
