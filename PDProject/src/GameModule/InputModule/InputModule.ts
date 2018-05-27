@@ -11,12 +11,15 @@ class InputModule extends ModuleBase implements IInputModule {
 
 	private mInputEvent: InputEvent;
 
+	private continueDown:boolean;
+
 	public Init(): boolean {
 		this.isForeground = true;
+		this.continueDown = false;
 		this.mInputEvent = new InputEvent(InputKey.Max, 0, 0);
 		let stageWidth = GameMain.GetInstance().GetAdaptedStageWidth();
 		let stageHeight = GameMain.GetInstance().GetAdaptedStageHeight();
-		this.mMoveEventMinDisX = stageWidth * INPUT_MOVE_EVENT_DIS_RATE;
+		this.mMoveEventMinDisX = stageWidth * INPUT_MOVE_EVENT_DIS_RATE * 1.5;
 		this.mMoveEventMinDisY = stageHeight * INPUT_MOVE_EVENT_DIS_RATE;
 		this.RegisterTouchEvent();
 		this.InitKey();
@@ -51,23 +54,33 @@ class InputModule extends ModuleBase implements IInputModule {
 	}
 
 	private RegisterTouchEvent(): void {
-		GameMain.GetInstance().AddEventListener(egret.TouchEvent.TOUCH_BEGIN, this.OnTouchBegin, this)
-		GameMain.GetInstance().AddEventListener(egret.TouchEvent.TOUCH_MOVE, this.OnTouchMove, this)
-		GameMain.GetInstance().AddEventListener(egret.TouchEvent.TOUCH_TAP, this.OnTouchTap, this)
+		GameMain.GetInstance().AddEventListener(egret.TouchEvent.TOUCH_BEGIN, this.OnTouchBegin, this);
+		GameMain.GetInstance().AddEventListener(egret.TouchEvent.TOUCH_MOVE, this.OnTouchMove, this);
+		GameMain.GetInstance().AddEventListener(egret.TouchEvent.TOUCH_TAP, this.OnTouchTap, this);
+		GameMain.GetInstance().AddEventListener(egret.TouchEvent.TOUCH_END, this.OnTouchEnd, this);
 	}
 
 	private UnRegisterTouchEvent(): void {
-		GameMain.GetInstance().RemoveEventListener(egret.TouchEvent.TOUCH_BEGIN, this.OnTouchBegin, this)
-		GameMain.GetInstance().RemoveEventListener(egret.TouchEvent.TOUCH_MOVE, this.OnTouchMove, this)
-		GameMain.GetInstance().RemoveEventListener(egret.TouchEvent.TOUCH_TAP, this.OnTouchTap, this)
+		GameMain.GetInstance().RemoveEventListener(egret.TouchEvent.TOUCH_BEGIN, this.OnTouchBegin, this);
+		GameMain.GetInstance().RemoveEventListener(egret.TouchEvent.TOUCH_MOVE, this.OnTouchMove, this);
+		GameMain.GetInstance().RemoveEventListener(egret.TouchEvent.TOUCH_TAP, this.OnTouchTap, this);
+		GameMain.GetInstance().RemoveEventListener(egret.TouchEvent.TOUCH_END, this.OnTouchEnd, this);
 	}
 
 	private OnTouchBegin(evt: egret.TouchEvent): void {
 		if (evt.type == egret.TouchEvent.TOUCH_BEGIN) {
 			this.mTouchBeginX = evt.stageX;
 			this.mTouchBeginY = evt.stageY;
+			this.continueDown = false;
 			// egret.log("OnTouchBegin(" + evt.stageX + "," + evt.stageY + ")");
 			this.mLastTouchEvent = egret.TouchEvent.TOUCH_BEGIN;
+		}
+	}
+
+	private OnTouchEnd(evt: egret.TouchEvent): void {
+		if (evt.type == egret.TouchEvent.TOUCH_END) {
+			this.continueDown = false;
+			// egret.log("OnTouchBegin(" + evt.stageX + "," + evt.stageY + ")");
 		}
 	}
 
@@ -80,16 +93,18 @@ class InputModule extends ModuleBase implements IInputModule {
 
 			if (deltaX >= this.mMoveEventMinDisX) {
 				this.InputKey(InputKey.Right, evt.stageX, evt.stageY);
+				this.continueDown = false;
 				hasInput = true;
 			}
 
 			if (deltaX <= -this.mMoveEventMinDisX) {
 				this.InputKey(InputKey.Left, evt.stageX, evt.stageY);
+				this.continueDown = false;
 				hasInput = true;
 			}
 
 			if (deltaY >= this.mMoveEventMinDisY) {
-				this.InputKey(InputKey.Down, evt.stageX, evt.stageY);
+				this.continueDown = true;
 				hasInput = true;
 			}
 
@@ -118,6 +133,10 @@ class InputModule extends ModuleBase implements IInputModule {
 
 	public Update(deltaTime: number): void {
 		this.ClearKey();
+		if(this.continueDown)
+		{
+			this.InputKey(InputKey.Down, 0, 0);
+		}
 	}
 
 	public Release(): void {
