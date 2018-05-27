@@ -138,6 +138,11 @@ abstract class SceneElementBase
     {
         return this.owner.HasShield();
     } 
+
+    public AddShield(shield:number)
+    {
+        this.owner.AddShield(shield);
+    }
     
     public PlayEliminateAnim()
     {

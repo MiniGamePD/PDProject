@@ -163,7 +163,8 @@ class MatchModule extends GameViewModule
 		this.scene.SetEliminateMethodNext(event.specialEliminateMethod.methodType, 
 			event.specialEliminateMethod.specificColor,
 			event.specialEliminateMethod.specificRegion,
-			event.specialEliminateMethod.eliminateElementType);
+			event.specialEliminateMethod.eliminateElementType,
+			event.specialEliminateMethod.froceKill);
 		this.scene.SetNextEliminateUnMove();			
 		this.scene.Work();
 	}

@@ -183,9 +183,17 @@ class Scene extends GameModuleComponentBase
     }
 
     // 设置下一次消除方法
-    public SetEliminateMethodNext(methodType: EliminateMethodType, color?: GameElementColor, region?: number[], elementType?: EliminateElementType)
+    public SetEliminateMethodNext(methodType: EliminateMethodType, color?: GameElementColor, region?: number[], elementType?: EliminateElementType, froceKill?: boolean)
     {
         this.eliminateMethod.methodType = methodType;
+        if (froceKill != undefined)
+        {
+            this.eliminateMethod.froceKill = froceKill;
+        }
+        else
+        {
+            this.eliminateMethod.froceKill = false;
+        }
 
         if (elementType != null)
             this.eliminateMethod.eliminateElementType = elementType;
@@ -372,7 +380,7 @@ class Scene extends GameModuleComponentBase
             var isPlaceHolder = this.IsSpecifiedTypeElement(element, SceneElementType.PlaceHolder);
 
             if (!isPlaceHolder
-                && !element.IsOwnerAlive())
+            && (!element.IsOwnerAlive() || this.eliminateMethod.froceKill))
             {
                 element.UnbindAllElement();
                 this.eliminateInfo.EliminatedElements.push(element);
@@ -1007,10 +1015,23 @@ class Scene extends GameModuleComponentBase
         this.bossSkillInfo.hasInfo = true;
         this.bossSkillInfo.skillCaster = skillInfo.skillCaster;
         this.bossSkillInfo.addHealthElement = skillInfo.addHealthElement;
+        this.AddShield(this.bossSkillInfo.addHealthElement);
         this.bossSkillInfo.elementTransList = skillInfo.elementTransList;
         this.ChangeElements(this.bossSkillInfo.elementTransList);
         this.bossSkillInfo.elementChangeColorList = skillInfo.elementChangeColorList;
         this.ChangElementsColor(this.bossSkillInfo.elementChangeColorList);
+    }
+
+    // 添加护盾
+    private AddShield(elementList: SceneElementBase[])
+    {
+        if (elementList != null)
+        {
+            for (var i = 0; i < elementList.length; ++i)
+            {
+                elementList[i].AddShield(1);
+            }
+        }
     }
 
     // 替换场景中的元素
