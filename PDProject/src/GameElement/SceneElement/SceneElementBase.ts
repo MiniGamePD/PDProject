@@ -268,6 +268,7 @@ abstract class SceneElementBase
         if(this.bubbleShield != undefined
         && this.bubbleShield != null)
         {
+            this.PlayBoomEffect();
             this.accessory.removeChild(this.bubbleShield);
             this.bubbleShield = null;
         }
