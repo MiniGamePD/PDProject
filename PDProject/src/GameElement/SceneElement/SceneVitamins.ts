@@ -36,18 +36,13 @@ class SceneVitamins extends SceneElementBase
         return path;
     }
 
-    public PlayEliminateAnim()
-    {
-        this.PlayBoomEffect();
-        this.PlayScaling();
-    }
-
-    private PlayBoomEffect()
+    protected PlayBoomEffect()
     {
         var param = new PaPlayDBAnimationParam;
         param.resName = "DB_Boom_Bomb";
         param.animationName = "Boom1";
-        param.duration = 500;
+        param.scaleX = 1.8;
+        param.scaleY = 1.8;
         param.posX = Tools.ElementPosToGameStagePosX(this.posx);
         param.posY = Tools.ElementPosToGameStagePosY(this.posy);
         var event = new PlayProgramAnimationEvent();

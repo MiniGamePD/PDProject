@@ -304,7 +304,10 @@ class MatchView extends GameView
         var param = new PaPlayDBAnimationParam;
         param.resName = "DB_Boom_Bomb";
         param.animationName = "Boom1";
-        param.duration = 500;
+        // param.duration = 750;
+        param.playTimes = 1;
+        param.scaleX = 1.8;
+        param.scaleY = 1.8;
         param.posX = Tools.ElementPosToGameStagePosX(1);
         param.posY = Tools.ElementPosToGameStagePosY(1);
         var event = new PlayProgramAnimationEvent();

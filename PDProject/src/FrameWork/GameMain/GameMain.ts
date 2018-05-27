@@ -202,6 +202,14 @@ class GameMain implements IGameMain {
 		item.anchorOffsetY = item.anchorOffsetY * yFactor;
 	}
 
+	public AdapteDisplayObjectScale(item:egret.DisplayObject)
+	{
+		var xFactor = this.GetAdaptedStageWidth() / standerScreenWidth;
+		var yFactor = this.GetAdaptedStageHeight() / standerScreenHeight;
+		item.scaleX = item.scaleX * xFactor;
+		item.scaleY = item.scaleY * yFactor;
+	}
+
 	public AdaptTextField(item:egret.TextField)
 	{
 		this.AdapteDisplayObject(item);

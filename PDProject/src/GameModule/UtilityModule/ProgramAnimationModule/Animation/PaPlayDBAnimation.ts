@@ -8,6 +8,8 @@ class PaPlayDBAnimationParam extends ProgramAnimationParamBase
 	public playTimes: number; //playTimes - 循环播放次数。 [-1: 使用动画数据默认值, 0: 无限循环播放, [1~N]: 循环播放 N 次] （默认: -1）
 	public posX: number; 		// 坐标X
 	public posY: number; 		// 坐标Y
+	public scaleX: number;    // 缩放
+	public scaleY: number;    // 缩放
 
 	public constructor()
 	{
@@ -18,12 +20,15 @@ class PaPlayDBAnimationParam extends ProgramAnimationParamBase
 		this.playTimes = -1;
 		this.posX = 0;
 		this.posY = 0;
+		this.scaleX = 1;
+		this.scaleY = 1;
 	}
 }
 
 class PaPlayDBAnimation extends ProgramAnimationBase<PaPlayDBAnimationParam>
 {
 	private armatureDisplay: dragonBones.EgretArmatureDisplay;
+	private animationState: dragonBones.AnimationState;
 	protected OnInit()
 	{
 		let egretFactory: dragonBones.EgretFactory = dragonBones.EgretFactory.factory;
@@ -33,7 +38,10 @@ class PaPlayDBAnimation extends ProgramAnimationBase<PaPlayDBAnimationParam>
 			GameMain.GetInstance().GetAdaptedStageContainer().addChild(this.armatureDisplay);
 			this.armatureDisplay.x = this.param.posX;
 			this.armatureDisplay.y = this.param.posY;
-			this.armatureDisplay.animation.play(this.param.animationName, 1);
+			this.armatureDisplay.scaleX = this.param.scaleX; 
+			this.armatureDisplay.scaleY = this.param.scaleY; 
+			GameMain.GetInstance().AdapteDisplayObjectScale(this.armatureDisplay);
+			this.animationState = this.armatureDisplay.animation.play(this.param.animationName, 1);
 		}
 	}
 
@@ -51,11 +59,21 @@ class PaPlayDBAnimation extends ProgramAnimationBase<PaPlayDBAnimationParam>
 			this.armatureDisplay.parent.removeChild(this.armatureDisplay);
 			this.armatureDisplay = null;
 		}
+		this.animationState = null;
 	}
 
 	public IsFinish()
 	{
-		return this.runningTime >= this.param.duration;
+		if (this.param.playTimes > 0
+		&& this.animationState != undefined
+		&& this.animationState != null)
+		{
+			return !this.animationState.isPlaying;
+		}
+		else
+		{
+			return this.runningTime >= this.param.duration;
+		}
 	}
 
 }
