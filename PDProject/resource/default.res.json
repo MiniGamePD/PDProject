@@ -1,7 +1,7 @@
 {
 	"groups": [
 		{
-			"keys": "bgm_mp3,pd_res_json,Boom_mp3,Eliminate_mp3,EliminateRow_mp3,OnDown_mp3,VirusEliminate_mp3,EnemySinisterSmile1_mp3,EnemySinisterSmile2_mp3,EnemySinisterSmile3_mp3,EnemySinisterSmile4_mp3,VirusBorn_mp3,BossSkill_mp3,GameOver_mp3,Go_mp3,Ready_mp3,Particle_Boom_Bomb_json,Particle_Boom_json,Particle_Boss_Skill_Fly_json,huojian_json,Particle_Virus_Boom_json,DB_Boom_Bomb_ske_json,DB_Boom_Bomb_tex_json,DB_Boom_Bomb_tex_png,Pill_Boom_ske_json,Pill_Boom_tex_json,Pill_Boom_tex_png",
+			"keys": "bgm_mp3,pd_res_json,Boom_mp3,Eliminate_mp3,EliminateRow_mp3,OnDown_mp3,VirusEliminate_mp3,EnemySinisterSmile1_mp3,EnemySinisterSmile2_mp3,EnemySinisterSmile3_mp3,EnemySinisterSmile4_mp3,VirusBorn_mp3,BossSkill_mp3,GameOver_mp3,Go_mp3,Ready_mp3,Particle_Boom_Bomb_json,Particle_Boom_json,Particle_Boss_Skill_Fly_json,huojian_json,Particle_Virus_Boom_json,DB_Boom_Bomb_ske_json,DB_Boom_Bomb_tex_json,DB_Boom_Bomb_tex_png,Pill_Boom_ske_json,Pill_Boom_tex_json,Pill_Boom_tex_png,Virus_ske_json,Virus_tex_png,Virus_tex_json",
 			"name": "preload"
 		}
 	],
@@ -25,7 +25,7 @@
 			"url": "assets/pd_res.json",
 			"type": "sheet",
 			"name": "pd_res_json",
-			"subkeys": "BackGround,Boss_Blue,Boss_Red,Boss_Yellow,Bottle2,ColunmEliminater,CrossEliminater,Pill_Bg,Pill_Blue,Pill_Red,Pill_Single_Blue,Pill_Single_Red,Pill_Single_Yellow,Pill_Yellow,RowEliminater,Shield,Virus_Blue,Virus_Red,Virus_Yellow,Vitamins_Blue,Vitamins_Red,Vitamins_Yellow,gezi,huojian,huojian1"
+			"subkeys": "0,1,2,3,4,5,6,7,8,9,BackGround,Boss_Blue,Boss_Red,Boss_Yellow,Bottle2,ColunmEliminater,CrossEliminater,Pill_Bg,Pill_Blue,Pill_Red,Pill_Single_Blue,Pill_Single_Red,Pill_Single_Yellow,Pill_Yellow,RowEliminater,Shield,Virus_Blue,Virus_Red,Virus_Yellow,Vitamins_Blue,Vitamins_Red,Vitamins_Yellow,cool,fever,gezi,go,good,huojian,huojian1,lianxiao,lianxiao0,lianxiao1,lianxiao2,lianxiao3,lianxiao4,lianxiao5,lianxiao6,lianxiao7,lianxiao8,lianxiao9,perfect,ready"
 		},
 		{
 			"url": "assets/bgm.mp3",
@@ -156,6 +156,21 @@
 			"url": "assets/DB_Animation/Pill_Boom_tex.png",
 			"type": "image",
 			"name": "Pill_Boom_tex_png"
+		},
+		{
+			"url": "assets/DB_Animation/Virus_ske.json",
+			"type": "json",
+			"name": "Virus_ske_json"
+		},
+		{
+			"url": "assets/DB_Animation/Virus_tex.png",
+			"type": "image",
+			"name": "Virus_tex_png"
+		},
+		{
+			"url": "assets/DB_Animation/Virus_tex.json",
+			"type": "json",
+			"name": "Virus_tex_json"
 		}
 	]
 }
