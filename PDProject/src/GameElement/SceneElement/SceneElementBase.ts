@@ -5,7 +5,7 @@ abstract class SceneElementBase
     public posy: number = 0;
     public canDrop: boolean = true;
     public color: GameElementColor;
-    public renderer: egret.Bitmap;
+    public renderer: egret.DisplayObject;
     public dirty: boolean;
     public hasAddToDisplayList: boolean;
     protected resModule: IResModule;
@@ -24,6 +24,14 @@ abstract class SceneElementBase
         this.accessory = new egret.DisplayObjectContainer();    
         if(this.owner.HasShield())
             this.PlayShieldCreateAnim();
+    }
+
+    public Adapte(width: number, height: number)
+    {
+        this.renderer.width = width;
+        this.renderer.height = height;
+        this.renderer.anchorOffsetX = Tools.MatchViewElementWidth / 2;
+        this.renderer.anchorOffsetY = Tools.MatchViewElementHeight / 2;
     }
 
     public ElementType(): SceneElementType
@@ -59,7 +67,11 @@ abstract class SceneElementBase
         let texture: egret.Texture;
         let path = this.GetResPathByColor();
         texture = this.GetTexture(path);
-		this.renderer.texture = texture;
+        var bitMap = (<egret.Bitmap>this.renderer)
+        if (bitMap != null)
+        {
+            bitMap.texture = texture;
+        }
     }
 
     protected abstract GetResPathByColor():string;
