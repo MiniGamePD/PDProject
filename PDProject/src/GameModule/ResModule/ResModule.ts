@@ -1,6 +1,6 @@
 class ResModule extends ModuleBase implements IResModule
 {
-	private readonly DragonBonesRes: string[] = ["DB_Boom_Bomb", "Pill_Boom"]
+	private readonly DragonBonesRes: string[] = ["DB_Boom_Bomb", "Pill_Boom", "Virus"]
 	public Init(): boolean
 	{
 		this.isForeground = true;

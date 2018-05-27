@@ -138,10 +138,8 @@ class MatchView extends GameView
                         //renderer == null，应该是一个placeholder
                         if(element.renderer != null)
                         {
-                            element.renderer.width = Tools.MatchViewElementWidth * element.BlockWidth();
-                            element.renderer.height = Tools.MatchViewElementHeight * element.BlockHeight();
-                            element.renderer.anchorOffsetX = Tools.MatchViewElementWidth / 2;
-                            element.renderer.anchorOffsetY = Tools.MatchViewElementHeight / 2;
+                            element.Adapte(Tools.MatchViewElementWidth * element.BlockWidth(), 
+                                         Tools.MatchViewElementHeight * element.BlockHeight());
                             this.mBattleGround.addChild(element.renderer);
                             if(element.accessory != undefined)
                                 this.mBattleGround.addChild(element.accessory);                        

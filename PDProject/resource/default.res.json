@@ -1,7 +1,7 @@
 {
 	"groups": [
 		{
-			"keys": "bgm_mp3,pd_res_json,Boom_mp3,Eliminate_mp3,EliminateRow_mp3,OnDown_mp3,VirusEliminate_mp3,EnemySinisterSmile1_mp3,EnemySinisterSmile2_mp3,EnemySinisterSmile3_mp3,EnemySinisterSmile4_mp3,VirusBorn_mp3,BossSkill_mp3,GameOver_mp3,Go_mp3,Ready_mp3,Particle_Boom_Bomb_json,Particle_Boom_json,Particle_Boss_Skill_Fly_json,huojian_json,Particle_Virus_Boom_json,DB_Boom_Bomb_ske_json,DB_Boom_Bomb_tex_json,DB_Boom_Bomb_tex_png,Pill_Boom_ske_json,Pill_Boom_tex_json,Pill_Boom_tex_png,Virus_ske_json,Virus_tex_png,Virus_tex_json,fever_bgm_mp3",
+			"keys": "pd_res_json,DB_Boom_Bomb_ske_json,DB_Boom_Bomb_tex_json,DB_Boom_Bomb_tex_png,Pill_Boom_ske_json,Pill_Boom_tex_json,Pill_Boom_tex_png,Virus_ske_json,Virus_tex_png,Virus_tex_json,bgm_mp3,Boom_mp3,BossSkill_mp3,Eliminate_mp3,EliminateRow_mp3,EnemySinisterSmile1_mp3,EnemySinisterSmile2_mp3,EnemySinisterSmile3_mp3,EnemySinisterSmile4_mp3,fever_bgm_mp3,GameOver_mp3,Go_mp3,OnDown_mp3,Ready_mp3,VirusBorn_mp3,VirusEliminate_mp3,Particle_Boom_Bomb_json,Particle_Boom_json,Particle_Boss_Skill_Fly_json,Particle_Virus_Boom_json,huojian_json,caihong_shinning_json,boss_jineng_json,Boss_jineng_jizhong_ske_json,Boss_jineng_jizhong_tex_json,Boss_jineng_jizhong_tex_png,Boom_shinning_json,Caidai_json,huojian_shinning_json",
 			"name": "preload"
 		}
 	],
@@ -25,107 +25,7 @@
 			"url": "assets/pd_res.json",
 			"type": "sheet",
 			"name": "pd_res_json",
-			"subkeys": "0,1,2,3,4,5,6,7,8,9,BackGround,Boss_Blue,Boss_Red,Boss_Yellow,Bottle2,ColunmEliminater,CrossEliminater,Pill_Bg,Pill_Blue,Pill_Red,Pill_Single_Blue,Pill_Single_Red,Pill_Single_Yellow,Pill_Yellow,RowEliminater,Shield,Virus_Blue,Virus_Red,Virus_Yellow,Vitamins_Blue,Vitamins_Red,Vitamins_Yellow,cool,fever,gezi,go,good,huojian,huojian1,lianxiao,lianxiao0,lianxiao1,lianxiao2,lianxiao3,lianxiao4,lianxiao5,lianxiao6,lianxiao7,lianxiao8,lianxiao9,perfect,ready"
-		},
-		{
-			"url": "assets/bgm.mp3",
-			"type": "sound",
-			"name": "bgm_mp3"
-		},
-		{
-			"url": "assets/Boom.mp3",
-			"type": "sound",
-			"name": "Boom_mp3"
-		},
-		{
-			"url": "assets/Eliminate.mp3",
-			"type": "sound",
-			"name": "Eliminate_mp3"
-		},
-		{
-			"url": "assets/EliminateRow.mp3",
-			"type": "sound",
-			"name": "EliminateRow_mp3"
-		},
-		{
-			"url": "assets/OnDown.mp3",
-			"type": "sound",
-			"name": "OnDown_mp3"
-		},
-		{
-			"url": "assets/VirusEliminate.mp3",
-			"type": "sound",
-			"name": "VirusEliminate_mp3"
-		},
-		{
-			"url": "assets/EnemySinisterSmile1.mp3",
-			"type": "sound",
-			"name": "EnemySinisterSmile1_mp3"
-		},
-		{
-			"url": "assets/EnemySinisterSmile2.mp3",
-			"type": "sound",
-			"name": "EnemySinisterSmile2_mp3"
-		},
-		{
-			"url": "assets/EnemySinisterSmile3.mp3",
-			"type": "sound",
-			"name": "EnemySinisterSmile3_mp3"
-		},
-		{
-			"url": "assets/EnemySinisterSmile4.mp3",
-			"type": "sound",
-			"name": "EnemySinisterSmile4_mp3"
-		},
-		{
-			"url": "assets/VirusBorn.mp3",
-			"type": "sound",
-			"name": "VirusBorn_mp3"
-		},
-		{
-			"url": "assets/BossSkill.mp3",
-			"type": "sound",
-			"name": "BossSkill_mp3"
-		},
-		{
-			"url": "assets/GameOver.mp3",
-			"type": "sound",
-			"name": "GameOver_mp3"
-		},
-		{
-			"url": "assets/Go.mp3",
-			"type": "sound",
-			"name": "Go_mp3"
-		},
-		{
-			"url": "assets/Ready.mp3",
-			"type": "sound",
-			"name": "Ready_mp3"
-		},
-		{
-			"url": "assets/Particle_Boom_Bomb.json",
-			"type": "json",
-			"name": "Particle_Boom_Bomb_json"
-		},
-		{
-			"url": "assets/Particle_Boom.json",
-			"type": "json",
-			"name": "Particle_Boom_json"
-		},
-		{
-			"url": "assets/Particle_Boss_Skill_Fly.json",
-			"type": "json",
-			"name": "Particle_Boss_Skill_Fly_json"
-		},
-		{
-			"url": "assets/huojian.json",
-			"type": "json",
-			"name": "huojian_json"
-		},
-		{
-			"url": "assets/Particle_Virus_Boom.json",
-			"type": "json",
-			"name": "Particle_Virus_Boom_json"
+			"subkeys": "0,1,2,3,4,5,6,7,8,9,BackGround,Boom_shinning,Boss_Blue,Boss_Red,Boss_Yellow,Bottle2,Caidai_Blue,Caidai_Green,Caidai_Red,Caidai_Yellow,Caidai__zise,ColunmEliminater,CrossEliminater,Pill_Bg,Pill_Blue,Pill_Red,Pill_Single_Blue,Pill_Single_Red,Pill_Single_Yellow,Pill_Yellow,RowEliminater,Shield,Virus_Blue,Virus_Red,Virus_Yellow,Vitamins_Blue,Vitamins_Red,Vitamins_Yellow,boss_jineng,caihong_shinning1,caihong_shinning2,caihong_shinning3,cool,fever,gezi,go,good,huojian,huojian1,huojian_shinning,jineng,lianxiao,lianxiao0,lianxiao1,lianxiao2,lianxiao3,lianxiao4,lianxiao5,lianxiao6,lianxiao7,lianxiao8,lianxiao9,perfect,ready"
 		},
 		{
 			"url": "assets/DB_Animation/DB_Boom_Bomb_ske.json",
@@ -173,9 +73,154 @@
 			"name": "Virus_tex_json"
 		},
 		{
-			"url": "assets/fever_bgm.mp3",
+			"url": "assets/Sound/bgm.mp3",
+			"type": "sound",
+			"name": "bgm_mp3"
+		},
+		{
+			"url": "assets/Sound/Boom.mp3",
+			"type": "sound",
+			"name": "Boom_mp3"
+		},
+		{
+			"url": "assets/Sound/BossSkill.mp3",
+			"type": "sound",
+			"name": "BossSkill_mp3"
+		},
+		{
+			"url": "assets/Sound/Eliminate.mp3",
+			"type": "sound",
+			"name": "Eliminate_mp3"
+		},
+		{
+			"url": "assets/Sound/EliminateRow.mp3",
+			"type": "sound",
+			"name": "EliminateRow_mp3"
+		},
+		{
+			"url": "assets/Sound/EnemySinisterSmile1.mp3",
+			"type": "sound",
+			"name": "EnemySinisterSmile1_mp3"
+		},
+		{
+			"url": "assets/Sound/EnemySinisterSmile2.mp3",
+			"type": "sound",
+			"name": "EnemySinisterSmile2_mp3"
+		},
+		{
+			"url": "assets/Sound/EnemySinisterSmile3.mp3",
+			"type": "sound",
+			"name": "EnemySinisterSmile3_mp3"
+		},
+		{
+			"url": "assets/Sound/EnemySinisterSmile4.mp3",
+			"type": "sound",
+			"name": "EnemySinisterSmile4_mp3"
+		},
+		{
+			"url": "assets/Sound/fever_bgm.mp3",
 			"type": "sound",
 			"name": "fever_bgm_mp3"
+		},
+		{
+			"url": "assets/Sound/GameOver.mp3",
+			"type": "sound",
+			"name": "GameOver_mp3"
+		},
+		{
+			"url": "assets/Sound/Go.mp3",
+			"type": "sound",
+			"name": "Go_mp3"
+		},
+		{
+			"url": "assets/Sound/OnDown.mp3",
+			"type": "sound",
+			"name": "OnDown_mp3"
+		},
+		{
+			"url": "assets/Sound/Ready.mp3",
+			"type": "sound",
+			"name": "Ready_mp3"
+		},
+		{
+			"url": "assets/Sound/VirusBorn.mp3",
+			"type": "sound",
+			"name": "VirusBorn_mp3"
+		},
+		{
+			"url": "assets/Sound/VirusEliminate.mp3",
+			"type": "sound",
+			"name": "VirusEliminate_mp3"
+		},
+		{
+			"url": "assets/Particle/Particle_Boom_Bomb.json",
+			"type": "json",
+			"name": "Particle_Boom_Bomb_json"
+		},
+		{
+			"url": "assets/Particle/Particle_Boom.json",
+			"type": "json",
+			"name": "Particle_Boom_json"
+		},
+		{
+			"url": "assets/Particle/Particle_Boss_Skill_Fly.json",
+			"type": "json",
+			"name": "Particle_Boss_Skill_Fly_json"
+		},
+		{
+			"url": "assets/Particle/Particle_Virus_Boom.json",
+			"type": "json",
+			"name": "Particle_Virus_Boom_json"
+		},
+		{
+			"url": "assets/Particle/huojian.json",
+			"type": "json",
+			"name": "huojian_json"
+		},
+		{
+			"url": "assets/Particle/caihong_shinning.json",
+			"type": "json",
+			"name": "caihong_shinning_json"
+		},
+		{
+			"url": "assets/Particle/boss_jineng.json",
+			"type": "json",
+			"name": "boss_jineng_json"
+		},
+		{
+			"url": "assets/DB_Animation/Boss_jineng_jizhong_ske.json",
+			"type": "json",
+			"name": "Boss_jineng_jizhong_ske_json"
+		},
+		{
+			"url": "assets/DB_Animation/Boss_jineng_jizhong_tex.json",
+			"type": "json",
+			"name": "Boss_jineng_jizhong_tex_json"
+		},
+		{
+			"url": "assets/DB_Animation/Boss_jineng_jizhong_tex.png",
+			"type": "image",
+			"name": "Boss_jineng_jizhong_tex_png"
+		},
+		{
+			"url": "assets/Particle/Boom_shinning.json",
+			"type": "json",
+			"name": "Boom_shinning_json"
+		},
+		{
+			"url": "assets/Particle/Caidai.json",
+			"type": "json",
+			"name": "Caidai_json"
+		},
+		{
+			"url": "assets/Particle/huojian_shinning.json",
+			"type": "json",
+			"name": "huojian_shinning_json"
+		},
+		{
+			"url": "assets/DB_Animation/.DS_Store",
+			"type": "bin",
+			"name": "_DS_Store"
 		}
 	]
 }
