@@ -247,21 +247,45 @@ class NpcControl extends GameModuleComponentBase
 
     private PrepareNpcSkillInfo(querySceneInstances:SceneElementBase[])
     {
-        let skillTargetArray:SceneElementBase[] = [];
-            
-        let skillTargetNum = Math.min(querySceneInstances.length, bossSkillTargetNum);
-        while(skillTargetNum > 0)
+        var skillCaster = this.curNpcSkillInfo.skillCaster;
+        var skillTargetArray:SceneElementBase[] = [];
+
+        if(skillCaster.SkillType() == NpcSkillType.AddShieldForVirus)
+        { 
+            var unShieldVirus:SceneElementBase[] = [];
+            for(var i = 0; i < querySceneInstances.length; ++i)
+            {
+                var element = querySceneInstances[i];
+                if(!element.HasShield())
+                {
+                    unShieldVirus.push(element);
+                }
+            }
+
+            var skillTargetNum = Math.min(unShieldVirus.length, bossSkillTargetNum);
+            while(skillTargetNum > 0)
+            {
+                skillTargetNum--;
+                let id = Math.floor(Math.random() * unShieldVirus.length);
+                let sceneElement = unShieldVirus.splice(id, 1)[0];
+                skillTargetArray.push(sceneElement);
+            }
+        }
+        else
         {
-            skillTargetNum--;
-            let id = Math.floor(Math.random() * querySceneInstances.length);
-            let sceneElement = querySceneInstances.splice(id, 1)[0];
-            skillTargetArray.push(sceneElement);
+            var skillTargetNum = Math.min(querySceneInstances.length, bossSkillTargetNum);
+            while(skillTargetNum > 0)
+            {
+                skillTargetNum--;
+                let id = Math.floor(Math.random() * querySceneInstances.length);
+                let sceneElement = querySceneInstances.splice(id, 1)[0];
+                skillTargetArray.push(sceneElement);
+            }
         }
 
         if(skillTargetArray.length > 0)
         {
             //找到了一些元素来施放技能
-            let skillCaster = this.curNpcSkillInfo.skillCaster;
             if(skillCaster.SkillType() == NpcSkillType.AddShieldForVirus)
             {
                 this.curNpcSkillInfo.addHealthElement = skillTargetArray;
