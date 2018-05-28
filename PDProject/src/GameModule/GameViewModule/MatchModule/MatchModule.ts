@@ -6,6 +6,7 @@ class MatchModule extends GameViewModule
 	private npcControl: NpcControl;
 	private matchScore: MatchScore;
 	private feverControl: FeverControl;
+	private comboControl: ComboControl;
 	private gameplayElementFactory:GameplayElementFactory;
 	private controlWorkParam: GameplayControlWorkParam;
 
@@ -17,7 +18,7 @@ class MatchModule extends GameViewModule
 	protected CreateView(): boolean
 	{
 		GameMain.GetInstance().AddEventListener(PlayerControlFinishEvent.EventName, this.StartSceneEliminate, this);
-		GameMain.GetInstance().AddEventListener(SceneEliminateFinishEvent.EventName, this.StartNpcControl, this);
+		GameMain.GetInstance().AddEventListener(SceneEliminateFinishEvent.EventName, this.OnSceneEliminateFinish, this);
 		GameMain.GetInstance().AddEventListener(NpcControlFinishEvent.EventName, this.OnNpcControlFinish, this);
 		GameMain.GetInstance().AddEventListener(GameOverEvent.EventName, this.OnGameOver, this);
 		GameMain.GetInstance().AddEventListener(ReplayGameEvent.EventName, this.OnReplayGame, this);
@@ -43,7 +44,7 @@ class MatchModule extends GameViewModule
 		this.DeInitComponents();
 
 		GameMain.GetInstance().RemoveEventListener(PlayerControlFinishEvent.EventName, this.StartSceneEliminate, this);
-		GameMain.GetInstance().RemoveEventListener(SceneEliminateFinishEvent.EventName, this.StartNpcControl, this);
+		GameMain.GetInstance().RemoveEventListener(SceneEliminateFinishEvent.EventName, this.OnSceneEliminateFinish, this);
 		GameMain.GetInstance().RemoveEventListener(NpcControlFinishEvent.EventName, this.OnNpcControlFinish, this);
 		GameMain.GetInstance().RemoveEventListener(GameOverEvent.EventName, this.OnGameOver, this);
 		GameMain.GetInstance().RemoveEventListener(ReplayGameEvent.EventName, this.OnReplayGame, this);
@@ -67,6 +68,9 @@ class MatchModule extends GameViewModule
 
 		this.feverControl = new FeverControl();
 		this.feverControl.Init();
+
+		this.comboControl = new ComboControl();
+		this.comboControl.Init();
 		
 		this.controlWorkParam = new GameplayControlWorkParam();
 
@@ -86,6 +90,8 @@ class MatchModule extends GameViewModule
 		this.matchScore = null;
 		this.feverControl.Release();
 		this.feverControl = null;
+		this.comboControl.Release();
+		this.comboControl = null;
 	}
 
 	public SwitchForeOrBack(from: GameStateType, to: GameStateType): void
@@ -106,7 +112,7 @@ class MatchModule extends GameViewModule
 	{
 		this.difficulty = 0;
 		this.turn = 0;
-		this.StartNpcControl(null);
+		this.StartNpcControl();
 	}
 
 	private StartSceneEliminate(event: PlayerControlFinishEvent)
@@ -117,7 +123,13 @@ class MatchModule extends GameViewModule
 		this.scene.Work();
 	}
 
-	private StartNpcControl(event: SceneEliminateFinishEvent)
+	private OnSceneEliminateFinish(event: SceneEliminateFinishEvent)
+	{
+		this.comboControl.ResetCombo();	
+		this.StartNpcControl();
+	}
+
+	private StartNpcControl()
 	{
 		this.matchState = MatchState.NpcControl;
 
