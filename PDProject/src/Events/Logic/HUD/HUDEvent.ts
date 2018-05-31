@@ -18,4 +18,6 @@ enum HUDEventType
     PlayPreviewDropDownAnim,
     SetFeverControl,
     ShowFeverSprite,
+    ShowCombo,
+    ShowComboEvaluation,
 }

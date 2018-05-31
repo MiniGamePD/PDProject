@@ -3,8 +3,10 @@ class ComboItem extends egret.DisplayObjectContainer
     private comboSprite:egret.Bitmap;
     private comboNumTenPlace:egret.Bitmap;
     private comboNumOnePlace:egret.Bitmap;
+    private comboEvaluation:egret.Bitmap;
     private res:IResModule;
-    private timer:egret.Timer;
+    private comboTimer:egret.Timer;
+    private evaluationTimer:egret.Timer;
 
     public constructor()
     {
@@ -21,23 +23,13 @@ class ComboItem extends egret.DisplayObjectContainer
 
     public Init()
     {
-        GameMain.GetInstance().AddEventListener(EliminateEvent.EventName, this.OnEliminateHappen, this);
     }
 
     public Release()
     {
-        GameMain.GetInstance().RemoveEventListener(EliminateEvent.EventName, this.OnEliminateHappen, this);
     }
 
-    private OnEliminateHappen(event:EliminateEvent)
-    {
-        if(event.eliminateInfo.EliminateRound >= 1)
-        {
-            this.ShowCombo(event.eliminateInfo.EliminateRound);
-        }
-    }
-
-    private ShowCombo(comboNum:number)
+    public ShowCombo(comboNum:number)
     {
         if(comboNum > 99)
         {
@@ -65,14 +57,14 @@ class ComboItem extends egret.DisplayObjectContainer
         this.addChild(this.comboNumTenPlace);
         this.addChild(this.comboNumOnePlace);
 
-        if(this.timer != null)
+        if(this.comboTimer != null)
         {
-            this.timer.stop();
+            this.comboTimer.stop();
         }
 
-        this.timer = new egret.Timer(1000, 1);
-        this.timer.addEventListener(egret.TimerEvent.TIMER, this.HideCombo, this);
-        this.timer.start();
+        this.comboTimer = new egret.Timer(1000, 1);
+        this.comboTimer.addEventListener(egret.TimerEvent.TIMER, this.HideCombo, this);
+        this.comboTimer.start();
     }
 
     private HideCombo()
@@ -80,6 +72,28 @@ class ComboItem extends egret.DisplayObjectContainer
         this.removeChild(this.comboSprite);
         this.removeChild(this.comboNumTenPlace);
         this.removeChild(this.comboNumOnePlace);
-        this.timer = null;
+        this.comboTimer = null;
+    }
+
+    public ShowEvaluation(evaluation:string)
+    {
+        this.comboEvaluation = this.res.CreateBitmapByName("pd_res_json." + evaluation);
+        this.comboEvaluation.anchorOffsetX = this.comboEvaluation.width / 2;
+        this.comboEvaluation.anchorOffsetY = this.comboEvaluation.height / 2;
+        this.comboEvaluation.x = GameMain.GetInstance().GetStageWidth() / 2;
+        this.comboEvaluation.y = 400;
+        GameMain.GetInstance().AdapteDisplayObject(this.comboEvaluation);
+
+        this.addChild(this.comboEvaluation);
+
+        this.evaluationTimer = new egret.Timer(1000, 1);
+        this.evaluationTimer.addEventListener(egret.TimerEvent.TIMER, this.HideEvaluation, this);
+        this.evaluationTimer.start();
+    }
+
+    private HideEvaluation()
+    {
+        this.removeChild(this.comboEvaluation);
+        this.evaluationTimer = null;
     }
 }

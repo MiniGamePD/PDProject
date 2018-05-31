@@ -90,6 +90,12 @@ class MatchHUD extends egret.DisplayObjectContainer
             case HUDEventType.ShowFeverSprite:
                 this.ShowFeverSprite(event.param);
                 break;
+            case HUDEventType.ShowCombo:
+                this.ShowCombo(event.param);
+                break;
+            case HUDEventType.ShowComboEvaluation:
+                this.ShowComboEvaluation(event.param);
+                break;
             //Add More..
         }
     }
@@ -132,5 +138,17 @@ class MatchHUD extends egret.DisplayObjectContainer
     private ShowFeverSprite(param:any)
     {
         this.fever.ShowFeverSprite();
+    }
+
+    private ShowCombo(param:any)
+    {
+        var comboNum:number = <number>param;
+        this.combo.ShowCombo(comboNum);
+    }
+
+    private ShowComboEvaluation(param:any)
+    {
+        var comboEvaluation:string = <string>param;
+        this.combo.ShowEvaluation(comboEvaluation);
     }
 }
