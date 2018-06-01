@@ -71,6 +71,7 @@ enum EliminateMethodType
 	SpecificColor, //特定颜色
 	SpecificRegion, //特定区域
 	SpecificRegionAndColor, //特定区域的特定颜色
+	MoveUp,  //整体上移
 }
 
 // 要消除的元素类型
@@ -93,6 +94,8 @@ class EliminateMethod
 	public specificColor: GameElementColor; //特定颜色
 
 	public specificRegion: number[]; //特定区域列表
+	
+	public moveUpValue: number; //上移的距离
 
 	public constructor()
 	{

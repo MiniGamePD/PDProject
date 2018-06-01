@@ -172,7 +172,7 @@ class Scene extends GameModuleComponentBase
     public Update(deltaTime: number)
     {
         this.UpdateElement(deltaTime);
-        
+
         if (this.bossSkillInfo != null
             && this.bossSkillInfo.hasInfo)
         {
@@ -201,51 +201,56 @@ class Scene extends GameModuleComponentBase
     }
 
     // 设置下一次消除方法
-    public SetEliminateMethodNext(methodType: EliminateMethodType, color?: GameElementColor, region?: number[], elementType?: EliminateElementType, froceKill?: boolean)
+    public SetEliminateMethodNext(eliminateMethod: EliminateMethod)
     {
-        this.eliminateMethod.methodType = methodType;
-        if (froceKill != undefined)
+        this.eliminateMethod.methodType = eliminateMethod.methodType;
+        if (eliminateMethod.froceKill != undefined)
         {
-            this.eliminateMethod.froceKill = froceKill;
+            this.eliminateMethod.froceKill = eliminateMethod.froceKill;
         }
         else
         {
             this.eliminateMethod.froceKill = false;
         }
 
-        if (elementType != null)
-            this.eliminateMethod.eliminateElementType = elementType;
+        if (eliminateMethod.eliminateElementType != null)
+            this.eliminateMethod.eliminateElementType = eliminateMethod.eliminateElementType;
 
         var hasSetParam = false;
 
-        switch (methodType)
+        switch (eliminateMethod.methodType)
         {
             case EliminateMethodType.SpecificColor:
                 {
-                    if (color != null && color != undefined)
+                    if (eliminateMethod.specificColor != null && eliminateMethod.specificColor != undefined)
                     {
-                        this.eliminateMethod.specificColor = color;
+                        this.eliminateMethod.specificColor = eliminateMethod.specificColor;
                         hasSetParam = true;
                     }
                     break;
                 }
             case EliminateMethodType.SpecificRegion:
                 {
-                    if (region != null && region != undefined)
+                    if (eliminateMethod.specificRegion != null && eliminateMethod.specificRegion != undefined)
                     {
-                        this.eliminateMethod.specificRegion = region;
+                        this.eliminateMethod.specificRegion = eliminateMethod.specificRegion;
                         hasSetParam = true;
                     }
                     break;
                 }
             case EliminateMethodType.SpecificRegionAndColor:
                 {
-                    if (color != null && color != undefined && region != null && region != undefined)
+                    if (eliminateMethod.specificColor != null && eliminateMethod.specificColor != undefined
+                     && eliminateMethod.specificRegion != null && eliminateMethod.specificRegion != undefined)
                     {
-                        this.eliminateMethod.specificColor = color;
-                        this.eliminateMethod.specificRegion = region;
+                        this.eliminateMethod.specificColor = eliminateMethod.specificColor;
+                        this.eliminateMethod.specificRegion = eliminateMethod.specificRegion;
                         hasSetParam = true;
                     }
+                    break;
+                }
+            case EliminateMethodType.MoveUp:
+                {
                     break;
                 }
         }
