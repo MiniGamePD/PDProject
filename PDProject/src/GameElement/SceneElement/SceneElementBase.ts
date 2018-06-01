@@ -74,6 +74,11 @@ abstract class SceneElementBase
         }
     }
 
+    public Update(deltaTime: number)
+    {
+
+    }
+
     protected abstract GetResPathByColor():string;
 
     protected GetTexture(path: string): egret.Texture {

@@ -113,18 +113,18 @@ class Scene extends GameModuleComponentBase
     private InCanEliminateElementList(element: SceneElementBase): boolean
     {
         var result = false;
-		if (this.canEliminateElementList != null)
-		{
-			for (var i = 0; i < this.canEliminateElementList.length; ++i)
-			{
-				if (this.canEliminateElementList[i] == element)
-				{
-					result = true;
-					break;
-				}
-			}
-		}
-		return result;		    
+        if (this.canEliminateElementList != null)
+        {
+            for (var i = 0; i < this.canEliminateElementList.length; ++i)
+            {
+                if (this.canEliminateElementList[i] == element)
+                {
+                    result = true;
+                    break;
+                }
+            }
+        }
+        return result;
     }
 
     // 把一个元素加到可消除列表
@@ -171,6 +171,8 @@ class Scene extends GameModuleComponentBase
 
     public Update(deltaTime: number)
     {
+        this.UpdateElement(deltaTime);
+        
         if (this.bossSkillInfo != null
             && this.bossSkillInfo.hasInfo)
         {
@@ -179,6 +181,22 @@ class Scene extends GameModuleComponentBase
         else
         {
             this.CheckEliminating();
+        }
+    }
+
+    private UpdateElement(deltaTime: number)
+    {
+        for (var iColumn = 0; iColumn < this.sceneData.length; ++iColumn)
+        {
+            var cloumnList = this.sceneData[iColumn];
+            for (var iRow = 0; iRow < cloumnList.length; ++iRow)
+            {
+                var element = cloumnList[iRow];
+                if (element != null)
+                {
+                    element.Update(deltaTime);
+                }
+            }
         }
     }
 
@@ -203,33 +221,33 @@ class Scene extends GameModuleComponentBase
         switch (methodType)
         {
             case EliminateMethodType.SpecificColor:
-            {
-                if (color != null && color != undefined)
                 {
-                    this.eliminateMethod.specificColor = color;
-                    hasSetParam = true;
+                    if (color != null && color != undefined)
+                    {
+                        this.eliminateMethod.specificColor = color;
+                        hasSetParam = true;
+                    }
+                    break;
                 }
-                break;
-            }
             case EliminateMethodType.SpecificRegion:
-            {
-                if (region != null && region != undefined)
                 {
-                    this.eliminateMethod.specificRegion = region;
-                    hasSetParam = true;
+                    if (region != null && region != undefined)
+                    {
+                        this.eliminateMethod.specificRegion = region;
+                        hasSetParam = true;
+                    }
+                    break;
                 }
-                break;
-            }
             case EliminateMethodType.SpecificRegionAndColor:
-            {
-                if (color != null && color != undefined && region != null && region != undefined)
                 {
-                    this.eliminateMethod.specificColor = color;
-                    this.eliminateMethod.specificRegion = region;
-                    hasSetParam = true;
+                    if (color != null && color != undefined && region != null && region != undefined)
+                    {
+                        this.eliminateMethod.specificColor = color;
+                        this.eliminateMethod.specificRegion = region;
+                        hasSetParam = true;
+                    }
+                    break;
                 }
-                break;
-            }
         }
 
         if (DEBUG)
@@ -367,10 +385,10 @@ class Scene extends GameModuleComponentBase
             this.eliminateInfo.CalculatedEliminateElement.push(element);
 
             var hasShield = element.HasShield();
-            
+
             element.OnEliminate();
 
-            if (hasShield 
+            if (hasShield
                 && !element.HasShield()
                 && !Tools.IsInList(element, this.eliminateInfo.ShieldBreakElements))
             {
@@ -380,12 +398,12 @@ class Scene extends GameModuleComponentBase
             var isPlaceHolder = this.IsSpecifiedTypeElement(element, SceneElementType.PlaceHolder);
 
             if (!isPlaceHolder
-            && (!element.IsOwnerAlive() || this.eliminateMethod.froceKill))
+                && (!element.IsOwnerAlive() || this.eliminateMethod.froceKill))
             {
                 element.UnbindAllElement();
                 this.eliminateInfo.EliminatedElements.push(element);
             }
-        }   
+        }
     }
 
     // 把元素触发消除后，是否需要从Scene中移除
@@ -589,7 +607,7 @@ class Scene extends GameModuleComponentBase
             {
                 ++cloumnCount;
                 cloumnPlaceHolderCount += this.IsSpecifiedTypeElement(e, SceneElementType.PlaceHolder) ? 1 : 0;
-                cloumnCanEliminateElementCount += this.InCanEliminateElementList(e) ? 1 : 0;                
+                cloumnCanEliminateElementCount += this.InCanEliminateElementList(e) ? 1 : 0;
             }
             else
             {
@@ -621,7 +639,7 @@ class Scene extends GameModuleComponentBase
             {
                 ++rowCount;
                 rowPlaceHolderCount += this.IsSpecifiedTypeElement(e, SceneElementType.PlaceHolder) ? 1 : 0;
-                rowCanEliminateElementCount += this.InCanEliminateElementList(e) ? 1 : 0;                
+                rowCanEliminateElementCount += this.InCanEliminateElementList(e) ? 1 : 0;
             }
             else
             {
@@ -679,31 +697,31 @@ class Scene extends GameModuleComponentBase
     private IsEliminateType(element: SceneElementBase, type: EliminateElementType): boolean
     {
         var result = false;
-        if(element != null)
+        if (element != null)
         {
             switch (type)
             {
                 case EliminateElementType.Normal:
-                {
-                    result = true;
-                    break;
-                }
+                    {
+                        result = true;
+                        break;
+                    }
                 case EliminateElementType.PillOnly:
-                {
-                    result = element.ElementType() == SceneElementType.Pill
-                    break;
-                }
+                    {
+                        result = element.ElementType() == SceneElementType.Pill
+                        break;
+                    }
                 case EliminateElementType.VirusOnly:
-                {
-                    result = element.ElementType() == SceneElementType.Virus
-                    break;
-                }
+                    {
+                        result = element.ElementType() == SceneElementType.Virus
+                        break;
+                    }
                 case EliminateElementType.PillAndVirus:
-                {
-                    result = element.ElementType() == SceneElementType.Pill 
-                        || element.ElementType() == SceneElementType.Virus;
-                    break;
-                }
+                    {
+                        result = element.ElementType() == SceneElementType.Pill
+                            || element.ElementType() == SceneElementType.Virus;
+                        break;
+                    }
             }
         }
         return result;
@@ -730,7 +748,7 @@ class Scene extends GameModuleComponentBase
             else if (this.eliminateMethod.methodType == EliminateMethodType.SpecificRegionAndColor)
             {
                 needEliminate = this.NeedEliminateByColor(element, this.eliminateMethod.specificColor)
-                                && this.NeedEliminateByRegion(element, this.eliminateMethod.specificRegion);
+                    && this.NeedEliminateByRegion(element, this.eliminateMethod.specificRegion);
             }
         }
         return needEliminate;
@@ -878,13 +896,13 @@ class Scene extends GameModuleComponentBase
 
     private OnAccessSceneElements(event: SceneElementAccessEvent)
     {
-        let queryAnswerArray:any = null;
-        
-        if(event.answerType == SceneElementAccessAnswerType.Pos)
+        let queryAnswerArray: any = null;
+
+        if (event.answerType == SceneElementAccessAnswerType.Pos)
         {
             queryAnswerArray = this.GetSpecifiedBlocks(event.accessType, event.startX, event.startY, event.endX, event.endY);
         }
-        else if(event.answerType == SceneElementAccessAnswerType.Instance)
+        else if (event.answerType == SceneElementAccessAnswerType.Instance)
         {
             queryAnswerArray = this.GetSpecifiedElements(event.accessType, event.startX, event.startY, event.endX, event.endY);
         }
@@ -927,9 +945,9 @@ class Scene extends GameModuleComponentBase
         }
     }
 
-    private IsSpecifiedTypeElement(element:SceneElementBase, type:SceneElementType):boolean
+    private IsSpecifiedTypeElement(element: SceneElementBase, type: SceneElementType): boolean
     {
-        if(type == SceneElementType.Empty)
+        if (type == SceneElementType.Empty)
         {
             return element == null;
         }
@@ -939,7 +957,7 @@ class Scene extends GameModuleComponentBase
         }
     }
 
-    private GetSpecifiedBlocks(type:SceneElementType, startX: number, startY: number, endX?: number, endY?: number): number[][]
+    private GetSpecifiedBlocks(type: SceneElementType, startX: number, startY: number, endX?: number, endY?: number): number[][]
     {
         let result: number[][] = undefined;
 
@@ -975,7 +993,7 @@ class Scene extends GameModuleComponentBase
         return result;
     }
 
-    private GetSpecifiedElements(type:SceneElementType, startX: number, startY: number, endX?: number, endY?: number): SceneElementBase[]
+    private GetSpecifiedElements(type: SceneElementType, startX: number, startY: number, endX?: number, endY?: number): SceneElementBase[]
     {
         let result: SceneElementBase[] = undefined;
 
@@ -1043,15 +1061,15 @@ class Scene extends GameModuleComponentBase
             {
                 var transInfo = elementTransList[i];
                 if (transInfo != null
-                && transInfo.fromElement != null
-                && transInfo.toElement != null)
+                    && transInfo.fromElement != null
+                    && transInfo.toElement != null)
                 {
                     transInfo.toElement.posx = transInfo.fromElement.posx;
                     transInfo.toElement.posy = transInfo.fromElement.posy;
                     transInfo.toElement.dirty = true;
                     transInfo.fromElement.UnbindAllElement();
                     this.RemoveElement(transInfo.fromElement);
-                    this.AddElement(transInfo.toElement);                    
+                    this.AddElement(transInfo.toElement);
                 }
             }
         }
@@ -1066,7 +1084,7 @@ class Scene extends GameModuleComponentBase
             {
                 var changeColorElement = elementChangeColorList[i];
                 if (changeColorElement != null
-                && changeColorElement.element != null)
+                    && changeColorElement.element != null)
                 {
                     changeColorElement.element.color = changeColorElement.targetColor;
                     changeColorElement.element.dirty = true;

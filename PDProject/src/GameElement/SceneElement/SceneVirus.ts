@@ -1,10 +1,11 @@
 class SceneVirus extends SceneElementBase
 {
+    private framesAnim: SyncFramesAnim;
     public constructor(owner:GameplayElementBase)
     {
         super(owner);
         this.color = this.RandomColor(); 
-        this.renderer = this.CreateAnimator(this.GetPreAnimName("Idle"));
+        this.renderer = new egret.Bitmap();
         this.canDrop = false;
         this.eliminateMinCount = Scene.EliminateMinCount;
         this.elementType = SceneElementType.Virus;
@@ -18,43 +19,31 @@ class SceneVirus extends SceneElementBase
 		return egretFactory.buildArmatureDisplay(name);
     }
 
-    public Adapte(width: number, height: number)
+    private CreateFramesAnim(): SyncFramesAnim
     {
-        this.renderer.width = width;
-        this.renderer.height = height;
+        var textureSeq = [];
+        var textName = this.GetResPathByColor();
+        for (var i = 1; i <=5; ++i)
+        {
+            textureSeq.push(textName + "_Idle" + i.toString());
+        }
+        var framesAnim = new SyncFramesAnim();
+        framesAnim.Init(<egret.Bitmap>this.renderer, textureSeq, 100);
+        return framesAnim;
+    }
+
+    public Update(deltaTime: number)
+    {
+        if (this.framesAnim != null
+            && this.framesAnim != undefined)
+        {
+            this.framesAnim.Update();
+        }
     }
 
     public RefreshTexture():void
     {
-        var time = egret.getTimer();
-        var passTime = time % 500;
-        (<dragonBones.EgretArmatureDisplay> this.renderer).animation.play(this.GetPreAnimName("Idle"), -1);
-        (<dragonBones.EgretArmatureDisplay> this.renderer).animation.advanceTime(passTime);
-    }
-
-    private GetPreAnimName(anim: string): string
-    {
-        var name = "Virus_";
-        switch(this.color)
-        {
-            case GameElementColor.red:
-                name += "Red";
-                break;
-            case GameElementColor.blue:
-                name += "Blue";
-                break;
-            case GameElementColor.yellow:
-                name += "Yellow";
-                break;
-            default:
-                if(DEBUG)
-                {
-                    console.log("Unknow Color:" + this.color);
-                }    
-                break;
-        }
-        name += "_" + anim;
-        return name;
+        this.framesAnim = this.CreateFramesAnim();
     }
 
     protected GetResPathByColor():string
