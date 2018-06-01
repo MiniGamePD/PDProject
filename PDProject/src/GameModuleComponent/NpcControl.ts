@@ -25,6 +25,9 @@ class NpcControl extends GameModuleComponentBase
     //上一回合的回合数
     private lastTurnNum:number;
 
+    //游戏模式
+    private gameMode:GameMode;
+
     public constructor(gameplayElementFactory:GameplayElementFactory)
     {
         super();
@@ -78,57 +81,60 @@ class NpcControl extends GameModuleComponentBase
         this.npcSmileSound = null;
         this.curNpcSkillInfo = null;
 
-        if(controlWorkParam.turn != 0 && controlWorkParam.turn % createSkillBossTurnNum == 0 
-            && this.skillNpcArray.length < skillBossMaxNum)
+        if(this.gameMode == GameMode.BossFight)
         {
-            //创建boss
-            this.creatorWorkParam.paramIndex = NpcElementCreateType.RandomSuperVirus;
-		    this.creatorWorkParam.createNum = 1;
-            this.tobeAddToSceneNpcArray = [];
-            this.tobeAddToSceneNpcArray.push(this.npcElementCreator.CreateElement(this.creatorWorkParam));
-
-            //向scene询问已经存在的boss的格子，用来放置新生成的boss
-            var event = new SceneElementAccessEvent();
-            event.accessType = SceneElementType.PlaceHolder;
-            event.answerType = SceneElementAccessAnswerType.Pos;
-            event.startX = 0;
-            event.startY = 2;
-            event.accesser = this;
-            GameMain.GetInstance().DispatchEvent(event);
-
-            this.npcSmileSound = "EnemySinisterSmile2_mp3"; 
-            return;
-        }    
-
-        if(this.skillNpcArray.length > 0 && controlWorkParam.turn % bossSkillTurnNum == 0)
-        {
-            //boss放技能
-            let id:number = Math.floor(this.skillNpcArray.length * Math.random());
-            let skillNpc:NpcElement = this.skillNpcArray[id];
-
-            //首先向scene查询对应物体的列表
-            var event = new SceneElementAccessEvent();
-            event.accesser = this;
-            event.answerType = SceneElementAccessAnswerType.Instance;
-            if(skillNpc.SkillType() == NpcSkillType.AddShieldForVirus ||
-                skillNpc.SkillType() == NpcSkillType.ChangeVirusColor)
+            if(controlWorkParam.turn != 0 && controlWorkParam.turn % createSkillBossTurnNum == 0 
+                && this.skillNpcArray.length < skillBossMaxNum)
             {
-                event.accessType = SceneElementType.Virus;
-            }
-            else if(skillNpc.SkillType() == NpcSkillType.ChangePillToVirus)
-            {
-                event.accessType = SceneElementType.Pill;
-            }
-            else
-            {
-                console.error("Invalid Skill Type " + skillNpc.SkillType());
-            }
+                //创建boss
+                this.creatorWorkParam.paramIndex = NpcElementCreateType.RandomSuperVirus;
+                this.creatorWorkParam.createNum = 1;
+                this.tobeAddToSceneNpcArray = [];
+                this.tobeAddToSceneNpcArray.push(this.npcElementCreator.CreateElement(this.creatorWorkParam));
 
-            this.curNpcSkillInfo = new BossSkillInfo();
-            this.curNpcSkillInfo.skillCaster = skillNpc;
-            GameMain.GetInstance().DispatchEvent(event);
-            
-            return;
+                //向scene询问已经存在的boss的格子，用来放置新生成的boss
+                var event = new SceneElementAccessEvent();
+                event.accessType = SceneElementType.PlaceHolder;
+                event.answerType = SceneElementAccessAnswerType.Pos;
+                event.startX = 0;
+                event.startY = 2;
+                event.accesser = this;
+                GameMain.GetInstance().DispatchEvent(event);
+
+                this.npcSmileSound = "EnemySinisterSmile2_mp3"; 
+                return;
+            }    
+
+            if(this.skillNpcArray.length > 0 && controlWorkParam.turn % bossSkillTurnNum == 0)
+            {
+                //boss放技能
+                let id:number = Math.floor(this.skillNpcArray.length * Math.random());
+                let skillNpc:NpcElement = this.skillNpcArray[id];
+
+                //首先向scene查询对应物体的列表
+                var event = new SceneElementAccessEvent();
+                event.accesser = this;
+                event.answerType = SceneElementAccessAnswerType.Instance;
+                if(skillNpc.SkillType() == NpcSkillType.AddShieldForVirus ||
+                    skillNpc.SkillType() == NpcSkillType.ChangeVirusColor)
+                {
+                    event.accessType = SceneElementType.Virus;
+                }
+                else if(skillNpc.SkillType() == NpcSkillType.ChangePillToVirus)
+                {
+                    event.accessType = SceneElementType.Pill;
+                }
+                else
+                {
+                    console.error("Invalid Skill Type " + skillNpc.SkillType());
+                }
+
+                this.curNpcSkillInfo = new BossSkillInfo();
+                this.curNpcSkillInfo.skillCaster = skillNpc;
+                GameMain.GetInstance().DispatchEvent(event);
+                
+                return;
+            }
         }
 
         if(controlWorkParam.turn % createEnemyTurnNum == 0)

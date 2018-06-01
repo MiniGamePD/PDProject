@@ -228,3 +228,9 @@ enum MatchState
 	NpcSkill, //Npc施放技能
 	GameOver //拜拜了
 }
+
+enum GameMode
+{
+	Classic,
+	BossFight,
+}
