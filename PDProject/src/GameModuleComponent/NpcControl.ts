@@ -140,21 +140,24 @@ class NpcControl extends GameModuleComponentBase
         if(controlWorkParam.turn % createEnemyTurnNum == 0)
         {
             //创建普通小怪
-            this.creatorWorkParam.paramIndex = NpcElementCreateType.RandomVirus;
-		    this.creatorWorkParam.createNum = 8;
-		    this.tobeAddToSceneNpcArray = this.npcElementCreator.CreateElement(this.creatorWorkParam);
+            if(controlWorkParam.turn == 0)
+            {
+                this.creatorWorkParam.paramIndex = NpcElementCreateType.RandomVirus;
+                this.creatorWorkParam.createNum = Math.floor(Scene.Rows / 2 * Scene.Columns * 0.8);
+                this.tobeAddToSceneNpcArray = this.npcElementCreator.CreateElement(this.creatorWorkParam);
 
-            //向scene询问空的格子，用来放置新生成的小怪
-            var event = new SceneElementAccessEvent();
-            event.accesser = this;
-            event.accessType = SceneElementType.Empty;
-            event.answerType = SceneElementAccessAnswerType.Pos;
-            event.startX = 0;
-            event.startY = 2;
-            GameMain.GetInstance().DispatchEvent(event);
+                //向scene询问空的格子，用来放置新生成的小怪
+                var event = new SceneElementAccessEvent();
+                event.accesser = this;
+                event.accessType = SceneElementType.Empty;
+                event.answerType = SceneElementAccessAnswerType.Pos;
+                event.startX = 0;
+                event.startY = Scene.Rows / 2;
+                GameMain.GetInstance().DispatchEvent(event);
+                return;
+            }
 
             this.npcSmileSound = "EnemySinisterSmile1_mp3"; 
-            return;
         }
 
         //npc 啥事也不做

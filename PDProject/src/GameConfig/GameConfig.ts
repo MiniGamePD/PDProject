@@ -1,5 +1,5 @@
-const addNpcToSceneIntervalMax = 600; //ms
-const addNpcToSceneIntervalMin = 200; //ms
+const addNpcToSceneIntervalMax = 200; //ms
+const addNpcToSceneIntervalMin = 10; //ms
 const addNpcToSceneIntervalStep = 50; //ms
 const playEnemySinisterSmileTime = 500; //ms
 
