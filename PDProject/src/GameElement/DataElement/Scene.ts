@@ -241,7 +241,7 @@ class Scene extends GameModuleComponentBase
             case EliminateMethodType.SpecificRegionAndColor:
                 {
                     if (eliminateMethod.specificColor != null && eliminateMethod.specificColor != undefined
-                     && eliminateMethod.specificRegion != null && eliminateMethod.specificRegion != undefined)
+                        && eliminateMethod.specificRegion != null && eliminateMethod.specificRegion != undefined)
                     {
                         this.eliminateMethod.specificColor = eliminateMethod.specificColor;
                         this.eliminateMethod.specificRegion = eliminateMethod.specificRegion;
@@ -251,6 +251,8 @@ class Scene extends GameModuleComponentBase
                 }
             case EliminateMethodType.MoveUp:
                 {
+                    this.eliminateMethod.moveUpValue = eliminateMethod.moveUpValue;
+                    hasSetParam = true;
                     break;
                 }
         }
@@ -272,18 +274,26 @@ class Scene extends GameModuleComponentBase
     {
         this.ClearEliminateInfo();
         this.eliminateInfo.EliminateRound = this.eliminateRound;
-        this.CalculateEliminateElement();
-        if (!this.eliminateUnMove)
+        if (this.eliminateMethod.methodType == EliminateMethodType.MoveUp)
         {
-            do
-            {
-                var hasMove = this.MoveAfterEliminate();
-                if (hasMove)
-                {
-                    this.eliminateInfo.HasInfo = true;
-                }
-            } while (hasMove)
+            this.CalculateMoveUpElement();
         }
+        else
+        {
+            this.CalculateEliminateElement();
+            if (!this.eliminateUnMove)
+            {
+                do
+                {
+                    var hasMove = this.MoveAfterEliminate();
+                    if (hasMove)
+                    {
+                        this.eliminateInfo.HasInfo = true;
+                    }
+                } while (hasMove)
+            }
+        }
+
         var result = this.eliminateInfo.HasInfo;
         this.eliminateRound++;
         return result;
@@ -347,6 +357,52 @@ class Scene extends GameModuleComponentBase
             }
         }
         return inList;
+    }
+
+    // 整体往上移动元素
+    private CalculateMoveUpElement()
+    { 
+        var canMoveUp = this.CanSceneMoveUp(this.eliminateMethod.moveUpValue);
+
+        if (canMoveUp)
+        {
+            for (var row = 0; row < Scene.Rows; ++row)
+            {
+                for (var column = 0; column < Scene.Columns; ++column)
+                {
+                    var element = this.GetElement(column, row);
+                    if (element != null)
+                    {
+                        var moveInfo: EliminateMoveInfo = new EliminateMoveInfo(element , element.posx, element.posy, element.posx, element.posy - this.eliminateMethod.moveUpValue);
+                        this.MoveElement(element, element.posx, element.posy - this.eliminateMethod.moveUpValue);
+                        this.eliminateInfo.MoveElements.push(moveInfo);
+                        this.eliminateInfo.HasInfo = true;
+                    }   
+                }
+            }
+        }
+        else
+        {
+            // todo 抛出事件
+        }
+    }
+
+    private CanSceneMoveUp(moveUpCount: number): boolean
+    {
+        var canMoveUp = true;
+        for (var row = 0; row < moveUpCount; ++row)
+        {
+            for (var column = 0; column < Scene.Columns; ++column)
+            {
+                var element = this.GetElement(column, row);
+                if (element != null)
+                {
+                    canMoveUp = false;
+                    break;
+                }   
+            }
+        }
+        return canMoveUp;
     }
 
     // 计算消除元素，把消除的元素放到this.eliminateInfo.EliminatedElements列表

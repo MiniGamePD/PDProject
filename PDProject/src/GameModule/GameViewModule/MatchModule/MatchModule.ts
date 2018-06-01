@@ -120,6 +120,16 @@ class MatchModule extends GameViewModule
 		this.matchState = MatchState.Eliminate;
 
 		this.playerControl.Sleep();
+
+		if (this.turn % 5 == 0)
+		{
+			var eliminateMethod: EliminateMethod = new EliminateMethod();
+			eliminateMethod.methodType = EliminateMethodType.MoveUp;
+			eliminateMethod.moveUpValue = 1;
+			this.scene.SetEliminateMethodNext(eliminateMethod);
+			this.scene.SetNextEliminateUnMove();	
+		}
+
 		this.scene.Work();
 	}
 

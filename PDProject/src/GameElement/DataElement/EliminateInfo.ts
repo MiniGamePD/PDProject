@@ -104,6 +104,7 @@ class EliminateMethod
 		this.eliminateElementType = EliminateElementType.Normal;
 		this.specificColor = GameElementColor.blue;
 		this.specificRegion = [];
+		this.moveUpValue = 0;
 	}
 
 	public Reset()
@@ -111,6 +112,7 @@ class EliminateMethod
 		this.methodType = EliminateMethodType.Normal;
 		this.froceKill = false;
 		this.eliminateElementType = EliminateElementType.Normal;
+		this.moveUpValue = 0;
 	}
 
 

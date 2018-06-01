@@ -178,7 +178,10 @@ class MatchView extends GameView
 
     public BattleGroundRemoveChild(child: egret.DisplayObject)
     {
-        this.mBattleGround.removeChild(child);
+        if (child != null && child != undefined && child.parent == this.mBattleGround)
+        {
+            this.mBattleGround.removeChild(child);
+        }
     }
 
     public RefreshTextrue(): void
