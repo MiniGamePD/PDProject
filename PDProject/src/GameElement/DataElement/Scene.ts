@@ -11,6 +11,7 @@ class Scene extends GameModuleComponentBase
 
     private controlSuccessEvent: SceneElementControlSuccessEvent;
     private controlFailedEvent: SceneElementControlFailedEvent;
+    private elementMoveUpEvent: SceneElementMoveUpEvent;
     private eliminateEvent: EliminateEvent;
 
     private eliminateMethod: EliminateMethod;
@@ -40,6 +41,7 @@ class Scene extends GameModuleComponentBase
 
         this.controlSuccessEvent = new SceneElementControlSuccessEvent();
         this.controlFailedEvent = new SceneElementControlFailedEvent();
+        this.elementMoveUpEvent = new SceneElementMoveUpEvent();
         this.eliminateEvent = new EliminateEvent();
 
         GameMain.GetInstance().AddEventListener(SceneElementControlEvent.EventName, this.ProcessControlCmd, this);
@@ -380,11 +382,15 @@ class Scene extends GameModuleComponentBase
                     }   
                 }
             }
+            this.elementMoveUpEvent.isMoveSuccess = true;
+            this.elementMoveUpEvent.moveUpValue = this.eliminateMethod.moveUpValue;
         }
         else
         {
-            // todo 抛出事件
+            this.elementMoveUpEvent.isMoveSuccess = false;
+            this.elementMoveUpEvent.moveUpValue = this.eliminateMethod.moveUpValue;
         }
+        GameMain.GetInstance().DispatchEvent(this.elementMoveUpEvent);
     }
 
     private CanSceneMoveUp(moveUpCount: number): boolean
