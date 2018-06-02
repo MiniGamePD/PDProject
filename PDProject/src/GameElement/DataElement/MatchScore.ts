@@ -11,24 +11,20 @@ class MatchScore
 		this.addScoreEvent = new HUDEvent();
 		this.addScoreEvent.eventType = HUDEventType.ChangeScore;
 
-		GameMain.GetInstance().AddEventListener(EliminateEvent.EventName, this.OnEliminateEvent, this)
+		GameMain.GetInstance().AddEventListener(FeverEvent.EventName, this.OnFeverEvent, this)
 	}
 
 	public Release()
 	{
-		GameMain.GetInstance().RemoveEventListener(EliminateEvent.EventName, this.OnEliminateEvent, this);
+		GameMain.GetInstance().RemoveEventListener(FeverEvent.EventName, this.OnFeverEvent, this);
 	}
 
-	private OnEliminateEvent(event: EliminateEvent)
+	private OnFeverEvent(event: FeverEvent)
 	{
-		// if (event != null
-		// 	&& event.eliminateInfo != null
-		// 	&& event.eliminateInfo.HasInfo)
-		// {
-		// 	var changeValue = event.eliminateInfo.EliminatedElements.length;
-		// 	this.curScore += changeValue * 10;
-		// 	this.DispatchScoreChangeEvent(this.curScore, changeValue);
-		// }
+		if (event != null)
+		{
+			this.isInFeverTime = event.feverBegin;
+		}
 	}
 
 	// 加分。返回值：增加的分数
