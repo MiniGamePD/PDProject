@@ -1,5 +1,7 @@
 abstract class ProgramAnimationBase<T extends ProgramAnimationParamBase> implements IProgramAnimation
 {
+	protected resModule: IResModule;
+
 	public animType: ProgramAnimationType;
 	public runningTime = 0;
 	public param: T;
@@ -16,8 +18,9 @@ abstract class ProgramAnimationBase<T extends ProgramAnimationParamBase> impleme
 	// 派生类返回是否完成
 	public abstract IsFinish();
 
-	public Init(param: ProgramAnimationParamBase): boolean
+	public Init(resModule: IResModule, param: ProgramAnimationParamBase): boolean
 	{
+		this.resModule = resModule;
 		this.runningTime = 0;
 		this.animType = param.animType;
 		this.param = <T>param;

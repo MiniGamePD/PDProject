@@ -27,6 +27,7 @@ class MatchModule extends GameViewModule
 
 		this.matchView = new MatchView();
 		this.matchView.SetScene(this.scene);
+		this.matchView.SetMatchScore(this.matchScore);
 		this.matchView.CreateView();
 		this.gameViewList.push(this.matchView);
 
