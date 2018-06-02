@@ -28,6 +28,10 @@ class NpcControl extends GameModuleComponentBase
     //游戏模式
     private gameMode:GameMode;
 
+    //还需要往上移动的行数
+    private remindMoveUpNum:number;
+    private remindCreateEnemyTurns:number;
+
     public constructor(gameplayElementFactory:GameplayElementFactory)
     {
         super();
@@ -40,6 +44,9 @@ class NpcControl extends GameModuleComponentBase
         this.skillNpcArray = [];
         this.aliveNpcArray = [];
         this.lastTurnNum = -1;
+        this.npcControlState = NpcControlState.None;
+        this.remindMoveUpNum = 0;
+        this.remindCreateEnemyTurns = 0;
         GameMain.GetInstance().AddEventListener(SceneElementAccessAnswerEvent.EventName, this.OnReciveSceneData, this);
         GameMain.GetInstance().AddEventListener(SceneElementControlFailedEvent.EventName, this.OnAddElementToSceneFailed, this);
     }
@@ -81,87 +88,136 @@ class NpcControl extends GameModuleComponentBase
         this.npcSmileSound = null;
         this.curNpcSkillInfo = null;
 
-        if(this.gameMode == GameMode.BossFight)
+        if(this.npcControlState == NpcControlState.MoveAllUp)
         {
-            if(controlWorkParam.turn != 0 && controlWorkParam.turn % createSkillBossTurnNum == 0 
-                && this.skillNpcArray.length < skillBossMaxNum)
+            var createNum:number = Scene.Columns - Math.floor(Math.random() * 3);
+            this.CreateRandomVirus(createNum, 0.1, 0, Scene.Rows-1);
+            this.npcSmileSound = this.remindMoveUpNum > 0 ? null : "EnemySinisterSmile1_mp3";
+
+            this.npcControlState = NpcControlState.AddNpcToScene;
+            return;
+        }
+
+        if(this.npcControlState == NpcControlState.None)
+        {
+            if(this.gameMode == GameMode.BossFight)
             {
-                //创建boss
-                this.creatorWorkParam.paramIndex = NpcElementCreateType.RandomSuperVirus;
-                this.creatorWorkParam.createNum = 1;
-                this.tobeAddToSceneNpcArray = [];
-                this.tobeAddToSceneNpcArray.push(this.npcElementCreator.CreateElement(this.creatorWorkParam));
-
-                //向scene询问已经存在的boss的格子，用来放置新生成的boss
-                var event = new SceneElementAccessEvent();
-                event.accessType = SceneElementType.PlaceHolder;
-                event.answerType = SceneElementAccessAnswerType.Pos;
-                event.startX = 0;
-                event.startY = 2;
-                event.accesser = this;
-                GameMain.GetInstance().DispatchEvent(event);
-
-                this.npcSmileSound = "EnemySinisterSmile2_mp3"; 
-                return;
-            }    
-
-            if(this.skillNpcArray.length > 0 && controlWorkParam.turn % bossSkillTurnNum == 0)
-            {
-                //boss放技能
-                let id:number = Math.floor(this.skillNpcArray.length * Math.random());
-                let skillNpc:NpcElement = this.skillNpcArray[id];
-
-                //首先向scene查询对应物体的列表
-                var event = new SceneElementAccessEvent();
-                event.accesser = this;
-                event.answerType = SceneElementAccessAnswerType.Instance;
-                if(skillNpc.SkillType() == NpcSkillType.AddShieldForVirus ||
-                    skillNpc.SkillType() == NpcSkillType.ChangeVirusColor)
+                if(controlWorkParam.turn != 0 && controlWorkParam.turn % createSkillBossTurnNum == 0 
+                    && this.skillNpcArray.length < skillBossMaxNum)
                 {
-                    event.accessType = SceneElementType.Virus;
+                    //创建boss
+                    this.creatorWorkParam.paramIndex = NpcElementCreateType.RandomSuperVirus;
+                    this.creatorWorkParam.createNum = 1;
+                    this.tobeAddToSceneNpcArray = [];
+                    this.tobeAddToSceneNpcArray.push(this.npcElementCreator.CreateElement(this.creatorWorkParam));
+
+                    //向scene询问已经存在的boss的格子，用来放置新生成的boss
+                    var event = new SceneElementAccessEvent();
+                    event.accessType = SceneElementType.PlaceHolder;
+                    event.answerType = SceneElementAccessAnswerType.Pos;
+                    event.startX = 0;
+                    event.startY = 2;
+                    event.accesser = this;
+                    GameMain.GetInstance().DispatchEvent(event);
+
+                    this.npcSmileSound = "EnemySinisterSmile2_mp3"; 
+                    return;
+                }    
+
+                if(this.skillNpcArray.length > 0 && controlWorkParam.turn % bossSkillTurnNum == 0)
+                {
+                    //boss放技能
+                    let id:number = Math.floor(this.skillNpcArray.length * Math.random());
+                    let skillNpc:NpcElement = this.skillNpcArray[id];
+
+                    //首先向scene查询对应物体的列表
+                    var event = new SceneElementAccessEvent();
+                    event.accesser = this;
+                    event.answerType = SceneElementAccessAnswerType.Instance;
+                    if(skillNpc.SkillType() == NpcSkillType.AddShieldForVirus ||
+                        skillNpc.SkillType() == NpcSkillType.ChangeVirusColor)
+                    {
+                        event.accessType = SceneElementType.Virus;
+                    }
+                    else if(skillNpc.SkillType() == NpcSkillType.ChangePillToVirus)
+                    {
+                        event.accessType = SceneElementType.Pill;
+                    }
+                    else
+                    {
+                        console.error("Invalid Skill Type " + skillNpc.SkillType());
+                    }
+
+                    this.curNpcSkillInfo = new BossSkillInfo();
+                    this.curNpcSkillInfo.skillCaster = skillNpc;
+                    GameMain.GetInstance().DispatchEvent(event);
+                    
+                    return;
                 }
-                else if(skillNpc.SkillType() == NpcSkillType.ChangePillToVirus)
+            }
+
+            if(this.remindCreateEnemyTurns <= 3)
+            {
+                //TODO：小怪降临的特效提示
+            }
+
+            if(this.remindCreateEnemyTurns <= 0)
+            {
+                this.remindCreateEnemyTurns = createEnemyTurnNum;
+
+                //创建普通小怪
+                if(controlWorkParam.turn == 0)
                 {
-                    event.accessType = SceneElementType.Pill;
+                    this.CreateRandomVirus(Math.floor(Scene.Rows / 2 * Scene.Columns * 0.8), 0, 0, Scene.Rows/2);
+                    this.npcSmileSound = "EnemySinisterSmile1_mp3"; 
+                    return;
                 }
                 else
                 {
-                    console.error("Invalid Skill Type " + skillNpc.SkillType());
+                    this.npcControlState = NpcControlState.MoveAllUp;
+                    this.remindMoveUpNum = 3;
+                    return;
                 }
-
-                this.curNpcSkillInfo = new BossSkillInfo();
-                this.curNpcSkillInfo.skillCaster = skillNpc;
-                GameMain.GetInstance().DispatchEvent(event);
-                
-                return;
             }
         }
-
-        if(controlWorkParam.turn % createEnemyTurnNum == 0)
-        {
-            //创建普通小怪
-            if(controlWorkParam.turn == 0)
-            {
-                this.creatorWorkParam.paramIndex = NpcElementCreateType.RandomVirus;
-                this.creatorWorkParam.createNum = Math.floor(Scene.Rows / 2 * Scene.Columns * 0.8);
-                this.tobeAddToSceneNpcArray = this.npcElementCreator.CreateElement(this.creatorWorkParam);
-
-                //向scene询问空的格子，用来放置新生成的小怪
-                var event = new SceneElementAccessEvent();
-                event.accesser = this;
-                event.accessType = SceneElementType.Empty;
-                event.answerType = SceneElementAccessAnswerType.Pos;
-                event.startX = 0;
-                event.startY = Scene.Rows / 2;
-                GameMain.GetInstance().DispatchEvent(event);
-                return;
-            }
-
-            this.npcSmileSound = "EnemySinisterSmile1_mp3"; 
-        }
-
+        
         //npc 啥事也不做
         this.npcControlState = NpcControlState.NpcControlFinish;
+    }
+
+    private CreateRandomVirus(createNum:number, shieldProperty:number, startX:number, startY:number,
+        endX?:number, endY?:number)
+    {
+        this.creatorWorkParam.paramIndex = NpcElementCreateType.RandomVirus;
+        this.creatorWorkParam.createNum = createNum;
+        this.tobeAddToSceneNpcArray = this.npcElementCreator.CreateElement(this.creatorWorkParam);
+
+        //给新生成的小怪添加护盾
+        if(shieldProperty > 0)
+        {
+            for(var i = 0; i < this.tobeAddToSceneNpcArray.length; ++i)
+            {
+                var npc:NpcElement = this.tobeAddToSceneNpcArray[i];
+                if(Math.random() <= shieldProperty)
+                {
+                    npc.AddShield(1);
+                }
+            }
+        }
+
+        //向scene询问空的格子，用来放置新生成的小怪
+        var event = new SceneElementAccessEvent();
+        event.accesser = this;
+        event.accessType = SceneElementType.Empty;
+        event.answerType = SceneElementAccessAnswerType.Pos;
+        event.startX = startX;
+        event.startY = startY;
+        if(endX != undefined && endY != undefined)
+        {
+            event.endX = endX
+            event.endY = endY;
+        }
+        GameMain.GetInstance().DispatchEvent(event);
     }
 
     private OnReciveSceneData(event:SceneElementAccessAnswerEvent)
@@ -188,6 +244,9 @@ class NpcControl extends GameModuleComponentBase
                 break;
             case NpcControlState.PlaySinisterSmileSound:
                 this.UpdatePlaySinisterSmileSound(deltaTime);
+                break;
+            case NpcControlState.MoveAllUp:
+                this.UpdateMoveAllUp(deltaTime);
                 break;
             case NpcControlState.NpcControlFinish:
                 this.UpdateNpcControlFinish(deltaTime);
@@ -219,6 +278,10 @@ class NpcControl extends GameModuleComponentBase
             {
                 this.npcControlState = NpcControlState.PlaySinisterSmileSound;
             }
+            else if(this.remindMoveUpNum > 0)
+            {
+                this.npcControlState = NpcControlState.MoveAllUp;
+            }
             else
             {
                 this.npcControlState = NpcControlState.NpcControlFinish;
@@ -242,7 +305,14 @@ class NpcControl extends GameModuleComponentBase
             this.npcControlTimer -= deltaTime;
             if(this.npcControlTimer <= 0)
             {
-                this.npcControlState = NpcControlState.NpcControlFinish;
+                if(this.remindMoveUpNum > 0)
+                {
+                    this.npcControlState = NpcControlState.MoveAllUp;
+                }
+                else
+                {
+                    this.npcControlState = NpcControlState.NpcControlFinish;
+                }
             }
         }
     }
@@ -252,6 +322,25 @@ class NpcControl extends GameModuleComponentBase
         this.npcControlState = NpcControlState.None;
         let event = new NpcControlFinishEvent();
         GameMain.GetInstance().DispatchEvent(event);
+    }
+
+    private UpdateMoveAllUp(deltaTime:number)
+    {
+        //这个状态，只负责通知并等待scene将场景上移
+        if(this.remindMoveUpNum > 0)
+        {
+            this.remindMoveUpNum--;
+
+            let event = new NpcControlFinishEvent();
+            event.specialEliminateMethod = new EliminateMethod();
+            event.specialEliminateMethod.methodType = EliminateMethodType.MoveUp;
+            event.specialEliminateMethod.moveUpValue = 1;
+            GameMain.GetInstance().DispatchEvent(event);
+        }
+        else
+        {
+            this.npcControlState = NpcControlState.NpcControlFinish;
+        }
     }
 
     private PrepareNpcSkillInfo(querySceneInstances:SceneElementBase[])
@@ -530,6 +619,9 @@ class NpcControl extends GameModuleComponentBase
 
         //将已经死掉的npc从技能列表中移除
         this.RemoveDeadNpcFromArray(this.skillNpcArray);
+
+        //小怪降临时间维护
+        this.remindCreateEnemyTurns--;
     }
 
     private RemoveDeadNpcFromArray(array:NpcElement[])
@@ -558,5 +650,6 @@ enum NpcControlState
     AddNpcToScene,
     PlaySinisterSmileSound,
     NpcSkill,
+    MoveAllUp, //将整个场景中的东西上移，给新的一排小怪腾出空间
     NpcControlFinish,
 }

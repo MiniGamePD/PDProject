@@ -171,10 +171,14 @@ class Scene extends GameModuleComponentBase
         return result;
     }
 
-    public Update(deltaTime: number)
+    public Update(deltaTime:number)
     {
         this.UpdateElement(deltaTime);
+        super.Update(deltaTime);
+    }
 
+    public UpdateInternal(deltaTime: number)
+    {
         if (this.bossSkillInfo != null
             && this.bossSkillInfo.hasInfo)
         {

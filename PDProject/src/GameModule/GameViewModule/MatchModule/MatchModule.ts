@@ -22,6 +22,7 @@ class MatchModule extends GameViewModule
 		GameMain.GetInstance().AddEventListener(NpcControlFinishEvent.EventName, this.OnNpcControlFinish, this);
 		GameMain.GetInstance().AddEventListener(GameOverEvent.EventName, this.OnGameOver, this);
 		GameMain.GetInstance().AddEventListener(ReplayGameEvent.EventName, this.OnReplayGame, this);
+		GameMain.GetInstance().AddEventListener(SceneElementMoveUpEvent.EventName, this.OnSceneElementMoveUpFinish, this);
 
 		this.InitComponents();
 
@@ -48,6 +49,7 @@ class MatchModule extends GameViewModule
 		GameMain.GetInstance().RemoveEventListener(NpcControlFinishEvent.EventName, this.OnNpcControlFinish, this);
 		GameMain.GetInstance().RemoveEventListener(GameOverEvent.EventName, this.OnGameOver, this);
 		GameMain.GetInstance().RemoveEventListener(ReplayGameEvent.EventName, this.OnReplayGame, this);
+		GameMain.GetInstance().RemoveEventListener(SceneElementMoveUpEvent.EventName, this.OnSceneElementMoveUpFinish, this);
 	}
 
 	private InitComponents()
@@ -112,35 +114,36 @@ class MatchModule extends GameViewModule
 	{
 		this.difficulty = 0;
 		this.turn = 0;
+		this.matchState = MatchState.Init;
 		this.StartNpcControl();
 	}
 
 	private StartSceneEliminate(event: PlayerControlFinishEvent)
 	{
+		if(this.matchState == MatchState.GameOver)
+			return;
+			
 		this.matchState = MatchState.Eliminate;
 
 		this.playerControl.Sleep();
-
-		if (this.turn % 5 == 0)
-		{
-			var eliminateMethod: EliminateMethod = new EliminateMethod();
-			eliminateMethod.methodType = EliminateMethodType.MoveUp;
-			eliminateMethod.moveUpValue = 1;
-			this.scene.SetEliminateMethodNext(eliminateMethod);
-			this.scene.SetNextEliminateUnMove();	
-		}
 
 		this.scene.Work();
 	}
 
 	private OnSceneEliminateFinish(event: SceneEliminateFinishEvent)
 	{
+		if(this.matchState == MatchState.GameOver)
+			return;
+
 		this.comboControl.ResetCombo();	
 		this.StartNpcControl();
 	}
 
 	private StartNpcControl()
 	{
+		if(this.matchState == MatchState.GameOver)
+			return;
+
 		this.matchState = MatchState.NpcControl;
 
 		this.scene.Sleep();
@@ -152,6 +155,9 @@ class MatchModule extends GameViewModule
 
 	private OnNpcControlFinish(event: NpcControlFinishEvent)
 	{
+		if(this.matchState == MatchState.GameOver)
+			return;
+
 		if(event.specialEliminateMethod != null)
 		{
 			this.StartSpecialSceneEliminate(event);	
@@ -168,6 +174,9 @@ class MatchModule extends GameViewModule
 
 	private StartPlayerControl()
 	{
+		if(this.matchState == MatchState.GameOver)
+			return;
+
 		this.matchState = MatchState.PlayerControl;
 		this.AddTurn();
 
@@ -180,6 +189,9 @@ class MatchModule extends GameViewModule
 
 	private StartSpecialSceneEliminate(event: NpcControlFinishEvent)
 	{
+		if(this.matchState == MatchState.GameOver)
+			return;
+
 		this.matchState = MatchState.SpecialEliminate;
 		this.npcControl.Sleep();
 		this.scene.SetEliminateMethodNext(event.specialEliminateMethod);
@@ -189,6 +201,9 @@ class MatchModule extends GameViewModule
 
 	private StartNpcSkill(event: NpcControlFinishEvent)
 	{
+		if(this.matchState == MatchState.GameOver)
+			return;
+
 		this.matchState = MatchState.NpcSkill;
 		this.npcControl.Sleep();
 		this.scene.TriggerBossSkill(event.bossSkillInfo);		
@@ -204,13 +219,33 @@ class MatchModule extends GameViewModule
 		this.scene.Sleep();
 	}
 
+	private OnSceneElementMoveUpFinish(event:SceneElementMoveUpEvent)
+	{
+		if(this.matchState == MatchState.GameOver)
+			return;
+
+		if(event.isMoveSuccess)
+		{
+			this.StartNpcControl();
+		}
+		else
+		{
+			//上移失败，gameover
+			let event = new GameOverEvent();            
+            GameMain.GetInstance().DispatchEvent(event);
+		}
+	}
+
 	private OnReplayGame(event: ReplayGameEvent)
 	{
-		this.DeInitComponents();
-		this.InitComponents();
-		this.matchView.SetScene(this.scene);
-		this.feverControl.AttachToHUD();
-		this.InitMatch();
+		if(this.matchState == MatchState.GameOver)
+		{
+			this.DeInitComponents();
+			this.InitComponents();
+			this.matchView.SetScene(this.scene);
+			this.feverControl.AttachToHUD();
+			this.InitMatch();
+		}
 	}
 
 	private AddTurn()
