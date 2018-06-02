@@ -6,6 +6,7 @@ class EliminatingAnimation
 	private static readonly MoveDownSpeed: number = 300; // 一秒移动多少像素
 
 	private matchView: MatchView;
+	private matchScore: MatchScore;
 	private runningTime: number;
 	private state: EliminatingAnimState;
 	private eliminateInfo: EliminateInfo;
@@ -31,8 +32,9 @@ class EliminatingAnimation
 		return this.state != EliminatingAnimState.Init;
 	}
 
-	public Start(eliminateInfo: EliminateInfo)
+	public Start(eliminateInfo: EliminateInfo, matchScore: MatchScore)
 	{
+		this.matchScore = matchScore;
 		this.runningTime = 0;
 		this.moveDownFinish = false;
 		this.isLightningHide = false;
@@ -87,7 +89,19 @@ class EliminatingAnimation
 		for (var i = 0; i < this.eliminateInfo.EliminatedElements.length; ++i)
 		{
 			this.eliminateInfo.EliminatedElements[i].PlayEliminateAnim();
+			this.AddScore(this.eliminateInfo.EliminatedElements[i]);
 		}
+	}
+
+	private AddScore(element: SceneElementBase)
+	{
+		var score = this.matchScore.AddScore(element, this.eliminateInfo.EliminateRound);
+		var param = new PaAddScoreParam();
+		param.score = score;
+		param.pos = new egret.Point(Tools.ElementPosToGameStagePosX(element.posx), Tools.ElementPosToGameStagePosY(element.posy));
+		var event = new PlayProgramAnimationEvent();
+        event.param = param;
+        GameMain.GetInstance().DispatchEvent(event);
 	}
 
 	private UpdateLightning(deltaTime: number)

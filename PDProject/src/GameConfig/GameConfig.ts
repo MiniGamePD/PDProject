@@ -15,3 +15,7 @@ const standerScreenHeight = 1136;
 const EliminateRoundStartIndex = 1;
 
 const FeverTime = 45000; //ms
+
+const Score_FeverTimeScale = 2; // FeverTime期间的分数倍率
+const Score_EliminateRoundScale = [1, 2, 3, 4, 5]; // 连消的分数倍率
+const Score_BaseScore = 20;

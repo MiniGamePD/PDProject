@@ -14,5 +14,6 @@ enum ProgramAnimationType
 	PlayPartical, //播放粒子效果
 	MovePartical, //播放粒子，并且移动到目标位置
 	PlayDBAnimation, // 播放序列帧动画
+	AddScole, //播放元素消除，加分动画
 	Max
 }

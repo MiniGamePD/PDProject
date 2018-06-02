@@ -1,9 +1,11 @@
 class ProgrameAnimationModule extends ModuleBase implements IProgramAnimationModule
 {
+    private resModule: IResModule;    
     private animationList: IProgramAnimation[];
 
     public Init(): boolean
     {
+        this.resModule = <IResModule> GameMain.GetInstance().GetModule(ModuleType.RES);
         this.isForeground = true;
         this.animationList = [];
         GameMain.GetInstance().AddEventListener(PlayProgramAnimationEvent.EventName, this.OnPlayProgramAnimationEvent, this);
@@ -65,12 +67,15 @@ class ProgrameAnimationModule extends ModuleBase implements IProgramAnimationMod
                 case ProgramAnimationType.PlayDBAnimation:
                     animation = new PaPlayDBAnimation();
                     break;
+                case ProgramAnimationType.AddScole:
+                    animation = new PaAddScore();
+                    break;
             }
         }
 
         if (animation != null)
         {
-            var result = animation.Init(param);
+            var result = animation.Init(this.resModule, param);
             if (result)
             {
                 this.animationList.push(animation);

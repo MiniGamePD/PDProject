@@ -1,7 +1,7 @@
 {
 	"groups": [
 		{
-			"keys": "pd_res_json,DB_Boom_Bomb_ske_json,DB_Boom_Bomb_tex_json,DB_Boom_Bomb_tex_png,Pill_Boom_ske_json,Pill_Boom_tex_json,Pill_Boom_tex_png,Virus_ske_json,Virus_tex_png,Virus_tex_json,bgm_mp3,Boom_mp3,BossSkill_mp3,Eliminate_mp3,EliminateRow_mp3,EnemySinisterSmile1_mp3,EnemySinisterSmile2_mp3,EnemySinisterSmile3_mp3,EnemySinisterSmile4_mp3,fever_bgm_mp3,GameOver_mp3,Go_mp3,OnDown_mp3,Ready_mp3,VirusBorn_mp3,VirusEliminate_mp3,Particle_Boom_Bomb_json,Particle_Boom_json,Particle_Boss_Skill_Fly_json,Particle_Virus_Boom_json,huojian_json,caihong_shinning_json,boss_jineng_json,Boss_jineng_jizhong_ske_json,Boss_jineng_jizhong_tex_json,Boss_jineng_jizhong_tex_png,Boom_shinning_json,Caidai_json,huojian_shinning_json",
+			"keys": "pd_res_json,DB_Boom_Bomb_ske_json,DB_Boom_Bomb_tex_json,DB_Boom_Bomb_tex_png,Pill_Boom_ske_json,Pill_Boom_tex_json,Pill_Boom_tex_png,Virus_ske_json,Virus_tex_png,Virus_tex_json,bgm_mp3,Boom_mp3,BossSkill_mp3,Eliminate_mp3,EliminateRow_mp3,EnemySinisterSmile1_mp3,EnemySinisterSmile2_mp3,EnemySinisterSmile3_mp3,EnemySinisterSmile4_mp3,fever_bgm_mp3,GameOver_mp3,Go_mp3,OnDown_mp3,Ready_mp3,VirusBorn_mp3,VirusEliminate_mp3,Particle_Boom_Bomb_json,Particle_Boom_json,Particle_Boss_Skill_Fly_json,Particle_Virus_Boom_json,huojian_json,caihong_shinning_json,boss_jineng_json,Boss_jineng_jizhong_ske_json,Boss_jineng_jizhong_tex_json,Boss_jineng_jizhong_tex_png,Boom_shinning_json,Caidai_json,huojian_shinning_json,font_num1_fnt,font_num1_png,font_num2_fnt,font_num2_png",
 			"name": "preload"
 		}
 	],
@@ -221,6 +221,26 @@
 			"url": "assets/DB_Animation/.DS_Store",
 			"type": "bin",
 			"name": "_DS_Store"
+		},
+		{
+			"name": "font_num1_fnt",
+			"type": "font",
+			"url": "assets/font/font_num1.fnt"
+		},
+		{
+			"name": "font_num1_png",
+			"type": "image",
+			"url": "assets/font/font_num1.png"
+		},
+		{
+			"name": "font_num2_fnt",
+			"type": "font",
+			"url": "assets/font/font_num2.fnt"
+		},
+		{
+			"name": "font_num2_png",
+			"type": "image",
+			"url": "assets/font/font_num2.png"
 		}
 	]
 }

@@ -3,6 +3,7 @@ class MatchView extends GameView
     private mResModule: IResModule;
     private mSoundModule: ISoundModule
     private mScene: Scene;
+    private matchScore: MatchScore;
     private mBattleGround: egret.Sprite;
     private mBattleGroundBlocks: egret.DisplayObjectContainer;
     private eliminatingAnim: EliminatingAnimation;
@@ -58,6 +59,11 @@ class MatchView extends GameView
         this.mScene = scene;
     }
 
+    public SetMatchScore(matchScore: MatchScore)
+    {
+        this.matchScore = matchScore;
+    }
+
     public UpdateView(deltaTime: number): void
     {
         if (this.mScene.bossSkillInfo.hasInfo)
@@ -99,7 +105,7 @@ class MatchView extends GameView
         {
             if (!this.eliminatingAnim.IsPlaying())
             {
-                this.eliminatingAnim.Start(this.mScene.eliminateInfo);
+                this.eliminatingAnim.Start(this.mScene.eliminateInfo, this.matchScore);
             }
             this.eliminatingAnim.Update(deltaTime);
 

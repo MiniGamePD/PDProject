@@ -3,7 +3,7 @@ interface IProgramAnimation
 	/**
 	 * 初始化
 	 */
-	Init(param: ProgramAnimationParamBase): boolean;
+	Init(resModule: IResModule, param: ProgramAnimationParamBase): boolean;
 
 	/**
 	 * 更新
