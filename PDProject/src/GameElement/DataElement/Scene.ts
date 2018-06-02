@@ -279,13 +279,15 @@ class Scene extends GameModuleComponentBase
     public TryEliminate(): boolean
     {
         this.ClearEliminateInfo();
-        this.eliminateInfo.EliminateRound = this.eliminateRound;
         if (this.eliminateMethod.methodType == EliminateMethodType.MoveUp)
         {
+            this.eliminateInfo.EliminateRound = EliminateRoundStartIndex;
             this.CalculateMoveUpElement();
+            this.eliminateRound = EliminateRoundStartIndex;
         }
         else
         {
+            this.eliminateInfo.EliminateRound = this.eliminateRound;
             this.CalculateEliminateElement();
             if (!this.eliminateUnMove)
             {
@@ -298,10 +300,10 @@ class Scene extends GameModuleComponentBase
                     }
                 } while (hasMove)
             }
+            this.eliminateRound++;
         }
 
         var result = this.eliminateInfo.HasInfo;
-        this.eliminateRound++;
         return result;
     }
 
