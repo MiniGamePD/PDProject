@@ -2,6 +2,12 @@ class MatchScoreItem extends egret.DisplayObjectContainer
 {
 	private scoreText: egret.BitmapText;
 	private stepText: egret.TextField;
+	private curShowScore: number;
+	private targetScore: number;
+
+	private lerpTime = 500;
+	private deltaScore = 0;
+	private minDeltaScorePreSecond = 30;
 
 	public Init()
 	{
@@ -10,6 +16,9 @@ class MatchScoreItem extends egret.DisplayObjectContainer
 
 		let adaptedStageWidth = GameMain.GetInstance().GetAdaptedStageWidth();
 		let adaptedStageHeight = GameMain.GetInstance().GetAdaptedStageHeight();
+
+		this.curShowScore = 0;
+		this.targetScore = 0;
 
 		var resModule = <IResModule> GameMain.GetInstance().GetModule(ModuleType.RES);
 
@@ -42,12 +51,25 @@ class MatchScoreItem extends egret.DisplayObjectContainer
 
 	public Update(deltaTime: number)
 	{
-
+		if (this.curShowScore < this.targetScore)
+		{
+			this.curShowScore += (deltaTime / 1000) * this.deltaScore;
+			if (this.curShowScore > this.targetScore)
+			{
+				this.curShowScore = this.targetScore;
+			}
+			this.scoreText.text = Math.floor(this.curShowScore).toString();
+		}
 	}
 
 	public SetScore(score: number)
 	{
-		this.scoreText.text = score.toString();
+		this.targetScore = score;
+		this.deltaScore = (this.targetScore - this.curShowScore) / (this.lerpTime / 1000);
+		if (this.deltaScore < this.minDeltaScorePreSecond)
+		{
+			this.deltaScore = this.minDeltaScorePreSecond;
+		}
 	}
 
 	public SetStep(step: number)
