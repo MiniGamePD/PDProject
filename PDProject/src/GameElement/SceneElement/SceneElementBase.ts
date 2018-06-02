@@ -21,9 +21,6 @@ abstract class SceneElementBase
     {
         this.owner = owner;
         this.bindedElements = [];
-        this.accessory = new egret.DisplayObjectContainer();    
-        if(this.owner.HasShield())
-            this.PlayShieldCreateAnim();
     }
 
     public Adapte(width: number, height: number)

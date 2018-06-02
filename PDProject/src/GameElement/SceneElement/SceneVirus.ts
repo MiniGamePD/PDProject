@@ -6,6 +6,7 @@ class SceneVirus extends SceneElementBase
         super(owner);
         this.color = this.RandomColor(); 
         this.renderer = new egret.Bitmap();
+        this.accessory = new egret.DisplayObjectContainer();
         this.canDrop = false;
         this.eliminateMinCount = Scene.EliminateMinCount;
         this.elementType = SceneElementType.Virus;

@@ -638,6 +638,9 @@ class Scene extends GameModuleComponentBase
                 && this.sceneData[posX][posY] == null)
             {
                 this.sceneData[posX][posY] = element;
+                //如果元素有护盾，给他显示出来
+                if(element.HasShield())
+                    element.PlayShieldCreateAnim();
                 return true;
             }
         }
