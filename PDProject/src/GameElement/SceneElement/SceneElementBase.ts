@@ -10,14 +10,14 @@ abstract class SceneElementBase
     public hasAddToDisplayList: boolean;
     protected resModule: IResModule;
     private bindedElements: SceneElementBase[];
-    protected owner:GameplayElementBase;
+    protected owner: GameplayElementBase;
     public eliminateMinCount: number;
     public eliminateSound: string;
     protected elementType: SceneElementType;
-    public accessory:egret.DisplayObjectContainer; //用来放一些除本体外的东西，比如护盾，血条
-    private bubbleShield:egret.Bitmap;
+    public accessory: egret.DisplayObjectContainer; //用来放一些除本体外的东西，比如护盾，血条
+    private bubbleShield: egret.Bitmap;
 
-    public constructor(owner:GameplayElementBase) 
+    public constructor(owner: GameplayElementBase) 
     {
         this.owner = owner;
         this.bindedElements = [];
@@ -56,10 +56,10 @@ abstract class SceneElementBase
 
     protected RandomColor(): GameElementColor 
     {
-        return GameElementColorGenerator.RandomColor();    
+        return GameElementColorGenerator.RandomColor();
     }
 
-    public RefreshTexture():void
+    public RefreshTexture(): void
     {
         let texture: egret.Texture;
         let path = this.GetResPathByColor();
@@ -71,30 +71,52 @@ abstract class SceneElementBase
         }
     }
 
+    public SetRenderPos(x: number, y: number)
+    {
+        if (this.renderer != null && this.renderer != undefined)
+        {
+            this.renderer.x = x;
+            this.renderer.y = y;
+        }
+
+        if (this.accessory != null && this.accessory != undefined)
+        {
+            this.accessory.x = x;
+            this.accessory.y = y;
+        }
+
+    }
+
     public Update(deltaTime: number)
     {
 
     }
 
-    protected abstract GetResPathByColor():string;
+    protected abstract GetResPathByColor(): string;
 
-    protected GetTexture(path: string): egret.Texture {
-        if (this.resModule == null) {
+    protected GetTexture(path: string): egret.Texture
+    {
+        if (this.resModule == null)
+        {
             this.resModule = <IResModule>GameMain.GetInstance().GetModule(ModuleType.RES);
         }
         return this.resModule.GetRes(path);
     }
 
     // 返回捆绑元素的列表
-    public GetBindElements(): SceneElementBase[] {
+    public GetBindElements(): SceneElementBase[]
+    {
         return this.bindedElements;
     }
 
     // 和某个元素绑定（双向）
-    public BindElement(element: SceneElementBase): boolean {
-        if (element != null) {
+    public BindElement(element: SceneElementBase): boolean
+    {
+        if (element != null)
+        {
             let index = this.bindedElements.indexOf(element);
-            if (index < 0) {
+            if (index < 0)
+            {
                 this.bindedElements.push(element);
                 element.BindElement(this);
                 return true;
@@ -104,10 +126,13 @@ abstract class SceneElementBase
     }
 
     // 和某个元素解除绑定（双向）
-    public UnbindElement(element: SceneElementBase): boolean {
-        if (element != null) {
+    public UnbindElement(element: SceneElementBase): boolean
+    {
+        if (element != null)
+        {
             let index = this.bindedElements.indexOf(element);
-            if (index >= 0) {
+            if (index >= 0)
+            {
                 this.bindedElements.splice(index, 1)
                 element.UnbindElement(this);
                 return true;
@@ -117,10 +142,13 @@ abstract class SceneElementBase
     }
 
     // 和所有元素绑定（双向）    
-    public UnbindAllElement() {
-        for (var index = this.bindedElements.length - 1; index >= 0; --index) {
+    public UnbindAllElement()
+    {
+        for (var index = this.bindedElements.length - 1; index >= 0; --index)
+        {
             var element = this.bindedElements[index];
-            if (element != null) {
+            if (element != null)
+            {
                 element.UnbindElement(this);
             }
         }
@@ -128,36 +156,36 @@ abstract class SceneElementBase
     }
 
     //处理一个scene element被消除之后的逻辑，返回true来让scene继续进入消除检测
-    public OnEliminate():boolean
+    public OnEliminate(): boolean
     {
         return this.owner.OnEliminate();
     }
 
-    public BlockWidth():number
+    public BlockWidth(): number
     {
         return this.owner.blockWidth;
     }
 
-    public BlockHeight():number
+    public BlockHeight(): number
     {
         return this.owner.blockHeight;
     }
 
-    public IsOwnerAlive():boolean
+    public IsOwnerAlive(): boolean
     {
         return this.owner.IsAlive();
     }
 
-    public HasShield():boolean
+    public HasShield(): boolean
     {
         return this.owner.HasShield();
-    } 
+    }
 
-    public AddShield(shield:number)
+    public AddShield(shield: number)
     {
         this.owner.AddShield(shield);
     }
-    
+
     public PlayEliminateAnim()
     {
         this.PlayBoomEffect();
@@ -180,7 +208,7 @@ abstract class SceneElementBase
 
     protected PlayScaling()
     {
-       var param = new PaScalingParam;
+        var param = new PaScalingParam;
         param.displayObj = this.renderer;
         param.duration = 100;
         param.targetScaleX = 0;
@@ -209,21 +237,21 @@ abstract class SceneElementBase
         var startX = Tools.ElementPosToGameStagePosX(this.posx);
         var startY = Tools.ElementPosToGameStagePosY(this.posy);
         var particleOffset = -100;
-        var targetOffset = Math.max(GameMain.GetInstance().GetStageHeight(), 
-                                    GameMain.GetInstance().GetStageWidth())
+        var targetOffset = Math.max(GameMain.GetInstance().GetStageHeight(),
+            GameMain.GetInstance().GetStageWidth())
 
         var particalParam = new PaMoveParticalParam;
         particalParam.textureName = "huojian";
         particalParam.jsonName = "huojian";
-		particalParam.duration = 1000;
-		particalParam.flyDuration = 1000;
-		particalParam.stayDuration = 0;
+        particalParam.duration = 1000;
+        particalParam.flyDuration = 1000;
+        particalParam.stayDuration = 0;
         particalParam.stratPosX = Tools.MoveScenePosX(startX, dir, particleOffset);
-		particalParam.stratPosY = Tools.MoveScenePosY(startY, dir, particleOffset);
-		particalParam.endPosX = Tools.MoveScenePosX(startX, dir, targetOffset + particleOffset);
-		particalParam.endPosY = Tools.MoveScenePosY(startY, dir, targetOffset + particleOffset);
-		particalParam.isMoveEmitter = true;
-		var event = new PlayProgramAnimationEvent();
+        particalParam.stratPosY = Tools.MoveScenePosY(startY, dir, particleOffset);
+        particalParam.endPosX = Tools.MoveScenePosX(startX, dir, targetOffset + particleOffset);
+        particalParam.endPosY = Tools.MoveScenePosY(startY, dir, targetOffset + particleOffset);
+        particalParam.isMoveEmitter = true;
+        var event = new PlayProgramAnimationEvent();
         event.param = particalParam;
         GameMain.GetInstance().DispatchEvent(event);
 
@@ -246,12 +274,12 @@ abstract class SceneElementBase
         GameMain.GetInstance().DispatchEvent(event);
     }
 
-    public GetPreView():egret.Bitmap
+    public GetPreView(): egret.Bitmap
     {
         var resPath = this.GetResPathByColor();
-        if(resPath != null)
+        if (resPath != null)
         {
-            var res:IResModule = <IResModule>GameMain.GetInstance().GetModule(ModuleType.RES);
+            var res: IResModule = <IResModule>GameMain.GetInstance().GetModule(ModuleType.RES);
             var preview = res.CreateBitmapByName(resPath);
             preview.width = Tools.MatchViewElementWidth;
             preview.height = Tools.MatchViewElementHeight;
@@ -264,10 +292,10 @@ abstract class SceneElementBase
 
     public PlayShieldCreateAnim()
     {
-        if(this.bubbleShield == undefined
-        || this.bubbleShield == null)
+        if (this.bubbleShield == undefined
+            || this.bubbleShield == null)
         {
-            var res:IResModule = <IResModule>GameMain.GetInstance().GetModule(ModuleType.RES);
+            var res: IResModule = <IResModule>GameMain.GetInstance().GetModule(ModuleType.RES);
             this.bubbleShield = res.CreateBitmapByName("pd_res_json.Shield");
             this.bubbleShield.width = Tools.MatchViewElementWidth;
             this.bubbleShield.height = Tools.MatchViewElementHeight;
@@ -279,8 +307,8 @@ abstract class SceneElementBase
 
     public PlayShieldBreakAnim()
     {
-        if(this.bubbleShield != undefined
-        && this.bubbleShield != null)
+        if (this.bubbleShield != undefined
+            && this.bubbleShield != null)
         {
             this.PlayBoomEffect();
             this.accessory.removeChild(this.bubbleShield);
@@ -299,9 +327,9 @@ enum GameElementColor
 
 class GameElementColorGenerator
 {
-    public static RandomColor(iDontWantThatDolor?:GameElementColor):GameElementColor
+    public static RandomColor(iDontWantThatDolor?: GameElementColor): GameElementColor
     {
-        let result:GameElementColor = undefined;
+        let result: GameElementColor = undefined;
         do
         {
             let random = Math.floor(Math.random() * 3);
@@ -318,7 +346,7 @@ class GameElementColorGenerator
                 result = GameElementColor.yellow;
             }
         }
-        while(iDontWantThatDolor != undefined && result == iDontWantThatDolor)
+        while (iDontWantThatDolor != undefined && result == iDontWantThatDolor)
 
         return result;
     }

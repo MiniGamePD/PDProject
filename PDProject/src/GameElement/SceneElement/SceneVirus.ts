@@ -35,8 +35,16 @@ class SceneVirus extends SceneElementBase
 
     public Update(deltaTime: number)
     {
+        if (!this.HasShield())
+        {
+            this.UpdateFramesAnim();
+        }
+    }
+
+    public UpdateFramesAnim()
+    {
         if (this.framesAnim != null
-            && this.framesAnim != undefined)
+        && this.framesAnim != undefined)
         {
             this.framesAnim.Update();
         }
