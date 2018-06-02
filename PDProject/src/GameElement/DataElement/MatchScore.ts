@@ -21,7 +21,7 @@ class MatchScore
 			&& event.eliminateInfo.HasInfo)
 		{
 			var changeValue = event.eliminateInfo.EliminatedElements.length;
-			this.curScore += changeValue;
+			this.curScore += changeValue * 10;
 			this.DispatchScoreChangeEvent(this.curScore, changeValue);
 		}
 	}

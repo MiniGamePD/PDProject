@@ -1,6 +1,6 @@
 class MatchScoreItem extends egret.DisplayObjectContainer
 {
-	private scoreText: egret.TextField;
+	private scoreText: egret.BitmapText;
 	private stepText: egret.TextField;
 
 	public Init()
@@ -11,16 +11,18 @@ class MatchScoreItem extends egret.DisplayObjectContainer
 		let adaptedStageWidth = GameMain.GetInstance().GetAdaptedStageWidth();
 		let adaptedStageHeight = GameMain.GetInstance().GetAdaptedStageHeight();
 
-		this.scoreText = new egret.TextField();
-		this.scoreText.x = stageWidth/2 - 150;
+		var resModule = <IResModule> GameMain.GetInstance().GetModule(ModuleType.RES);
+
+		var font = <egret.BitmapFont>resModule.GetRes("font_num1_fnt");
+
+		this.scoreText = new egret.BitmapText();
+		this.scoreText.x = stageWidth/2 - 100;
 		this.scoreText.y = 70 ;
 		this.scoreText.width = 200;
 		this.scoreText.height = 100;
-		this.scoreText.textColor = 0xff0000;
-		this.scoreText.fontFamily = "Impact";
-		this.scoreText.size = 40;
+		this.scoreText.font = font;
 		this.scoreText.textAlign = "left";
-		GameMain.GetInstance().AdaptTextField(this.scoreText);
+		// GameMain.GetInstance().AdaptTextField(this.scoreText);
 		this.addChild(this.scoreText);
 
 		this.stepText = new egret.TextField();
@@ -45,7 +47,7 @@ class MatchScoreItem extends egret.DisplayObjectContainer
 
 	public SetScore(score: number)
 	{
-		this.scoreText.text = "Score:" + score.toString();
+		this.scoreText.text = score.toString();
 	}
 
 	public SetStep(step: number)
