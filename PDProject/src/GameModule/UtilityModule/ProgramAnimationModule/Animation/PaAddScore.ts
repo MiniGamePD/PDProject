@@ -9,7 +9,7 @@ class PaAddScoreParam extends ProgramAnimationParamBase
 	public constructor()
 	{
 		super();
-		this.score = 0;
+		this.score = 0; 
 		this.pos = null;
 		this.duration = 800;
 	}
@@ -18,6 +18,10 @@ class PaAddScoreParam extends ProgramAnimationParamBase
 class PaAddScore extends ProgramAnimationBase<PaAddScoreParam>
 {
     private scoreText: egret.BitmapText;
+	private scaleDuration = 500;
+	private fateOutStartTime = 700;
+	private fateOutDuration = 200;
+
 	protected OnInit()
 	{
 		var font = this.resModule.GetRes("font_num1_fnt");
@@ -41,12 +45,19 @@ class PaAddScore extends ProgramAnimationBase<PaAddScoreParam>
 
 	protected OnUpdate(deltaTime: number)
 	{
-		if (this.runningTime < 500)
+		if (this.runningTime < this.scaleDuration)
 		{
-			var rate = this.runningTime / 500;
+			var rate = this.runningTime / this.scaleDuration;
 			this.scoreText.scaleX = Tools.Lerp(0, 0.5, rate);
 			this.scoreText.scaleY = Tools.Lerp(0, 0.7, rate);
 			this.scoreText.alpha = Tools.Lerp(0, 1, rate);
+		}
+		
+		if (this.runningTime > this.fateOutStartTime
+		 	&& this.runningTime <= this.fateOutStartTime + this.fateOutDuration)
+		{
+			var rate = (this.runningTime - this.fateOutStartTime) /  this.fateOutDuration;
+			this.scoreText.alpha = Tools.Lerp(1, 0.2, rate);
 		}
 	}
 
