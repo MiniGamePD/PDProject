@@ -94,7 +94,6 @@ class NpcControl extends GameModuleComponentBase
             this.CreateRandomVirus(createNum, 0.1, 0, Scene.Rows-1);
             this.npcSmileSound = this.remindMoveUpNum > 0 ? null : "EnemySinisterSmile1_mp3";
 
-            this.npcControlState = NpcControlState.AddNpcToScene;
             return;
         }
 
