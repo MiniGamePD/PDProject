@@ -109,6 +109,12 @@ class MatchHUD extends egret.DisplayObjectContainer
             case HUDEventType.ShowComboEvaluation:
                 this.ShowComboEvaluation(event.param);
                 break;
+            case HUDEventType.ShowPauseMenu:
+                this.pause.ShowPauseMenu();
+                break;
+            case HUDEventType.HidePauseMenu:
+                this.pause.HidePauseMenu();
+                break;
             //Add More..
         }
     }

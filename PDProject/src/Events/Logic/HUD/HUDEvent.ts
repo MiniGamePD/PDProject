@@ -20,4 +20,6 @@ enum HUDEventType
     ShowFeverSprite,
     ShowCombo,
     ShowComboEvaluation,
+    ShowPauseMenu,
+    HidePauseMenu,
 }
