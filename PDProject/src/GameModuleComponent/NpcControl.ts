@@ -1,10 +1,10 @@
 class NpcControl extends GameModuleComponentBase
 {
-    //当前所有的NPC，用于触发StartNewTurn的操作
-    private aliveNpcArray:NpcElement[];
+    // //当前所有的NPC，用于触发StartNewTurn的操作
+    // private aliveNpcArray:NpcElement[];
 
-    //保存这个数组，后面这些npc需要通过NpcControl来触发技能
-    private skillNpcArray:NpcElement[];  
+    // //保存这个数组，后面这些npc需要通过NpcControl来触发技能
+    // private skillNpcArray:NpcElement[];  
 
     private creatorWorkParam:CreatorWorkParam;
 	private npcElementCreator: NpcElementCreator;
@@ -41,8 +41,8 @@ class NpcControl extends GameModuleComponentBase
 
     public Init():void
     {
-        this.skillNpcArray = [];
-        this.aliveNpcArray = [];
+        // this.skillNpcArray = [];
+        // this.aliveNpcArray = [];
         this.lastTurnNum = -1;
         this.npcControlState = NpcControlState.None;
         this.remindMoveUpNum = 0;
@@ -53,8 +53,8 @@ class NpcControl extends GameModuleComponentBase
 
     public Release():void
     {
-        this.skillNpcArray = [];
-        this.aliveNpcArray = [];
+        // this.skillNpcArray = [];
+        // this.aliveNpcArray = [];
         this.lastTurnNum = -1;
         GameMain.GetInstance().RemoveEventListener(SceneElementAccessAnswerEvent.EventName, this.OnReciveSceneData, this);
         GameMain.GetInstance().RemoveEventListener(SceneElementControlFailedEvent.EventName, this.OnAddElementToSceneFailed, this);
@@ -99,61 +99,61 @@ class NpcControl extends GameModuleComponentBase
 
         if(this.npcControlState == NpcControlState.None)
         {
-            if(this.gameMode == GameMode.BossFight)
-            {
-                if(controlWorkParam.turn != 0 && controlWorkParam.turn % TurnNum_CreateSkillBossTurnNum == 0 
-                    && this.skillNpcArray.length < skillBossMaxNum)
-                {
-                    //创建boss
-                    this.creatorWorkParam.paramIndex = NpcElementCreateType.RandomSuperVirus;
-                    this.creatorWorkParam.createNum = 1;
-                    this.tobeAddToSceneNpcArray = [];
-                    this.tobeAddToSceneNpcArray.push(this.npcElementCreator.CreateElement(this.creatorWorkParam));
+            // if(this.gameMode == GameMode.BossFight)
+            // {
+            //     if(controlWorkParam.turn != 0 && controlWorkParam.turn % TurnNum_CreateSkillBossTurnNum == 0 
+            //         && this.skillNpcArray.length < skillBossMaxNum)
+            //     {
+            //         //创建boss
+            //         this.creatorWorkParam.paramIndex = NpcElementCreateType.RandomSuperVirus;
+            //         this.creatorWorkParam.createNum = 1;
+            //         this.tobeAddToSceneNpcArray = [];
+            //         this.tobeAddToSceneNpcArray.push(this.npcElementCreator.CreateElement(this.creatorWorkParam));
 
-                    //向scene询问已经存在的boss的格子，用来放置新生成的boss
-                    var event = new SceneElementAccessEvent();
-                    event.accessType = SceneElementType.PlaceHolder;
-                    event.answerType = SceneElementAccessAnswerType.Pos;
-                    event.startX = 0;
-                    event.startY = 2;
-                    event.accesser = this;
-                    GameMain.GetInstance().DispatchEvent(event);
+            //         //向scene询问已经存在的boss的格子，用来放置新生成的boss
+            //         var event = new SceneElementAccessEvent();
+            //         event.accessType = SceneElementType.PlaceHolder;
+            //         event.answerType = SceneElementAccessAnswerType.Pos;
+            //         event.startX = 0;
+            //         event.startY = 2;
+            //         event.accesser = this;
+            //         GameMain.GetInstance().DispatchEvent(event);
 
-                    this.npcSmileSound = "EnemySinisterSmile2_mp3"; 
-                    return;
-                }    
+            //         this.npcSmileSound = "EnemySinisterSmile2_mp3"; 
+            //         return;
+            //     }    
 
-                if(this.skillNpcArray.length > 0 && controlWorkParam.turn % TurnNum_BossSkillTurnNum == 0)
-                {
-                    //boss放技能
-                    let id:number = Math.floor(this.skillNpcArray.length * Math.random());
-                    let skillNpc:NpcElement = this.skillNpcArray[id];
+            //     if(this.skillNpcArray.length > 0 && controlWorkParam.turn % TurnNum_BossSkillTurnNum == 0)
+            //     {
+            //         //boss放技能
+            //         let id:number = Math.floor(this.skillNpcArray.length * Math.random());
+            //         let skillNpc:NpcElement = this.skillNpcArray[id];
 
-                    //首先向scene查询对应物体的列表
-                    var event = new SceneElementAccessEvent();
-                    event.accesser = this;
-                    event.answerType = SceneElementAccessAnswerType.Instance;
-                    if(skillNpc.SkillType() == NpcSkillType.AddShieldForVirus ||
-                        skillNpc.SkillType() == NpcSkillType.ChangeVirusColor)
-                    {
-                        event.accessType = SceneElementType.Virus;
-                    }
-                    else if(skillNpc.SkillType() == NpcSkillType.ChangePillToVirus)
-                    {
-                        event.accessType = SceneElementType.Pill;
-                    }
-                    else
-                    {
-                        console.error("Invalid Skill Type " + skillNpc.SkillType());
-                    }
+            //         //首先向scene查询对应物体的列表
+            //         var event = new SceneElementAccessEvent();
+            //         event.accesser = this;
+            //         event.answerType = SceneElementAccessAnswerType.Instance;
+            //         if(skillNpc.SkillType() == NpcSkillType.AddShieldForVirus ||
+            //             skillNpc.SkillType() == NpcSkillType.ChangeVirusColor)
+            //         {
+            //             event.accessType = SceneElementType.Virus;
+            //         }
+            //         else if(skillNpc.SkillType() == NpcSkillType.ChangePillToVirus)
+            //         {
+            //             event.accessType = SceneElementType.Pill;
+            //         }
+            //         else
+            //         {
+            //             console.error("Invalid Skill Type " + skillNpc.SkillType());
+            //         }
 
-                    this.curNpcSkillInfo = new BossSkillInfo();
-                    this.curNpcSkillInfo.skillCaster = skillNpc;
-                    GameMain.GetInstance().DispatchEvent(event);
+            //         this.curNpcSkillInfo = new BossSkillInfo();
+            //         this.curNpcSkillInfo.skillCaster = skillNpc;
+            //         GameMain.GetInstance().DispatchEvent(event);
                     
-                    return;
-                }
-            }
+            //         return;
+            //     }
+            // }
 
             if(this.remindCreateEnemyTurns <= 3)
             {
@@ -595,12 +595,12 @@ class NpcControl extends GameModuleComponentBase
 
         npc.PlaySound(NpcSoundType.Born);
 
-        //默认是会成功的，不成功会报错，所以这里就直接添加到逻辑数组里去了
-        if(npc.SkillType() != NpcSkillType.None)
-        {
-            this.skillNpcArray.push(npc);
-        }
-        this.aliveNpcArray.push(npc);
+        //TODO:有可能会失败，不能这样做。默认是会成功的，不成功会报错，所以这里就直接添加到逻辑数组里去了
+        // if(npc.SkillType() != NpcSkillType.None)
+        // {
+        //     this.skillNpcArray.push(npc);
+        // }
+        // this.aliveNpcArray.push(npc);
     }
 
     private OnAddElementToSceneFailed(event:SceneElementControlFailedEvent)
@@ -613,32 +613,39 @@ class NpcControl extends GameModuleComponentBase
 
     private OnStartNewTurn()
     {
-        //将已经死掉的npc从维护列表中移除
-        this.RemoveDeadNpcFromArray(this.aliveNpcArray);
+        // //将已经死掉的npc从维护列表中移除
+        // this.RemoveDeadNpcFromArray(this.aliveNpcArray);
 
-        //将已经死掉的npc从技能列表中移除
-        this.RemoveDeadNpcFromArray(this.skillNpcArray);
+        // //将已经死掉的npc从技能列表中移除
+        // this.RemoveDeadNpcFromArray(this.skillNpcArray);
 
         //小怪降临时间维护
         this.remindCreateEnemyTurns--;
     }
 
-    private RemoveDeadNpcFromArray(array:NpcElement[])
-    {
-        var tobeDelete:number[] = [];
-        for(var i = 0; i < array.length; ++i)
-        {
-            var npc:NpcElement = array[i];
-            if(!npc.IsAlive())
-            {
-                tobeDelete.push(i);
-            }
-        }
+    // private RemoveDeadNpcFromArray(array:NpcElement[])
+    // {
+    //     var tobeDelete:number[] = [];
+    //     for(var i = 0; i < array.length; ++i)
+    //     {
+    //         var npc:NpcElement = array[i];
+    //         if(!npc.IsAlive())
+    //         {
+    //             tobeDelete.push(i);
+    //         }
+    //     }
 
-        for(var i = 0; i < tobeDelete.length; ++i)
-        {
-            array.splice(tobeDelete[i], 1);
-        }
+    //     for(var i = 0; i < tobeDelete.length; ++i)
+    //     {
+    //         array.splice(tobeDelete[i], 1);
+    //     }
+    // }
+
+    public OnGameOver()
+    {
+        this.remindMoveUpNum = 0;
+        this.npcControlState = NpcControlState.None;
+        this.tobeAddToSceneNpcArray = null;
     }
 }
 

@@ -22,7 +22,7 @@ class MatchModule extends GameViewModule
 		GameMain.GetInstance().AddEventListener(NpcControlFinishEvent.EventName, this.OnNpcControlFinish, this);
 		GameMain.GetInstance().AddEventListener(GameOverEvent.EventName, this.OnGameOver, this);
 		GameMain.GetInstance().AddEventListener(ReplayGameEvent.EventName, this.OnReplayGame, this);
-		GameMain.GetInstance().AddEventListener(ReviveEvent.EventName, this.OnReplayGame, this);
+		GameMain.GetInstance().AddEventListener(ReviveEvent.EventName, this.OnRevive, this);
 		GameMain.GetInstance().AddEventListener(SceneElementMoveUpEvent.EventName, this.OnSceneElementMoveUpFinish, this);
 
 		this.InitComponents();
@@ -217,6 +217,9 @@ class MatchModule extends GameViewModule
 	{
 		this.matchState = MatchState.GameOver;
 
+		this.playerControl.OnGameOver();
+		this.npcControl.OnGameOver();
+
 		this.playerControl.Sleep();
 		this.npcControl.Sleep();
 		this.scene.Sleep();
@@ -259,7 +262,8 @@ class MatchModule extends GameViewModule
 			method.froceKill = true;
 			method.methodType = EliminateMethodType.SpecificRegion
 			method.eliminateElementType = EliminateElementType.PillAndVirus;
-			method.specificRegion = Tools.GetRegionPosList(0,0,Scene.Columns-1,4);
+			method.specificRegion = Tools.GetRegionPosList(0,0,Scene.Columns-1,Procedure_ReviveEliminateLine-1);
+			this.matchState = MatchState.SpecialEliminate;
 			this.StartSpecialSceneEliminate(method);
 		}
 	}

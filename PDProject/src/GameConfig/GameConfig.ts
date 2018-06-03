@@ -27,3 +27,6 @@ const Eliminate_NextCentainEliminateToolTurn = 10;
 const Score_FeverTimeScale = 2; // FeverTime期间的分数倍率
 const Score_EliminateRoundScale = [1, 2, 3, 4, 5]; // 连消的分数倍率
 const Score_BaseScore = 20;
+
+//游戏流程相关
+const Procedure_ReviveEliminateLine = 5;

@@ -13,6 +13,8 @@ class PlayerControl extends GameModuleComponentBase
 
     private nextCentainEliminateToolCountDown:number; //隔几回合就必然生成一个特殊消除道具
 
+    private targetBeforeGameOver:ControlableElement;
+
     public constructor(gameplayElementFactory:GameplayElementFactory)
     {
         super();
@@ -22,6 +24,7 @@ class PlayerControl extends GameModuleComponentBase
 
     public Init():void
     {
+        this.targetBeforeGameOver = null;
         this.nextControlableElementArray = [];
         this.nextCentainEliminateToolCountDown = Eliminate_NextCentainEliminateToolTurn;
 
@@ -43,6 +46,12 @@ class PlayerControl extends GameModuleComponentBase
     {
         let controlWorkParam:GameplayControlWorkParam = param;
         
+        if(this.targetBeforeGameOver != null && this.targetBeforeGameOver != undefined)
+        {
+            this.PreviewDropDown();
+            return;
+        }
+
         if(controlWorkParam.turn == 1)
         {
             this.creatorWorkParam.paramIndex = ControlableElementCreateType.AllRandomPill;
@@ -110,7 +119,15 @@ class PlayerControl extends GameModuleComponentBase
 
     private ReallyStartWork()
     {
-        this.target = this.nextControlableElementArray.splice(0,1)[0];
+        if(this.targetBeforeGameOver != null && this.targetBeforeGameOver != undefined)
+        {
+            this.target = this.targetBeforeGameOver;
+            this.targetBeforeGameOver = null;
+        }
+        else
+        {
+            this.target = this.nextControlableElementArray.splice(0,1)[0];
+        }
 
         this.startWorkTimer = null;
         this.dropdownTimer = 0;
@@ -241,6 +258,11 @@ class PlayerControl extends GameModuleComponentBase
     public AddTurn()
     {
         this.nextCentainEliminateToolCountDown--;
+    }
+
+    public OnGameOver()
+    {
+        this.targetBeforeGameOver = this.target;
     }
 }
 
