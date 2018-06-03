@@ -24,4 +24,9 @@ interface IResModule extends IModule
      * 根据贴图名字和json配置名创建一个ParticleSystem对象。
      */
 	CreateParticle(textureName: string, jsonName: string): particle.GravityParticleSystem
+
+	/**
+	 * 根据字体名字，创建BitmapText
+	 */
+	CreateBitmapText(font: string): egret.BitmapText;
 }

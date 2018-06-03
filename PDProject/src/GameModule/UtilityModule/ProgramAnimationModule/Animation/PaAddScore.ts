@@ -29,13 +29,10 @@ class PaAddScore extends ProgramAnimationBase<PaAddScoreParam>
 
 	protected OnInit()
 	{
-		var font = this.resModule.GetRes("font_num1_fnt");
-
-		this.scoreText = new egret.BitmapText();
+		this.scoreText = this.resModule.CreateBitmapText("font_num1_fnt");
 		GameMain.GetInstance().GetAdaptedStageContainer().addChild(this.scoreText);
 		this.scoreText.x = this.param.pos.x;
 		this.scoreText.y = this.param.pos.y;
-		this.scoreText.font = font;
 		this.scoreText.width = 150;
 		this.scoreText.height = 37
 		this.scoreText.anchorOffsetX = this.scoreText.width / 2;

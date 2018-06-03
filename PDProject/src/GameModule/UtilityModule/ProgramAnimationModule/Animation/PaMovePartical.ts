@@ -36,22 +36,18 @@ class PaMovePartical extends ProgramAnimationBase<PaMoveParticalParam>
 	private hasStop: boolean;
 	protected OnInit()
 	{
-		var resModule = <IResModule>GameMain.GetInstance().GetModule(ModuleType.RES);
-		if (resModule != null)
-		{
-			this.hasStop = false;
-			this.particleSys = resModule.CreateParticle(this.param.textureName, this.param.jsonName);
-			this.particleSys.x = this.param.stratPosX;
-			this.particleSys.y = this.param.stratPosY;
-			this.particleSys.rotation = Tools.GetRotateAngle(this.param.stratPosX, this.param.stratPosY,
-											 this.param.endPosX, this.param.endPosY);
-			// GameMain.GetInstance().AdapteDisplayObjectScale(this.particleSys);
-			GameMain.GetInstance().GetAdaptedStageContainer().addChild(this.particleSys);
-			this.particleSys.start();
+		this.hasStop = false;
+		this.particleSys = this.resModule.CreateParticle(this.param.textureName, this.param.jsonName);
+		this.particleSys.x = this.param.stratPosX;
+		this.particleSys.y = this.param.stratPosY;
+		this.particleSys.rotation = Tools.GetRotateAngle(this.param.stratPosX, this.param.stratPosY,
+											this.param.endPosX, this.param.endPosY);
+		// GameMain.GetInstance().AdapteDisplayObjectScale(this.particleSys);
+		GameMain.GetInstance().GetAdaptedStageContainer().addChild(this.particleSys);
+		this.particleSys.start();
 
-			this.distance = Tools.PointDistance(this.param.stratPosX, this.param.stratPosY,
-											 this.param.endPosX, this.param.endPosY);
-		}
+		this.distance = Tools.PointDistance(this.param.stratPosX, this.param.stratPosY,
+											this.param.endPosX, this.param.endPosY);
 	}
 
 	protected OnUpdate(deltaTime: number)
