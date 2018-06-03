@@ -21,6 +21,7 @@ const Screen_StanderScreenHeight = 1136;
 //消除相关
 const EliminateRoundInMoveUp = 0; // 生成小怪时，上移的消除事件。Round的值
 const EliminateRoundStartIndex = 1;
+const Eliminate_NextCentainEliminateToolTurn = 10;
 
 //分数相关
 const Score_FeverTimeScale = 2; // FeverTime期间的分数倍率

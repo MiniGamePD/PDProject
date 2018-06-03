@@ -96,7 +96,8 @@ abstract class GameplayElementBase
     //一次大回合中的一个消除回合（多次连消算多个消除回合）
     public OnEliminateTurnFinish(event:EliminateEvent)
     {
-        this.hasReduceHpThisRound = false;
+        if(event.eliminateInfo.EliminateRound > 0)
+            this.hasReduceHpThisRound = false;
     }
 
     public Kill()

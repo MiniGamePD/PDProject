@@ -11,6 +11,8 @@ class PlayerControl extends GameModuleComponentBase
 
     private nextControlableElementArray:ControlableElement[];
 
+    private nextCentainEliminateToolCountDown:number; //隔几回合就必然生成一个特殊消除道具
+
     public constructor(gameplayElementFactory:GameplayElementFactory)
     {
         super();
@@ -21,6 +23,7 @@ class PlayerControl extends GameModuleComponentBase
     public Init():void
     {
         this.nextControlableElementArray = [];
+        this.nextCentainEliminateToolCountDown = Eliminate_NextCentainEliminateToolTurn;
 
         GameMain.GetInstance().AddEventListener(InputEvent.EventName, this.OnInputEvent, this);
         GameMain.GetInstance().AddEventListener(SceneElementControlFailedEvent.EventName, this.OnPlayerControlFailed, this);
@@ -62,10 +65,29 @@ class PlayerControl extends GameModuleComponentBase
         }
         else
         {
-            this.creatorWorkParam.paramIndex = ControlableElementCreateType.Normal;
+            if(this.nextCentainEliminateToolCountDown <= 0)
+            {
+                //必然出特殊消除道具的倒计时已经到了，这次必须刷出一个消除道具
+                this.creatorWorkParam.paramIndex = ControlableElementCreateType.RandomEliminateTool;
+                //重置倒计时
+                this.nextCentainEliminateToolCountDown = Eliminate_NextCentainEliminateToolTurn;
+            }
+            else
+            {
+                //根据概率，随机生成药丸或特殊消除道具
+                this.creatorWorkParam.paramIndex = ControlableElementCreateType.Normal;
+            }
+
             this.creatorWorkParam.createNum = 1;
             var newElement = this.controlableElementCreator.CreateElement(this.creatorWorkParam);
-		    this.nextControlableElementArray.push(newElement);
+            if(DEBUG)
+            {
+                if(newElement == undefined || newElement == null)
+                {
+                    console.error("Create Controlable Element Failed");
+                }
+            }
+            this.nextControlableElementArray.push(newElement);
 
             this.PreviewDropDown();
         }
@@ -215,5 +237,10 @@ class PlayerControl extends GameModuleComponentBase
 		this.playSoundEvent.Key = sound;
         GameMain.GetInstance().DispatchEvent(this.playSoundEvent);
 	}
+
+    public AddTurn()
+    {
+        this.nextCentainEliminateToolCountDown--;
+    }
 }
 
