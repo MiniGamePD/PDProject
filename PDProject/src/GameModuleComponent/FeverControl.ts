@@ -35,7 +35,7 @@ class FeverControl extends GameModuleComponentBase
 
             this.isInFeverState = true;
 
-            this.feverTimer = new egret.Timer(FeverTime, 1);
+            this.feverTimer = new egret.Timer(Time_FeverTime, 1);
             this.feverTimer.addEventListener(egret.TimerEvent.TIMER, this.FeverEnd, this);
             this.feverTimer.start();
 
@@ -79,7 +79,7 @@ class FeverControl extends GameModuleComponentBase
     {
         if(this.isInFeverState)
         {
-            this.feverEnerge -= deltaTime / FeverTime * 100;
+            this.feverEnerge -= deltaTime / Time_FeverTime * 100;
         }
     }
 
