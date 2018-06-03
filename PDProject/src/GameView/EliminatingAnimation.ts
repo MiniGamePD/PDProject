@@ -15,7 +15,7 @@ class EliminatingAnimation
 
 	private playSoundEvent: PlaySoundEvent;
 
-	private deadElementRendererArray:egret.DisplayObject[];
+	private deadElementArray: SceneElementBase[];
 
 	public Init(view: MatchView)
 	{
@@ -24,7 +24,7 @@ class EliminatingAnimation
 		this.state = EliminatingAnimState.Init;
 		this.runningTime = 0;
 		this.moveDownFinish = false;
-		this.deadElementRendererArray = [];
+		this.deadElementArray = [];
 	}
 
 	public IsPlaying(): boolean
@@ -145,10 +145,7 @@ class EliminatingAnimation
 		for (var i = 0; i < eliminatedElements.length; ++i)
 		{
 			var element:SceneElementBase = eliminatedElements[i];
-			this.deadElementRendererArray.push(element.renderer);
-			if(element.accessory != undefined)
-				this.deadElementRendererArray.push(element.accessory);
-			//for debug eliminatedElements[i].renderer.alpha = 0.5;
+			this.deadElementArray.push(element);
 		}
 
 		var superVirues:SuperVirus[] = this.eliminateInfo.EliminatedSuperVirus;
@@ -158,9 +155,7 @@ class EliminatingAnimation
 			{
 				//for debug superVirues[i].GetMainSceneElement().renderer.alpha = 0.5;
 				var element:SceneElementBase = superVirues[i].GetMainSceneElement();
-				this.deadElementRendererArray.push(element.renderer);
-				if(element.accessory != undefined)
-					this.deadElementRendererArray.push(element.accessory);
+				this.deadElementArray.push(element);
 			}
 			else
 			{
@@ -229,14 +224,14 @@ class EliminatingAnimation
 		}
 	}
 
-	public GetDeadElementRenderArray():egret.DisplayObject[]
+	public GetDeadElementArray(): SceneElementBase[]
 	{
-		return this.deadElementRendererArray;
+		return this.deadElementArray;
 	}
 
 	public ClearGetDeadElementRenderArray()
 	{
-		this.deadElementRendererArray = [];
+		this.deadElementArray = [];
 	}
 }
 

@@ -25,7 +25,7 @@
 			"url": "assets/pd_res.json",
 			"type": "sheet",
 			"name": "pd_res_json",
-			"subkeys": "0,1,2,3,4,5,6,7,8,9,BackGround,Boom_shinning,Boss_Blue,Boss_Red,Boss_Yellow,Bottle2,Caidai_Blue,Caidai_Green,Caidai_Red,Caidai_Yellow,Caidai__zise,ColunmEliminater,CrossEliminater,Pill_Bg,Pill_Blue,Pill_Red,Pill_Single_Blue,Pill_Single_Red,Pill_Single_Yellow,Pill_Yellow,RowEliminater,Shield,Virus_Blue,Virus_Blue_Idle1,Virus_Blue_Idle2,Virus_Blue_Idle3,Virus_Blue_Idle4,Virus_Blue_Idle5,Virus_Red,Virus_Red_Idle1,Virus_Red_Idle2,Virus_Red_Idle3,Virus_Red_Idle4,Virus_Red_Idle5,Virus_Yellow,Virus_Yellow_Idle1,Virus_Yellow_Idle2,Virus_Yellow_Idle3,Virus_Yellow_Idle4,Virus_Yellow_Idle5,Vitamins_Blue,Vitamins_Red,Vitamins_Yellow,boss_jineng,caihong_shinning1,caihong_shinning2,caihong_shinning3,cool,fever,gezi,go,good,huojian,huojian1,huojian_shinning,jineng,lianxiao,lianxiao0,lianxiao1,lianxiao2,lianxiao3,lianxiao4,lianxiao5,lianxiao6,lianxiao7,lianxiao8,lianxiao9,perfect,ready"
+			"subkeys": "BackGround,Boom_shinning,Boss_Blue,Boss_Red,Boss_Yellow,Bottle2,Caidai_Blue,Caidai_Green,Caidai_Red,Caidai_Yellow,Caidai__zise,ColunmEliminater,CrossEliminater,Pill_Bg,Pill_Blue,Pill_Red,Pill_Single_Blue,Pill_Single_Red,Pill_Single_Yellow,Pill_Yellow,RowEliminater,Shield,Virus_Blue,Virus_Blue_Idle1,Virus_Blue_Idle2,Virus_Blue_Idle3,Virus_Blue_Idle4,Virus_Blue_Idle5,Virus_Red,Virus_Red_Idle1,Virus_Red_Idle2,Virus_Red_Idle3,Virus_Red_Idle4,Virus_Red_Idle5,Virus_Yellow,Virus_Yellow_Idle1,Virus_Yellow_Idle2,Virus_Yellow_Idle3,Virus_Yellow_Idle4,Virus_Yellow_Idle5,Vitamins_Blue,Vitamins_Red,Vitamins_Yellow,boss_jineng,caihong_shinning1,caihong_shinning2,caihong_shinning3,gezi,huojian,huojian1,huojian_shinning,jineng,range"
 		},
 		{
 			"url": "assets/DB_Animation/DB_Boom_Bomb_ske.json",
@@ -223,24 +223,24 @@
 			"name": "_DS_Store"
 		},
 		{
-			"name": "font_num1_fnt",
+			"url": "assets/font/font_num1.fnt",
 			"type": "font",
-			"url": "assets/font/font_num1.fnt"
+			"name": "font_num1_fnt"
 		},
 		{
-			"name": "font_num1_png",
+			"url": "assets/font/font_num1.png",
 			"type": "image",
-			"url": "assets/font/font_num1.png"
+			"name": "font_num1_png"
 		},
 		{
-			"name": "font_num2_fnt",
+			"url": "assets/font/font_num2.fnt",
 			"type": "font",
-			"url": "assets/font/font_num2.fnt"
+			"name": "font_num2_fnt"
 		},
 		{
-			"name": "font_num2_png",
+			"url": "assets/font/font_num2.png",
 			"type": "image",
-			"url": "assets/font/font_num2.png"
+			"name": "font_num2_png"
 		}
 	]
 }

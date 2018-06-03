@@ -70,6 +70,12 @@ class ProgrameAnimationModule extends ModuleBase implements IProgramAnimationMod
                 case ProgramAnimationType.AddScole:
                     animation = new PaAddScore();
                     break;
+                case ProgramAnimationType.PlayFramesAnim:
+                    animation = new PaPlayFramesAnim();
+                    break;
+                case ProgramAnimationType.AlphaLoop:
+                    animation = new PaAlphaLoop();
+                    break;
             }
         }
 
