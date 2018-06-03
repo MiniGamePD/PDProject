@@ -113,4 +113,19 @@ class ResModule extends ModuleBase implements IResModule
 		return null;
 	}
 
+	public CreateBitmapText(fontName: string): egret.BitmapText
+	{
+		var font = this.GetRes(fontName);
+		var scoreText = new egret.BitmapText();
+		if (font != null)
+		{
+			scoreText.font = font;
+		}
+		else if (DEBUG)
+		{
+			console.assert(false, "Can not get font by name : " + fontName);
+		}
+		return scoreText;
+	}
+
 }

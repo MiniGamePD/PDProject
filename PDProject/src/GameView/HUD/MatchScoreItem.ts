@@ -21,15 +21,11 @@ class MatchScoreItem extends egret.DisplayObjectContainer
 		this.targetScore = 0;
 
 		var resModule = <IResModule> GameMain.GetInstance().GetModule(ModuleType.RES);
-
-		var font = <egret.BitmapFont>resModule.GetRes("font_num1_fnt");
-
-		this.scoreText = new egret.BitmapText();
+		this.scoreText = resModule.CreateBitmapText("font_num1_fnt");
 		this.scoreText.x = stageWidth/2 - 100;
 		this.scoreText.y = 70 ;
 		this.scoreText.width = 200;
 		this.scoreText.height = 100;
-		this.scoreText.font = font;
 		this.scoreText.textAlign = "left";
 		// GameMain.GetInstance().AdaptTextField(this.scoreText);
 		this.addChild(this.scoreText);

@@ -18,10 +18,14 @@ class PaAddScoreParam extends ProgramAnimationParamBase
 class PaAddScore extends ProgramAnimationBase<PaAddScoreParam>
 {
     private scoreText: egret.BitmapText;
-	private readonly scaleDurationRate = 0.4; // 缩放出现的时间百分比
+	private readonly scaleTargetStep1 = new egret.Point(0.8, 0.8); // 缩放出现步骤1目标值
+	private readonly scaleDurationRateStep1 = 0.15 // 缩放出现步骤1的时间百分比
+	private readonly scaleTargetStep2 = new egret.Point(0.5, 0.7); // 缩放出现步骤2目标值
+	private readonly scaleDurationRateStep2 = 0.15 // 缩放出现步骤2的时间百分比
 	private readonly fateOutStartRate = 0.6; // 渐隐消失启动时间的百分比
 	private readonly moveUpRate = 0.5; //上移一个格子宽度的百分比
-	private scaleDuration = 0;
+	private scaleDurationStep1 = 0;
+	private scaleDurationStep2 = 0;
 	private fateOutStartTime = 0;
 	private fateOutDuration = 0;
 	private startPosY = 0;
@@ -29,13 +33,10 @@ class PaAddScore extends ProgramAnimationBase<PaAddScoreParam>
 
 	protected OnInit()
 	{
-		var font = this.resModule.GetRes("font_num1_fnt");
-
-		this.scoreText = new egret.BitmapText();
+		this.scoreText = this.resModule.CreateBitmapText("font_num1_fnt");
 		GameMain.GetInstance().GetAdaptedStageContainer().addChild(this.scoreText);
 		this.scoreText.x = this.param.pos.x;
 		this.scoreText.y = this.param.pos.y;
-		this.scoreText.font = font;
 		this.scoreText.width = 150;
 		this.scoreText.height = 37
 		this.scoreText.anchorOffsetX = this.scoreText.width / 2;
@@ -45,10 +46,11 @@ class PaAddScore extends ProgramAnimationBase<PaAddScoreParam>
 		GameMain.GetInstance().AdapteDisplayObjectScale(this.scoreText);
 		this.scoreText.scaleX = 0;
 		this.scoreText.scaleY = 0;
-		this.scoreText.alpha = 0;
+		this.scoreText.alpha = 1;
 
 
-		this.scaleDuration = this.scaleDurationRate * this.param.duration;
+		this.scaleDurationStep1 = this.scaleDurationRateStep1 * this.param.duration;
+		this.scaleDurationStep2 = this.scaleDurationRateStep2 * this.param.duration;
 		this.fateOutStartTime = this.fateOutStartRate * this.param.duration;
 		this.fateOutDuration = (1 - this.fateOutStartRate) * this.param.duration;
 
@@ -58,12 +60,17 @@ class PaAddScore extends ProgramAnimationBase<PaAddScoreParam>
 
 	protected OnUpdate(deltaTime: number)
 	{
-		if (this.runningTime < this.scaleDuration)
+		if (this.runningTime < this.scaleDurationStep1)
 		{
-			var rate = this.runningTime / this.scaleDuration;
-			this.scoreText.scaleX = Tools.Lerp(0, 0.5, rate);
-			this.scoreText.scaleY = Tools.Lerp(0, 0.7, rate);
-			this.scoreText.alpha = Tools.Lerp(0, 1, rate);
+			var rate = this.runningTime / this.scaleDurationStep1;
+			this.scoreText.scaleX = Tools.Lerp(0, this.scaleTargetStep1.x, rate);
+			this.scoreText.scaleY = Tools.Lerp(0, this.scaleTargetStep1.y, rate);
+		}
+		else if (this.runningTime < this.scaleDurationStep1 + this.scaleDurationStep2)
+		{
+			var rate = (this.runningTime - this.scaleDurationStep1) / this.scaleDurationStep2;
+			this.scoreText.scaleX = Tools.Lerp(this.scaleTargetStep1.x, this.scaleTargetStep2.x, rate);
+			this.scoreText.scaleY = Tools.Lerp(this.scaleTargetStep1.y, this.scaleTargetStep2.y, rate);
 		}
 		
 		if (this.runningTime > this.fateOutStartTime

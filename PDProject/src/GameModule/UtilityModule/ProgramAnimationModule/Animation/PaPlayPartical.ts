@@ -27,16 +27,12 @@ class PaPlayPartical extends ProgramAnimationBase<PaPlayParticalParam>
 	private hasStopEmit: boolean;
 	protected OnInit()
 	{
-		var resModule = <IResModule>GameMain.GetInstance().GetModule(ModuleType.RES);
-		if (resModule != null)
-		{
-			this.hasStopEmit = false;
-			this.particleSys = resModule.CreateParticle(this.param.textureName, this.param.jsonName);
-			this.particleSys.x = this.param.posX;
-			this.particleSys.y = this.param.posY;
-			GameMain.GetInstance().GetAdaptedStageContainer().addChild(this.particleSys);
-			this.particleSys.start();
-		}
+		this.hasStopEmit = false;
+		this.particleSys = this.resModule.CreateParticle(this.param.textureName, this.param.jsonName);
+		this.particleSys.x = this.param.posX;
+		this.particleSys.y = this.param.posY;
+		GameMain.GetInstance().GetAdaptedStageContainer().addChild(this.particleSys);
+		this.particleSys.start();
 	}
 
 	protected OnUpdate(deltaTime: number)
