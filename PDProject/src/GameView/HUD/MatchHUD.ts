@@ -6,6 +6,7 @@ class MatchHUD extends egret.DisplayObjectContainer
     private controlablePreview:ControlablePreviewItem;
     private fever:FeverItem;
     private combo:ComboItem;
+    private pause:PauseItem;
 
     public Init()
     {
@@ -28,6 +29,10 @@ class MatchHUD extends egret.DisplayObjectContainer
         this.fever.Init();
         this.addChild(this.fever);
 
+        this.pause = new PauseItem(0, 0, this.width, this.height);
+        this.pause.Init();
+        this.addChild(this.pause);
+
         this.gameover = new GameOverItem(this.width, this.height);
         this.addChild(this.gameover);
 
@@ -43,6 +48,7 @@ class MatchHUD extends egret.DisplayObjectContainer
         this.controlablePreview.Release();
         this.fever.Release();
         this.combo.Release();
+        this.pause.Release();
 
         GameMain.GetInstance().RemoveEventListener(HUDEvent.EventName, this.OnHUDEvent, this);
         GameMain.GetInstance().RemoveEventListener(GameOverEvent.EventName, this.OnGameOver, this);

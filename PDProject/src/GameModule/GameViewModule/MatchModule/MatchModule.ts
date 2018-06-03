@@ -13,6 +13,8 @@ class MatchModule extends GameViewModule
 	private difficulty:number; //游戏的难度系数，随着时间增长
 	private turn:number; //回合数
 
+	private pause:boolean;
+
 	private matchView:MatchView;
 
 	protected CreateView(): boolean
@@ -24,6 +26,9 @@ class MatchModule extends GameViewModule
 		GameMain.GetInstance().AddEventListener(ReplayGameEvent.EventName, this.OnReplayGame, this);
 		GameMain.GetInstance().AddEventListener(ReviveEvent.EventName, this.OnRevive, this);
 		GameMain.GetInstance().AddEventListener(SceneElementMoveUpEvent.EventName, this.OnSceneElementMoveUpFinish, this);
+		GameMain.GetInstance().AddEventListener(PauseEvent.EventName, this.OnPause, this);
+
+		this.pause = false;
 
 		this.InitComponents();
 
@@ -53,6 +58,7 @@ class MatchModule extends GameViewModule
 		GameMain.GetInstance().RemoveEventListener(ReplayGameEvent.EventName, this.OnReplayGame, this);
 		GameMain.GetInstance().RemoveEventListener(ReviveEvent.EventName, this.OnRevive, this);
 		GameMain.GetInstance().RemoveEventListener(SceneElementMoveUpEvent.EventName, this.OnSceneElementMoveUpFinish, this);
+		GameMain.GetInstance().RemoveEventListener(PauseEvent.EventName, this.OnPause, this);
 	}
 
 	private InitComponents()
@@ -107,10 +113,13 @@ class MatchModule extends GameViewModule
 	public Update(deltaTime: number): void
 	{
 		super.Update(deltaTime);
-		this.scene.Update(deltaTime);
-		this.playerControl.Update(deltaTime);
-		this.npcControl.Update(deltaTime);
-		this.feverControl.Update(deltaTime);
+		if(!this.pause)
+		{
+			this.scene.Update(deltaTime);
+			this.playerControl.Update(deltaTime);
+			this.npcControl.Update(deltaTime);
+			this.feverControl.Update(deltaTime);
+		}
 	}
 
 	private InitMatch()
@@ -266,6 +275,11 @@ class MatchModule extends GameViewModule
 			this.matchState = MatchState.SpecialEliminate;
 			this.StartSpecialSceneEliminate(method);
 		}
+	}
+
+	private OnPause(event:PauseEvent)
+	{
+		this.pause = !this.pause;
 	}
 
 	private AddTurn()
