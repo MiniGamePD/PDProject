@@ -3,7 +3,7 @@ class Scene extends GameModuleComponentBase
 {
     public static readonly Columns: number = 10;
     public static readonly Rows: number = 14;
-    public static readonly EliminateMinCount = 3; //触发消除的最小数量
+    public static readonly EliminateMinCount = 4; //触发消除的最小数量
     public sceneData: SceneElementBase[][] = []; //左上角是00    
     public eliminateInfo: EliminateInfo;
     public eliminateRound: number = EliminateRoundStartIndex; // 连续消除次数（从1开始）	
