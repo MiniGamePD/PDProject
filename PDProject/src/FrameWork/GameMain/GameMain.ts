@@ -218,6 +218,14 @@ class GameMain implements IGameMain {
 		this.AdapteDisplayObject(item);
 		item.size = item.size * this.GetAdaptedStageWidth() / Screen_StanderScreenWidth;
 	}
+	
+	public AdaptPoint(point:egret.Point):egret.Point
+	{
+		var result = new egret.Point();
+		result.x = point.x * this.GetAdaptedStageWidth() / Screen_StanderScreenWidth;
+		result.y = point.y * this.GetAdaptedStageHeight() / Screen_StanderScreenHeight;
+		return result;
+	}
 
 	public GetAdaptedStageContainer():egret.DisplayObjectContainer
 	{

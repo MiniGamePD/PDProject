@@ -18,9 +18,9 @@ class PaAddScoreParam extends ProgramAnimationParamBase
 class PaAddScore extends ProgramAnimationBase<PaAddScoreParam>
 {
     private scoreText: egret.BitmapText;
-	private readonly scaleTargetStep1 = new egret.Point(0.8, 0.8); // 缩放出现步骤1目标值
+	private scaleTargetStep1 = new egret.Point(0.8, 0.8); // 缩放出现步骤1目标值
 	private readonly scaleDurationRateStep1 = 0.15 // 缩放出现步骤1的时间百分比
-	private readonly scaleTargetStep2 = new egret.Point(0.5, 0.7); // 缩放出现步骤2目标值
+	private scaleTargetStep2 = new egret.Point(0.5, 0.7); // 缩放出现步骤2目标值
 	private readonly scaleDurationRateStep2 = 0.15 // 缩放出现步骤2的时间百分比
 	private readonly fateOutStartRate = 0.6; // 渐隐消失启动时间的百分比
 	private readonly moveUpRate = 0.5; //上移一个格子宽度的百分比
@@ -33,6 +33,9 @@ class PaAddScore extends ProgramAnimationBase<PaAddScoreParam>
 
 	protected OnInit()
 	{
+		this.scaleTargetStep1 = GameMain.GetInstance().AdaptPoint(this.scaleTargetStep1);
+		this.scaleTargetStep2 = GameMain.GetInstance().AdaptPoint(this.scaleTargetStep2);
+
 		this.scoreText = this.resModule.CreateBitmapText("font_num1_fnt");
 		GameMain.GetInstance().GetAdaptedStageContainer().addChild(this.scoreText);
 		this.scoreText.x = this.param.pos.x;
