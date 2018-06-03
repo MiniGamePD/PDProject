@@ -198,6 +198,7 @@ class EliminatingAnimation
 				|| Math.abs(element.renderer.y - targetRenderPosY) >= moveValue;
 			var x = Tools.MoveNumber(element.renderer.x, targetRenderPosX, moveValue);
 			var y = Tools.MoveNumber(element.renderer.y, targetRenderPosY, moveValue);
+
 			element.SetRenderPos(x, y);
 		}
 		return result;

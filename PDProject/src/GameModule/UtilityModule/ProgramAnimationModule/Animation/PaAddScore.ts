@@ -18,9 +18,14 @@ class PaAddScoreParam extends ProgramAnimationParamBase
 class PaAddScore extends ProgramAnimationBase<PaAddScoreParam>
 {
     private scoreText: egret.BitmapText;
-	private scaleDuration = 500;
-	private fateOutStartTime = 700;
-	private fateOutDuration = 200;
+	private readonly scaleDurationRate = 0.4; // 缩放出现的时间百分比
+	private readonly fateOutStartRate = 0.6; // 渐隐消失启动时间的百分比
+	private readonly moveUpRate = 0.5; //上移一个格子宽度的百分比
+	private scaleDuration = 0;
+	private fateOutStartTime = 0;
+	private fateOutDuration = 0;
+	private startPosY = 0;
+	private targetPosY = 0;
 
 	protected OnInit()
 	{
@@ -41,6 +46,14 @@ class PaAddScore extends ProgramAnimationBase<PaAddScoreParam>
 		this.scoreText.scaleX = 0;
 		this.scoreText.scaleY = 0;
 		this.scoreText.alpha = 0;
+
+
+		this.scaleDuration = this.scaleDurationRate * this.param.duration;
+		this.fateOutStartTime = this.fateOutStartRate * this.param.duration;
+		this.fateOutDuration = (1 - this.fateOutStartRate) * this.param.duration;
+
+		this.startPosY = this.scoreText.y;
+		this.targetPosY = this.startPosY - this.moveUpRate * Tools.MatchViewElementHeight;
 	}
 
 	protected OnUpdate(deltaTime: number)
@@ -57,8 +70,11 @@ class PaAddScore extends ProgramAnimationBase<PaAddScoreParam>
 		 	&& this.runningTime <= this.fateOutStartTime + this.fateOutDuration)
 		{
 			var rate = (this.runningTime - this.fateOutStartTime) /  this.fateOutDuration;
-			this.scoreText.alpha = Tools.Lerp(1, 0.2, rate);
+			this.scoreText.alpha = Tools.Lerp(1, 0, rate);
 		}
+
+		var moveRate = this.runningTime / this.param.duration;
+		this.scoreText.y = Tools.Lerp(this.startPosY, this.targetPosY, moveRate);
 	}
 
 	protected OnRelease()
