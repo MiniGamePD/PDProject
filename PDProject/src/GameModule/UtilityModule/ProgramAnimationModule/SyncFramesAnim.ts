@@ -2,17 +2,23 @@ class SyncFramesAnim
 {
 	private bitmap: egret.Bitmap;
 	private textureSeq: egret.Texture[];
+	private delayTime: number;
 	private interval: number;
 	private oneRoundTime: number;
 	public constructor()
 	{
 	}
 
-	public Init(bitmap: egret.Bitmap, textSeq: string[], interval: number)
+	public Init(bitmap: egret.Bitmap, textSeq: string[], interval: number, delay?: number)
 	{
 		this.bitmap = bitmap;
 		this.textureSeq = [];
 		this.interval = interval;
+		this.delayTime = 0;
+		if (delay != undefined && delay != null)
+		{
+			this.delayTime = delay;
+		}
 		var resModule = <IResModule>GameMain.GetInstance().GetModule(ModuleType.RES);
 		if (resModule != null)
 		{
@@ -37,7 +43,11 @@ class SyncFramesAnim
 			&& this.bitmap != null 
 			&& this.oneRoundTime > 0)
 		{
-			var time = egret.getTimer();
+			var time = egret.getTimer() - this.delayTime;
+			if (time <= 0)
+			{
+				time = 0;
+			}
         	var curRoundTime = time % this.oneRoundTime;
 			var index = Math.floor(curRoundTime / this.interval);
 			if (index < this.textureSeq.length

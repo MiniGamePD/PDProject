@@ -328,6 +328,25 @@ abstract class SceneElementBase
             this.bubbleShield = null;
         }
     }
+
+    public Release()
+    {
+        if (this.renderer != null
+            && this.renderer != undefined
+            && this.renderer.parent != null)
+        {
+            this.renderer.parent.removeChild(this.renderer);
+        }
+        this.renderer = null;
+
+        if (this.accessory != undefined
+            && this.accessory != null
+            && this.accessory.parent != null)
+        {
+            this.accessory.parent.removeChild(this.accessory);
+        }
+        this.accessory = null;
+    }
 }
 
 enum GameElementColor 
