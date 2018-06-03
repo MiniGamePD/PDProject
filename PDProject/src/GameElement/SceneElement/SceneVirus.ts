@@ -1,6 +1,5 @@
 class SceneVirus extends SceneElementBase
 {
-    private framesAnim: SyncFramesAnim;
     public constructor(owner:GameplayElementBase)
     {
         super(owner);
@@ -31,23 +30,6 @@ class SceneVirus extends SceneElementBase
         var framesAnim = new SyncFramesAnim();
         framesAnim.Init(<egret.Bitmap>this.renderer, textureSeq, 100);
         return framesAnim;
-    }
-
-    public Update(deltaTime: number)
-    {
-        if (!this.HasShield())
-        {
-            this.UpdateFramesAnim();
-        }
-    }
-
-    public UpdateFramesAnim()
-    {
-        if (this.framesAnim != null
-        && this.framesAnim != undefined)
-        {
-            this.framesAnim.Update();
-        }
     }
 
     public RefreshTexture():void

@@ -153,6 +153,18 @@ class Tools
 		return target;
 	}
 
+	// 计算以某个点为中心炸弹爆炸范围
+	public static GetBoomRangePosList(centerX: number, centerY: number): number[]
+	{
+		var target: number[] = [];
+		target = this.GetSquareRangePosList(centerX, centerY, 1);
+		target.push(centerX - 2, centerY);
+		target.push(centerX + 2, centerY);
+		target.push(centerX, centerY - 2);
+		target.push(centerX, centerY + 2);
+		return target;
+	}
+
 	// 计算以某个点为中心，range为单边扩充数量的一列坐标
 	public static GetColunmPosList(centerX: number, centerY: number, range: number): number[]
 	{
