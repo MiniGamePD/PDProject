@@ -252,6 +252,9 @@ class MatchModule extends GameViewModule
 	private AddTurn()
 	{
 		this.turn++;
+
+		this.playerControl.AddTurn();
+
 		let event = new HUDEvent();
 		event.eventType = HUDEventType.ChangeStep;
 		event.param = this.turn;

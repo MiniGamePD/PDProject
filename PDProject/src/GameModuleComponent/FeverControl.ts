@@ -19,7 +19,8 @@ class FeverControl extends GameModuleComponentBase
 
     private OnEliminateHappen(event:EliminateEvent)
     {
-        //event.eliminateInfo.EliminatedElements
+        if(event.eliminateInfo.EliminateRound <= 0 && event.eliminateInfo.EliminatedElements.length <= 0)
+            return;
 
         if(this.isInFeverState)
             return;
