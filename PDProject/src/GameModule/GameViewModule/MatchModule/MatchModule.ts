@@ -283,6 +283,25 @@ class MatchModule extends GameViewModule
 		var hudEvent = new HUDEvent();
 		hudEvent.eventType = this.pause ? HUDEventType.ShowPauseMenu : HUDEventType.HidePauseMenu;
 		GameMain.GetInstance().DispatchEvent(hudEvent);
+
+		//play pause sound
+		if(this.pause)
+        {
+			var playSoundEvent = new PlaySoundEvent("Pause_mp3", 1);
+        	GameMain.GetInstance().DispatchEvent(playSoundEvent);
+
+			var bgmControlEvent = new BgmControlEvent();
+			bgmControlEvent.bgmStage = this.feverControl.IsInFeverState() ? BgmStage.Fever : BgmStage.Global;
+			bgmControlEvent.controlType = BgmControlType.Pause;
+			GameMain.GetInstance().DispatchEvent(bgmControlEvent);
+		}
+		else
+		{
+			var bgmControlEvent = new BgmControlEvent();
+			bgmControlEvent.bgmStage = this.feverControl.IsInFeverState() ? BgmStage.Fever : BgmStage.Global;
+			bgmControlEvent.controlType = BgmControlType.Resume;
+			GameMain.GetInstance().DispatchEvent(bgmControlEvent);
+		}
 	}
 
 	private AddTurn()

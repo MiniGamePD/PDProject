@@ -8,12 +8,6 @@ const Time_FeverTime = 45000; //ms
 //Boss技能
 const skillBossMaxNum = 8;
 
-//一些回合数
-const TurnNum_BossSkillTurnNum = 3;
-const TurnNum_CreateEnemyTurnNum = 8;
-const TurnNum_CreateSkillBossTurnNum = 5;
-const TurnNum_BossSkillTargetNum = 5;
-
 //分辨率参数
 const Screen_StanderScreenWidth = 640;
 const Screen_StanderScreenHeight = 1136;
@@ -30,3 +24,7 @@ const Score_BaseScore = 20;
 
 //游戏流程相关
 const Procedure_ReviveEliminateLine = 5;
+const TurnNum_BossSkillTurnNum = 3;
+const TurnNum_CreateEnemyTurnNum = 15;
+const TurnNum_CreateSkillBossTurnNum = 5;
+const TurnNum_BossSkillTargetNum = 5;

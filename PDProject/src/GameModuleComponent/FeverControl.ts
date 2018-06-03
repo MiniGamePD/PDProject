@@ -40,16 +40,28 @@ class FeverControl extends GameModuleComponentBase
             this.feverTimer.addEventListener(egret.TimerEvent.TIMER, this.FeverEnd, this);
             this.feverTimer.start();
 
-            //fade out bgm
-            var soundControlEvent = new SoundControlEvent();
-            var soundModule:ISoundModule = <ISoundModule>GameMain.GetInstance().GetModule(ModuleType.SOUND);
-            soundControlEvent.channel = soundModule.GetCurrentBgmChannel();
-            soundControlEvent.controlType = SoundControlType.FadeOut;
-            soundControlEvent.controlParam = 1 / 1000;
-            GameMain.GetInstance().DispatchEvent(soundControlEvent);
+            // //fade out bgm
+            // var soundControlEvent = new SoundControlEvent();
+            // var soundModule:ISoundModule = <ISoundModule>GameMain.GetInstance().GetModule(ModuleType.SOUND);
+            // soundControlEvent.channel = soundModule.GetCurrentBgmChannel();
+            // soundControlEvent.controlType = SoundControlType.FadeOut;
+            // soundControlEvent.controlParam = 1 / 1000;
+            // GameMain.GetInstance().DispatchEvent(soundControlEvent);
+            // //play fever bgm
+            // var playSoundEvent = new PlaySoundEvent("fever_bgm_mp3", 1);
+            // GameMain.GetInstance().DispatchEvent(playSoundEvent);
+
+            //pause global bgm
+            var bgmControlEvent = new BgmControlEvent();
+            bgmControlEvent.bgmStage = BgmStage.Global;
+            bgmControlEvent.controlType = BgmControlType.Pause;
+            GameMain.GetInstance().DispatchEvent(bgmControlEvent);
             //play fever bgm
-            var playSoundEvent = new PlaySoundEvent("fever_bgm_mp3", 1);
-            GameMain.GetInstance().DispatchEvent(playSoundEvent);
+            bgmControlEvent.bgmStage = BgmStage.Fever;
+            bgmControlEvent.controlType = BgmControlType.Play;
+            GameMain.GetInstance().DispatchEvent(bgmControlEvent);
+           
+
             //show fever sprite
             var hudEvent = new HUDEvent();
             hudEvent.eventType = HUDEventType.ShowFeverSprite;
@@ -67,13 +79,22 @@ class FeverControl extends GameModuleComponentBase
         feverEvent.feverBegin = false; 
         GameMain.GetInstance().DispatchEvent(feverEvent);
 
-        //fade in bgm
-        var soundControlEvent = new SoundControlEvent();
-        var soundModule:ISoundModule = <ISoundModule>GameMain.GetInstance().GetModule(ModuleType.SOUND);
-        soundControlEvent.channel = soundModule.GetCurrentBgmChannel();
-        soundControlEvent.controlType = SoundControlType.FadeIn;
-        soundControlEvent.controlParam = 1 / 1000;
-        GameMain.GetInstance().DispatchEvent(soundControlEvent);
+        // //fade in bgm
+        // var soundControlEvent = new SoundControlEvent();
+        // var soundModule:ISoundModule = <ISoundModule>GameMain.GetInstance().GetModule(ModuleType.SOUND);
+        // soundControlEvent.channel = soundModule.GetCurrentBgmChannel();
+        // soundControlEvent.controlType = SoundControlType.FadeIn;
+        // soundControlEvent.controlParam = 1 / 1000;
+        // GameMain.GetInstance().DispatchEvent(soundControlEvent);
+
+        var bgmControlEvent = new BgmControlEvent();
+        bgmControlEvent.bgmStage = BgmStage.Fever;
+        bgmControlEvent.controlType = BgmControlType.Stop;
+        GameMain.GetInstance().DispatchEvent(bgmControlEvent);
+
+        bgmControlEvent.bgmStage = BgmStage.Global;
+        bgmControlEvent.controlType = BgmControlType.Resume;
+        GameMain.GetInstance().DispatchEvent(bgmControlEvent);
     }
 
     public Update(deltaTime:number)
@@ -95,5 +116,10 @@ class FeverControl extends GameModuleComponentBase
         event.eventType = HUDEventType.SetFeverControl;
         event.param = this;
         GameMain.GetInstance().DispatchEvent(event);
+    }
+
+    public IsInFeverState():boolean
+    {
+        return this.isInFeverState;
     }
 }
