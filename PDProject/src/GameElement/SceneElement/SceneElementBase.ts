@@ -16,6 +16,7 @@ abstract class SceneElementBase
     protected elementType: SceneElementType;
     public accessory: egret.DisplayObjectContainer; //用来放一些除本体外的东西，比如护盾，血条
     private bubbleShield: egret.Bitmap;
+    protected framesAnim: SyncFramesAnim;
 
     public constructor(owner: GameplayElementBase) 
     {
@@ -89,7 +90,19 @@ abstract class SceneElementBase
 
     public Update(deltaTime: number)
     {
+        if (!this.HasShield())
+        {
+            this.UpdateFramesAnim();
+        }
+    }
 
+    public UpdateFramesAnim()
+    {
+        if (this.framesAnim != null
+        	&& this.framesAnim != undefined)
+        {
+            this.framesAnim.Update();
+        }
     }
 
     protected abstract GetResPathByColor(): string;
@@ -366,5 +379,6 @@ enum SceneElementType
     RowEliminater,
     CrossEliminater,
     PlaceHolder,
+    Boom,
     Empty,
 }
