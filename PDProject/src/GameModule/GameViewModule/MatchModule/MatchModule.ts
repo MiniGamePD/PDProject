@@ -239,15 +239,11 @@ class MatchModule extends GameViewModule
 		if(this.matchState == MatchState.GameOver)
 			return;
 
-		if(event.isMoveSuccess)
-		{
-			this.StartNpcControl();
-		}
-		else
+		if(!event.isMoveSuccess)
 		{
 			//上移失败，gameover
-			let event = new GameOverEvent();            
-            GameMain.GetInstance().DispatchEvent(event);
+			var gameOverEvent = new GameOverEvent();            
+			GameMain.GetInstance().DispatchEvent(gameOverEvent);
 		}
 	}
 
