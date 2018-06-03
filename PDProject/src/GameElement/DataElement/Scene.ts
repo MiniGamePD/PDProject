@@ -281,7 +281,7 @@ class Scene extends GameModuleComponentBase
         this.ClearEliminateInfo();
         if (this.eliminateMethod.methodType == EliminateMethodType.MoveUp)
         {
-            this.eliminateInfo.EliminateRound = EliminateRoundStartIndex;
+            this.eliminateInfo.EliminateRound = EliminateRoundInMoveUp;
             this.CalculateMoveUpElement();
             this.eliminateRound = EliminateRoundStartIndex;
         }

@@ -19,6 +19,7 @@ const Screen_StanderScreenWidth = 640;
 const Screen_StanderScreenHeight = 1136;
 
 //消除相关
+const EliminateRoundInMoveUp = 0; // 生成小怪时，上移的消除事件。Round的值
 const EliminateRoundStartIndex = 1;
 
 //分数相关
