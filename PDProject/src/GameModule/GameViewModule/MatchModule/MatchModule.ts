@@ -22,6 +22,7 @@ class MatchModule extends GameViewModule
 		GameMain.GetInstance().AddEventListener(NpcControlFinishEvent.EventName, this.OnNpcControlFinish, this);
 		GameMain.GetInstance().AddEventListener(GameOverEvent.EventName, this.OnGameOver, this);
 		GameMain.GetInstance().AddEventListener(ReplayGameEvent.EventName, this.OnReplayGame, this);
+		GameMain.GetInstance().AddEventListener(ReviveEvent.EventName, this.OnReplayGame, this);
 		GameMain.GetInstance().AddEventListener(SceneElementMoveUpEvent.EventName, this.OnSceneElementMoveUpFinish, this);
 
 		this.InitComponents();
@@ -50,6 +51,7 @@ class MatchModule extends GameViewModule
 		GameMain.GetInstance().RemoveEventListener(NpcControlFinishEvent.EventName, this.OnNpcControlFinish, this);
 		GameMain.GetInstance().RemoveEventListener(GameOverEvent.EventName, this.OnGameOver, this);
 		GameMain.GetInstance().RemoveEventListener(ReplayGameEvent.EventName, this.OnReplayGame, this);
+		GameMain.GetInstance().RemoveEventListener(ReviveEvent.EventName, this.OnRevive, this);
 		GameMain.GetInstance().RemoveEventListener(SceneElementMoveUpEvent.EventName, this.OnSceneElementMoveUpFinish, this);
 	}
 
@@ -161,7 +163,8 @@ class MatchModule extends GameViewModule
 
 		if(event.specialEliminateMethod != null)
 		{
-			this.StartSpecialSceneEliminate(event);	
+			this.npcControl.Sleep();
+			this.StartSpecialSceneEliminate(event.specialEliminateMethod);	
 		}
 		else if(event.bossSkillInfo != null)
 		{
@@ -188,14 +191,13 @@ class MatchModule extends GameViewModule
 		this.playerControl.Work(this.controlWorkParam);
 	}
 
-	private StartSpecialSceneEliminate(event: NpcControlFinishEvent)
+	private StartSpecialSceneEliminate(specialEliminateMethod:EliminateMethod)
 	{
 		if(this.matchState == MatchState.GameOver)
 			return;
 
 		this.matchState = MatchState.SpecialEliminate;
-		this.npcControl.Sleep();
-		this.scene.SetEliminateMethodNext(event.specialEliminateMethod);
+		this.scene.SetEliminateMethodNext(specialEliminateMethod);
 		this.scene.SetNextEliminateUnMove();			
 		this.scene.Work();
 	}
@@ -246,6 +248,19 @@ class MatchModule extends GameViewModule
 			this.matchView.SetScene(this.scene);
 			this.feverControl.AttachToHUD();
 			this.InitMatch();
+		}
+	}
+
+	private OnRevive(event: ReviveEvent)
+	{
+		if(this.matchState == MatchState.GameOver)
+		{
+			var method:EliminateMethod = new EliminateMethod();
+			method.froceKill = true;
+			method.methodType = EliminateMethodType.SpecificRegion
+			method.eliminateElementType = EliminateElementType.PillAndVirus;
+			method.specificRegion = Tools.GetRegionPosList(0,0,Scene.Columns-1,4);
+			this.StartSpecialSceneEliminate(method);
 		}
 	}
 

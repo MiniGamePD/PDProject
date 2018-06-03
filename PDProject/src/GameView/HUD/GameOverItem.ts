@@ -136,6 +136,12 @@ class GameOverItem extends egret.DisplayObjectContainer
 
     private OnClickRevive(): void
     {
+        if(DEBUG)
+        {
+            egret.log("OnClickRevive");
+        }
 
+        var event = new ReviveEvent();
+        GameMain.GetInstance().DispatchEvent(event);
     }
 }

@@ -31,6 +31,7 @@ class MatchView extends GameView
         
         GameMain.GetInstance().AddEventListener(SceneElementControlSuccessEvent.EventName, this.ProcessControlSuccess, this);
         GameMain.GetInstance().AddEventListener(ReplayGameEvent.EventName, this.OnReplayGame, this);
+        GameMain.GetInstance().AddEventListener(ReviveEvent.EventName, this.OnRevive, this);
         GameMain.GetInstance().AddEventListener(GameOverEvent.EventName, this.OnGameOver, this);
     }
 
@@ -43,6 +44,7 @@ class MatchView extends GameView
 
         GameMain.GetInstance().RemoveEventListener(SceneElementControlSuccessEvent.EventName, this.ProcessControlSuccess, this);
         GameMain.GetInstance().RemoveEventListener(ReplayGameEvent.EventName, this.OnReplayGame, this);
+        GameMain.GetInstance().RemoveEventListener(ReviveEvent.EventName, this.OnRevive, this);
         GameMain.GetInstance().RemoveEventListener(GameOverEvent.EventName, this.OnGameOver, this);
     }
 
@@ -325,6 +327,11 @@ class MatchView extends GameView
     private OnReplayGame(event:ReplayGameEvent)
     {
         this.ResetView();
+        this.removeChild(this.mBgCover);
+    }
+
+    private OnRevive(event:ReviveEvent)
+    {
         this.removeChild(this.mBgCover);
     }
 
