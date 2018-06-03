@@ -101,7 +101,7 @@ class NpcControl extends GameModuleComponentBase
         {
             if(this.gameMode == GameMode.BossFight)
             {
-                if(controlWorkParam.turn != 0 && controlWorkParam.turn % createSkillBossTurnNum == 0 
+                if(controlWorkParam.turn != 0 && controlWorkParam.turn % TurnNum_CreateSkillBossTurnNum == 0 
                     && this.skillNpcArray.length < skillBossMaxNum)
                 {
                     //创建boss
@@ -123,7 +123,7 @@ class NpcControl extends GameModuleComponentBase
                     return;
                 }    
 
-                if(this.skillNpcArray.length > 0 && controlWorkParam.turn % bossSkillTurnNum == 0)
+                if(this.skillNpcArray.length > 0 && controlWorkParam.turn % TurnNum_BossSkillTurnNum == 0)
                 {
                     //boss放技能
                     let id:number = Math.floor(this.skillNpcArray.length * Math.random());
@@ -162,7 +162,7 @@ class NpcControl extends GameModuleComponentBase
 
             if(this.remindCreateEnemyTurns <= 0)
             {
-                this.remindCreateEnemyTurns = createEnemyTurnNum;
+                this.remindCreateEnemyTurns = TurnNum_CreateEnemyTurnNum;
 
                 //创建普通小怪
                 if(controlWorkParam.turn == 0)
@@ -265,8 +265,8 @@ class NpcControl extends GameModuleComponentBase
                 this.AddNpcToScene(npc);
                 this.tobeAddToSceneNpcArray.splice(index, 1);
                 this.npcControlTimer = 0;
-                this.addNpcToSceneInterval -= addNpcToSceneIntervalStep;
-                this.addNpcToSceneInterval = Math.max(this.addNpcToSceneInterval, addNpcToSceneIntervalMin);
+                this.addNpcToSceneInterval -= Time_AddNpcToSceneIntervalStep;
+                this.addNpcToSceneInterval = Math.max(this.addNpcToSceneInterval, Time_AddNpcToSceneIntervalMin);
             }
         }
         else
@@ -292,7 +292,7 @@ class NpcControl extends GameModuleComponentBase
     {
         if(this.npcSmileSound != null)
         {
-            this.npcControlTimer = playEnemySinisterSmileTime;    
+            this.npcControlTimer = Time_PlayEnemySinisterSmileTime;    
 
             let event = new PlaySoundEvent(this.npcSmileSound, 1);
             GameMain.GetInstance().DispatchEvent(event);
@@ -359,7 +359,7 @@ class NpcControl extends GameModuleComponentBase
                 }
             }
 
-            var skillTargetNum = Math.min(unShieldVirus.length, bossSkillTargetNum);
+            var skillTargetNum = Math.min(unShieldVirus.length, TurnNum_BossSkillTargetNum);
             while(skillTargetNum > 0)
             {
                 skillTargetNum--;
@@ -370,7 +370,7 @@ class NpcControl extends GameModuleComponentBase
         }
         else
         {
-            var skillTargetNum = Math.min(querySceneInstances.length, bossSkillTargetNum);
+            var skillTargetNum = Math.min(querySceneInstances.length, TurnNum_BossSkillTargetNum);
             while(skillTargetNum > 0)
             {
                 skillTargetNum--;
@@ -457,7 +457,7 @@ class NpcControl extends GameModuleComponentBase
         }
 
         this.npcControlTimer = 0;
-        this.addNpcToSceneInterval = addNpcToSceneIntervalMax;
+        this.addNpcToSceneInterval = Time_AddNpcToSceneIntervalMax;
 
         if(obstruction.length > 0)
         {

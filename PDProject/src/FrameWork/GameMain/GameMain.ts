@@ -192,8 +192,8 @@ class GameMain implements IGameMain {
 
 	public AdapteDisplayObject(item:egret.DisplayObject)
 	{
-		var xFactor = this.GetAdaptedStageWidth() / standerScreenWidth;
-		var yFactor = this.GetAdaptedStageHeight() / standerScreenHeight;
+		var xFactor = this.GetAdaptedStageWidth() / Screen_StanderScreenWidth;
+		var yFactor = this.GetAdaptedStageHeight() / Screen_StanderScreenHeight;
 		item.x = item.x * xFactor
 		item.y = item.y * yFactor;
 		item.width = item.width * xFactor
@@ -204,8 +204,8 @@ class GameMain implements IGameMain {
 
 	public AdapteDisplayObjectScale(item:egret.DisplayObject)
 	{
-		var xFactor = this.GetAdaptedStageWidth() / standerScreenWidth;
-		var yFactor = this.GetAdaptedStageHeight() / standerScreenHeight;
+		var xFactor = this.GetAdaptedStageWidth() / Screen_StanderScreenWidth;
+		var yFactor = this.GetAdaptedStageHeight() / Screen_StanderScreenHeight;
 		item.scaleX = item.scaleX * xFactor;
 		item.scaleY = item.scaleY * yFactor;
 	}
@@ -213,7 +213,7 @@ class GameMain implements IGameMain {
 	public AdaptTextField(item:egret.TextField)
 	{
 		this.AdapteDisplayObject(item);
-		item.size = item.size * this.GetAdaptedStageWidth() / standerScreenWidth;
+		item.size = item.size * this.GetAdaptedStageWidth() / Screen_StanderScreenWidth;
 	}
 
 	public GetAdaptedStageContainer():egret.DisplayObjectContainer
@@ -240,7 +240,7 @@ class GameMain implements IGameMain {
 		var screenHeight = egret.Capabilities.boundingClientHeight;
 
 		var screenAspect = screenWidth / screenHeight;
-		var standerAspect = standerScreenWidth / standerScreenHeight; //640:1136
+		var standerAspect = Screen_StanderScreenWidth / Screen_StanderScreenHeight; //640:1136
 		if(screenAspect <= standerAspect)
 		{
 			//屏幕很长，iphonex

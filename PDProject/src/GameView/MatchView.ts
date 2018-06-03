@@ -229,14 +229,14 @@ class MatchView extends GameView
             this.mBattleGround = new egret.Sprite();
             //battle rect in stander resolution
             let battleRect = new egret.Rectangle(35, 280, 580, 812);
-            battleRect.x = battleRect.x * adaptedStageRect.width / standerScreenWidth;
-            battleRect.y = battleRect.y * adaptedStageRect.height / standerScreenHeight;
-            battleRect.width = battleRect.width * adaptedStageRect.width / standerScreenWidth;
-            battleRect.height = battleRect.height * adaptedStageRect.height / standerScreenHeight;
-            // battleRect.x = battleRect.x * this.mStageWidth / standerScreenWidth;
-            // battleRect.y = battleRect.y * this.mStageHeight / standerScreenHeight;
-            // battleRect.width = battleRect.width * this.mStageWidth / standerScreenWidth;
-            // battleRect.height = battleRect.height * this.mStageHeight / standerScreenHeight;
+            battleRect.x = battleRect.x * adaptedStageRect.width / Screen_StanderScreenWidth;
+            battleRect.y = battleRect.y * adaptedStageRect.height / Screen_StanderScreenHeight;
+            battleRect.width = battleRect.width * adaptedStageRect.width / Screen_StanderScreenWidth;
+            battleRect.height = battleRect.height * adaptedStageRect.height / Screen_StanderScreenHeight;
+            // battleRect.x = battleRect.x * this.mStageWidth / Screen_StanderScreenWidth;
+            // battleRect.y = battleRect.y * this.mStageHeight / Screen_StanderScreenHeight;
+            // battleRect.width = battleRect.width * this.mStageWidth / Screen_StanderScreenWidth;
+            // battleRect.height = battleRect.height * this.mStageHeight / Screen_StanderScreenHeight;
 
             Tools.MatchBattleGroundPosX = battleRect.x;
             Tools.MatchBattleGroundPosY = battleRect.y;
