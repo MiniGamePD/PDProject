@@ -18,6 +18,9 @@ class GameMain implements IGameMain {
 	//白鹭Main
 	private mEgretMain: Main;
 
+	//为了避免单局内对药丸的操作影响和对UI的操作互相影响，添加一个点击排除列表
+	private mInGameTouchableUIArray:egret.DisplayObject[]; 
+
 	//创建单例
 	public static CreatInstance(egretMain:Main): boolean 
 	{
@@ -270,5 +273,42 @@ class GameMain implements IGameMain {
 			this.adaptedStageContainer.width = this.adaptedStageRect.width;
 			this.adaptedStageContainer.height = this.adaptedStageRect.height; 
 		}
+	}
+
+	public RegisterInGameTouchableUI(ui:egret.DisplayObject)
+	{
+		if(this.mInGameTouchableUIArray == undefined)
+			this.mInGameTouchableUIArray = [];
+
+		this.mInGameTouchableUIArray.push(ui);
+	}
+
+	public UnregisterInGameTouchableUI(ui:egret.DisplayObject)
+	{
+		if(this.mInGameTouchableUIArray != undefined)
+		{
+			var index = this.mInGameTouchableUIArray.indexOf(ui);
+			if(index >= 0)
+			{
+				this.mInGameTouchableUIArray.splice(index,1);
+			}
+		}
+	}
+
+	public IsTapTargetInInGameTouchableUIArray(tapTarget:any):boolean
+	{
+		var result:boolean = false;
+		if(this.mInGameTouchableUIArray != undefined)
+		{
+			for(var i = 0; i < this.mInGameTouchableUIArray.length; ++i)
+			{
+				if(tapTarget == this.mInGameTouchableUIArray[i])
+				{
+					result = true;
+					break;
+				}
+			}
+		}
+		return result;
 	}
 }

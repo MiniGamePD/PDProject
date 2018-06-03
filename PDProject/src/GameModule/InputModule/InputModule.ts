@@ -121,13 +121,19 @@ class InputModule extends ModuleBase implements IInputModule {
 		}
 	}
 
-	private OnTouchTap(evt: egret.TouchEvent): void {
-		if (evt.type == egret.TouchEvent.TOUCH_TAP) {
-			// egret.log("OnTouchTap(" + evt.stageX + "," + evt.stageY + ")");
-			if (this.mLastTouchEvent == egret.TouchEvent.TOUCH_BEGIN) {
-				this.InputKey(InputKey.Rotate, evt.stageX, evt.stageY);
+	private OnTouchTap(evt: egret.TouchEvent): void 
+	{
+		if (evt.type == egret.TouchEvent.TOUCH_TAP) 
+		{
+			if(!GameMain.GetInstance().IsTapTargetInInGameTouchableUIArray(evt.target))
+			{
+				//没有点击在UI按钮上，才算对于药丸的操作
+				// egret.log("OnTouchTap(" + evt.stageX + "," + evt.stageY + ")");
+				if (this.mLastTouchEvent == egret.TouchEvent.TOUCH_BEGIN) {
+					this.InputKey(InputKey.Rotate, evt.stageX, evt.stageY);
+				}
+				this.mLastTouchEvent = egret.TouchEvent.TOUCH_TAP;
 			}
-			this.mLastTouchEvent = egret.TouchEvent.TOUCH_TAP;
 		}
 	}
 

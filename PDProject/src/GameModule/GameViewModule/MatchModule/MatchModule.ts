@@ -13,6 +13,8 @@ class MatchModule extends GameViewModule
 	private difficulty:number; //游戏的难度系数，随着时间增长
 	private turn:number; //回合数
 
+	private pause:boolean;
+
 	private matchView:MatchView;
 
 	protected CreateView(): boolean
@@ -22,7 +24,11 @@ class MatchModule extends GameViewModule
 		GameMain.GetInstance().AddEventListener(NpcControlFinishEvent.EventName, this.OnNpcControlFinish, this);
 		GameMain.GetInstance().AddEventListener(GameOverEvent.EventName, this.OnGameOver, this);
 		GameMain.GetInstance().AddEventListener(ReplayGameEvent.EventName, this.OnReplayGame, this);
+		GameMain.GetInstance().AddEventListener(ReviveEvent.EventName, this.OnRevive, this);
 		GameMain.GetInstance().AddEventListener(SceneElementMoveUpEvent.EventName, this.OnSceneElementMoveUpFinish, this);
+		GameMain.GetInstance().AddEventListener(PauseEvent.EventName, this.OnPause, this);
+
+		this.pause = false;
 
 		this.InitComponents();
 
@@ -50,7 +56,9 @@ class MatchModule extends GameViewModule
 		GameMain.GetInstance().RemoveEventListener(NpcControlFinishEvent.EventName, this.OnNpcControlFinish, this);
 		GameMain.GetInstance().RemoveEventListener(GameOverEvent.EventName, this.OnGameOver, this);
 		GameMain.GetInstance().RemoveEventListener(ReplayGameEvent.EventName, this.OnReplayGame, this);
+		GameMain.GetInstance().RemoveEventListener(ReviveEvent.EventName, this.OnRevive, this);
 		GameMain.GetInstance().RemoveEventListener(SceneElementMoveUpEvent.EventName, this.OnSceneElementMoveUpFinish, this);
+		GameMain.GetInstance().RemoveEventListener(PauseEvent.EventName, this.OnPause, this);
 	}
 
 	private InitComponents()
@@ -105,10 +113,13 @@ class MatchModule extends GameViewModule
 	public Update(deltaTime: number): void
 	{
 		super.Update(deltaTime);
-		this.scene.Update(deltaTime);
-		this.playerControl.Update(deltaTime);
-		this.npcControl.Update(deltaTime);
-		this.feverControl.Update(deltaTime);
+		if(!this.pause)
+		{
+			this.scene.Update(deltaTime);
+			this.playerControl.Update(deltaTime);
+			this.npcControl.Update(deltaTime);
+			this.feverControl.Update(deltaTime);
+		}
 	}
 
 	private InitMatch()
@@ -161,7 +172,8 @@ class MatchModule extends GameViewModule
 
 		if(event.specialEliminateMethod != null)
 		{
-			this.StartSpecialSceneEliminate(event);	
+			this.npcControl.Sleep();
+			this.StartSpecialSceneEliminate(event.specialEliminateMethod);	
 		}
 		else if(event.bossSkillInfo != null)
 		{
@@ -188,14 +200,13 @@ class MatchModule extends GameViewModule
 		this.playerControl.Work(this.controlWorkParam);
 	}
 
-	private StartSpecialSceneEliminate(event: NpcControlFinishEvent)
+	private StartSpecialSceneEliminate(specialEliminateMethod:EliminateMethod)
 	{
 		if(this.matchState == MatchState.GameOver)
 			return;
 
 		this.matchState = MatchState.SpecialEliminate;
-		this.npcControl.Sleep();
-		this.scene.SetEliminateMethodNext(event.specialEliminateMethod);
+		this.scene.SetEliminateMethodNext(specialEliminateMethod);
 		this.scene.SetNextEliminateUnMove();			
 		this.scene.Work();
 	}
@@ -214,6 +225,9 @@ class MatchModule extends GameViewModule
 	private OnGameOver(event: GameOverEvent)
 	{
 		this.matchState = MatchState.GameOver;
+
+		this.playerControl.OnGameOver();
+		this.npcControl.OnGameOver();
 
 		this.playerControl.Sleep();
 		this.npcControl.Sleep();
@@ -247,6 +261,32 @@ class MatchModule extends GameViewModule
 			this.feverControl.AttachToHUD();
 			this.InitMatch();
 		}
+	}
+
+	private OnRevive(event: ReviveEvent)
+	{
+		if(this.matchState == MatchState.GameOver)
+		{
+			var method:EliminateMethod = new EliminateMethod();
+			method.froceKill = true;
+			method.methodType = EliminateMethodType.SpecificRegion
+			method.eliminateElementType = EliminateElementType.PillAndVirus;
+			method.specificRegion = Tools.GetRegionPosList(0,0,Scene.Columns-1,Procedure_ReviveEliminateLine-1);
+			this.matchState = MatchState.SpecialEliminate;
+			this.StartSpecialSceneEliminate(method);
+		}
+	}
+
+	private OnPause(event:PauseEvent)
+	{
+		if(this.matchState == MatchState.GameOver)
+			return;
+
+		this.pause = !this.pause;
+
+		var hudEvent = new HUDEvent();
+		hudEvent.eventType = this.pause ? HUDEventType.ShowPauseMenu : HUDEventType.HidePauseMenu;
+		GameMain.GetInstance().DispatchEvent(hudEvent);
 	}
 
 	private AddTurn()

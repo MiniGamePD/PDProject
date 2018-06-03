@@ -6,6 +6,7 @@ class MatchHUD extends egret.DisplayObjectContainer
     private controlablePreview:ControlablePreviewItem;
     private fever:FeverItem;
     private combo:ComboItem;
+    private pause:PauseItem;
 
     public Init()
     {
@@ -28,11 +29,16 @@ class MatchHUD extends egret.DisplayObjectContainer
         this.fever.Init();
         this.addChild(this.fever);
 
+        this.pause = new PauseItem(0, 0, this.width, this.height);
+        this.pause.Init();
+        this.addChild(this.pause);
+
         this.gameover = new GameOverItem(this.width, this.height);
         this.addChild(this.gameover);
 
         GameMain.GetInstance().AddEventListener(HUDEvent.EventName, this.OnHUDEvent, this);
         GameMain.GetInstance().AddEventListener(GameOverEvent.EventName, this.OnGameOver, this);
+        GameMain.GetInstance().AddEventListener(ReviveEvent.EventName, this.OnRevive, this);
     }
 
     public Release()
@@ -42,9 +48,11 @@ class MatchHUD extends egret.DisplayObjectContainer
         this.controlablePreview.Release();
         this.fever.Release();
         this.combo.Release();
+        this.pause.Release();
 
         GameMain.GetInstance().RemoveEventListener(HUDEvent.EventName, this.OnHUDEvent, this);
         GameMain.GetInstance().RemoveEventListener(GameOverEvent.EventName, this.OnGameOver, this);
+        GameMain.GetInstance().RemoveEventListener(ReviveEvent.EventName, this.OnRevive, this);
     }
 
     public Reset()
@@ -63,6 +71,11 @@ class MatchHUD extends egret.DisplayObjectContainer
     private OnGameOver(event:GameOverEvent)
     {
         this.gameover.Show();
+    }
+
+    private OnRevive(event:ReviveEvent)
+    {
+        this.gameover.Hide();
     }
 
     private OnHUDEvent(event:HUDEvent)
@@ -95,6 +108,12 @@ class MatchHUD extends egret.DisplayObjectContainer
                 break;
             case HUDEventType.ShowComboEvaluation:
                 this.ShowComboEvaluation(event.param);
+                break;
+            case HUDEventType.ShowPauseMenu:
+                this.pause.ShowPauseMenu();
+                break;
+            case HUDEventType.HidePauseMenu:
+                this.pause.HidePauseMenu();
                 break;
             //Add More..
         }

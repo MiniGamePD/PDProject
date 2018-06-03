@@ -8,7 +8,6 @@ class MatchView extends GameView
     private mBattleGroundBlocks: egret.DisplayObjectContainer;
     private eliminatingAnim: EliminatingAnimation;
     private bossSkillAnim: BossSkillAnimation;
-    private mBgCover:egret.Sprite;
 
     private hud:MatchHUD;
 
@@ -31,7 +30,7 @@ class MatchView extends GameView
         
         GameMain.GetInstance().AddEventListener(SceneElementControlSuccessEvent.EventName, this.ProcessControlSuccess, this);
         GameMain.GetInstance().AddEventListener(ReplayGameEvent.EventName, this.OnReplayGame, this);
-        GameMain.GetInstance().AddEventListener(GameOverEvent.EventName, this.OnGameOver, this);
+        GameMain.GetInstance().AddEventListener(ReviveEvent.EventName, this.OnRevive, this);
     }
 
     public ReleaseView(): void 
@@ -43,7 +42,7 @@ class MatchView extends GameView
 
         GameMain.GetInstance().RemoveEventListener(SceneElementControlSuccessEvent.EventName, this.ProcessControlSuccess, this);
         GameMain.GetInstance().RemoveEventListener(ReplayGameEvent.EventName, this.OnReplayGame, this);
-        GameMain.GetInstance().RemoveEventListener(GameOverEvent.EventName, this.OnGameOver, this);
+        GameMain.GetInstance().RemoveEventListener(ReviveEvent.EventName, this.OnRevive, this);
     }
 
     private ResetView()
@@ -326,20 +325,9 @@ class MatchView extends GameView
     private OnReplayGame(event:ReplayGameEvent)
     {
         this.ResetView();
-        this.removeChild(this.mBgCover);
     }
 
-    private OnGameOver(event:GameOverEvent)
+    private OnRevive(event:ReviveEvent)
     {
-        if(this.mBgCover == undefined)
-        {
-            this.mBgCover = new egret.Sprite();
-            this.mBgCover.graphics.beginFill(0x000000, 0.8);
-            this.mBgCover.graphics.drawRect(0,0,GameMain.GetInstance().GetStageWidth(),GameMain.GetInstance().GetStageHeight());
-            this.mBgCover.graphics.endFill();
-        }
-
-        var layer = this.getChildIndex(this.mAdaptedStage);
-        this.addChildAt(this.mBgCover, layer);
     }
 }

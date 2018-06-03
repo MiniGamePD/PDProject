@@ -11,7 +11,7 @@ class GameOverItem extends egret.DisplayObjectContainer
         super();
         this.bgCover = new egret.Sprite();
         this.bgCover.graphics.beginFill(0x000000, 0.8);
-        this.bgCover.graphics.drawRect(0,0,width,height);
+        this.bgCover.graphics.drawRect(-1000,-1000,width+2000,height+2000);
         this.bgCover.graphics.endFill();
 
         this.gameoverTitle = new egret.DisplayObjectContainer();
@@ -136,6 +136,12 @@ class GameOverItem extends egret.DisplayObjectContainer
 
     private OnClickRevive(): void
     {
+        if(DEBUG)
+        {
+            egret.log("OnClickRevive");
+        }
 
+        var event = new ReviveEvent();
+        GameMain.GetInstance().DispatchEvent(event);
     }
 }
