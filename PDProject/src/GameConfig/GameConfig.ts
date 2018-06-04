@@ -31,5 +31,6 @@ const TurnNum_BossSkillTargetNum = 5;
 
 
 // 动画相关
+const Frame_Anim_SceneBoom = ["Boom1", "Boom2"];
 const Frame_Anim_CrossEliminater = ["Cross_huojian1", "Cross_huojian2"];
 const Frame_Anim_CrossEliminater_Diretion = ["Cross_zhixiang1", "Cross_zhixiang2", "Cross_zhixiang3"];

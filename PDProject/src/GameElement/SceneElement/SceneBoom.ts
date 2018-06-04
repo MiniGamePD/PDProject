@@ -26,15 +26,14 @@ class SceneBoom extends SceneElementBase
 
 	private CreateFramesAnim(): SyncFramesAnim
     {
-        var textureSeq = ["pd_res_json.Vitamins_Red", "pd_res_json.Vitamins_Blue", "pd_res_json.Vitamins_Yellow"];
         var framesAnim = new SyncFramesAnim();
-        framesAnim.Init(<egret.Bitmap>this.renderer, textureSeq, 100);
+        framesAnim.Init(<egret.Bitmap>this.renderer, Frame_Anim_SceneBoom, 200);
         return framesAnim;
     }
 
     protected GetResPathByColor():string
     {
-        var path = "pd_res_json.Vitamins_Red";
+        var path = "Boom1";
         return path;
     }
 
