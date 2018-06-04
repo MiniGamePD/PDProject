@@ -40,21 +40,10 @@ class FeverControl extends GameModuleComponentBase
             this.feverTimer.addEventListener(egret.TimerEvent.TIMER, this.FeverEnd, this);
             this.feverTimer.start();
 
-            // //fade out bgm
-            // var soundControlEvent = new SoundControlEvent();
-            // var soundModule:ISoundModule = <ISoundModule>GameMain.GetInstance().GetModule(ModuleType.SOUND);
-            // soundControlEvent.channel = soundModule.GetCurrentBgmChannel();
-            // soundControlEvent.controlType = SoundControlType.FadeOut;
-            // soundControlEvent.controlParam = 1 / 1000;
-            // GameMain.GetInstance().DispatchEvent(soundControlEvent);
-            // //play fever bgm
-            // var playSoundEvent = new PlaySoundEvent("fever_bgm_mp3", 1);
-            // GameMain.GetInstance().DispatchEvent(playSoundEvent);
-
             //pause global bgm
             var bgmControlEvent = new BgmControlEvent();
             bgmControlEvent.bgmStage = BgmStage.Global;
-            bgmControlEvent.controlType = BgmControlType.Pause;
+            bgmControlEvent.controlType = BgmControlType.Stop;
             GameMain.GetInstance().DispatchEvent(bgmControlEvent);
             //play fever bgm
             bgmControlEvent.bgmStage = BgmStage.Fever;
@@ -93,7 +82,7 @@ class FeverControl extends GameModuleComponentBase
         GameMain.GetInstance().DispatchEvent(bgmControlEvent);
 
         bgmControlEvent.bgmStage = BgmStage.Global;
-        bgmControlEvent.controlType = BgmControlType.Resume;
+        bgmControlEvent.controlType = BgmControlType.Play;
         GameMain.GetInstance().DispatchEvent(bgmControlEvent);
     }
 

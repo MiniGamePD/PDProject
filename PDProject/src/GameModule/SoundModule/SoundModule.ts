@@ -1,21 +1,21 @@
 class SoundModule extends ModuleBase implements ISoundModule
 {
 	private mResModule: IResModule;
-	private mBgmChannel: egret.SoundChannel;
 	private mFadeParamArray: SoundFadeParam[];
 
-	private mBgmChannelDic:{[index:number]: egret.SoundChannel};
+	private mBgmChannel:egret.SoundChannel;
 	private mBgmPausePosDic:{[index:number]: number};
+	private mBgmSoundRes:egret.Sound;
+	private mBgmLoopTimer:egret.Timer;
+	private mCurBgmStage:BgmStage;
 
 	public Init(): boolean 
 	{
 		this.isForeground = true;
 		this.mFadeParamArray = [];
-		this.mBgmChannelDic = {};
 		this.mBgmPausePosDic = {};
 		this.mResModule = <IResModule>GameMain.GetInstance().GetModule(ModuleType.RES);
 		GameMain.GetInstance().AddEventListener(PlaySoundEvent.EventName, this.OnPlaySoundEvent, this);
-		GameMain.GetInstance().AddEventListener(SoundControlEvent.EventName, this.OnSoundControlEvent, this);
 		GameMain.GetInstance().AddEventListener(BgmControlEvent.EventName, this.OnBgmControlEvent, this);
 		return true;
 	}
@@ -72,7 +72,6 @@ class SoundModule extends ModuleBase implements ISoundModule
 	public Release(): void 
 	{
 		GameMain.GetInstance().RemoveEventListener(PlaySoundEvent.EventName, this.OnPlaySoundEvent, this);
-		GameMain.GetInstance().RemoveEventListener(SoundControlEvent.EventName, this.OnSoundControlEvent, this);
 		GameMain.GetInstance().RemoveEventListener(BgmControlEvent.EventName, this.OnBgmControlEvent, this);
 	}
 
@@ -94,50 +93,9 @@ class SoundModule extends ModuleBase implements ISoundModule
 		return null;
 	}
 
-	public PlayBGM(key: string, loops: number):egret.SoundChannel 
-	{
-		if (this.mResModule != null)
-		{
-			if(this.mBgmChannel != undefined && this.mBgmChannel != null)
-			{
-				this.mBgmChannel.stop();
-			}
-
-			var sound:egret.Sound = this.mResModule.GetRes(key);
-			sound.type = egret.Sound.MUSIC;
-			if (sound != null)
-			{
-				this.mBgmChannel = sound.play(0, loops);
-				return this.mBgmChannel
-			}
-		}
-		return null;
-	}
-
 	private OnPlaySoundEvent(event: PlaySoundEvent)
 	{
-		if (event != null)
-		{
-			if(event.SoundType == egret.Sound.EFFECT)
-				this.PlaySound(event.Key, event.Loops);
-			else if(event.SoundType == egret.Sound.MUSIC)
-				this.PlayBGM(event.Key, event.Loops);
-			else
-				console.error("Invalid SoundType " + event.SoundType);
-		}
-	}
-
-	private OnSoundControlEvent(event:SoundControlEvent)
-	{
-		if(event.controlType == SoundControlType.FadeIn || event.controlType == SoundControlType.FadeOut)
-		{
-			var fadeParam:SoundFadeParam = new SoundFadeParam();
-			fadeParam.channel = event.channel;
-			fadeParam.fadeIn = event.controlType == SoundControlType.FadeIn;
-			fadeParam.speed = <number>event.controlParam;
-
-			this.mFadeParamArray.push(fadeParam);
-		}
+		this.PlaySound(event.Key, event.Loops);
 	}
 
 	private OnBgmControlEvent(event:BgmControlEvent)
@@ -145,144 +103,185 @@ class SoundModule extends ModuleBase implements ISoundModule
 		switch(event.controlType)
 		{
 			case BgmControlType.Play:
+			{
 				this.PlayBgm(event.bgmStage, 0);
 				break;
+			}
 			case BgmControlType.Stop:
-				this.StopBgm(event.bgmStage);
+			{
+				if(this.CheckStageValidity(event.bgmStage))
+					this.StopBgm();
 				break;
+			}
 			case BgmControlType.FadeIn:
-				this.FadeBgm(event.bgmStage, true, <number>event.controlParam);
+			{
+				if(this.CheckStageValidity(event.bgmStage))
+					this.FadeBgm(true, <number>event.controlParam);
 				break;
+			}	
 			case BgmControlType.FadeOut:
-				this.FadeBgm(event.bgmStage, false, <number>event.controlParam);
+			{
+				if(this.CheckStageValidity(event.bgmStage))
+					this.FadeBgm(false, <number>event.controlParam);
 				break;
+			}
 			case BgmControlType.Pause:
-				this.PauseBgm(event.bgmStage);
+			{
+				if(this.CheckStageValidity(event.bgmStage))
+					this.PauseBgm();
 				break;
+			}
 			case BgmControlType.Resume:
+			{
 				this.ResumeBgm(event.bgmStage);
 				break;
+			}
 			default:
 				console.error("Unknow Bgm Control Type");
 		}
 	}
 
-	public PlayBgm(stage:BgmStage, pos:number) 
+	private LoadBgm(stage:BgmStage):egret.Sound
 	{
-		if (this.mResModule != null)
+		var bgmRes:string;
+		if(stage == BgmStage.Global)
 		{
-			var bgmChannel:egret.SoundChannel = this.mBgmChannelDic[stage];
-			
-			if(bgmChannel != undefined && bgmChannel != null)
-			{
-				if(DEBUG)
-				{
-					console.error("BGM is playing:" + stage);
-				}
-				return;
-			}
-
-			var bgmRes:string;
-			if(stage == BgmStage.Global)
-			{
-				bgmRes = "bgm_mp3";
-			}
-			else if(stage == BgmStage.Fever)
-			{
-				bgmRes = "fever_bgm_mp3";
-			}
-			else 
-			{
-				console.error("Unknow Bgm Stage:" + stage);
-				return;
-			}
-
-			var sound:egret.Sound = this.mResModule.GetRes(bgmRes);
-			sound.type = egret.Sound.MUSIC;
-			if (sound != null)
-			{
-				this.mBgmChannel = sound.play(pos, -1);
-				this.mBgmChannelDic[stage] = this.mBgmChannel;
-			}
+			bgmRes = "bgm_mp3";
 		}
+		else if(stage == BgmStage.Fever)
+		{
+			bgmRes = "fever_bgm_mp3";
+		}
+		else 
+		{
+			console.error("Unknow Bgm Stage:" + stage);
+			return;
+		}
+
+		var sound:egret.Sound = this.mResModule.GetRes(bgmRes);
+		sound.type = egret.Sound.MUSIC;
+
+		return sound;
 	}
 
-	private StopBgm(stage:BgmStage)
+	public PlayBgm(stage:BgmStage, pos:number) 
 	{
-		var bgmChannel:egret.SoundChannel = this.mBgmChannelDic[stage];
-			
-		if(bgmChannel == undefined && bgmChannel == null)
+		if(this.mCurBgmStage != undefined || this.mCurBgmStage != null)
 		{
 			if(DEBUG)
 			{
-				console.error("BGM is not playing:" + stage);
+				console.error("BGM is playing, stop first then play again:" + this.mCurBgmStage);
 			}
 			return;
 		}
 
-		bgmChannel.stop();
-		this.mBgmChannelDic[stage] = null;
-		this.mBgmPausePosDic[stage] = null;
+		this.mBgmSoundRes = this.LoadBgm(stage);
+		this.mCurBgmStage = stage;
+
+		this.PlayBgmInternal(pos);
 	}
 
-	public FadeBgm(stage:BgmStage, fadeIn:boolean, fadeSpeed:number)
+	private PlayBgmInternal(pos:number)
 	{
-		var bgmChannel:egret.SoundChannel = this.mBgmChannelDic[stage];
-			
-		if(bgmChannel == undefined && bgmChannel == null)
+		//每次都只播放一遍，时间到了再播放一遍，模拟loop的效果
+		this.mBgmChannel = this.mBgmSoundRes.play(pos, -1);
+
+		this.mBgmLoopTimer = new egret.Timer((this.mBgmSoundRes.length-pos)*1000, 1);
+		this.mBgmLoopTimer.addEventListener(egret.TimerEvent.TIMER, this.OnBgmLoopTimer, this);
+		this.mBgmLoopTimer.start();
+	}
+
+	private OnBgmLoopTimer(event:egret.TimerEvent)
+	{
+		if(this.mCurBgmStage == undefined || this.mCurBgmStage == null)
 		{
 			if(DEBUG)
 			{
-				console.error("BGM is not playing:" + stage);
+				console.error("No BGM when BgmLoopTimer trigger");
+			}
+			return;
+		}
+
+		this.mBgmChannel.stop();
+		this.PlayBgmInternal(0);
+	}
+
+	private StopBgm()
+	{
+		if(this.mCurBgmStage == undefined || this.mCurBgmStage == null)
+		{
+			if(DEBUG)
+			{
+				console.error("No BGM is playing:Stop");
+			}
+			return;
+		}
+
+		this.mBgmChannel.stop();
+		this.mBgmLoopTimer.stop();
+		this.mBgmChannel = null;
+		var stageId = <number>this.mCurBgmStage;
+		this.mBgmPausePosDic[stageId] = null;
+		this.mCurBgmStage = null;
+		this.mBgmSoundRes = null;
+		this.mBgmLoopTimer = null;
+	}
+
+	public FadeBgm(fadeIn:boolean, fadeSpeed:number)
+	{
+		if(this.mCurBgmStage == undefined || this.mCurBgmStage == null)
+		{
+			if(DEBUG)
+			{
+				console.error("No BGM is playing:Fade");
 			}
 			return;
 		}
 
 		var fadeParam:SoundFadeParam = new SoundFadeParam();
-		fadeParam.channel = bgmChannel;
+		fadeParam.channel = this.mBgmChannel;
 		fadeParam.fadeIn = fadeIn;
 		fadeParam.speed = fadeSpeed;
 
 		this.mFadeParamArray.push(fadeParam);
 	}
 
-	private PauseBgm(stage:BgmStage)
+	private PauseBgm()
 	{
-		var bgmChannel:egret.SoundChannel = this.mBgmChannelDic[stage];
-			
-		if(bgmChannel == undefined && bgmChannel == null)
+		if(this.mCurBgmStage == undefined || this.mCurBgmStage == null)
 		{
 			if(DEBUG)
 			{
-				console.error("BGM is not playing:" + stage);
+				console.error("No BGM is playing:Pause");
 			}
 			return;
 		}
 
-		this.mBgmPausePosDic[stage] = bgmChannel.position;
-		bgmChannel.stop();
-		this.mBgmChannelDic[stage] = null;
+		var pos = this.mBgmChannel.position;
+		var stageId = <number>this.mCurBgmStage;
+		this.StopBgm();
+		this.mBgmPausePosDic[stageId] = pos;
 	}
 
 	private ResumeBgm(stage:BgmStage)
 	{
-		var pos:number = this.mBgmPausePosDic[stage];
-			
-		if(pos == undefined && pos == null)
+		if(this.mCurBgmStage != undefined || this.mCurBgmStage != null)
 		{
 			if(DEBUG)
 			{
-				console.error("BGM is not paused:" + stage);
+				console.error("Can not play multi bgm:Resume");
 			}
 			return;
 		}
 
-		this.PlayBgm(stage, pos);
+		var stageId = <number>stage;
+		this.PlayBgm(stage, this.mBgmPausePosDic[stageId]);
+		this.mBgmPausePosDic[stageId] = null;
 	}
 
-	public GetCurrentBgmChannel():egret.SoundChannel
+	private CheckStageValidity(stage:BgmStage):boolean
 	{
-		return this.mBgmChannel;
+		return stage == this.mCurBgmStage;
 	}
 }
 
