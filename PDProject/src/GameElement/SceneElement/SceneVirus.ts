@@ -13,12 +13,6 @@ class SceneVirus extends SceneElementBase
         this.eliminateSound = "VirusEliminate_mp3";
     }
 
-    private CreateAnimator(name: string): dragonBones.EgretArmatureDisplay
-    {
-        let egretFactory: dragonBones.EgretFactory = dragonBones.EgretFactory.factory;
-		return egretFactory.buildArmatureDisplay(name);
-    }
-
     private CreateFramesAnim(): SyncFramesAnim
     {
         var textureSeq = [];

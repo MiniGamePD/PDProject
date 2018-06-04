@@ -287,4 +287,26 @@ class Tools
 	{
 		return Math.sqrt(Math.pow(toX - fromX, 2) + Math.pow(toY - fromY, 2));
 	}
+
+	public static GetDirectionRotateAngle(direction: Direction): number
+	{
+		var angle = 0;
+		switch (direction)
+		{
+			case Direction.Right:
+				angle = 0;
+				break;
+			case Direction.Up:
+				angle = 270;
+				break;
+			case Direction.Left:
+				angle = 180;
+				break;
+			case Direction.Down:
+				angle = 90;
+				break;
+
+		}
+		return angle;
+	}
 }

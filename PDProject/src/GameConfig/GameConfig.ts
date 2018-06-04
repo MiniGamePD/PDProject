@@ -28,3 +28,8 @@ const TurnNum_BossSkillTurnNum = 3;
 const TurnNum_CreateEnemyTurnNum = 15;
 const TurnNum_CreateSkillBossTurnNum = 5;
 const TurnNum_BossSkillTargetNum = 5;
+
+
+// 动画相关
+const Frame_Anim_CrossEliminater = ["Cross_huojian1", "Cross_huojian2"];
+const Frame_Anim_CrossEliminater_Diretion = ["Cross_zhixiang1", "Cross_zhixiang2", "Cross_zhixiang3"];
