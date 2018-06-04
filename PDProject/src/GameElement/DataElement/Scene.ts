@@ -1180,8 +1180,8 @@ enum SceneElementControlType
 
 enum Direction 
 {
-    Left,
     Right,
     Up,
+    Left,
     Down,
 }

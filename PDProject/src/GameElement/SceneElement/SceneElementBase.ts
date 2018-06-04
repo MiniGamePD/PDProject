@@ -22,6 +22,10 @@ abstract class SceneElementBase
     {
         this.owner = owner;
         this.bindedElements = [];
+        if (this.resModule == null)
+        {
+            this.resModule = <IResModule>GameMain.GetInstance().GetModule(ModuleType.RES);
+        }
     }
 
     public Adapte(width: number, height: number)
@@ -96,7 +100,7 @@ abstract class SceneElementBase
         }
     }
 
-    public UpdateFramesAnim()
+    protected UpdateFramesAnim()
     {
         if (this.framesAnim != null
         	&& this.framesAnim != undefined)
@@ -109,10 +113,6 @@ abstract class SceneElementBase
 
     protected GetTexture(path: string): egret.Texture
     {
-        if (this.resModule == null)
-        {
-            this.resModule = <IResModule>GameMain.GetInstance().GetModule(ModuleType.RES);
-        }
         return this.resModule.GetRes(path);
     }
 
