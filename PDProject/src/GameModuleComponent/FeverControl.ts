@@ -4,6 +4,7 @@ class FeverControl extends GameModuleComponentBase
     private basicFeverStep:number = 10;
     private isInFeverState:boolean;
     private feverTimer:egret.Timer;
+    private feverBgmFadeOutTimer:egret.Timer;
 
     public Init()
     {
@@ -39,6 +40,9 @@ class FeverControl extends GameModuleComponentBase
             this.feverTimer = new egret.Timer(Time_FeverTime, 1);
             this.feverTimer.addEventListener(egret.TimerEvent.TIMER, this.FeverEnd, this);
             this.feverTimer.start();
+            this.feverBgmFadeOutTimer = new egret.Timer(Time_FeverTime-500, 1);
+            this.feverBgmFadeOutTimer.addEventListener(egret.TimerEvent.TIMER, this.FadeOutFeverBgm, this);
+            this.feverBgmFadeOutTimer.start();
 
             //pause global bgm
             var bgmControlEvent = new BgmControlEvent();
@@ -50,7 +54,6 @@ class FeverControl extends GameModuleComponentBase
             bgmControlEvent.controlType = BgmControlType.Play;
             GameMain.GetInstance().DispatchEvent(bgmControlEvent);
            
-
             //show fever sprite
             var hudEvent = new HUDEvent();
             hudEvent.eventType = HUDEventType.ShowFeverSprite;
@@ -83,6 +86,16 @@ class FeverControl extends GameModuleComponentBase
 
         bgmControlEvent.bgmStage = BgmStage.Global;
         bgmControlEvent.controlType = BgmControlType.Play;
+        GameMain.GetInstance().DispatchEvent(bgmControlEvent);
+    }
+
+    public FadeOutFeverBgm()
+    {
+        this.feverBgmFadeOutTimer = null;
+        var bgmControlEvent = new BgmControlEvent();
+        bgmControlEvent.bgmStage = BgmStage.Fever;
+        bgmControlEvent.controlType = BgmControlType.FadeOut;
+        bgmControlEvent.controlParam = 1 / 450;
         GameMain.GetInstance().DispatchEvent(bgmControlEvent);
     }
 
