@@ -6,10 +6,20 @@ class PaPlayFramesAnimParam extends ProgramAnimationParamBase
 	public textNameSeq: string[]; // 序列帧名字
 	public interval: number;  // 帧间隔
 	public times: number;	// 播放次数
+	public anchor: AnchorType; // 锚点
+	public rotation: number; // 旋转
+	public scale: egret.Point; // 缩放
 
 	public constructor()
 	{
 		super();
+		this.pos = null;
+		this.textNameSeq = [];
+		this.interval = 0;
+		this.times = 0;
+		this.anchor = AnchorType.Center;
+		this.rotation = 0;
+		this.scale = new egret.Point(1, 1);
 	}
 }
 
@@ -42,8 +52,12 @@ class PaPlayFramesAnim extends ProgramAnimationBase<PaPlayFramesAnimParam>
 		GameMain.GetInstance().GetAdaptedStageContainer().addChild(this.bitmap);
 		this.bitmap.x = this.param.pos.x;
 		this.bitmap.y = this.param.pos.y;
+		this.bitmap.scaleX = this.param.scale.x;
+		this.bitmap.scaleY = this.param.scale.y;
 		GameMain.GetInstance().AdapteDisplayObjectScale(this.bitmap);
 		this.RefreshTexture(this.runningTime);
+		Tools.SetAnchor(this.bitmap, this.param.anchor);
+		this.bitmap.rotation = this.param.rotation;
 	}
 
 	protected OnUpdate(deltaTime: number)

@@ -34,3 +34,7 @@ const TurnNum_BossSkillTargetNum = 5;
 const Frame_Anim_SceneBoom = ["Boom1", "Boom2"];
 const Frame_Anim_CrossEliminater = ["Cross_huojian1", "Cross_huojian2"];
 const Frame_Anim_CrossEliminater_Diretion = ["Cross_zhixiang1", "Cross_zhixiang2", "Cross_zhixiang3"];
+const Frame_Anim_CrossEliminater_fashe = ["Cross_fashe1", "Cross_fashe2", "Cross_fashe3", "Cross_fashe4",
+                                         "Cross_fashe5", "Cross_fashe6", "Cross_fashe7", "Cross_fashe8", "Cross_fashe9"];
+const Frame_Anim_CrossEliminater_tuowei = ["tuowei1", "tuowei2", "tuowei3", "tuowei4", "tuowei5", "tuowei6",
+                                             "tuowei7", "tuowei8", "tuowei9", "tuowei10", "tuowei11", "tuowei12"];

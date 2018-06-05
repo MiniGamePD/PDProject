@@ -17,5 +17,6 @@ enum ProgramAnimationType
 	AddScole, //播放元素消除，加分动画
 	PlayFramesAnim, // 播放帧动画
 	AlphaLoop, // Alpha滚动
+	PlayCrossEliminaterEffect, //十字消动画
 	Max
 }

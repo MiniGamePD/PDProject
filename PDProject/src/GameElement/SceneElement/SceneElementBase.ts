@@ -219,6 +219,18 @@ abstract class SceneElementBase
         GameMain.GetInstance().DispatchEvent(event);
     }
 
+    protected PlayCrossEliminaterEffect(dir: Direction[])
+    {
+        var startX = Tools.ElementPosToGameStagePosX(this.posx);
+        var startY = Tools.ElementPosToGameStagePosY(this.posy);
+        var param = new PaPlayCrossEliminaterEffectParam;
+        param.pos = new egret.Point(startX, startY);
+        param.direction = dir;
+        var event = new PlayProgramAnimationEvent();
+        event.param = param;
+        GameMain.GetInstance().DispatchEvent(event);
+    }
+
     protected PlayScaling()
     {
         var param = new PaScalingParam;

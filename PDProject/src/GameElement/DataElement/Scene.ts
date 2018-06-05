@@ -1185,3 +1185,12 @@ enum Direction
     Left,
     Down,
 }
+
+enum AnchorType
+{
+    Center,
+    Right,
+    Up,
+    Left,
+    Down,
+}

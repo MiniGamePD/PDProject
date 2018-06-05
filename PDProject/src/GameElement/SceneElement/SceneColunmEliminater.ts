@@ -67,11 +67,13 @@ class SceneColunmEliminater extends SceneElementBase
     {
         // this.PlayParticalEff();
         this.PlayScaling();
-        this.MoveOneSide(Direction.Up);
-        this.MoveOneSide(Direction.Down);
+        // this.MoveOneSide(Direction.Up);
+        // this.MoveOneSide(Direction.Down);
+        this.RemoveDirectionBitmap();
+        this.PlayCrossEliminaterEffect([Direction.Down, Direction.Up]);
     }
 
-    public Release()
+    private RemoveDirectionBitmap()
     {
         if (this.directionBitmap != undefined
            && this.directionBitmap != null)
@@ -84,7 +86,13 @@ class SceneColunmEliminater extends SceneElementBase
                     this.directionBitmap[i].parent.removeChild(this.directionBitmap[i]);
                 }
             }
+            this.directionBitmap = [];
         }
+    }
+
+    public Release()
+    {
+        this.RemoveDirectionBitmap();
         super.Release();
     }
 }

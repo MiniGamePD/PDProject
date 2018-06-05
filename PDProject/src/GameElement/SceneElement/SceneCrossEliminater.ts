@@ -67,13 +67,17 @@ class SceneCrossEliminater extends SceneElementBase
     public PlayEliminateAnim()
     {
         this.PlayScaling();
-        this.MoveOneSide(Direction.Up);
-        this.MoveOneSide(Direction.Down);
-        this.MoveOneSide(Direction.Left);
-        this.MoveOneSide(Direction.Right);
+        // this.MoveOneSide(Direction.Up);
+        // this.MoveOneSide(Direction.Down);
+        // this.MoveOneSide(Direction.Left);
+        // this.MoveOneSide(Direction.Right);
+
+        this.RemoveDirectionBitmap();
+
+        this.PlayCrossEliminaterEffect([Direction.Down, Direction.Up, Direction.Left, Direction.Right]);
     }
 
-    public Release()
+    private RemoveDirectionBitmap()
     {
         if (this.directionBitmap != undefined
            && this.directionBitmap != null)
@@ -86,7 +90,12 @@ class SceneCrossEliminater extends SceneElementBase
                     this.directionBitmap[i].parent.removeChild(this.directionBitmap[i]);
                 }
             }
+            this.directionBitmap = [];
         }
+    }
+    public Release()
+    {
+        this.RemoveDirectionBitmap();
         super.Release();
     }
 }

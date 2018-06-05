@@ -309,4 +309,34 @@ class Tools
 		}
 		return angle;
 	}
+
+	public static SetAnchor(disPlayObj: egret.DisplayObject, anchorType: AnchorType)
+	{
+		if (disPlayObj != null)
+		{
+			switch (anchorType)
+			{
+				case AnchorType.Center:
+					disPlayObj.anchorOffsetX = disPlayObj.width / 2;
+					disPlayObj.anchorOffsetY = disPlayObj.height / 2;
+					break;
+				case AnchorType.Left:
+					disPlayObj.anchorOffsetX = 0;
+					disPlayObj.anchorOffsetY = disPlayObj.height / 2;
+					break;
+				case AnchorType.Right:
+					disPlayObj.anchorOffsetX = disPlayObj.width;
+					disPlayObj.anchorOffsetY = disPlayObj.height / 2;
+					break;
+				case AnchorType.Up:
+					disPlayObj.anchorOffsetX = disPlayObj.width / 2;
+					disPlayObj.anchorOffsetY = 0;
+					break;
+				case AnchorType.Down:
+					disPlayObj.anchorOffsetX = disPlayObj.width / 2;
+					disPlayObj.anchorOffsetY = disPlayObj.height;
+					break;
+			}
+		}
+	}
 }

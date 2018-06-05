@@ -76,6 +76,9 @@ class ProgrameAnimationModule extends ModuleBase implements IProgramAnimationMod
                 case ProgramAnimationType.AlphaLoop:
                     animation = new PaAlphaLoop();
                     break;
+                case ProgramAnimationType.PlayCrossEliminaterEffect:
+                    animation = new PaPlayCrossEliminaterEffect();
+                    break;
             }
         }
 
