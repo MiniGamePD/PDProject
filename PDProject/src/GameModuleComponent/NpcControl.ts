@@ -12,6 +12,7 @@ class NpcControl extends GameModuleComponentBase
     //用于将npc一个一个添加进场景中的表现
     private tobeAddToSceneNpcArray:NpcElement[];
     private addNpcToSceneInterval:number;
+    private addAllNpcInOneTime:boolean;
 
     //如果创建了Npc，则播放一个很贱的笑声
     private npcSmileSound:string;
@@ -31,6 +32,7 @@ class NpcControl extends GameModuleComponentBase
     //还需要往上移动的行数
     private remindMoveUpNum:number;
     private remindCreateEnemyTurns:number;
+    private remindInitCreateEnemyLines:number;
 
     public constructor(gameplayElementFactory:GameplayElementFactory)
     {
@@ -90,8 +92,7 @@ class NpcControl extends GameModuleComponentBase
 
         if(this.npcControlState == NpcControlState.MoveAllUp)
         {
-            var createNum:number = Scene.Columns - Math.floor(Math.random() * 3);
-            this.CreateRandomVirus(createNum, 0.1, 0, Scene.Rows-1);
+            this.CreateEnemyLine(3, 0.1, Scene.Rows-1);
             this.npcSmileSound = this.remindMoveUpNum > 0 ? null : "EnemySinisterSmile1_mp3";
 
             return;
@@ -167,14 +168,18 @@ class NpcControl extends GameModuleComponentBase
                 //创建普通小怪
                 if(controlWorkParam.turn == 0)
                 {
-                    this.CreateRandomVirus(Math.floor(Scene.Rows / 2 * Scene.Columns * 0.8), 0, 0, Scene.Rows/2);
-                    this.npcSmileSound = "EnemySinisterSmile1_mp3"; 
+                    this.remindInitCreateEnemyLines = Procedure_InitCreateEnemyLine;
+                    this.npcControlState = NpcControlState.InitCreateEnemy;
+                    this.addAllNpcInOneTime = true;
+                    this.npcControlTimer = 0;
+                    this.addNpcToSceneInterval = Time_AddNpcToSceneIntervalMax;
                     return;
                 }
                 else
                 {
                     this.npcControlState = NpcControlState.MoveAllUp;
                     this.remindMoveUpNum = 3;
+                    this.addAllNpcInOneTime = false;
                     return;
                 }
             }
@@ -182,6 +187,12 @@ class NpcControl extends GameModuleComponentBase
         
         //npc 啥事也不做
         this.npcControlState = NpcControlState.NpcControlFinish;
+    }
+
+    private CreateEnemyLine(maxEmptyNum:number, shieldProperty:number, line:number)
+    {
+        var createNum:number = Scene.Columns - Math.floor(Math.random() * maxEmptyNum);
+        this.CreateRandomVirus(createNum, shieldProperty, 0, line, Scene.Columns-1, line);
     }
 
     private CreateRandomVirus(createNum:number, shieldProperty:number, startX:number, startY:number,
@@ -250,6 +261,9 @@ class NpcControl extends GameModuleComponentBase
             case NpcControlState.NpcControlFinish:
                 this.UpdateNpcControlFinish(deltaTime);
                 break;
+            case NpcControlState.InitCreateEnemy:
+                this.UpdateInitCreateEnemy(deltaTime);
+                break;
         }
     }
 
@@ -257,16 +271,44 @@ class NpcControl extends GameModuleComponentBase
     {
         if(this.tobeAddToSceneNpcArray != null && this.tobeAddToSceneNpcArray.length > 0)
         {
-            this.npcControlTimer += deltaTime;
-            if(this.npcControlTimer >= this.addNpcToSceneInterval)
+            if(this.addAllNpcInOneTime)
             {
-                let index = this.tobeAddToSceneNpcArray.length - 1;
-                let npc = this.tobeAddToSceneNpcArray[index];
-                this.AddNpcToScene(npc);
-                this.tobeAddToSceneNpcArray.splice(index, 1);
-                this.npcControlTimer = 0;
-                this.addNpcToSceneInterval -= Time_AddNpcToSceneIntervalStep;
-                this.addNpcToSceneInterval = Math.max(this.addNpcToSceneInterval, Time_AddNpcToSceneIntervalMin);
+                var event = new SceneElementControlEvent();
+                event.controlType = SceneElementControlType.Add;
+                event.sceneElements = [];
+                event.playerControl = false;
+
+                for(var i = 0; i < this.tobeAddToSceneNpcArray.length; ++i)
+                {
+                    var temp:SceneElementBase[] = this.tobeAddToSceneNpcArray[i].GetSceneElements();
+                    for(var j = 0; j < temp.length; ++j)
+                        event.sceneElements.push(temp[j]);
+                }
+
+                GameMain.GetInstance().DispatchEvent(event);
+                this.tobeAddToSceneNpcArray[0].PlaySound(NpcSoundType.Born);
+                this.tobeAddToSceneNpcArray = null;
+            }
+            else
+            {
+                this.npcControlTimer += deltaTime;
+                if(this.npcControlTimer >= this.addNpcToSceneInterval)
+                {
+                    let index = this.tobeAddToSceneNpcArray.length - 1;
+                    let npc = this.tobeAddToSceneNpcArray[index];
+          
+                    var event = new SceneElementControlEvent();
+                    event.controlType = SceneElementControlType.Add;
+                    event.sceneElements = npc.GetSceneElements();
+                    event.playerControl = false;
+                    GameMain.GetInstance().DispatchEvent(event);
+                    npc.PlaySound(NpcSoundType.Born);
+
+                    this.tobeAddToSceneNpcArray.splice(index, 1);
+                    this.npcControlTimer = 0;
+                    this.addNpcToSceneInterval -= Time_AddNpcToSceneIntervalStep;
+                    this.addNpcToSceneInterval = Math.max(this.addNpcToSceneInterval, Time_AddNpcToSceneIntervalMin);
+                }
             }
         }
         else
@@ -280,6 +322,10 @@ class NpcControl extends GameModuleComponentBase
             else if(this.remindMoveUpNum > 0)
             {
                 this.npcControlState = NpcControlState.MoveAllUp;
+            }
+            else if(this.remindInitCreateEnemyLines > 0)
+            {
+                this.npcControlState = NpcControlState.InitCreateEnemy
             }
             else
             {
@@ -335,6 +381,33 @@ class NpcControl extends GameModuleComponentBase
             event.specialEliminateMethod.methodType = EliminateMethodType.MoveUp;
             event.specialEliminateMethod.moveUpValue = 1;
             GameMain.GetInstance().DispatchEvent(event);
+        }
+        else
+        {
+            this.npcControlState = NpcControlState.NpcControlFinish;
+        }
+    }
+
+    private UpdateInitCreateEnemy(deltaTime:number)
+    {
+        if(this.remindInitCreateEnemyLines > 0)
+        {
+            this.npcControlTimer += deltaTime;
+            if(this.npcControlTimer >= this.addNpcToSceneInterval)
+            {
+                this.npcControlState = NpcControlState.None;
+                this.CreateEnemyLine(3, 0, Scene.Rows-this.remindInitCreateEnemyLines);
+                this.remindInitCreateEnemyLines--;
+                if(this.remindInitCreateEnemyLines <= 0)
+                {
+                    this.npcSmileSound = "EnemySinisterSmile1_mp3"; 
+                }
+              
+                //时间控制
+                this.npcControlTimer = 0;
+                this.addNpcToSceneInterval -= Time_AddNpcToSceneIntervalStep;
+                this.addNpcToSceneInterval = Math.max(this.addNpcToSceneInterval, Time_AddNpcToSceneIntervalMin);
+            }
         }
         else
         {
@@ -585,24 +658,6 @@ class NpcControl extends GameModuleComponentBase
         return result;
     }
 
-    private AddNpcToScene(npc:NpcElement)
-    {
-        let event = new SceneElementControlEvent();
-        event.controlType = SceneElementControlType.Add;
-        event.sceneElements = npc.GetSceneElements();
-        event.playerControl = false;
-        GameMain.GetInstance().DispatchEvent(event);
-
-        npc.PlaySound(NpcSoundType.Born);
-
-        //TODO:有可能会失败，不能这样做。默认是会成功的，不成功会报错，所以这里就直接添加到逻辑数组里去了
-        // if(npc.SkillType() != NpcSkillType.None)
-        // {
-        //     this.skillNpcArray.push(npc);
-        // }
-        // this.aliveNpcArray.push(npc);
-    }
-
     private OnAddElementToSceneFailed(event:SceneElementControlFailedEvent)
     {
         if(!event.playerControl)
@@ -652,6 +707,7 @@ class NpcControl extends GameModuleComponentBase
 enum NpcControlState
 {
     None,
+    InitCreateEnemy, //初始化生成一定排数的小怪
     DestroyObstruction,
     AddNpcToScene,
     PlaySinisterSmileSound,
