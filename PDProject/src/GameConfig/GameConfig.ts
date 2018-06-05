@@ -24,11 +24,11 @@ const Score_BaseScore = 20;
 
 //游戏流程相关
 const Procedure_ReviveEliminateLine = 5;
+const Procedure_InitCreateEnemyLine = 6;
 const TurnNum_BossSkillTurnNum = 3;
 const TurnNum_CreateEnemyTurnNum = 15;
 const TurnNum_CreateSkillBossTurnNum = 5;
 const TurnNum_BossSkillTargetNum = 5;
-
 
 // 动画相关
 const Frame_Anim_SceneBoom = ["Boom1", "Boom2"];
