@@ -40,7 +40,7 @@ class SceneVitamins extends SceneElementBase
     {
         var param = new PaPlayDBAnimationParam;
         param.resName = "DB_Boom_Bomb";
-        param.animationName = "Boom1";
+        param.animationName = "Boom2";
         param.playTimes = 1;
         param.scaleX = 1.8;
         param.scaleY = 1.8;

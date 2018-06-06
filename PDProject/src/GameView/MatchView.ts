@@ -209,10 +209,10 @@ class MatchView extends GameView
     {
         if (this.mResModule != null)
         {
-            let bg = this.mResModule.CreateBitmapByName("pd_res_json.BackGround");
+            let bg = this.mResModule.CreateBitmapByName("pd_res_json.NewBackGround");
             this.addChild(bg);
-            //bg.width = this.mStageWidth;
-            //bg.height = this.mStageHeight;
+            bg.width = GameMain.GetInstance().GetStageWidth();
+            bg.height = GameMain.GetInstance().GetStageHeight();
 
             var adaptedStageRect:egret.Rectangle = GameMain.GetInstance().GetAdaptedDisplayRect();
             this.mAdaptedStage = GameMain.GetInstance().GetAdaptedStageContainer();
@@ -226,9 +226,17 @@ class MatchView extends GameView
             //     adaptedStage.graphics.endFill();
             // }
 
+            var battleGroundBg = this.mResModule.CreateBitmapByName("pd_res_json.zhanqu");
+            battleGroundBg.x = 0;
+            battleGroundBg.y = 186;
+            battleGroundBg.width = 640;
+            battleGroundBg.height = 966;
+            GameMain.GetInstance().AdapteDisplayObject(battleGroundBg);
+            this.mAdaptedStage.addChild(battleGroundBg);
+
             this.mBattleGround = new egret.Sprite();
             //battle rect in stander resolution
-            let battleRect = new egret.Rectangle(35, 280, 580, 812);
+            let battleRect = new egret.Rectangle(30, 280, 580, 812);
             battleRect.x = battleRect.x * adaptedStageRect.width / Screen_StanderScreenWidth;
             battleRect.y = battleRect.y * adaptedStageRect.height / Screen_StanderScreenHeight;
             battleRect.width = battleRect.width * adaptedStageRect.width / Screen_StanderScreenWidth;
@@ -262,21 +270,21 @@ class MatchView extends GameView
 
             this.mBattleGroundBlocks = new egret.DisplayObjectContainer();
             this.mBattleGround.addChild(this.mBattleGroundBlocks);  
-            for(var y = 0; y < Scene.Rows; ++y)
-            {
-                for(var x = 0; x < Scene.Columns; ++x)
-                {
-                    var block = this.mResModule.CreateBitmapByName("pd_res_json.gezi");
-                    block.fillMode = egret.BitmapFillMode.SCALE;
-                    block.x = Tools.GetMatchViewRenderPosX(x);
-                    block.y = Tools.GetMatchViewRenderPosY(y);
-                    block.anchorOffsetX = Tools.MatchViewElementWidth / 2;
-                    block.anchorOffsetY = Tools.MatchViewElementHeight / 2;
-                    block.width = Tools.MatchViewElementWidth
-                    block.height = Tools.MatchViewElementHeight
-                    this.mBattleGroundBlocks.addChild(block);
-                }
-            }
+            // for(var y = 0; y < Scene.Rows; ++y)
+            // {
+            //     for(var x = 0; x < Scene.Columns; ++x)
+            //     {
+            //         var block = this.mResModule.CreateBitmapByName("pd_res_json.gezi");
+            //         block.fillMode = egret.BitmapFillMode.SCALE;
+            //         block.x = Tools.GetMatchViewRenderPosX(x);
+            //         block.y = Tools.GetMatchViewRenderPosY(y);
+            //         block.anchorOffsetX = Tools.MatchViewElementWidth / 2;
+            //         block.anchorOffsetY = Tools.MatchViewElementHeight / 2;
+            //         block.width = Tools.MatchViewElementWidth
+            //         block.height = Tools.MatchViewElementHeight
+            //         this.mBattleGroundBlocks.addChild(block);
+            //     }
+            // }
         }
     }
 

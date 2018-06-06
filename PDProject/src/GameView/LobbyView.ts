@@ -18,7 +18,7 @@ class LobbyView extends GameView
 
     private LoadBackGround()
     {
-        let bg = this.mResModule.CreateBitmapByName("pd_res_json.BackGround");
+        let bg = this.mResModule.CreateBitmapByName("pd_res_json.NewBackGround");
         this.addChild(bg);
         bg.width = this.mStageWidth;
         bg.height = this.mStageHeight;

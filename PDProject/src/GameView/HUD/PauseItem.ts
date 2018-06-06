@@ -18,7 +18,7 @@ class PauseItem extends egret.DisplayObjectContainer
 
         var res:IResModule = <IResModule>GameMain.GetInstance().GetModule(ModuleType.RES);
 
-        this.pauseIcon = res.CreateBitmapByName("pd_res_json.CrossEliminater");
+        this.pauseIcon = res.CreateBitmapByName("pd_res_json.pause");
         this.pauseIcon.anchorOffsetX = this.pauseIcon.width / 2;
         this.pauseIcon.anchorOffsetY = this.pauseIcon.height / 2;
         this.pauseIcon.x = 50;
