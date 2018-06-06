@@ -93,7 +93,7 @@ class PaPlayCrossEliminaterEffect extends ProgramAnimationBase<PaPlayCrossElimin
 		var particalParam = new PaMoveParticalParam;
         particalParam.textureName = "huojian_shinning";
         particalParam.jsonName = "huojian_shinning";
-        particalParam.duration = 1000;
+        particalParam.duration = 2000;
         particalParam.flyDuration = 1000;
         particalParam.stayDuration = 0;
         particalParam.stratPosX = startX;

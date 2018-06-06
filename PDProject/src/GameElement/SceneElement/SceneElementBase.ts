@@ -17,6 +17,7 @@ abstract class SceneElementBase
     public accessory: egret.DisplayObjectContainer; //用来放一些除本体外的东西，比如护盾，血条
     private bubbleShield: egret.Bitmap;
     protected framesAnim: SyncFramesAnim;
+    public eliminateDelay: number;
 
     public constructor(owner: GameplayElementBase) 
     {

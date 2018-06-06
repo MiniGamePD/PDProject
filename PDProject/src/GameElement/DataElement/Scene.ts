@@ -499,6 +499,13 @@ class Scene extends GameModuleComponentBase
             && !Tools.IsInList(event.triggerElement, this.eliminateInfo.SpecialEliminatedElement))
         {
             this.eliminateInfo.SpecialEliminatedElement.push(event.triggerElement);
+            
+            var eliminateDelay = Eliminate_Delay_One_Step_CrossEliminater;
+            if (event.triggerElement.ElementType() == SceneElementType.Boom)
+            {
+                 eliminateDelay = Eliminate_Delay_One_Step_Boom;
+            }
+            
             for (var i = 1; i < event.targetPosList.length; i += 2)
             {
                 var posx = event.targetPosList[i - 1];
@@ -506,6 +513,8 @@ class Scene extends GameModuleComponentBase
                 var element = this.GetElement(posx, posy);
                 if (element != null)
                 {
+                    var dis = Tools.PointDistance(event.triggerElement.posx, event.triggerElement.posy, element.posx, element.posy);
+                    element.eliminateDelay = dis * eliminateDelay;
                     this.EliminateElement(element);
                 }
             }
@@ -659,6 +668,9 @@ class Scene extends GameModuleComponentBase
         var rowPlaceHolderCount = this.IsSpecifiedTypeElement(element, SceneElementType.PlaceHolder) ? 1 : 0;
         var cloumnCanEliminateElementCount = this.InCanEliminateElementList(element) ? 1 : 0; // 有能被消除的元素数量
         var rowCanEliminateElementCount = this.InCanEliminateElementList(element) ? 1 : 0; // 有能被消除的元素数量
+        var cloumnDownDis = 0; // 触发消除时，离当列最下面元素的距离
+        var rowLeftDis = 0; // 触发消除时，离当排最左边元素的距离
+
         for (var up = element.posy - 1; up >= 0; --up)
         {
             var e = this.GetElement(element.posx, up);
@@ -682,6 +694,7 @@ class Scene extends GameModuleComponentBase
                 && e.color == element.color)
             {
                 ++cloumnCount;
+                ++cloumnDownDis;
                 cloumnPlaceHolderCount += this.IsSpecifiedTypeElement(e, SceneElementType.PlaceHolder) ? 1 : 0;
                 cloumnCanEliminateElementCount += this.InCanEliminateElementList(e) ? 1 : 0;
             }
@@ -698,6 +711,7 @@ class Scene extends GameModuleComponentBase
                 && e.color == element.color)
             {
                 ++rowCount;
+                ++rowLeftDis;
                 rowPlaceHolderCount += this.IsSpecifiedTypeElement(e, SceneElementType.PlaceHolder) ? 1 : 0;
                 rowCanEliminateElementCount += this.InCanEliminateElementList(e) ? 1 : 0;
             }
@@ -732,10 +746,15 @@ class Scene extends GameModuleComponentBase
             rowCount = rowCount - rowPlaceHolderCount + 1; //一个方向的placeholder只算一个
         }
 
-        if (cloumnCount >= element.eliminateMinCount && cloumnCanEliminateElementCount > 0  // 竖排相邻数量足够，并且竖排相邻有能被消除的元素
-            || rowCount >= element.eliminateMinCount && rowCanEliminateElementCount > 0) // 横排相邻数量足够，并且横排相邻有能被消除的元素
+        if (cloumnCount >= element.eliminateMinCount && cloumnCanEliminateElementCount > 0)  // 竖排相邻数量足够，并且竖排相邻有能被消除的元素
         {
             needEliminate = true;
+            element.eliminateDelay = cloumnDownDis * Eliminate_Delay_One_Step;
+        }
+        else if (rowCount >= element.eliminateMinCount && rowCanEliminateElementCount > 0)// 横排相邻数量足够，并且横排相邻有能被消除的元素
+        {
+            needEliminate = true;
+            element.eliminateDelay = rowLeftDis * Eliminate_Delay_One_Step;
         }
 
         return needEliminate;
