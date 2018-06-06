@@ -5,9 +5,9 @@ class ControlablePreviewItem extends egret.DisplayObjectContainer
 
     private dropTargetY:number;
     private gameoverTargetY:number;
-    private nextPreviewY:number;
-    private thirdPreviewY:number;
-    private previewX:number;
+    private nextPreviewX:number;
+    private thirdPreviewX:number;
+    private previewY:number;
 
     private nextPreviewSize:number;
     private dropAnimDuration:number;
@@ -22,16 +22,15 @@ class ControlablePreviewItem extends egret.DisplayObjectContainer
         this.height = height;
 
         this.dropTargetY = 0;//Tools.ElementPosToGameStagePosY(0);
-        this.gameoverTargetY = -1;
-        this.nextPreviewY = -3;//Tools.ElementPosToGameStagePosY(-3);
-        this.thirdPreviewY = -4;//Tools.ElementPosToGameStagePosY(-4);
-        this.previewX = 4;//Tools.ElementPosToGameStagePosX(4);
+        this.nextPreviewX = 4;//Tools.ElementPosToGameStagePosY(-3);
+        this.thirdPreviewX = 6;//Tools.ElementPosToGameStagePosY(-4);
+        this.previewY = -1;//Tools.ElementPosToGameStagePosX(4);
 
         this.nextPreview = new egret.DisplayObjectContainer();
         this.thirdPreview = new egret.DisplayObjectContainer();
-        this.nextPreview.x = this.thirdPreview.x = Tools.ElementPosToGameStagePosX(this.previewX);
-        this.nextPreview.y = Tools.ElementPosToGameStagePosY(this.nextPreviewY);
-        this.thirdPreview.y = Tools.ElementPosToGameStagePosY(this.thirdPreviewY);
+        this.nextPreview.y = this.thirdPreview.y = Tools.ElementPosToGameStagePosY(this.previewY);
+        this.nextPreview.x = Tools.ElementPosToGameStagePosX(this.nextPreviewX);
+        this.thirdPreview.x = Tools.ElementPosToGameStagePosX(this.thirdPreviewX);
         this.addChild(this.nextPreview);
         this.addChild(this.thirdPreview);
     }
@@ -76,15 +75,13 @@ class ControlablePreviewItem extends egret.DisplayObjectContainer
 
             var realDropDuration = this.dropAnimDuration;
             var nextPreviewMoveDistanceY = Tools.ElementPosToGameStagePosY(this.dropTargetY) - 
-                Tools.ElementPosToGameStagePosY(this.nextPreviewY);
-            var thirdPreviewMoveDistanceY = Tools.ElementPosToGameStagePosY(this.nextPreviewY) - 
-                Tools.ElementPosToGameStagePosY(this.thirdPreviewY);
+                Tools.ElementPosToGameStagePosY(this.previewY);
+            var thirdPreviewMoveDistanceX = Tools.ElementPosToGameStagePosX(this.nextPreviewX) - 
+                Tools.ElementPosToGameStagePosX(this.thirdPreviewX);
             if(gameover)
             {
-                realDropDuration = this.dropAnimDuration * 
-                    (this.gameoverTargetY - this.nextPreviewY) / (this.dropTargetY - this.nextPreviewY);
-                nextPreviewMoveDistanceY = Tools.ElementPosToGameStagePosY(this.gameoverTargetY) - 
-                    Tools.ElementPosToGameStagePosY(this.nextPreviewY);
+                //game over了就不用移动了
+                return;
             }
 
             //将下一个药丸，移动到瓶口
@@ -101,11 +98,20 @@ class ControlablePreviewItem extends egret.DisplayObjectContainer
             var param2 = new PaMovingParam;
             param2.displayObj = this.thirdPreview.getChildAt(0);
             param2.duration = realDropDuration;
-            param2.targetPosX = 0;
-            param2.targetPosY = thirdPreviewMoveDistanceY;
+            param2.targetPosX = thirdPreviewMoveDistanceX;
+            param2.targetPosY = 0;
             var event2 = new PlayProgramAnimationEvent();
             event2.param = param2;
             GameMain.GetInstance().DispatchEvent(event2);
+
+            var param2_scale = new PaScalingParam();
+            param2_scale.displayObj = this.thirdPreview.getChildAt(0);
+            param2_scale.duration = realDropDuration;
+            param2_scale.targetScaleX = 1;
+            param2_scale.targetScaleY = 1;
+            var event2_scale = new PlayProgramAnimationEvent();
+            event2_scale.param = param2_scale;
+            GameMain.GetInstance().DispatchEvent(event2_scale);
         }
     }
 
@@ -130,8 +136,13 @@ class ControlablePreviewItem extends egret.DisplayObjectContainer
         this.Reset();
 
         this.nextPreviewSize = nextControlableElementArray[0].GetPreviewSize();
-        this.nextPreview.addChild(nextControlableElementArray[0].GetPreViewContainer());
-        this.thirdPreview.addChild(nextControlableElementArray[1].GetPreViewContainer());
+        var nextPreviewObj = nextControlableElementArray[0].GetPreViewContainer();
+        var thirdPreviewObj = nextControlableElementArray[1].GetPreViewContainer();
+        thirdPreviewObj.scaleX = thirdPreviewObj.scaleY = 0.8;
+        //thirdPreviewObj.alpha = 0.5;
+
+        this.nextPreview.addChild(nextPreviewObj);
+        this.thirdPreview.addChild(thirdPreviewObj);
     }
 
     public Reset()
