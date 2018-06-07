@@ -96,8 +96,8 @@ class SceneBoom extends SceneElementBase
         param.interval = 800;
         param.duration = 999999;
         param.offestTime = offsetTime;
-        param.startAlpha = 0.3;
-        param.endAlpha = 0.7;
+        param.startAlpha = 0.6;
+        param.endAlpha = 0.9;
         param.reverse = true;
         var event = new PlayProgramAnimationEvent();
         event.param = param;

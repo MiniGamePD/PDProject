@@ -13,16 +13,45 @@ class SceneVirus extends SceneElementBase
         this.eliminateSound = "VirusEliminate_mp3";
     }
 
+    private GetAnimDelay(): number
+    {
+        var delay = 0;
+        switch(this.color)
+        {
+            case GameElementColor.red:
+                delay = 0;
+                break;
+            case GameElementColor.blue:
+                delay = 250;
+                break;
+            case GameElementColor.yellow:
+                delay = 500;
+                break;
+        }
+        return delay;
+    }
+
+    private GetFramesAnimIdle()
+    {
+        if (this.color == GameElementColor.red)
+        {
+            return Frame_Anim_Virus_Red_Idle;
+        }
+        else if (this.color == GameElementColor.blue)
+        {
+            return Frame_Anim_Virus_Blue_Idle;
+        }
+        else if (this.color == GameElementColor.yellow)
+        {
+            return Frame_Anim_Virus_Yellow_Idle;
+        }
+        return [];
+    }
+
     private CreateFramesAnim(): SyncFramesAnim
     {
-        var textureSeq = [];
-        var textName = this.GetResPrePath();
-        for (var i = 1; i <=5; ++i)
-        {
-            textureSeq.push(textName + "_Idle" + i.toString());
-        }
         var framesAnim = new SyncFramesAnim();
-        framesAnim.Init(<egret.Bitmap>this.renderer, textureSeq, 100);
+        framesAnim.Init(<egret.Bitmap>this.renderer, this.GetFramesAnimIdle(), 100, this.GetAnimDelay());
         return framesAnim;
     }
 
