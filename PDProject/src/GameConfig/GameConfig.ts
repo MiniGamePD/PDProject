@@ -35,6 +35,9 @@ const TurnNum_BossSkillTargetNum = 5;
 
 // 动画相关
 const Frame_Anim_SceneBoom = ["Boom1", "Boom2"];
+const Frame_Anim_SceneBoom_Effect = ["BoomEffect1", "BoomEffect2", "BoomEffect3", "BoomEffect4", "BoomEffect5", 
+                                    "BoomEffect6", "BoomEffect7", "BoomEffect8", "BoomEffect9", "BoomEffect10"];
+
 const Frame_Anim_CrossEliminater = ["Cross_huojian1", "Cross_huojian2"];
 const Frame_Anim_CrossEliminater_Diretion = ["Cross_zhixiang1", "Cross_zhixiang2", "Cross_zhixiang3"];
 const Frame_Anim_CrossEliminater_fashe = ["Cross_fashe1", "Cross_fashe2", "Cross_fashe3", "Cross_fashe4",
@@ -42,8 +45,8 @@ const Frame_Anim_CrossEliminater_fashe = ["Cross_fashe1", "Cross_fashe2", "Cross
 const Frame_Anim_CrossEliminater_tuowei = ["tuowei1", "tuowei2", "tuowei3", "tuowei4", "tuowei5", "tuowei6",
                                              "tuowei7", "tuowei8", "tuowei9", "tuowei10", "tuowei11", "tuowei12"];
 const Frame_Anim_Virus_Red_Idle = ["Virus_Red_Idle1", "Virus_Red_Idle1", "Virus_Red_Idle1", "Virus_Red_Idle4", "Virus_Red_Idle5", "Virus_Red_Idle6",
-                                             "Virus_Red_Idle6", "Virus_Red_Idle6", "Virus_Red_Idle9", "Virus_Red_Idle5"];
+                                             "Virus_Red_Idle6", "Virus_Red_Idle6", "Virus_Red_Idle9", "Virus_Red_Idle10"];
 const Frame_Anim_Virus_Blue_Idle = ["Virus_Blue_Idle1", "Virus_Blue_Idle1", "Virus_Blue_Idle1", "Virus_Blue_Idle4", "Virus_Blue_Idle5", "Virus_Blue_Idle6",
-                                             "Virus_Blue_Idle6", "Virus_Blue_Idle6", "Virus_Blue_Idle9", "Virus_Blue_Idle5"];
+                                             "Virus_Blue_Idle6", "Virus_Blue_Idle6", "Virus_Blue_Idle9", "Virus_Blue_Idle10"];
 const Frame_Anim_Virus_Yellow_Idle = ["Virus_Yellow_Idle1", "Virus_Yellow_Idle1", "Virus_Yellow_Idle1", "Virus_Yellow_Idle4", "Virus_Yellow_Idle5", "Virus_Yellow_Idle6",
-                                             "Virus_Yellow_Idle6", "Virus_Yellow_Idle6", "Virus_Yellow_Idle9", "Virus_Yellow_Idle5"];
+                                             "Virus_Yellow_Idle6", "Virus_Yellow_Idle6", "Virus_Yellow_Idle9", "Virus_Yellow_Idle10"];

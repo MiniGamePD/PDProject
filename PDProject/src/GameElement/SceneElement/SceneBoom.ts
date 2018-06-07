@@ -38,19 +38,17 @@ class SceneBoom extends SceneElementBase
     }
 
     protected PlayBoomEffect()
-    {
-        var param = new PaPlayDBAnimationParam;
-        param.resName = "DB_Boom_Bomb";
-        param.animationName = "Boom1";
-        param.playTimes = 1;
-        param.scaleX = 1.8;
-        param.scaleY = 1.8;
-        param.posX = Tools.ElementPosToGameStagePosX(this.posx);
-        param.posY = Tools.ElementPosToGameStagePosY(this.posy);
-        var event = new PlayProgramAnimationEvent();
-        event.param = param;
+	{
+		var playEffectParam = new PaPlayFramesAnimParam()
+		playEffectParam.pos = new egret.Point(Tools.ElementPosToGameStagePosX(this.posx), Tools.ElementPosToGameStagePosY(this.posy));
+		playEffectParam.textNameSeq = Frame_Anim_SceneBoom_Effect;
+		playEffectParam.interval = 50;
+		playEffectParam.times = 1;
+        playEffectParam.scale = new egret.Point(2,2);
+		var event = new PlayProgramAnimationEvent();
+        event.param = playEffectParam;
         GameMain.GetInstance().DispatchEvent(event);
-    }
+	}
 
     private CreateRangeEffect()
     {
