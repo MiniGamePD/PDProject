@@ -6,6 +6,7 @@ class MatchView extends GameView
     private matchScore: MatchScore;
     private mBattleGround: egret.Sprite;
     private mBattleGroundBlocks: egret.DisplayObjectContainer;
+    private mBattleGroundCoverEff: egret.DisplayObjectContainer;
     private eliminatingAnim: EliminatingAnimation;
     private bossSkillAnim: BossSkillAnimation;
     private enemyBornWarningItemArray: egret.Bitmap[];
@@ -55,6 +56,8 @@ class MatchView extends GameView
     {
         this.mBattleGround.removeChildren();
         this.mBattleGround.addChild(this.mBattleGroundBlocks);
+
+        this.mBattleGroundCoverEff.removeChildren();
 
         this.hud.Reset();   
     }
@@ -266,6 +269,13 @@ class MatchView extends GameView
 
             this.mAdaptedStage.addChild(this.mBattleGround);
 
+            this.mBattleGroundCoverEff = new egret.DisplayObjectContainer();
+            this.mBattleGroundCoverEff.x = battleRect.x;
+            this.mBattleGroundCoverEff.y = battleRect.y;
+            this.mBattleGroundCoverEff.width = battleRect.width;
+            this.mBattleGroundCoverEff.height = battleRect.height;
+            this.mAdaptedStage.addChild(this.mBattleGroundCoverEff);
+
             if(DEBUG)
                 console.log("BattleRect is :" + battleRect);
 
@@ -356,7 +366,7 @@ class MatchView extends GameView
                 this.enemyBornWarningCountDown.y = Tools.MatchViewElementHeight;
                 this.enemyBornWarningCountDown.width = 1.5 * Tools.MatchViewElementWidth;
                 this.enemyBornWarningCountDown.height = 1.5 * Tools.MatchViewElementHeight;
-                this.mBattleGround.addChild(this.enemyBornWarningCountDown);
+                this.mBattleGroundCoverEff.addChild(this.enemyBornWarningCountDown);
             }    
             else
             {
@@ -368,7 +378,7 @@ class MatchView extends GameView
         {
             if(this.enemyBornWarningCountDown != null && this.enemyBornWarningCountDown != undefined)
             {
-                this.mBattleGround.removeChild(this.enemyBornWarningCountDown);
+                this.mBattleGroundCoverEff.removeChild(this.enemyBornWarningCountDown);
                 this.enemyBornWarningCountDown = null;
             }
         }
@@ -399,7 +409,7 @@ class MatchView extends GameView
             GameMain.GetInstance().DispatchEvent(event);
 
             this.enemyBornWarningItemArray.push(warningItem);
-            this.mBattleGround.addChild(warningItem);
+            this.mBattleGroundCoverEff.addChild(warningItem);
         }
     }
 
@@ -430,7 +440,7 @@ class MatchView extends GameView
             }
 
             var warningItem = this.enemyBornWarningItemArray.splice(index, 1)[0];
-            this.mBattleGround.removeChild(warningItem);
+            this.mBattleGroundCoverEff.removeChild(warningItem);
         }
     }
 }
