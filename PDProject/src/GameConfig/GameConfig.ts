@@ -16,6 +16,9 @@ const Screen_StanderScreenHeight = 1136;
 const EliminateRoundInMoveUp = 0; // 生成小怪时，上移的消除事件。Round的值
 const EliminateRoundStartIndex = 1;
 const Eliminate_NextCentainEliminateToolTurn = 10;
+const Eliminate_Delay_One_Step = 70; // 每距离一个格子的消除延迟
+const Eliminate_Delay_One_Step_CrossEliminater = 55; //  每距离一个格子的消除延迟(特殊消除)
+const Eliminate_Delay_One_Step_Boom = 70; //  每距离一个格子的消除延迟(炸弹)
 
 //分数相关
 const Score_FeverTimeScale = 2; // FeverTime期间的分数倍率

@@ -81,9 +81,10 @@ class Scene extends GameModuleComponentBase
             case SceneElementControlType.Rotation:
                 {
                     this.AddGroupCanEliminateElementList(elementList);
-                    operationSuccess = this.IsCanRotateAcwTarget(elementList, event.rotateTargetPosList);
-                    if (operationSuccess)
-                        this.RotateAcwTarget(elementList, event.rotateTargetPosList);
+                    // operationSuccess = this.IsCanRotateAcwTarget(elementList, event.rotateTargetPosList);
+                    // if (operationSuccess)
+                    //     this.RotateAcwTarget(elementList, event.rotateTargetPosList);
+                    operationSuccess = this.RotatePill(elementList);
                     break;
                 }
             default:
@@ -499,6 +500,13 @@ class Scene extends GameModuleComponentBase
             && !Tools.IsInList(event.triggerElement, this.eliminateInfo.SpecialEliminatedElement))
         {
             this.eliminateInfo.SpecialEliminatedElement.push(event.triggerElement);
+            
+            var eliminateDelay = Eliminate_Delay_One_Step_CrossEliminater;
+            if (event.triggerElement.ElementType() == SceneElementType.Boom)
+            {
+                 eliminateDelay = Eliminate_Delay_One_Step_Boom;
+            }
+
             for (var i = 1; i < event.targetPosList.length; i += 2)
             {
                 var posx = event.targetPosList[i - 1];
@@ -506,6 +514,8 @@ class Scene extends GameModuleComponentBase
                 var element = this.GetElement(posx, posy);
                 if (element != null)
                 {
+                    var dis = Tools.PointDistance(event.triggerElement.posx, event.triggerElement.posy, element.posx, element.posy);
+                    element.eliminateDelay = dis * eliminateDelay;
                     this.EliminateElement(element);
                 }
             }
@@ -659,6 +669,9 @@ class Scene extends GameModuleComponentBase
         var rowPlaceHolderCount = this.IsSpecifiedTypeElement(element, SceneElementType.PlaceHolder) ? 1 : 0;
         var cloumnCanEliminateElementCount = this.InCanEliminateElementList(element) ? 1 : 0; // 有能被消除的元素数量
         var rowCanEliminateElementCount = this.InCanEliminateElementList(element) ? 1 : 0; // 有能被消除的元素数量
+        var cloumnDownDis = 0; // 触发消除时，离当列最下面元素的距离
+        var rowLeftDis = 0; // 触发消除时，离当排最左边元素的距离
+
         for (var up = element.posy - 1; up >= 0; --up)
         {
             var e = this.GetElement(element.posx, up);
@@ -682,6 +695,7 @@ class Scene extends GameModuleComponentBase
                 && e.color == element.color)
             {
                 ++cloumnCount;
+                ++cloumnDownDis;
                 cloumnPlaceHolderCount += this.IsSpecifiedTypeElement(e, SceneElementType.PlaceHolder) ? 1 : 0;
                 cloumnCanEliminateElementCount += this.InCanEliminateElementList(e) ? 1 : 0;
             }
@@ -698,6 +712,7 @@ class Scene extends GameModuleComponentBase
                 && e.color == element.color)
             {
                 ++rowCount;
+                ++rowLeftDis;
                 rowPlaceHolderCount += this.IsSpecifiedTypeElement(e, SceneElementType.PlaceHolder) ? 1 : 0;
                 rowCanEliminateElementCount += this.InCanEliminateElementList(e) ? 1 : 0;
             }
@@ -732,10 +747,15 @@ class Scene extends GameModuleComponentBase
             rowCount = rowCount - rowPlaceHolderCount + 1; //一个方向的placeholder只算一个
         }
 
-        if (cloumnCount >= element.eliminateMinCount && cloumnCanEliminateElementCount > 0  // 竖排相邻数量足够，并且竖排相邻有能被消除的元素
-            || rowCount >= element.eliminateMinCount && rowCanEliminateElementCount > 0) // 横排相邻数量足够，并且横排相邻有能被消除的元素
+        if (cloumnCount >= element.eliminateMinCount && cloumnCanEliminateElementCount > 0)  // 竖排相邻数量足够，并且竖排相邻有能被消除的元素
         {
             needEliminate = true;
+            element.eliminateDelay = cloumnDownDis * Eliminate_Delay_One_Step;
+        }
+        else if (rowCount >= element.eliminateMinCount && rowCanEliminateElementCount > 0)// 横排相邻数量足够，并且横排相邻有能被消除的元素
+        {
+            needEliminate = true;
+            element.eliminateDelay = rowLeftDis * Eliminate_Delay_One_Step;
         }
 
         return needEliminate;
@@ -904,6 +924,114 @@ class Scene extends GameModuleComponentBase
             console.assert(result, "Can not add elements to scene move!");
         }
         return result;
+    }
+
+    private RotatePill(elements: SceneElementBase[]): boolean
+    {
+        var hasRotate = false;
+        if (elements != null 
+            && elements.length == 2
+            && elements[0].ElementType() == SceneElementType.Pill
+            && elements[1].ElementType() == SceneElementType.Pill)
+        {
+            var result = this.RemoveElementGroup(elements);
+            if (DEBUG)
+            {
+                console.assert(result, "Can not query rotate while elements not in scene!");
+            }
+
+            if (elements[0].posx != elements[1].posx)
+            {
+                var leftElement;
+                var rightElement;
+                if (elements[0].posx <  elements[1].posx)
+                {
+                    leftElement = elements[0];
+                    rightElement = elements[1];
+                }
+                else
+                {
+                    leftElement = elements[1];
+                    rightElement = elements[0];
+                }
+
+                if (this.CanMoveTo(leftElement.posx, leftElement.posy)
+                    && this.CanMoveTo(leftElement.posx, leftElement.posy - 1))  // 右边的往上移
+                {
+                    rightElement.posx = leftElement.posx;
+                    rightElement.posy = leftElement.posy - 1;
+                }
+                else if (this.CanMoveTo(leftElement.posx, leftElement.posy)
+                    && this.CanMoveTo(leftElement.posx, leftElement.posy + 1)) // 右边的往上移，整体下移一格
+                {
+                    rightElement.posx = leftElement.posx;
+                    rightElement.posy = leftElement.posy;
+                    leftElement.posx = leftElement.posx;
+                    leftElement.posy = leftElement.posy + 1;
+                }
+                else // 相互调换
+                {
+                    var rx = rightElement.posx;
+                    var ry = rightElement.posy;
+                    rightElement.posx = leftElement.posx;
+                    rightElement.posy = leftElement.posy;
+                    leftElement.posx = rx;
+                    leftElement.posy = ry;
+                }
+            }
+            else if (elements[0].posy != elements[1].posy)
+            {
+                var upElement;
+                var downElement;
+                if (elements[0].posy <  elements[1].posy)
+                {
+                    upElement = elements[0];
+                    downElement = elements[1];
+                }
+                else
+                {
+                    upElement = elements[1];
+                    downElement = elements[0];
+                }
+
+                if (this.CanMoveTo(downElement.posx, downElement.posy)
+                    && this.CanMoveTo(downElement.posx + 1, downElement.posy))  // 下边的往右移，上面的往下移
+                {
+                    upElement.posx = downElement.posx;
+                    upElement.posy = downElement.posy;
+                    downElement.posx = downElement.posx + 1;
+                    downElement.posy = downElement.posy;
+                }
+                else if (this.CanMoveTo(downElement.posx, downElement.posy)
+                    && this.CanMoveTo(downElement.posx - 1, downElement.posy)) // 下边的往右移，上面的往下移, 整体往左移动一格
+                {
+                    upElement.posx = downElement.posx - 1;
+                    upElement.posy = downElement.posy;
+                }
+                else // 相互调换
+                {
+                    var ux = upElement.posx;
+                    var uy = upElement.posy;
+                    upElement.posx = downElement.posx;
+                    upElement.posy = downElement.posy;
+                    downElement.posx = ux;
+                    downElement.posy = uy;
+                }
+            }
+
+            result = this.AddElementGroup(elements);
+            if (DEBUG)
+            {
+                console.assert(result, "Can not add elements to scene after query rotate!");
+            }
+            hasRotate = true;
+        }
+        return hasRotate;
+    }
+
+    public CanMoveTo(posX:number, posY:number): boolean
+    {
+        return this.IsPosLegal(posX, posY) && this.GetElement(posX, posY) == null;
     }
 
     // 是否可以逆时针旋转目标

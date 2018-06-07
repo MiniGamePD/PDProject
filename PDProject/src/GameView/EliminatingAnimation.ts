@@ -1,10 +1,9 @@
 class EliminatingAnimation
 {
-	private static readonly LightningStateTime: number = 300; // 闪烁总时长
-	private static readonly LightningInterval: number = 150; // 闪烁一个周期的时间
-	private static readonly LightningHideRate: number = 0.5; // 闪烁一个周期中，隐藏显示的时间占比
+	private static readonly EliminateEffectStateTime: number = 100; // 消除特效时长
 	private static readonly MoveDownSpeed: number = 300; // 一秒移动多少像素
 
+	private eiminateEffectStateTime = EliminatingAnimation.EliminateEffectStateTime;
 	private matchView: MatchView;
 	private matchScore: MatchScore;
 	private runningTime: number;
@@ -39,16 +38,39 @@ class EliminatingAnimation
 		this.moveDownFinish = false;
 		this.isLightningHide = false;
 		this.eliminateInfo = eliminateInfo;
-		if (this.eliminateInfo.EliminatedElements.length > 0)
+		this.eiminateEffectStateTime = this.GetEliminateDelayMaxTime() + EliminatingAnimation.EliminateEffectStateTime;
+		if (this.eliminateInfo.EliminatedElements.length > 0
+			|| this.eliminateInfo.ShieldBreakElements.length > 0)
 		{
 			this.EnterState(EliminatingAnimState.Lightning);
 			this.PlayEliminateSound();
-			this.PlayElementEliminateAnim();
+			// this.PlayElementEliminateAnim();
 		}
 		else
 		{
 			this.EnterState(EliminatingAnimState.MoveDown);
 		}
+	}
+
+	private GetEliminateDelayMaxTime(): number
+	{
+		var maxTime = -1;
+		for (var i = 0; i < this.eliminateInfo.EliminatedElements.length; ++i)
+		{
+			if (maxTime < this.eliminateInfo.EliminatedElements[i].eliminateDelay)
+			{
+				maxTime = this.eliminateInfo.EliminatedElements[i].eliminateDelay
+			}
+		}
+
+		for (var i= 0; i < this.eliminateInfo.ShieldBreakElements.length; ++i)
+		{
+			if (maxTime < this.eliminateInfo.ShieldBreakElements[i].eliminateDelay)
+			{
+				maxTime = this.eliminateInfo.ShieldBreakElements[i].eliminateDelay
+			}
+		}
+		return maxTime;
 	}
 
 	public Update(deltaTime: number)
@@ -59,7 +81,7 @@ class EliminatingAnimation
 			case EliminatingAnimState.Lightning:
 				{
 					this.UpdateLightning(deltaTime);
-					if (this.runningTime >= EliminatingAnimation.LightningStateTime)
+					if (this.runningTime >= this.eiminateEffectStateTime)
 					{
 						this.DeleteEliminatElements();
 						this.matchView.RefreshTextrue();
@@ -84,14 +106,19 @@ class EliminatingAnimation
 		this.state = toState;
 	}
 
-	private PlayElementEliminateAnim()
-	{
-		for (var i = 0; i < this.eliminateInfo.EliminatedElements.length; ++i)
-		{
-			this.eliminateInfo.EliminatedElements[i].PlayEliminateAnim();
-			this.AddScore(this.eliminateInfo.EliminatedElements[i]);
-		}
-	}
+	// private PlayElementEliminateAnim()
+	// {
+	// 	for (var i = 0; i < this.eliminateInfo.EliminatedElements.length; ++i)
+	// 	{
+	// 		this.eliminateInfo.EliminatedElements[i].PlayEliminateAnim();
+	// 		this.AddScore(this.eliminateInfo.EliminatedElements[i]);
+	// 	}
+
+	// 	for (var i= 0; i < this.eliminateInfo.ShieldBreakElements.length; ++i)
+	// 	{
+	// 		this.eliminateInfo.ShieldBreakElements[i].PlayShieldBreakAnim();
+	// 	}
+	// }
 
 	private AddScore(element: SceneElementBase)
 	{
@@ -106,36 +133,37 @@ class EliminatingAnimation
 
 	private UpdateLightning(deltaTime: number)
 	{
-		var cycle = this.runningTime / EliminatingAnimation.LightningInterval;
-		var rate = cycle - Math.floor(cycle);
-		var needHide = rate < EliminatingAnimation.LightningHideRate;
-		if (needHide != this.isLightningHide)
+		for (var i = 0; i < this.eliminateInfo.EliminatedElements.length; ++i)
 		{
-			this.isLightningHide = needHide;
-			var alpha = needHide ? 0 : 1;
-			// for (var i = 0; i < this.eliminateInfo.EliminatedElements.length; ++i)
-			// {
-			// 	this.eliminateInfo.EliminatedElements[i].renderer.alpha = alpha;
-			// }
-
-			for (var i = 0; i < this.eliminateInfo.EliminatedSuperVirus.length; ++i)
+			var element = this.eliminateInfo.EliminatedElements[i];
+			if (element.eliminateDelay >= 0)
 			{
-				this.eliminateInfo.EliminatedSuperVirus[i].SetRenderAlpha(alpha);
+				element.eliminateDelay -= deltaTime;
+				if (element.eliminateDelay < 0)
+				{
+					element.PlayEliminateAnim();
+					this.AddScore(element);
+					
+					// if (element.eliminateSound != null
+					// 	&& element.eliminateSound != "")
+					// {
+					// 	this.PlaySound(element.eliminateSound);
+					// }
+				}
 			}
+		}
 
-			for (var i= 0; i < this.eliminateInfo.ShieldBreakElements.length; ++i)
+		for (var i= 0; i < this.eliminateInfo.ShieldBreakElements.length; ++i)
+		{
+			var element = this.eliminateInfo.ShieldBreakElements[i];
+			if (element.eliminateDelay >= 0)
 			{
-				this.eliminateInfo.ShieldBreakElements[i].PlayShieldBreakAnim();
-			}
-
-			// var scale = needHide ? 0.5 : 1.5;
-			// for (var i = 0; i < this.eliminateInfo.SpecialEliminatedElement.length; ++i)
-			// {
-			// 	this.eliminateInfo.SpecialEliminatedElement[i].renderer.alpha = 1;
-			// 	this.eliminateInfo.SpecialEliminatedElement[i].renderer.scaleX = scale;
-			// 	this.eliminateInfo.SpecialEliminatedElement[i].renderer.scaleY = scale;
-			// }
-		
+				element.eliminateDelay -= deltaTime;
+				if (element.eliminateDelay < 0)
+				{
+					element.PlayShieldBreakAnim();
+				}
+			} 
 		}
 	}
 
