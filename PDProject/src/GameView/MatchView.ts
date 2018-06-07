@@ -9,6 +9,7 @@ class MatchView extends GameView
     private eliminatingAnim: EliminatingAnimation;
     private bossSkillAnim: BossSkillAnimation;
     private enemyBornWarningItemArray: egret.Bitmap[];
+    private enemyBornWarningCountDown: egret.Bitmap;
 
     private hud:MatchHUD;
 
@@ -344,6 +345,35 @@ class MatchView extends GameView
     {
     }
 
+    private ShowEnemyBornWarningCountDown(countDown:number)
+    {
+        if(countDown > 0)
+        {
+            if(this.enemyBornWarningCountDown == null || this.enemyBornWarningCountDown == undefined)
+            {
+                this.enemyBornWarningCountDown = this.mResModule.CreateBitmapByName("pd_res_json.lianxiao" + countDown);
+                this.enemyBornWarningCountDown.x = 4.3 * Tools.MatchViewElementWidth;
+                this.enemyBornWarningCountDown.y = Tools.MatchViewElementHeight;
+                this.enemyBornWarningCountDown.width = 1.5 * Tools.MatchViewElementWidth;
+                this.enemyBornWarningCountDown.height = 1.5 * Tools.MatchViewElementHeight;
+                this.mBattleGround.addChild(this.enemyBornWarningCountDown);
+            }    
+            else
+            {
+                var tex = this.mResModule.GetRes("pd_res_json.lianxiao" + countDown);
+                this.enemyBornWarningCountDown.texture = tex;
+            }
+        }
+        else
+        {
+            if(this.enemyBornWarningCountDown != null && this.enemyBornWarningCountDown != undefined)
+            {
+                this.mBattleGround.removeChild(this.enemyBornWarningCountDown);
+                this.enemyBornWarningCountDown = null;
+            }
+        }
+    }
+
     private ShowEnemyBornWarningItem(line:number)
     {
         this.enemyBornWarningItemArray = [];
@@ -380,10 +410,9 @@ class MatchView extends GameView
         {
             this.ShowEnemyBornWarningItem(event.enemyLine);
         }
-        else
-        {
-            //倒计时
-        }
+    
+        //倒计时
+        this.ShowEnemyBornWarningCountDown(event.bornCountDown);
     }
 
     private OnSceneElementMoveUpEvent(event:SceneElementMoveUpEvent)
