@@ -23,6 +23,7 @@ abstract class SceneElementBase
     {
         this.owner = owner;
         this.bindedElements = [];
+        this.eliminateDelay = 0;
         if (this.resModule == null)
         {
             this.resModule = <IResModule>GameMain.GetInstance().GetModule(ModuleType.RES);
