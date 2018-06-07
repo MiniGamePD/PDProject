@@ -61,7 +61,7 @@ class LobbyView extends GameView
 
         // this.PlayParticle();
         // this.PlayParticleAnim();
-        this.AddMovePartical();
+        // this.AddMovePartical();
 
         this.PlayLightningAnim(text);
         // this.PlayMoving(text);

@@ -16,7 +16,7 @@ class SceneVirus extends SceneElementBase
     private CreateFramesAnim(): SyncFramesAnim
     {
         var textureSeq = [];
-        var textName = this.GetResPathByColor();
+        var textName = this.GetResPrePath();
         for (var i = 1; i <=5; ++i)
         {
             textureSeq.push(textName + "_Idle" + i.toString());
@@ -31,7 +31,7 @@ class SceneVirus extends SceneElementBase
         this.framesAnim = this.CreateFramesAnim();
     }
 
-    protected GetResPathByColor():string
+    private GetResPrePath()
     {
         var path = "pd_res_json.Virus_";
         switch(this.color)
@@ -53,6 +53,11 @@ class SceneVirus extends SceneElementBase
                 break;
         }
         return path;
+    }
+
+    protected GetResPathByColor():string
+    {
+        return this.GetResPrePath() + "_Idle1";
     }
 
     public PlayEliminateAnim()
