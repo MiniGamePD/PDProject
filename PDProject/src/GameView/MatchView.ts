@@ -8,6 +8,7 @@ class MatchView extends GameView
     private mBattleGroundBlocks: egret.DisplayObjectContainer;
     private eliminatingAnim: EliminatingAnimation;
     private bossSkillAnim: BossSkillAnimation;
+    private enemyBornWarningItemArray: egret.Bitmap[];
 
     private hud:MatchHUD;
 
@@ -31,6 +32,8 @@ class MatchView extends GameView
         GameMain.GetInstance().AddEventListener(SceneElementControlSuccessEvent.EventName, this.ProcessControlSuccess, this);
         GameMain.GetInstance().AddEventListener(ReplayGameEvent.EventName, this.OnReplayGame, this);
         GameMain.GetInstance().AddEventListener(ReviveEvent.EventName, this.OnRevive, this);
+        GameMain.GetInstance().AddEventListener(EnemyBornWarningEvent.EventName, this.OnEnemyBornWarningEvent, this);
+        GameMain.GetInstance().AddEventListener(SceneElementMoveUpEvent.EventName, this.OnSceneElementMoveUpEvent, this);
     }
 
     public ReleaseView(): void 
@@ -43,6 +46,8 @@ class MatchView extends GameView
         GameMain.GetInstance().RemoveEventListener(SceneElementControlSuccessEvent.EventName, this.ProcessControlSuccess, this);
         GameMain.GetInstance().RemoveEventListener(ReplayGameEvent.EventName, this.OnReplayGame, this);
         GameMain.GetInstance().RemoveEventListener(ReviveEvent.EventName, this.OnRevive, this);
+        GameMain.GetInstance().RemoveEventListener(EnemyBornWarningEvent.EventName, this.OnEnemyBornWarningEvent, this);
+        GameMain.GetInstance().RemoveEventListener(SceneElementMoveUpEvent.EventName, this.OnSceneElementMoveUpEvent, this);
     }
 
     private ResetView()
@@ -337,5 +342,66 @@ class MatchView extends GameView
 
     private OnRevive(event:ReviveEvent)
     {
+    }
+
+    private ShowEnemyBornWarningItem(line:number)
+    {
+        this.enemyBornWarningItemArray = [];
+        for(var i = 0; i < line; ++i)
+        {
+            var warningItem = this.mResModule.CreateBitmapByName("pd_res_json.Warning");
+            warningItem.x = 0;
+            warningItem.y = i * Tools.MatchViewElementHeight;
+            warningItem.width = Scene.Columns * Tools.MatchViewElementWidth;
+            warningItem.height = Tools.MatchViewElementHeight;
+            warningItem.alpha = 0.1;
+
+            //让他动起来
+            var param = new PaAlphaLoopParam;
+            param.displayObj = warningItem;
+            param.interval = 800;
+            param.duration = 10 * 60 * 1000;
+            param.startAlpha = 0.1;
+            param.endAlpha = 0.8;
+            param.reverse = true;
+            var event = new PlayProgramAnimationEvent();
+            event.param = param;
+            GameMain.GetInstance().DispatchEvent(event);
+
+            this.enemyBornWarningItemArray.push(warningItem);
+            this.mBattleGround.addChild(warningItem);
+        }
+    }
+
+    private OnEnemyBornWarningEvent(event:EnemyBornWarningEvent)
+    {
+        if(this.enemyBornWarningItemArray == null || this.enemyBornWarningItemArray == undefined ||
+            this.enemyBornWarningItemArray.length <= 0)
+        {
+            this.ShowEnemyBornWarningItem(event.enemyLine);
+        }
+        else
+        {
+            //倒计时
+        }
+    }
+
+    private OnSceneElementMoveUpEvent(event:SceneElementMoveUpEvent)
+    {
+        if(event.isMoveSuccess)
+        {
+            //上移成功，消除一排enemey born warning
+            var index = this.enemyBornWarningItemArray.length - 1;
+            if(DEBUG)
+            {
+                if(index < 0)
+                {
+                    console.error("还在move up， enemy born warning却没有了？？");
+                }
+            }
+
+            var warningItem = this.enemyBornWarningItemArray.splice(index, 1)[0];
+            this.mBattleGround.removeChild(warningItem);
+        }
     }
 }

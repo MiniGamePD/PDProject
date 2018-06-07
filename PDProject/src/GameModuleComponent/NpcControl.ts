@@ -48,7 +48,7 @@ class NpcControl extends GameModuleComponentBase
         this.lastTurnNum = -1;
         this.npcControlState = NpcControlState.None;
         this.remindMoveUpNum = 0;
-        this.remindCreateEnemyTurns = 0;
+        this.remindCreateEnemyTurns = -1;
         GameMain.GetInstance().AddEventListener(SceneElementAccessAnswerEvent.EventName, this.OnReciveSceneData, this);
         GameMain.GetInstance().AddEventListener(SceneElementControlFailedEvent.EventName, this.OnAddElementToSceneFailed, this);
     }
@@ -156,9 +156,13 @@ class NpcControl extends GameModuleComponentBase
             //     }
             // }
 
-            if(this.remindCreateEnemyTurns <= 3)
+            if(this.remindCreateEnemyTurns >= 0 && this.remindCreateEnemyTurns <= 3)
             {
                 //TODO：小怪降临的特效提示
+                var enemyBornWarningEvent = new EnemyBornWarningEvent();
+                enemyBornWarningEvent.enemyLine = 3;
+                enemyBornWarningEvent.bornCountDown = this.remindCreateEnemyTurns;
+                GameMain.GetInstance().DispatchEvent(enemyBornWarningEvent);
             }
 
             if(this.remindCreateEnemyTurns <= 0)
@@ -675,7 +679,8 @@ class NpcControl extends GameModuleComponentBase
         // this.RemoveDeadNpcFromArray(this.skillNpcArray);
 
         //小怪降临时间维护
-        this.remindCreateEnemyTurns--;
+        if(this.remindCreateEnemyTurns >= 0)
+            this.remindCreateEnemyTurns--;
     }
 
     // private RemoveDeadNpcFromArray(array:NpcElement[])
