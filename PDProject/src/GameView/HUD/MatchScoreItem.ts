@@ -1,9 +1,10 @@
 class MatchScoreItem extends egret.DisplayObjectContainer
 {
-	private scoreText: egret.BitmapText;
+	private scoreText: egret.TextField;
 	private stepText: egret.TextField;
 	private curShowScore: number;
 	private targetScore: number;
+	private scoreIcon: egret.Bitmap;
 
 	private lerpTime = 500;
 	private deltaScore = 0;
@@ -21,26 +22,41 @@ class MatchScoreItem extends egret.DisplayObjectContainer
 		this.targetScore = 0;
 
 		var resModule = <IResModule> GameMain.GetInstance().GetModule(ModuleType.RES);
-		this.scoreText = resModule.CreateBitmapText("font_num1_fnt");
-		this.scoreText.x = stageWidth/2 - 100;
-		this.scoreText.y = 70 ;
+		//得分图标
+		this.scoreIcon = resModule.CreateBitmapByName("pd_res_json.DeFen");
+		this.scoreIcon.x = stageWidth/2 - 150;
+		this.scoreIcon.y = 25;
+		GameMain.GetInstance().AdapteDisplayObject(this.scoreIcon);
+		this.addChild(this.scoreIcon);
+
+		//得分数字
+		this.scoreText = new egret.TextField();
+		this.scoreText.x = stageWidth/2 - 90;
+		this.scoreText.y = 30;
 		this.scoreText.width = 200;
 		this.scoreText.height = 100;
+		this.scoreText.textColor = 0xffffff;
+		this.scoreText.fontFamily = "Impact";
+		this.scoreText.size = 40;
 		this.scoreText.textAlign = "left";
-		// GameMain.GetInstance().AdaptTextField(this.scoreText);
+		this.scoreText.text = "0";
+		GameMain.GetInstance().AdaptTextField(this.scoreText);
 		this.addChild(this.scoreText);
 
-		this.stepText = new egret.TextField();
-		this.stepText.x = stageWidth/2 + 150;
-		this.stepText.y = 70;
-		this.stepText.width = 200;
-		this.stepText.height = 100;
-		this.stepText.textColor = 0xff0000;
-		this.stepText.fontFamily = "Impact";
-		this.stepText.size = 40;
-		this.stepText.textAlign = "left";
-		GameMain.GetInstance().AdaptTextField(this.stepText);
-		this.addChild(this.stepText);
+		if(DEBUG)
+		{
+			this.stepText = new egret.TextField();
+			this.stepText.x = stageWidth/2 + 150;
+			this.stepText.y = 70;
+			this.stepText.width = 200;
+			this.stepText.height = 100;
+			this.stepText.textColor = 0xff0000;
+			this.stepText.fontFamily = "Impact";
+			this.stepText.size = 40;
+			this.stepText.textAlign = "left";
+			GameMain.GetInstance().AdaptTextField(this.stepText);
+			this.addChild(this.stepText);
+		}
 
 		this.Reset();
 	}
@@ -70,7 +86,8 @@ class MatchScoreItem extends egret.DisplayObjectContainer
 
 	public SetStep(step: number)
 	{
-		this.stepText.text = "Move:" + step.toString();
+		if(DEBUG)
+			this.stepText.text = "Move:" + step.toString();
 	}
 
 	public Reset()
