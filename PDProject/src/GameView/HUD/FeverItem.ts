@@ -5,6 +5,8 @@ class FeverItem extends egret.DisplayObjectContainer
     private feverEnerge:number;
     private feverControl:FeverControl;
     private feverSpriteTimer:egret.Timer;
+    private feverStar:egret.Bitmap;
+    private feverStarLight:egret.Bitmap;
 
     public constructor(x:number, y:number, width:number, height:number)
     {
@@ -15,26 +17,42 @@ class FeverItem extends egret.DisplayObjectContainer
         this.width = width;
         this.height = height;
 
-        var feverEnergeBgRect = new egret.Rectangle(0, 0, 50, 200);
-        var dx = feverEnergeBgRect.width * 0.05;
-        var dy = feverEnergeBgRect.height * 0.05;
-        var feverEnergeFgRect = feverEnergeBgRect.clone();
-        feverEnergeFgRect.inflate(-dx, -dy);
+        var res:IResModule = <IResModule>GameMain.GetInstance().GetModule(ModuleType.RES);
+        //星星的光
+        this.feverStarLight = res.CreateBitmapByName("pd_res_json.FeverTime_Shinning");
+        this.feverStarLight.x = 177;
+        this.feverStarLight.y = 122;
+        this.feverStarLight.anchorOffsetX = this.feverStarLight.width / 2;
+        this.feverStarLight.anchorOffsetY = this.feverStarLight.height / 2;
+        GameMain.GetInstance().AdapteDisplayObject(this.feverStarLight);
+        this.addChild(this.feverStarLight);
 
-        this.feverProgress = new ProgressBar("pd_res_json.Pill_Bg", feverEnergeBgRect, "pd_res_json.Bottle2", feverEnergeFgRect,
-            ProgressBarDir.Vertical_U2D);
+        //进度条
+        var feverEnergeBgRect = new egret.Rectangle(175,95,276,34);
+        var feverEnergeFgRect = new egret.Rectangle(176,96,274,32);
+    
+        this.feverProgress = new ProgressBar("pd_res_json.FeverTime", feverEnergeBgRect, "pd_res_json.FeverTime_Color", feverEnergeFgRect,
+            ProgressBarDir.Horizontal_L2R);
         this.feverProgress.x = feverEnergeBgRect.width / 2 + 20;
         this.feverProgress.y = feverEnergeBgRect.height / 2 + 20;
         this.feverProgress.anchorOffsetX = feverEnergeBgRect.width / 2;
         this.feverProgress.anchorOffsetY = feverEnergeBgRect.height / 2;
-        this.feverProgress.rotation = 180;
         this.feverProgress.Adapt();
         this.addChild(this.feverProgress);
 
         this.feverEnerge = 0;
-        this.feverProgress.SetProgress(0);
+        this.feverProgress.SetProgress(0.01);
 
-        var res:IResModule = <IResModule>GameMain.GetInstance().GetModule(ModuleType.RES);
+        //星星
+        this.feverStar = res.CreateBitmapByName("pd_res_json.FeverTime_xingxing");
+        this.feverStar.x = 177;
+        this.feverStar.y = 122;
+        this.feverStar.anchorOffsetX = this.feverStar.width / 2;
+        this.feverStar.anchorOffsetY = this.feverStar.height / 2;
+        GameMain.GetInstance().AdapteDisplayObject(this.feverStar);
+        this.addChild(this.feverStar);
+
+        //fever time的美术字
         this.feverSprite = res.CreateBitmapByName("pd_res_json.fever");
         this.feverSprite.anchorOffsetX = this.feverSprite.width / 2;
         this.feverSprite.anchorOffsetY = this.feverSprite.height / 2;
