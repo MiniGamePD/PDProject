@@ -339,4 +339,18 @@ class Tools
 			}
 		}
 	}
+
+	// 播放药丸落地特效（坐标是转换过的位置坐标）
+	public static PlayPillLandEffect(pos: egret.Point)
+	{
+		var playEffectParam = new PaPlayFramesAnimParam()
+		playEffectParam.pos = pos;
+		playEffectParam.textNameSeq = Frame_Anim_Pill_Land_Effect;
+		playEffectParam.interval = 50;
+		playEffectParam.times = 1;
+        playEffectParam.scale = new egret.Point(2,2);
+		var event = new PlayProgramAnimationEvent();
+        event.param = playEffectParam;
+        GameMain.GetInstance().DispatchEvent(event);
+	}
 }

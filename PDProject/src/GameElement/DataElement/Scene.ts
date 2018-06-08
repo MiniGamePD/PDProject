@@ -76,6 +76,19 @@ class Scene extends GameModuleComponentBase
                     operationSuccess = this.GetElementGroupMoveSpace(elementList, event.moveDir) >= event.moveStep;
                     if (operationSuccess)
                         this.MoveElementGroup(elementList, event.moveDir, event.moveStep);
+                    else if (event.moveDir == Direction.Down)
+                    {
+                        var pos = new egret.Point(0, 0);
+                        var count = 0;
+                        for (count = 0; count < elementList.length; ++count)
+                        {
+                            pos.x += Tools.ElementPosToGameStagePosX(elementList[count].posx);
+                            pos.y += Tools.ElementPosToGameStagePosY(elementList[count].posy);
+                        }
+                        pos.x /= count;
+                        pos.y /= count;
+                        Tools.PlayPillLandEffect(pos);
+                    }
                     break;
                 }
             case SceneElementControlType.Rotation:
