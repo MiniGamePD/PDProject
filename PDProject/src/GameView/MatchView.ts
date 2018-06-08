@@ -367,6 +367,18 @@ class MatchView extends GameView
                 this.enemyBornWarningCountDown.width = 1.5 * Tools.MatchViewElementWidth;
                 this.enemyBornWarningCountDown.height = 1.5 * Tools.MatchViewElementHeight;
                 this.mBattleGroundCoverEff.addChild(this.enemyBornWarningCountDown);
+
+                //让他动起来
+                var param = new PaAlphaLoopParam;
+                param.displayObj = this.enemyBornWarningCountDown;
+                param.interval = 800;
+                param.duration = 10 * 60 * 1000;
+                param.startAlpha = 0.1;
+                param.endAlpha = 0.8;
+                param.reverse = true;
+                var event = new PlayProgramAnimationEvent();
+                event.param = param;
+                GameMain.GetInstance().DispatchEvent(event);
             }    
             else
             {
