@@ -129,6 +129,12 @@ class EliminatingAnimation
 		var event = new PlayProgramAnimationEvent();
         event.param = param;
         GameMain.GetInstance().DispatchEvent(event);
+
+		var feverParam = new PaAddFeverPowerEffectParam;
+        feverParam.pos = new egret.Point(Tools.ElementPosToGameStagePosX(element.posx), Tools.ElementPosToGameStagePosY(element.posy));
+        var feverEvent = new PlayProgramAnimationEvent();
+        feverEvent.param = feverParam;
+        GameMain.GetInstance().DispatchEvent(feverEvent);
 	}
 
 	private UpdateLightning(deltaTime: number)

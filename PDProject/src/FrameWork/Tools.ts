@@ -6,6 +6,7 @@ class Tools
 	public static MatchViewElementWidth: number = 0;
 	public static MatchBattleGroundPosX: number = 0;
 	public static MatchBattleGroundPosY: number = 0;
+	public static FeverPowerTargetPos: egret.Point = new egret.Point(150, 150); // Fever能力目标点
 
 	public static GetMatchViewRenderPosX(posx: number): number
     {

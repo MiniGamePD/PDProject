@@ -19,5 +19,6 @@ enum ProgramAnimationType
 	PlayFramesAnim, // 播放帧动画
 	AlphaLoop, // Alpha滚动
 	PlayCrossEliminaterEffect, //十字消动画
+	AddFeverPowerEffect, //获取Fever能量的飞行粒子特效
 	Max
 }

@@ -82,6 +82,9 @@ class ProgrameAnimationModule extends ModuleBase implements IProgramAnimationMod
                 case ProgramAnimationType.PlayCrossEliminaterEffect:
                     animation = new PaPlayCrossEliminaterEffect();
                     break;
+                case ProgramAnimationType.AddFeverPowerEffect:
+                    animation = new PaAddFeverPowerEffect();
+                    break;
             }
         }
 
