@@ -9,6 +9,7 @@ enum ProgramAnimationType
 	PositionLerp, //位置插值
 	Lightning, //闪烁
 	Scaling, //缩放
+	Rotation, //旋转
 	DynamicMoving, //动态移动
 	Moving,   //移动
 	PlayPartical, //播放粒子效果

@@ -55,6 +55,9 @@ class ProgrameAnimationModule extends ModuleBase implements IProgramAnimationMod
                 case ProgramAnimationType.Scaling:
                     animation = new PaScaling();
                     break;
+                case ProgramAnimationType.Rotation:
+                    animation = new PaRotation();
+                    break;
                 case ProgramAnimationType.Moving:
                     animation = new PaMoving();
                     break;

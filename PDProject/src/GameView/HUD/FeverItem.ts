@@ -7,6 +7,7 @@ class FeverItem extends egret.DisplayObjectContainer
     private feverSpriteTimer:egret.Timer;
     private feverStar:egret.Bitmap;
     private feverStarLight:egret.Bitmap;
+    private feverStarLightTimer:egret.Timer;
 
     public constructor(x:number, y:number, width:number, height:number)
     {
@@ -24,8 +25,17 @@ class FeverItem extends egret.DisplayObjectContainer
         this.feverStarLight.y = 122;
         this.feverStarLight.anchorOffsetX = this.feverStarLight.width / 2;
         this.feverStarLight.anchorOffsetY = this.feverStarLight.height / 2;
+        this.feverStarLight.rotation = 0;
         GameMain.GetInstance().AdapteDisplayObject(this.feverStarLight);
-        this.addChild(this.feverStarLight);
+
+        var anim = new PaRotationParam();
+        anim.displayObj = this.feverStarLight;
+        anim.targetRot = 360;
+        anim.duration = 6000;
+        anim.loop = true;
+        var event = new PlayProgramAnimationEvent();
+        event.param = anim;
+        GameMain.GetInstance().DispatchEvent(event);
 
         //进度条
         var feverEnergeBgRect = new egret.Rectangle(175,95,276,34);
@@ -63,10 +73,12 @@ class FeverItem extends egret.DisplayObjectContainer
 
     public Init()
     {
+        GameMain.GetInstance().AddEventListener(FeverEvent.EventName, this.OnFeverEvent, this);
     }
 
     public Release()
     {
+        GameMain.GetInstance().RemoveEventListener(FeverEvent.EventName, this.OnFeverEvent, this);
         this.feverControl = null;
     }
 
@@ -111,5 +123,49 @@ class FeverItem extends egret.DisplayObjectContainer
                 this.feverProgress.SetProgress(this.feverEnerge / 100);                   
             }
         }
+    }
+
+    private OnFeverEvent(feverEvent:FeverEvent)
+    {
+        if(feverEvent.feverBegin)
+        {
+            //显示小星星的光
+            var starIndex = this.getChildIndex(this.feverStar);
+            this.addChildAt(this.feverStarLight, starIndex - 1);
+            var lightParam = new PaAlphaLoopParam;
+            lightParam.displayObj = this.feverStarLight;
+            lightParam.interval = 500;
+            lightParam.duration = 500
+            lightParam.startAlpha = 0.1;
+            lightParam.endAlpha = 1;
+            lightParam.reverse = false;
+            var lightEvent = new PlayProgramAnimationEvent();
+            lightEvent.param = lightParam;
+            GameMain.GetInstance().DispatchEvent(lightEvent);
+        }
+        else
+        {
+            //隐藏小星星的光
+             var lightParam = new PaAlphaLoopParam;
+            lightParam.displayObj = this.feverStarLight;
+            lightParam.interval = 500;
+            lightParam.duration = 500
+            lightParam.startAlpha = 1;
+            lightParam.endAlpha = 0.1;
+            lightParam.reverse = false;
+            var lightEvent = new PlayProgramAnimationEvent();
+            lightEvent.param = lightParam;
+            GameMain.GetInstance().DispatchEvent(lightEvent);
+
+            this.feverStarLightTimer = new egret.Timer(500, 1);
+            this.feverStarLightTimer.addEventListener(egret.TimerEvent.TIMER_COMPLETE, this.HideFeverStarLight, this);
+            this.feverStarLightTimer.start();
+        }
+    }
+
+    private HideFeverStarLight()
+    {
+        this.feverStarLightTimer = null;
+        this.removeChild(this.feverStarLight);
     }
 }

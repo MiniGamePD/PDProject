@@ -27,7 +27,7 @@ class FeverControl extends GameModuleComponentBase
             return;
 
         this.feverEnerge += this.basicFeverStep * event.eliminateInfo.EliminateRound;
-        if(this.feverEnerge > 100)
+        if(this.feverEnerge >= 100)
         {
             this.feverEnerge = 100;
             
