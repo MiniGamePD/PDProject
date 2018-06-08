@@ -400,7 +400,10 @@ class NpcControl extends GameModuleComponentBase
             if(this.npcControlTimer >= this.addNpcToSceneInterval)
             {
                 this.npcControlState = NpcControlState.None;
-                this.CreateEnemyLine(3, 0, Scene.Rows-this.remindInitCreateEnemyLines);
+
+                var createNum:number = Scene.Columns - Math.floor(Math.random() * 3);
+                this.CreateRandomVirus(createNum, 0, 0, 8);
+                
                 this.remindInitCreateEnemyLines--;
                 if(this.remindInitCreateEnemyLines <= 0)
                 {
