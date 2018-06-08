@@ -343,6 +343,11 @@ abstract class SceneElementBase
         }
     }
 
+    public SetFeverState(isFever: boolean)
+    {
+
+    }
+
     public Release()
     {
         if (this.renderer != null

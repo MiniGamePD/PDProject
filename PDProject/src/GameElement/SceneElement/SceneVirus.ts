@@ -1,5 +1,6 @@
 class SceneVirus extends SceneElementBase
 {
+    private animType: SceneVirusAnimType;
     public constructor(owner:GameplayElementBase)
     {
         super(owner);
@@ -11,22 +12,26 @@ class SceneVirus extends SceneElementBase
         this.elementType = SceneElementType.Virus;
         this.RefreshTexture();
         this.eliminateSound = "VirusEliminate_mp3";
+        this.animType = SceneVirusAnimType.Idle;
     }
 
     private GetAnimDelay(): number
     {
         var delay = 0;
-        switch(this.color)
+        if (this.animType == SceneVirusAnimType.Idle)
         {
-            case GameElementColor.red:
-                delay = 0;
-                break;
-            case GameElementColor.blue:
-                delay = 250;
-                break;
-            case GameElementColor.yellow:
-                delay = 500;
-                break;
+            switch(this.color)
+            {
+                case GameElementColor.red:
+                    delay = 0;
+                    break;
+                case GameElementColor.blue:
+                    delay = 250;
+                    break;
+                case GameElementColor.yellow:
+                    delay = 500;
+                    break;
+            }
         }
         return delay;
     }
@@ -47,11 +52,65 @@ class SceneVirus extends SceneElementBase
         }
         return [];
     }
+    
+
+    private GetFramesAnimFever()
+    {
+        if (this.color == GameElementColor.red)
+        {
+            return Frame_Anim_Virus_Red_Fever;
+        }
+        else if (this.color == GameElementColor.blue)
+        {
+            return Frame_Anim_Virus_Blue_Fever;
+        }
+        else if (this.color == GameElementColor.yellow)
+        {
+            return Frame_Anim_Virus_Yellow_Fever;
+        }
+        return [];
+    }
+
+    private GetCurAnimSeq()
+    {
+        if (this.animType == SceneVirusAnimType.Idle)
+        {
+            return this.GetFramesAnimIdle();
+        }
+        else if (this.animType == SceneVirusAnimType.Fever)
+        {
+            return this.GetFramesAnimFever();
+        }
+        return [];
+    }
+
+    public SetFeverState(isFever: boolean)
+    {
+        var lastAnimType = this.animType;
+        this.animType = isFever ? SceneVirusAnimType.Fever : SceneVirusAnimType.Idle;
+        if (lastAnimType != this.animType)
+        {
+            this.RefreshTexture();
+        }
+    }
+
+    private GetAnimIntervel()
+    {
+        if (this.animType == SceneVirusAnimType.Idle)
+        {
+            return 100;
+        }
+        else if (this.animType == SceneVirusAnimType.Fever)
+        {
+            return 150;
+        }
+        return 0;
+    }
 
     private CreateFramesAnim(): SyncFramesAnim
     {
         var framesAnim = new SyncFramesAnim();
-        framesAnim.Init(<egret.Bitmap>this.renderer, this.GetFramesAnimIdle(), 100, this.GetAnimDelay());
+        framesAnim.Init(<egret.Bitmap>this.renderer, this.GetCurAnimSeq(), this.GetAnimIntervel(), this.GetAnimDelay());
         return framesAnim;
     }
 
@@ -94,4 +153,10 @@ class SceneVirus extends SceneElementBase
         this.PlayBoomEffect();
         this.PlayScaling();
     }
+}
+
+enum SceneVirusAnimType
+{
+    Idle,
+    Fever,
 }

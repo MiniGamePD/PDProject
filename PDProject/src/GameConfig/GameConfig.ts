@@ -50,6 +50,9 @@ const Frame_Anim_Virus_Blue_Idle = ["Virus_Blue_Idle1", "Virus_Blue_Idle1", "Vir
                                              "Virus_Blue_Idle6", "Virus_Blue_Idle6", "Virus_Blue_Idle9", "Virus_Blue_Idle10"];
 const Frame_Anim_Virus_Yellow_Idle = ["Virus_Yellow_Idle1", "Virus_Yellow_Idle1", "Virus_Yellow_Idle1", "Virus_Yellow_Idle4", "Virus_Yellow_Idle5", "Virus_Yellow_Idle6",
                                              "Virus_Yellow_Idle6", "Virus_Yellow_Idle6", "Virus_Yellow_Idle9", "Virus_Yellow_Idle10"];
+const Frame_Anim_Virus_Red_Fever = ["Virus_Red_Fever1", "Virus_Red_Fever2", "Virus_Red_Fever3", "Virus_Red_Fever4"];
+const Frame_Anim_Virus_Blue_Fever = ["Virus_Blue_Fever1", "Virus_Blue_Fever2", "Virus_Blue_Fever3", "Virus_Blue_Fever4"];
+const Frame_Anim_Virus_Yellow_Fever = ["Virus_Yellow_Fever1", "Virus_Yellow_Fever2", "Virus_Yellow_Fever3", "Virus_Yellow_Fever4"];
 
 const Frame_Anim_Pill_Land_Effect = ["LuoDi_00000", "LuoDi_00001", "LuoDi_00002", "LuoDi_00003", 
                                 "LuoDi_00004", "LuoDi_00005", "LuoDi_00006", "LuoDi_00007", "LuoDi_00008", "LuoDi_00009", "LuoDi_00010"];

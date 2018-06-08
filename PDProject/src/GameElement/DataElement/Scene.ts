@@ -48,6 +48,7 @@ class Scene extends GameModuleComponentBase
         GameMain.GetInstance().AddEventListener(SpecialEliminateRequestEvent.EventName, this.ProcessSpecialEliminateRequest, this);
         GameMain.GetInstance().AddEventListener(SceneElementAccessEvent.EventName, this.OnAccessSceneElements, this);
         GameMain.GetInstance().AddEventListener(SuperVirusEliminateEvent.EventName, this.OnSuperVirusEliminateEvent, this);
+        GameMain.GetInstance().AddEventListener(FeverEvent.EventName, this.OnFeverEvent, this);
     }
 
     public Release() 
@@ -56,6 +57,7 @@ class Scene extends GameModuleComponentBase
         GameMain.GetInstance().RemoveEventListener(SpecialEliminateRequestEvent.EventName, this.ProcessSpecialEliminateRequest, this);
         GameMain.GetInstance().RemoveEventListener(SceneElementAccessEvent.EventName, this.OnAccessSceneElements, this);
         GameMain.GetInstance().RemoveEventListener(SuperVirusEliminateEvent.EventName, this.OnSuperVirusEliminateEvent, this);
+        GameMain.GetInstance().RemoveEventListener(FeverEvent.EventName, this.OnFeverEvent, this);
     }
 
     private ProcessControlCmd(event: SceneElementControlEvent) 
@@ -215,6 +217,23 @@ class Scene extends GameModuleComponentBase
                 if (element != null)
                 {
                     element.Update(deltaTime);
+                }
+            }
+        }
+    }
+
+    private OnFeverEvent(event: FeverEvent)
+    {
+        var isFever = event.feverBegin;
+        for (var iColumn = 0; iColumn < this.sceneData.length; ++iColumn)
+        {
+            var cloumnList = this.sceneData[iColumn];
+            for (var iRow = 0; iRow < cloumnList.length; ++iRow)
+            {
+                var element = cloumnList[iRow];
+                if (element != null)
+                {
+                    element.SetFeverState(isFever);
                 }
             }
         }
