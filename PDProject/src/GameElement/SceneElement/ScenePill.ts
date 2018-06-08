@@ -50,7 +50,7 @@ class ScenePill extends SceneElementBase
                     break;
                 }
         }
-        this.renderer.rotation = textureRotate;
+        // this.renderer.rotation = textureRotate;
         this.renderer.scaleX = scaleX;
     }
 
