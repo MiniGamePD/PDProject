@@ -14,9 +14,13 @@ class PaAddFeverPowerEffectParam extends ProgramAnimationParamBase
 class PaAddFeverPowerEffect extends ProgramAnimationBase<PaAddFeverPowerEffectParam>
 {
     private bitMap: egret.Bitmap;
-	private duration: number = 1000;
+	private duration: number; // = 1000;
+	private speed: number = 500;
 	protected OnInit()
 	{
+		this.duration = (Tools.PointDistance(this.param.pos.x, this.param.pos.y,
+									 Tools.FeverPowerTargetPos.x, Tools.FeverPowerTargetPos.y) / this.speed) * 1000;
+		
 		this.bitMap = this.resModule.CreateBitmapByName("jineng");
 		GameMain.GetInstance().GetAdaptedStageContainer().addChild(this.bitMap);
 		this.bitMap.x = this.param.pos.x;
@@ -54,9 +58,9 @@ class PaAddFeverPowerEffect extends ProgramAnimationBase<PaAddFeverPowerEffectPa
 		var particalParam = new PaMoveParticalParam;
         particalParam.textureName = "boss_jineng";
         particalParam.jsonName = "boss_jineng";
-        particalParam.duration = 2000;
+        particalParam.duration = 2500;
         particalParam.flyDuration = this.duration;
-        particalParam.stayDuration = 0;
+        particalParam.stayDuration = 500;
         particalParam.stratPosX = startX;
         particalParam.stratPosY = startY;
         particalParam.endPosX = Tools.FeverPowerTargetPos.x;
@@ -80,6 +84,15 @@ class PaAddFeverPowerEffect extends ProgramAnimationBase<PaAddFeverPowerEffectPa
         var event = new PlayProgramAnimationEvent();
         event.param = param;
         GameMain.GetInstance().DispatchEvent(event);
+
+		var scaleParam = new PaScalingParam;
+        scaleParam.displayObj = this.bitMap;;
+        scaleParam.duration = 400;
+        scaleParam.targetScaleX = 0.7;
+        scaleParam.targetScaleY = 0.7;
+        var event = new PlayProgramAnimationEvent();
+        event.param = scaleParam;
+        GameMain.GetInstance().DispatchEvent(event);
 	}
 
 	private PlayAlphaFadeOut()
@@ -95,6 +108,16 @@ class PaAddFeverPowerEffect extends ProgramAnimationBase<PaAddFeverPowerEffectPa
         param.reverse = true;
         var event = new PlayProgramAnimationEvent();
         event.param = param;
+        GameMain.GetInstance().DispatchEvent(event);
+
+		var scaleParam = new PaScalingParam;
+        scaleParam.displayObj = this.bitMap;;
+        scaleParam.duration = 100;
+        scaleParam.targetScaleX = 0;
+        scaleParam.targetScaleY = 0;
+		scaleParam.delayTime = this.duration - 100;
+        var event = new PlayProgramAnimationEvent();
+        event.param = scaleParam;
         GameMain.GetInstance().DispatchEvent(event);
 	}
 

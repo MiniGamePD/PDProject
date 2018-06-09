@@ -66,7 +66,7 @@ class LobbyView extends GameView
         this.PlayLightningAnim(text);
         // this.PlayMoving(text);
         this.PlayDBAnimation();
-        this.PlayDynamicMoving();
+        // this.PlayDynamicMoving();
 
         var angle = Tools.GetRotateAngle(0, 0, 1, 1);
         egret.log("angle = " + angle);
