@@ -24,14 +24,14 @@ class MatchScoreItem extends egret.DisplayObjectContainer
 		var resModule = <IResModule> GameMain.GetInstance().GetModule(ModuleType.RES);
 		//得分图标
 		this.scoreIcon = resModule.CreateBitmapByName("pd_res_json.DeFen");
-		this.scoreIcon.x = stageWidth/2 - 150;
+		this.scoreIcon.x = stageWidth/2 - 70;
 		this.scoreIcon.y = 25;
 		GameMain.GetInstance().AdapteDisplayObject(this.scoreIcon);
 		this.addChild(this.scoreIcon);
 
 		//得分数字
 		this.scoreText = new egret.TextField();
-		this.scoreText.x = stageWidth/2 - 90;
+		this.scoreText.x = stageWidth/2 -10;
 		this.scoreText.y = 30;
 		this.scoreText.width = 200;
 		this.scoreText.height = 100;
