@@ -10,6 +10,7 @@ class Pill extends ControlableElement
         super();         
         this.rotAngle = 0;             
         this.pill1 = new ScenePill(this);
+        this.pill1.CreatePillLink();
         this.pill2 = new ScenePill(this);
         this.pill1.SetPillType(PillElementType.left);
         this.pill1.RefreshTexture();
@@ -21,13 +22,35 @@ class Pill extends ControlableElement
         this.InitPos(Scene.Columns/2-1,0);
     }
 
+    private AdjustRotateAngle():number
+    {
+        if(this.pill1.posx == this.pill2.posx)
+        {
+            if(this.pill1.posy > this.pill2.posy)
+            {
+                return 90;
+            }
+            else 
+            {
+                return 270;
+            }
+        }
+        else
+        {
+            if(this.pill1.posx > this.pill2.posx)
+            {
+                return 180;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+    }
+
     public OnRotateACW()
     {
-        this.rotAngle += 90;
-        if (this.rotAngle == 360)
-        {
-            this.rotAngle = 0;
-        }
+        this.rotAngle = this.AdjustRotateAngle();
 
         if (this.rotAngle == 0)
         {

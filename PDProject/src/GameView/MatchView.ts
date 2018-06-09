@@ -157,9 +157,16 @@ class MatchView extends GameView
                         //renderer == null，应该是一个placeholder
                         if(element.renderer != null)
                         {
+                            //bg accessory
+                            if(element.accessoryBg != undefined)
+                                this.mBattleGround.addChild(element.accessoryBg);
+
+                            //本体
                             element.Adapte(Tools.MatchViewElementWidth * element.BlockWidth(), 
                                          Tools.MatchViewElementHeight * element.BlockHeight());
                             this.mBattleGround.addChild(element.renderer);
+
+                            //accessory
                             if(element.accessory != undefined)
                                 this.mBattleGround.addChild(element.accessory);                        
                         }
@@ -180,6 +187,11 @@ class MatchView extends GameView
                             {
                                 element.accessory.x = x;
                                 element.accessory.y = y;
+                            }
+                            if(element.accessoryBg != undefined)
+                            {
+                                element.accessoryBg.x = x;
+                                element.accessoryBg.y = y;
                             }
                         }
                         element.dirty = false;

@@ -15,6 +15,7 @@ abstract class SceneElementBase
     public eliminateSound: string;
     protected elementType: SceneElementType;
     public accessory: egret.DisplayObjectContainer; //用来放一些除本体外的东西，比如护盾，血条
+    public accessoryBg: egret.DisplayObjectContainer; //背景的accessory
     private bubbleShield: egret.Bitmap;
     protected framesAnim: SyncFramesAnim;
     public eliminateDelay: number;
@@ -92,6 +93,11 @@ abstract class SceneElementBase
             this.accessory.y = y;
         }
 
+        if(this.accessoryBg != null && this.accessoryBg != undefined)
+        {
+            this.accessoryBg.x = x;
+            this.accessoryBg.y = y;
+        }
     }
 
     public Update(deltaTime: number)
@@ -365,6 +371,14 @@ abstract class SceneElementBase
             this.accessory.parent.removeChild(this.accessory);
         }
         this.accessory = null;
+
+        if (this.accessoryBg != undefined
+            && this.accessoryBg != null
+            && this.accessoryBg.parent != null)
+        {
+            this.accessoryBg.parent.removeChild(this.accessoryBg);
+        }
+        this.accessoryBg = null;
     }
 }
 
