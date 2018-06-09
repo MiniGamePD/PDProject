@@ -1058,6 +1058,15 @@ class Scene extends GameModuleComponentBase
                 console.assert(result, "Can not add elements to scene after query rotate!");
             }
             hasRotate = true;
+
+            if(hasRotate)
+            {
+                //通知逻辑层
+                var scenePill = <ScenePill>elements[0];
+                scenePill.OnRotated();
+                scenePill = <ScenePill>elements[1];
+                scenePill.OnRotated();
+            }
         }
         return hasRotate;
     }

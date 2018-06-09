@@ -177,6 +177,12 @@ class ScenePill extends SceneElementBase
         super.UnbindAllElement();
         this.SetPillType(PillElementType.Single);
     }    
+
+    public OnRotated()
+    {
+        var ownerPill:Pill = <Pill>this.owner;
+        ownerPill.OnRotateACW();
+    }
 }
 
 enum PillElementType
