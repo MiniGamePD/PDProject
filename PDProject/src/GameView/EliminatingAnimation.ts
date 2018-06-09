@@ -148,7 +148,12 @@ class EliminatingAnimation
 				if (element.eliminateDelay < 0)
 				{
 					element.PlayEliminateAnim();
-					this.AddScore(element);
+
+					// 正常消除才加分
+					if (this.eliminateInfo.methodType == EliminateMethodType.Normal)
+					{
+						this.AddScore(element);
+					}
 					
 					// if (element.eliminateSound != null
 					// 	&& element.eliminateSound != "")

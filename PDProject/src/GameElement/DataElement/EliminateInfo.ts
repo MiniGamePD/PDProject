@@ -13,6 +13,9 @@ class EliminateInfo {
 	// 是否有消除数据
 	public HasInfo: boolean;
 
+	//消除方案
+	public methodType: EliminateMethodType; 
+
 	// 连续消除次数（从1开始）	
 	public EliminateRound: number;
 
@@ -37,6 +40,7 @@ class EliminateInfo {
 	// 重置
 	public Reset() {
 		this.HasInfo = false;
+		this.methodType = EliminateMethodType.Normal;
 		this.EliminateRound = 1;
 		this.CalculatedEliminateElement = [];
 		this.EliminatedElements = [];
