@@ -463,16 +463,19 @@ class MatchView extends GameView
     private CreateFeverRibbonsParticleArray()
     {
         this.feverRibbonsArray = [];
-        this.CreateFeverRibbonsParticle("Caidai_Blue");
-        this.CreateFeverRibbonsParticle("Caidai__zise");
-        this.CreateFeverRibbonsParticle("Caidai_Red");
-        this.CreateFeverRibbonsParticle("Caidai_Green");
-        this.CreateFeverRibbonsParticle("Caidai_Yellow");
+        this.feverRibbonsArray.push(this.CreateFeverParticle("Caidai_Blue","Caidai"));
+        this.feverRibbonsArray.push(this.CreateFeverParticle("Caidai__zise","Caidai"));
+        this.feverRibbonsArray.push(this.CreateFeverParticle("Caidai_Red","Caidai"));
+        this.feverRibbonsArray.push(this.CreateFeverParticle("Caidai_Green","Caidai"));
+        this.feverRibbonsArray.push(this.CreateFeverParticle("Caidai_Yellow","Caidai"));
+        this.feverRibbonsArray.push(this.CreateFeverParticle("caihong_shinning1","Caidai"));
+        this.feverRibbonsArray.push(this.CreateFeverParticle("caihong_shinning2","Caidai"));
+        this.feverRibbonsArray.push(this.CreateFeverParticle("caihong_shinning3","Caidai"));
     }
 
-    private CreateFeverRibbonsParticle(texName:string)
+    private CreateFeverParticle(texName:string, jsonName:string):particle.GravityParticleSystem
     {
-        var particleSys = this.mResModule.CreateParticle(texName, "Caidai");
+        var particleSys = this.mResModule.CreateParticle(texName, jsonName);
 		particleSys.x = GameMain.GetInstance().GetStageWidth() / 2;
         particleSys.y = 0;
 
@@ -495,7 +498,7 @@ class MatchView extends GameView
             this.mAdaptedStage.addChildAt(particleSys, 0);
 		}
 		
-		this.feverRibbonsArray.push(particleSys);
+		return particleSys;
     }
 
     private OnFeverEvent(feverEvent:FeverEvent)
