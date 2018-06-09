@@ -105,12 +105,15 @@ class Pill extends ControlableElement
     public GetPreViewContainer():egret.DisplayObjectContainer
     {
         var previewContainer = new egret.DisplayObjectContainer();
+        var link = this.pill1.CreateLinkPreview();
         var preview1:egret.Bitmap = this.pill1.GetPreView();
         preview1.x = 0;
         preview1.y = 0;
         var preview2:egret.Bitmap = this.pill2.GetPreView();
         preview2.x = Tools.MatchViewElementWidth;
         preview2.y = 0;
+
+        previewContainer.addChild(link);
         previewContainer.addChild(preview1);
         previewContainer.addChild(preview2);
         return previewContainer;

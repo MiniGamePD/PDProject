@@ -33,6 +33,19 @@ class ScenePill extends SceneElementBase
         }
     }
 
+    public CreateLinkPreview():egret.Bitmap
+    {
+        var link = this.resModule.CreateBitmapByName("pd_res_json.Pill_Middle");
+        link.width = Tools.MatchViewElementWidth;
+        link.height = Tools.MatchViewElementHeight;
+        link.anchorOffsetX = this.mLink.width / 2;
+        link.anchorOffsetY = this.mLink.height / 2;
+        link.x = link.width / 2;
+        link.y = 0;
+        link.rotation = 90;
+        return link;
+    }
+
     public SetPillType(pillType: PillElementType)
     {
         this.mPillType = pillType;
