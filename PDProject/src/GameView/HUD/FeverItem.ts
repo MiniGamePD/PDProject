@@ -8,6 +8,7 @@ class FeverItem extends egret.DisplayObjectContainer
     private feverStar:egret.Bitmap;
     private feverStarLight:egret.Bitmap;
     private feverStarLightTimer:egret.Timer;
+    private feverEnergeSpeed:number;
 
     public constructor(x:number, y:number, width:number, height:number)
     {
@@ -52,6 +53,7 @@ class FeverItem extends egret.DisplayObjectContainer
 
         this.feverEnerge = 0;
         this.feverProgress.SetProgress(0.01);
+        this.feverEnergeSpeed = 1;
 
         //星星
         this.feverStar = res.CreateBitmapByName("pd_res_json.FeverTime_xingxing");
@@ -119,7 +121,11 @@ class FeverItem extends egret.DisplayObjectContainer
         {
             if(this.feverEnerge != this.feverControl.GetFeverEnerge())
             {
-                this.feverEnerge = this.feverControl.GetFeverEnerge();
+                var dir = this.feverControl.GetFeverEnerge() - this.feverEnerge;
+                this.feverEnerge += dir * this.feverEnergeSpeed * delta / 1000;
+                if( (dir > 0 && this.feverEnerge > this.feverControl.GetFeverEnerge()) ||
+                    (dir < 0 && this.feverEnerge < this.feverControl.GetFeverEnerge()) )
+                    this.feverEnerge = this.feverControl.GetFeverEnerge();
                 this.feverProgress.SetProgress(this.feverEnerge / 100);                   
             }
         }
