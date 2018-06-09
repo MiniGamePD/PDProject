@@ -14,7 +14,7 @@ class PaAddFeverPowerEffectParam extends ProgramAnimationParamBase
 class PaAddFeverPowerEffect extends ProgramAnimationBase<PaAddFeverPowerEffectParam>
 {
     private bitMap: egret.Bitmap;
-	private duration: number = 900;
+	private duration: number = 1000;
 	protected OnInit()
 	{
 		this.bitMap = this.resModule.CreateBitmapByName("jineng");
@@ -27,6 +27,8 @@ class PaAddFeverPowerEffect extends ProgramAnimationBase<PaAddFeverPowerEffectPa
 		GameMain.GetInstance().AdapteDisplayObjectScale(this.bitMap);
 
 		this.FlyMove();
+		this.PlayAlphaFadeIn();
+		this.PlayAlphaFadeOut();
 		this.PlayPartical();
 	}
 
@@ -64,6 +66,38 @@ class PaAddFeverPowerEffect extends ProgramAnimationBase<PaAddFeverPowerEffectPa
         event.param = particalParam;
         GameMain.GetInstance().DispatchEvent(event);
 	}
+
+	private PlayAlphaFadeIn()
+	{
+		var param = new PaAlphaLoopParam;
+        param.displayObj = this.bitMap;;
+        param.interval = 100;
+        param.duration = 100;
+        param.offestTime = 0;
+        param.startAlpha = 0;
+        param.endAlpha = 1;
+        param.reverse = true;
+        var event = new PlayProgramAnimationEvent();
+        event.param = param;
+        GameMain.GetInstance().DispatchEvent(event);
+	}
+
+	private PlayAlphaFadeOut()
+	{
+		var param = new PaAlphaLoopParam;
+        param.displayObj = this.bitMap;;
+        param.interval = 100;
+        param.duration = 100;
+        param.offestTime = 0;
+        param.startAlpha = 1;
+        param.endAlpha = 0.3;
+		param.delayTime = this.duration - 100;
+        param.reverse = true;
+        var event = new PlayProgramAnimationEvent();
+        event.param = param;
+        GameMain.GetInstance().DispatchEvent(event);
+	}
+
 
 	protected OnUpdate(deltaTime: number)
 	{

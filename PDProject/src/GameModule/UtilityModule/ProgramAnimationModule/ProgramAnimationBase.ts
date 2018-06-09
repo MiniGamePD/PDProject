@@ -5,6 +5,7 @@ abstract class ProgramAnimationBase<T extends ProgramAnimationParamBase> impleme
 	public animType: ProgramAnimationType;
 	public runningTime = 0;
 	public param: T;
+	public delayReduceTime = 0;
 
 	// 派生类的初始化处理
 	protected abstract OnInit();
@@ -26,7 +27,15 @@ abstract class ProgramAnimationBase<T extends ProgramAnimationParamBase> impleme
 		this.param = <T>param;
 		if (this.param != null)
 		{
-			this.OnInit();
+			if (this.param.delayTime == undefined
+				|| this.param.delayTime <= 0)
+			{
+				this.OnInit();
+			}
+			else
+			{
+				this.delayReduceTime = this.param.delayTime != undefined ? this.param.delayTime : 0;
+			}
 			return true;
 		}
 		else
@@ -37,8 +46,19 @@ abstract class ProgramAnimationBase<T extends ProgramAnimationParamBase> impleme
 
 	public Update(deltaTime: number): void
 	{
-		this.runningTime += deltaTime;
-		this.OnUpdate(deltaTime);
+		if (this.delayReduceTime > 0)
+		{
+			this.delayReduceTime -= deltaTime;
+			if (this.delayReduceTime <= 0)
+			{
+				this.OnInit();
+			}
+		}
+		else
+		{
+			this.runningTime += deltaTime;
+			this.OnUpdate(deltaTime);
+		}
 	}
 
 	public Release(): void 
@@ -50,6 +70,7 @@ abstract class ProgramAnimationBase<T extends ProgramAnimationParamBase> impleme
 			this.param.callBack(this.runningTime);
 		}
 		this.runningTime = 0;
+		this.delayReduceTime = 0;
 		this.animType = ProgramAnimationType.None;
 		this.param = null;
 	}

@@ -63,7 +63,7 @@ class EliminatingAnimation
 			}
 		}
 
-		for (var i= 0; i < this.eliminateInfo.ShieldBreakElements.length; ++i)
+		for (var i = 0; i < this.eliminateInfo.ShieldBreakElements.length; ++i)
 		{
 			if (maxTime < this.eliminateInfo.ShieldBreakElements[i].eliminateDelay)
 			{
@@ -127,14 +127,17 @@ class EliminatingAnimation
 		param.score = score;
 		param.pos = new egret.Point(Tools.ElementPosToGameStagePosX(element.posx), Tools.ElementPosToGameStagePosY(element.posy));
 		var event = new PlayProgramAnimationEvent();
-        event.param = param;
-        GameMain.GetInstance().DispatchEvent(event);
+		event.param = param;
+		GameMain.GetInstance().DispatchEvent(event);
 
-		var feverParam = new PaAddFeverPowerEffectParam;
-        feverParam.pos = new egret.Point(Tools.ElementPosToGameStagePosX(element.posx), Tools.ElementPosToGameStagePosY(element.posy));
-        var feverEvent = new PlayProgramAnimationEvent();
-        feverEvent.param = feverParam;
-        GameMain.GetInstance().DispatchEvent(feverEvent);
+		if (!this.eliminateInfo.isInFeverTime)
+		{
+			var feverParam = new PaAddFeverPowerEffectParam;
+			feverParam.pos = new egret.Point(Tools.ElementPosToGameStagePosX(element.posx), Tools.ElementPosToGameStagePosY(element.posy));
+			var feverEvent = new PlayProgramAnimationEvent();
+			feverEvent.param = feverParam;
+			GameMain.GetInstance().DispatchEvent(feverEvent);
+		}
 	}
 
 	private UpdateLightning(deltaTime: number)
@@ -154,7 +157,7 @@ class EliminatingAnimation
 					{
 						this.AddScore(element);
 					}
-					
+
 					// if (element.eliminateSound != null
 					// 	&& element.eliminateSound != "")
 					// {
@@ -164,7 +167,7 @@ class EliminatingAnimation
 			}
 		}
 
-		for (var i= 0; i < this.eliminateInfo.ShieldBreakElements.length; ++i)
+		for (var i = 0; i < this.eliminateInfo.ShieldBreakElements.length; ++i)
 		{
 			var element = this.eliminateInfo.ShieldBreakElements[i];
 			if (element.eliminateDelay >= 0)
@@ -174,26 +177,26 @@ class EliminatingAnimation
 				{
 					element.PlayShieldBreakAnim();
 				}
-			} 
+			}
 		}
 	}
 
 	private DeleteEliminatElements()
 	{
-		var eliminatedElements:SceneElementBase[] = this.eliminateInfo.EliminatedElements;
+		var eliminatedElements: SceneElementBase[] = this.eliminateInfo.EliminatedElements;
 		for (var i = 0; i < eliminatedElements.length; ++i)
 		{
-			var element:SceneElementBase = eliminatedElements[i];
+			var element: SceneElementBase = eliminatedElements[i];
 			this.deadElementArray.push(element);
 		}
 
-		var superVirues:SuperVirus[] = this.eliminateInfo.EliminatedSuperVirus;
+		var superVirues: SuperVirus[] = this.eliminateInfo.EliminatedSuperVirus;
 		for (var i = 0; i < superVirues.length; ++i)
 		{
 			if (!superVirues[i].IsAlive())
 			{
 				//for debug superVirues[i].GetMainSceneElement().renderer.alpha = 0.5;
-				var element:SceneElementBase = superVirues[i].GetMainSceneElement();
+				var element: SceneElementBase = superVirues[i].GetMainSceneElement();
 				this.deadElementArray.push(element);
 			}
 			else
@@ -245,7 +248,7 @@ class EliminatingAnimation
 			this.playSoundEvent = new PlaySoundEvent(sound, 1);
 		}
 		this.playSoundEvent.Key = sound;
-        GameMain.GetInstance().DispatchEvent(this.playSoundEvent);
+		GameMain.GetInstance().DispatchEvent(this.playSoundEvent);
 	}
 
 	private PlayEliminateSound()

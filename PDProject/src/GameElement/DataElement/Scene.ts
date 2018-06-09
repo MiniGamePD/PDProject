@@ -16,10 +16,12 @@ class Scene extends GameModuleComponentBase
 
     private eliminateMethod: EliminateMethod;
     private eliminateUnMove: boolean;
-    private canEliminateElementList: SceneElementBase[];
+    private canEliminateElementList: SceneElementBase[];    
+    private isInFeverTime = false;
 
     public Init(): void 
     {
+        this.isInFeverTime = false;
         this.eliminateInfo = new EliminateInfo();
         this.eliminateRound = EliminateRoundStartIndex;
         this.bossSkillInfo = new BossSkillInfo();
@@ -224,7 +226,7 @@ class Scene extends GameModuleComponentBase
 
     private OnFeverEvent(event: FeverEvent)
     {
-        var isFever = event.feverBegin;
+       this.isInFeverTime = event.feverBegin;
         for (var iColumn = 0; iColumn < this.sceneData.length; ++iColumn)
         {
             var cloumnList = this.sceneData[iColumn];
@@ -233,7 +235,7 @@ class Scene extends GameModuleComponentBase
                 var element = cloumnList[iRow];
                 if (element != null)
                 {
-                    element.SetFeverState(isFever);
+                    element.SetFeverState(this.isInFeverTime);
                 }
             }
         }
@@ -313,6 +315,7 @@ class Scene extends GameModuleComponentBase
     {
         this.ClearEliminateInfo();
         this.eliminateInfo.methodType = this.eliminateMethod.methodType;
+        this.eliminateInfo.isInFeverTime = this.isInFeverTime;
         if (this.eliminateMethod.methodType == EliminateMethodType.MoveUp)
         {
             this.eliminateInfo.EliminateRound = EliminateRoundInMoveUp;

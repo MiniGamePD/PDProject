@@ -1,6 +1,8 @@
 class EliminateInfo {
 	public constructor() {
 		this.HasInfo = false;
+		this.methodType = EliminateMethodType.Normal;
+		this.isInFeverTime = false;
 		this.EliminateRound = 1;
 		this.CalculatedEliminateElement = [];
 		this.EliminatedElements = [];
@@ -15,6 +17,9 @@ class EliminateInfo {
 
 	//消除方案
 	public methodType: EliminateMethodType; 
+
+	//是否在FeverTime期间消除
+	public isInFeverTime: boolean;
 
 	// 连续消除次数（从1开始）	
 	public EliminateRound: number;
@@ -41,6 +46,7 @@ class EliminateInfo {
 	public Reset() {
 		this.HasInfo = false;
 		this.methodType = EliminateMethodType.Normal;
+		this.isInFeverTime = false;
 		this.EliminateRound = 1;
 		this.CalculatedEliminateElement = [];
 		this.EliminatedElements = [];
