@@ -12,6 +12,7 @@ enum ProgramAnimationType
 	Rotation, //旋转
 	DynamicMoving, //动态移动
 	Moving,   //移动
+	AccMoving,   //加上移动
 	PlayPartical, //播放粒子效果
 	MovePartical, //播放粒子，并且移动到目标位置
 	PlayDBAnimation, // 播放序列帧动画

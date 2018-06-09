@@ -14,6 +14,7 @@ class MatchView extends GameView
     private feverRibbonsArray: particle.GravityParticleSystem[];
 
     private hud:MatchHUD;
+    private dynamicBg: MatchViewDynamicBg;
 
     public CreateView(): void
     {
@@ -32,6 +33,9 @@ class MatchView extends GameView
         this.eliminatingAnim.Init(this);
 
         this.PlayDBAnimation()
+
+        this.dynamicBg = new MatchViewDynamicBg();
+        this.dynamicBg.Init(this.mResModule, this);
         
         GameMain.GetInstance().AddEventListener(SceneElementControlSuccessEvent.EventName, this.ProcessControlSuccess, this);
         GameMain.GetInstance().AddEventListener(ReplayGameEvent.EventName, this.OnReplayGame, this);
@@ -44,6 +48,11 @@ class MatchView extends GameView
     public ReleaseView(): void 
     {
         this.DeleteHUD();
+
+        if (this.dynamicBg != null)
+        {
+            this.dynamicBg.Release();
+        }
         
         this.removeChild(this.mAdaptedStage);
         GameMain.GetInstance().ClearAdaptedStageContainer();
@@ -101,6 +110,11 @@ class MatchView extends GameView
         }
 
         this.hud.Update(deltaTime);
+
+        if (this.dynamicBg != null)
+        {
+            this.dynamicBg.Update(deltaTime);
+        }
     }
 
     private ProcessControlSuccess(event: SceneElementControlSuccessEvent)
