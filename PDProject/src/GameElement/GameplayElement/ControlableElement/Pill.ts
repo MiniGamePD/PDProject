@@ -73,8 +73,8 @@ class Pill extends ControlableElement
             this.pill2.SetPillType(PillElementType.down);
         }
 
-        this.pill1.RefreshTexture();
-        this.pill2.RefreshTexture();
+        // this.pill1.RefreshTexture();
+        // this.pill2.RefreshTexture();
     }
     
     public GetRotateACWPosList(): number[]
