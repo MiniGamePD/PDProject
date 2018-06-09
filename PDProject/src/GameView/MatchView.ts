@@ -61,7 +61,16 @@ class MatchView extends GameView
         this.mBattleGround.removeChildren();
         this.mBattleGround.addChild(this.mBattleGroundBlocks);
 
-        this.mBattleGroundCoverEff.removeChildren();
+        this.ReleaseEnemyBornWarningElements();
+        this.mBattleGroundCoverEff.removeChildren(); 
+
+        if(this.feverRibbonsArray != null && this.feverRibbonsArray != undefined)
+        {
+            for(var i = 0; i < this.feverRibbonsArray.length; ++i)
+            {
+                this.feverRibbonsArray[i].stop();
+            }
+        }
 
         this.hud.Reset();   
     }
@@ -369,6 +378,25 @@ class MatchView extends GameView
 
     private OnRevive(event:ReviveEvent)
     {
+        this.ReleaseEnemyBornWarningElements();
+    }
+
+    private ReleaseEnemyBornWarningElements()
+    {
+        if(this.enemyBornWarningItemArray != null && this.enemyBornWarningItemArray != undefined)
+        {
+            for(var i = 0; i < this.enemyBornWarningItemArray.length; ++i)
+            {
+                this.mBattleGroundCoverEff.removeChild(this.enemyBornWarningItemArray[i]);
+            }
+            this.enemyBornWarningItemArray = null;
+        }
+
+        if(this.enemyBornWarningCountDown != null && this.enemyBornWarningCountDown != undefined)
+        {
+            this.mBattleGroundCoverEff.removeChild(this.enemyBornWarningCountDown);
+            this.enemyBornWarningCountDown = null;   
+        }
     }
 
     private ShowEnemyBornWarningCountDown(countDown:number)
@@ -459,12 +487,13 @@ class MatchView extends GameView
         {
             //上移成功，消除一排enemey born warning
             var index = this.enemyBornWarningItemArray.length - 1;
-            if(DEBUG)
+            if(index < 0)
             {
-                if(index < 0)
+                if(DEBUG)
                 {
                     console.error("还在move up， enemy born warning却没有了？？");
                 }
+                return;
             }
 
             var warningItem = this.enemyBornWarningItemArray.splice(index, 1)[0];
