@@ -11,6 +11,7 @@ class MatchView extends GameView
     private bossSkillAnim: BossSkillAnimation;
     private enemyBornWarningItemArray: egret.Bitmap[];
     private enemyBornWarningCountDown: egret.Bitmap;
+    private feverRibbonsArray: particle.GravityParticleSystem[];
 
     private hud:MatchHUD;
 
@@ -21,6 +22,7 @@ class MatchView extends GameView
 
         this.LoadBackGround();
         this.CreateHUD();
+        this.CreateFeverRibbonsParticleArray();
 
         // this.PlayBgm();
         this.bossSkillAnim = new BossSkillAnimation();
@@ -36,6 +38,7 @@ class MatchView extends GameView
         GameMain.GetInstance().AddEventListener(ReviveEvent.EventName, this.OnRevive, this);
         GameMain.GetInstance().AddEventListener(EnemyBornWarningEvent.EventName, this.OnEnemyBornWarningEvent, this);
         GameMain.GetInstance().AddEventListener(SceneElementMoveUpEvent.EventName, this.OnSceneElementMoveUpEvent, this);
+        GameMain.GetInstance().AddEventListener(FeverEvent.EventName, this.OnFeverEvent, this);
     }
 
     public ReleaseView(): void 
@@ -50,6 +53,7 @@ class MatchView extends GameView
         GameMain.GetInstance().RemoveEventListener(ReviveEvent.EventName, this.OnRevive, this);
         GameMain.GetInstance().RemoveEventListener(EnemyBornWarningEvent.EventName, this.OnEnemyBornWarningEvent, this);
         GameMain.GetInstance().RemoveEventListener(SceneElementMoveUpEvent.EventName, this.OnSceneElementMoveUpEvent, this);
+        GameMain.GetInstance().RemoveEventListener(FeverEvent.EventName, this.OnFeverEvent, this);
     }
 
     private ResetView()
@@ -453,6 +457,62 @@ class MatchView extends GameView
 
             var warningItem = this.enemyBornWarningItemArray.splice(index, 1)[0];
             this.mBattleGroundCoverEff.removeChild(warningItem);
+        }
+    }
+
+    private CreateFeverRibbonsParticleArray()
+    {
+        this.feverRibbonsArray = [];
+        this.CreateFeverRibbonsParticle("Caidai_Blue");
+        this.CreateFeverRibbonsParticle("Caidai__zise");
+        this.CreateFeverRibbonsParticle("Caidai_Red");
+        this.CreateFeverRibbonsParticle("Caidai_Green");
+        this.CreateFeverRibbonsParticle("Caidai_Yellow");
+    }
+
+    private CreateFeverRibbonsParticle(texName:string)
+    {
+        var particleSys = this.mResModule.CreateParticle(texName, "Caidai");
+		particleSys.x = GameMain.GetInstance().GetStageWidth() / 2;
+        particleSys.y = 0;
+
+        var screenWidth = egret.Capabilities.boundingClientWidth;
+		var screenHeight = egret.Capabilities.boundingClientHeight;
+        var screenAspect = screenWidth / screenHeight;
+		var standerAspect = Screen_StanderScreenWidth / Screen_StanderScreenHeight; //640:1136
+		if(screenAspect <= standerAspect)
+		{
+			//屏幕很长，iphonex
+			//有富余的高度，因此放在屏幕的顶端
+            //层级1，跳过back ground
+			this.addChildAt(particleSys, 1);
+		}
+		else
+		{
+			//屏幕更短，ipad
+			//有富余的宽度，因此放在adaptStage顶端
+            //层级0， 放在最底层
+            this.mAdaptedStage.addChildAt(particleSys, 0);
+		}
+		
+		this.feverRibbonsArray.push(particleSys);
+    }
+
+    private OnFeverEvent(feverEvent:FeverEvent)
+    {
+        if(feverEvent.feverBegin)
+        {
+            for(var i = 0; i < this.feverRibbonsArray.length; ++i)
+            {
+                this.feverRibbonsArray[i].start();
+            }       
+        }
+        else
+        {
+            for(var i = 0; i < this.feverRibbonsArray.length; ++i)
+            {
+                this.feverRibbonsArray[i].stop();
+            }
         }
     }
 }
