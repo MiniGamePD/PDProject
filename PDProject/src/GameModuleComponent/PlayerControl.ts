@@ -168,24 +168,18 @@ class PlayerControl extends GameModuleComponentBase
 			if (key == InputKey.Left)
 			{
                 this.DispatchControlEvent(SceneElementControlType.Move, Direction.Left, 1);
-                var playSoundEvent = new PlaySoundEvent("PillMove_mp3", 1);
-        	    GameMain.GetInstance().DispatchEvent(playSoundEvent);
 			}
 			else if (key == InputKey.Right)
 			{
                 this.DispatchControlEvent(SceneElementControlType.Move, Direction.Right, 1);
-                var playSoundEvent = new PlaySoundEvent("PillMove_mp3", 1);
-        	    GameMain.GetInstance().DispatchEvent(playSoundEvent);
 			}
 			else if (key == InputKey.Down)
 			{
-				this.dropdownTimer += 200;
+                this.DispatchControlEvent(SceneElementControlType.Move, Direction.Down, 1);
 			}
 			else if (key == InputKey.Rotate)
 			{
                 this.DispatchControlEvent(SceneElementControlType.Rotation);
-                var playSoundEvent = new PlaySoundEvent("PillRotation_mp3", 1);
-        	    GameMain.GetInstance().DispatchEvent(playSoundEvent);
 			}
 		}
     }
@@ -216,7 +210,9 @@ class PlayerControl extends GameModuleComponentBase
             if(event.controlType == SceneElementControlType.Rotation
                 && this.target != null)
             {
-                this.target.OnRotateACW();            
+                this.target.OnRotateACW();
+                var playSoundEvent = new PlaySoundEvent("PillRotation_mp3", 1);
+        	    GameMain.GetInstance().DispatchEvent(playSoundEvent);            
             }
             else if(event.controlType == SceneElementControlType.Add
                 && event.playerControl)
@@ -226,11 +222,10 @@ class PlayerControl extends GameModuleComponentBase
                 hudEvent.param = this.nextControlableElementArray;
                 GameMain.GetInstance().DispatchEvent(hudEvent); 
             }
-            else if(event.controlType == SceneElementControlType.Move
-                && event.moveDir == Direction.Down)
+            else if(event.controlType == SceneElementControlType.Move)
             {
                 var playSoundEvent = new PlaySoundEvent("PillMove_mp3", 1);
-                    GameMain.GetInstance().DispatchEvent(playSoundEvent);       
+                GameMain.GetInstance().DispatchEvent(playSoundEvent);
             }
         }
     }
