@@ -259,8 +259,8 @@ class MatchView extends GameView
         {
             let bg = this.mResModule.CreateBitmapByName("pd_res_json.NewBackGround");
             this.addChild(bg);
-            bg.width = GameMain.GetInstance().GetStageWidth();
-            bg.height = GameMain.GetInstance().GetStageHeight();
+            //bg.width = GameMain.GetInstance().GetStageWidth();
+            //bg.height = GameMain.GetInstance().GetStageHeight();
 
             var adaptedStageRect:egret.Rectangle = GameMain.GetInstance().GetAdaptedDisplayRect();
             this.mAdaptedStage = GameMain.GetInstance().GetAdaptedStageContainer();
