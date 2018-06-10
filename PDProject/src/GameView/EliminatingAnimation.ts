@@ -16,6 +16,7 @@ class EliminatingAnimation
 
 	private deadElementArray: SceneElementBase[];
 	public static MoveFinishElementCount: number;
+	public static NeedPlayMoveFinishSound: boolean;
 
 	public Init(view: MatchView)
 	{
@@ -24,6 +25,7 @@ class EliminatingAnimation
 		this.state = EliminatingAnimState.Init;
 		this.runningTime = 0;
 		EliminatingAnimation.MoveFinishElementCount = 0;
+		EliminatingAnimation.NeedPlayMoveFinishSound = true;
 		this.moveDownFinish = false;
 		this.deadElementArray = [];
 	}
@@ -38,6 +40,7 @@ class EliminatingAnimation
 		this.matchScore = matchScore;
 		this.runningTime = 0;
 		EliminatingAnimation.MoveFinishElementCount = 0;
+		EliminatingAnimation.NeedPlayMoveFinishSound = eliminateInfo.methodType != EliminateMethodType.MoveUp;
 		this.moveDownFinish = false;
 		this.isLightningHide = false;
 		this.eliminateInfo = eliminateInfo;
@@ -214,7 +217,7 @@ class EliminatingAnimation
 			var moveParam = new PaAccMovingParam();
 			moveParam.displayObj = this.eliminateInfo.MoveElements[i].MoveElement.renderer;
 			moveParam.attachDisplayObj = [this.eliminateInfo.MoveElements[i].MoveElement.accessory,
-										 this.eliminateInfo.MoveElements[i].MoveElement.accessoryBg]
+			this.eliminateInfo.MoveElements[i].MoveElement.accessoryBg]
 			moveParam.startSpeed = 300;
 			moveParam.accelerate = 500;
 			moveParam.startPos = new egret.Point(0, 0);
@@ -234,8 +237,11 @@ class EliminatingAnimation
 	private MoveFinishCallBack(runTime: number)
 	{
 		EliminatingAnimation.MoveFinishElementCount++;
-		var landSound = new PlaySoundEvent("OnDown_mp3", 1);
-		GameMain.GetInstance().DispatchEvent(landSound);
+		if (EliminatingAnimation.NeedPlayMoveFinishSound)
+		{
+			var landSound = new PlaySoundEvent("OnDown_mp3", 1);
+			GameMain.GetInstance().DispatchEvent(landSound);
+		}
 	}
 
 	private UpdateMoveDown(deltaTime: number)
