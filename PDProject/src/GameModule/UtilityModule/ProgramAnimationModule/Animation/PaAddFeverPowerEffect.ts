@@ -26,8 +26,8 @@ class PaAddFeverPowerEffect extends ProgramAnimationBase<PaAddFeverPowerEffectPa
 		this.bitMap.x = this.param.pos.x;
 		this.bitMap.y = this.param.pos.y;
 		this.bitMap.anchorOffsetX = this.bitMap.width;
-		this.bitMap.scaleX = 0.5;
-		this.bitMap.scaleY = 0.5;
+		this.bitMap.scaleX = 0;
+		this.bitMap.scaleY = 0;
 		GameMain.GetInstance().AdapteDisplayObjectScale(this.bitMap);
 
 		this.FlyMove();
@@ -57,7 +57,7 @@ class PaAddFeverPowerEffect extends ProgramAnimationBase<PaAddFeverPowerEffectPa
 
 		var particalParam = new PaMoveParticalParam;
         particalParam.textureName = "boss_jineng";
-        particalParam.jsonName = "boss_jineng";
+        particalParam.jsonName = "FeverFlyEffect";
         particalParam.duration = 2500;
         particalParam.flyDuration = this.duration;
         particalParam.stayDuration = 500;
@@ -66,6 +66,7 @@ class PaAddFeverPowerEffect extends ProgramAnimationBase<PaAddFeverPowerEffectPa
         particalParam.endPosX = Tools.FeverPowerTargetPos.x;
         particalParam.endPosY = Tools.FeverPowerTargetPos.y;
         particalParam.isMoveEmitter = true;
+        particalParam.delayTime = 100;
         var event = new PlayProgramAnimationEvent();
         event.param = particalParam;
         GameMain.GetInstance().DispatchEvent(event);
@@ -75,8 +76,8 @@ class PaAddFeverPowerEffect extends ProgramAnimationBase<PaAddFeverPowerEffectPa
 	{
 		var param = new PaAlphaLoopParam;
         param.displayObj = this.bitMap;;
-        param.interval = 100;
-        param.duration = 100;
+        param.interval = 500;
+        param.duration = 500;
         param.offestTime = 0;
         param.startAlpha = 0;
         param.endAlpha = 1;
@@ -87,7 +88,7 @@ class PaAddFeverPowerEffect extends ProgramAnimationBase<PaAddFeverPowerEffectPa
 
 		var scaleParam = new PaScalingParam;
         scaleParam.displayObj = this.bitMap;;
-        scaleParam.duration = 400;
+        scaleParam.duration = 500;
         scaleParam.targetScaleX = 0.7;
         scaleParam.targetScaleY = 0.7;
         var event = new PlayProgramAnimationEvent();
