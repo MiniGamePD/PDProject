@@ -344,21 +344,11 @@ class Tools
 	// 播放药丸落地特效（坐标是转换过的位置坐标）
 	public static PlayPillLandEffect(pos: egret.Point)
 	{
-		// var playEffectParam = new PaPlayFramesAnimParam()
-		// playEffectParam.pos = pos;
-		// playEffectParam.textNameSeq = Frame_Anim_Pill_Land_Effect;
-		// playEffectParam.interval = 50;
-		// playEffectParam.times = 1;
-        // playEffectParam.scale = new egret.Point(2,2);
-		// var event = new PlayProgramAnimationEvent();
-        // event.param = playEffectParam;
-        // GameMain.GetInstance().DispatchEvent(event);
-
 		var particalParam = new PaPlayParticalParam();
-		particalParam.textureName = "huojian_shinning";
-		particalParam.jsonName = "huojian_shinning";
+		particalParam.textureName = "xingxing1";
+		particalParam.jsonName = "LandEffect";
 		particalParam.duration = 2000;
-		particalParam.emitDuration = 100;
+		particalParam.emitDuration = 10;
 		particalParam.posX = pos.x;
 		particalParam.posY = pos.y;
 		var event = new PlayProgramAnimationEvent();

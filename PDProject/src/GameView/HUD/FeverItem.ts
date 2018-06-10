@@ -64,6 +64,9 @@ class FeverItem extends egret.DisplayObjectContainer
         GameMain.GetInstance().AdapteDisplayObject(this.feverStar);
         this.addChild(this.feverStar);
 
+        Tools.FeverPowerTargetPos.x = this.feverStar.x;
+        Tools.FeverPowerTargetPos.y = this.feverStar.y;
+
         //fever time的美术字
         this.feverSprite = res.CreateBitmapByName("pd_res_json.fever");
         this.feverSprite.anchorOffsetX = this.feverSprite.width / 2;
