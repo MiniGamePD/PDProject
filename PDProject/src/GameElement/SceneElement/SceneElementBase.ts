@@ -356,11 +356,23 @@ abstract class SceneElementBase
         if (this.bubbleShield != undefined
             && this.bubbleShield != null)
         {
-            this.PlayBoomEffect();
+            var particalParam = new PaPlayParticalParam();
+            particalParam.textureName = "ice_Boom";
+            particalParam.jsonName = "ice_Boom";
+            particalParam.duration = 2000;
+            particalParam.emitDuration = 100;
+            particalParam.posX = Tools.ElementPosToGameStagePosX(this.posx);
+            particalParam.posY = Tools.ElementPosToGameStagePosY(this.posy);
+            var event = new PlayProgramAnimationEvent();
+            event.param = particalParam;
+            GameMain.GetInstance().DispatchEvent(event);
+
             this.accessory.removeChild(this.bubbleShield);
             this.bubbleShield = null;
         }
     }
+
+
 
     public SetFeverState(isFever: boolean)
     {
