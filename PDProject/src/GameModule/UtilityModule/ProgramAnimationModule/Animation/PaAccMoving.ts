@@ -5,6 +5,7 @@ class PaAccMovingParam extends ProgramAnimationParamBase
 	public displayObj: egret.DisplayObject;	// 目标
 	public startSpeed: number; 	// 初始速度
 	public accelerate: number; 	// 加速度
+	public startPos: egret.Point; // 开始位置
 	public targetPos: egret.Point;	// 目标位置
 	public needRotate: boolean; // 是否需要旋转，朝向目标点
 	public needRemoveOnFinish: boolean; // 动画结束是否需要从场景中移除
@@ -15,6 +16,7 @@ class PaAccMovingParam extends ProgramAnimationParamBase
 		this.displayObj = null;
 		this.startSpeed = 0;
 		this.accelerate = 0;
+		this.startPos = null;
 		this.targetPos = null;
 		this.needRotate = false;
 		this.needRemoveOnFinish = false;
@@ -34,7 +36,16 @@ class PaAccMoving extends ProgramAnimationBase<PaAccMovingParam>
 	{
 		this.isFinish = false;
 		this.moveDistance = 0;
-		this.startPos = new egret.Point(this.param.displayObj.x, this.param.displayObj.y);
+		if ( this.param.startPos != null && this.param.startPos != undefined)
+		{
+			this.startPos = this.param.startPos;
+			this.param.displayObj.x = this.param.startPos.x;
+			this.param.displayObj.y = this.param.startPos.y;
+		}
+		else
+		{
+			this.startPos = new egret.Point(this.param.displayObj.x, this.param.displayObj.y);
+		}
 		this.moveDir = this.param.targetPos.subtract(this.startPos);
 		this.targetDistance = this.moveDir.length;
 		this.speed = this.param.startSpeed;
