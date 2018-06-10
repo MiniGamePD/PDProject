@@ -253,15 +253,26 @@ abstract class SceneElementBase
 
     protected PlayBoomEffect()
     {
-        var param = new PaPlayDBAnimationParam;
-        param.resName = "Pill_Boom";
-        param.animationName = "Pill_Boom";
-        // param.duration = 750;
-        param.playTimes = 1;
-        param.posX = Tools.ElementPosToGameStagePosX(this.posx);
-        param.posY = Tools.ElementPosToGameStagePosY(this.posy);
-        var event = new PlayProgramAnimationEvent();
-        event.param = param;
+        // var param = new PaPlayDBAnimationParam;
+        // param.resName = "Pill_Boom";
+        // param.animationName = "Pill_Boom";
+        // // param.duration = 750;
+        // param.playTimes = 1;
+        // param.scaleX = 2;
+        // param.scaleY = 2;
+        // param.posX = Tools.ElementPosToGameStagePosX(this.posx);
+        // param.posY = Tools.ElementPosToGameStagePosY(this.posy);
+        // var event = new PlayProgramAnimationEvent();
+        // event.param = param;
+        // GameMain.GetInstance().DispatchEvent(event);
+        var playEffectParam = new PaPlayFramesAnimParam()
+		playEffectParam.pos = new egret.Point(Tools.ElementPosToGameStagePosX(this.posx), Tools.ElementPosToGameStagePosY(this.posy));
+		playEffectParam.textNameSeq = Frame_Anim_Pill_Boom_Effect;
+		playEffectParam.interval = 100;
+		playEffectParam.times = 1;
+        playEffectParam.scale = new egret.Point(2,2);
+		var event = new PlayProgramAnimationEvent();
+        event.param = playEffectParam;
         GameMain.GetInstance().DispatchEvent(event);
     }
 
