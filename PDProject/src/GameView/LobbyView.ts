@@ -20,8 +20,8 @@ class LobbyView extends GameView
     {
         let bg = this.mResModule.CreateBitmapByName("pd_res_json.NewBackGround");
         this.addChild(bg);
-        bg.width = this.mStageWidth;
-        bg.height = this.mStageHeight;
+        // bg.width = this.mStageWidth;
+        // bg.height = this.mStageHeight;
 
         this.textField = new egret.TextField();
         this.textField.x = 0;

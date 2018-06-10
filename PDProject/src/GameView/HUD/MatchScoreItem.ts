@@ -24,23 +24,25 @@ class MatchScoreItem extends egret.DisplayObjectContainer
 		var resModule = <IResModule> GameMain.GetInstance().GetModule(ModuleType.RES);
 		//得分图标
 		this.scoreIcon = resModule.CreateBitmapByName("pd_res_json.Defen");
-		this.scoreIcon.x = stageWidth/2 - 70;
-		this.scoreIcon.y = 25;
+		this.scoreIcon.x = 200;
+		this.scoreIcon.y = 20;
 		GameMain.GetInstance().AdapteDisplayObject(this.scoreIcon);
 		this.addChild(this.scoreIcon);
 
 		//得分数字
 		this.scoreText = resModule.CreateBitmapText("font_num3_fnt");
-		this.scoreText.x = stageWidth/2 -10;
-		this.scoreText.y = 30;
+		this.scoreText.x = 315;
+		this.scoreText.y = 38;
 		this.scoreText.width = 200;
 		this.scoreText.height = 100;
+		this.scoreText.scaleX = 0.8;
+		this.scoreText.scaleY = 0.8;
 		// this.scoreText.textColor = 0xffffff;
 		// this.scoreText.fontFamily = "Impact";
 		// this.scoreText.size = 40;
-		this.scoreText.textAlign = "left";
 		this.scoreText.text = "0";
 		GameMain.GetInstance().AdapteDisplayObject(this.scoreText);
+		GameMain.GetInstance().AdapteDisplayObjectScale(this.scoreText);
 		this.addChild(this.scoreText);
 
 		if(DEBUG)

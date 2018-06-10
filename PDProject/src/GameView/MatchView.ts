@@ -419,7 +419,7 @@ class MatchView extends GameView
         {
             if(this.enemyBornWarningCountDown == null || this.enemyBornWarningCountDown == undefined)
             {
-                this.enemyBornWarningCountDown = this.mResModule.CreateBitmapByName("pd_res_json.lianxiao" + countDown);
+                this.enemyBornWarningCountDown = this.mResModule.CreateBitmapByName("pd_res_json.NO" + countDown);
                 this.enemyBornWarningCountDown.x = 4.3 * Tools.MatchViewElementWidth;
                 this.enemyBornWarningCountDown.y = Tools.MatchViewElementHeight;
                 this.enemyBornWarningCountDown.width = 1.5 * Tools.MatchViewElementWidth;
@@ -440,7 +440,7 @@ class MatchView extends GameView
             }    
             else
             {
-                var tex = this.mResModule.GetRes("pd_res_json.lianxiao" + countDown);
+                var tex = this.mResModule.GetRes("pd_res_json.NO" + countDown);
                 this.enemyBornWarningCountDown.texture = tex;
             }
         }
