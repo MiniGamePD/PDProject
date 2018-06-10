@@ -32,8 +32,6 @@ class MatchView extends GameView
         this.eliminatingAnim = new EliminatingAnimation();
         this.eliminatingAnim.Init(this);
 
-        this.PlayDBAnimation()
-
         this.dynamicBg = new MatchViewDynamicBg();
         this.dynamicBg.Init(this.mResModule, this);
         
@@ -357,32 +355,6 @@ class MatchView extends GameView
     {
         this.hud.Release();
         this.hud = null;
-    }
-
-    // private PlayBgm()
-    // {
-    //     // if (this.mSoundModule != null){
-    //     //     this.mSoundModule.PlaySound("bgm_mp3", -1);
-    //     // }
-    //     var event: PlaySoundEvent = new PlaySoundEvent("bgm_mp3", -1);
-    //     event.SoundType = egret.Sound.MUSIC;
-    //     GameMain.GetInstance().DispatchEvent(event);
-    // }
-
-    private PlayDBAnimation()
-    {
-        var param = new PaPlayDBAnimationParam;
-        param.resName = "DB_Boom_Bomb";
-        param.animationName = "Boom1";
-        // param.duration = 750;
-        param.playTimes = 1;
-        param.scaleX = 1.8;
-        param.scaleY = 1.8;
-        param.posX = Tools.ElementPosToGameStagePosX(1);
-        param.posY = Tools.ElementPosToGameStagePosY(1);
-        var event = new PlayProgramAnimationEvent();
-        event.param = param;
-        GameMain.GetInstance().DispatchEvent(event);
     }
 
     private OnReplayGame(event:ReplayGameEvent)
