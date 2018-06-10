@@ -23,15 +23,32 @@ const Eliminate_Delay_One_Step_Boom = 70; //  每距离一个格子的消除延�
 //分数相关
 const Score_FeverTimeScale = 2; // FeverTime期间的分数倍率
 const Score_EliminateRoundScale = [1, 2, 3, 4, 5]; // 连消的分数倍率
-const Score_BaseScore = 20;
+const Score_BaseScore = 60;
 
 //游戏流程相关
 const Procedure_ReviveEliminateLine = 5;
-const Procedure_InitCreateEnemyLine = 6;
+const Procedure_InitCreateEnemyLine = 3;
 const TurnNum_BossSkillTurnNum = 3;
-const TurnNum_CreateEnemyTurnNum = 15;
+const TurnNum_CreateEnemyTurnNum = 25;
 const TurnNum_CreateSkillBossTurnNum = 5;
 const TurnNum_BossSkillTargetNum = 5;
+
+//难度系数
+const Difficulty_CreateEnemyTurnNum = [22, 10, 8, 22,   10,   10,   18,  15,  12,  15];
+const Difficulty_CreateEnmeyLineNum = [3,  2,  1,  2,    3,    2,    2,   4,   2,   4 ];
+const Difficulty_ShieldProperty =     [0.1,  0.1,  0.1,  0.2, 0.2, 0.3, 0.3, 0.35, 0.35, 0.4];
+// const Difficulty_CreateEnemyTurnNum = [5, 10, 10];
+// const Difficulty_CreateEnmeyLineNum = [1,  2,  3];
+// const Difficulty_ShieldProperty =     [0.5,  0,  1];
+const Difficulty_MaxDifficulty = 10;
+const Difficulty_DropDownSpeedUpTurn1 = 40;
+const Difficulty_DropDownSpeedUpTurn2 = 82;
+const Difficulty_DropDownSpeedUpTurn3 = 127;
+const Difficulty_DropDownSpeedUpTurn4 = 160;
+const Difficulty_DropDownSpeedUpStep = 100; //ms
+const Difficulty_DropDownMinInterval = 600; //ms
+const Difficulty_DropDownMaxInterval = 1000; //ms 
+
 
 // 动画相关
 const Frame_Anim_SceneBoom = ["Boom1", "Boom2"];

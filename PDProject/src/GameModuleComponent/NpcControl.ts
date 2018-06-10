@@ -34,6 +34,11 @@ class NpcControl extends GameModuleComponentBase
     private remindCreateEnemyTurns:number;
     private remindInitCreateEnemyLines:number;
 
+    //当前难度系数Id
+    private curDifficultyId:number;
+    private curDifficultyShieldProperty:number;
+    private curDifficultyCreateEnemyLineNum:number;
+
     public constructor(gameplayElementFactory:GameplayElementFactory)
     {
         super();
@@ -49,6 +54,9 @@ class NpcControl extends GameModuleComponentBase
         this.npcControlState = NpcControlState.None;
         this.remindMoveUpNum = 0;
         this.remindCreateEnemyTurns = -1;
+        this.curDifficultyId = 0;
+        this.curDifficultyShieldProperty = 0;
+        this.curDifficultyCreateEnemyLineNum = 0;
         GameMain.GetInstance().AddEventListener(SceneElementAccessAnswerEvent.EventName, this.OnReciveSceneData, this);
         GameMain.GetInstance().AddEventListener(SceneElementControlFailedEvent.EventName, this.OnAddElementToSceneFailed, this);
     }
@@ -92,7 +100,7 @@ class NpcControl extends GameModuleComponentBase
 
         if(this.npcControlState == NpcControlState.MoveAllUp)
         {
-            this.CreateEnemyLine(3, 0.1, Scene.Rows-1);
+            this.CreateEnemyLine(3, this.curDifficultyShieldProperty, Scene.Rows-1);
             this.npcSmileSound = this.remindMoveUpNum > 0 ? null : "EnemySinisterSmile1_mp3";
 
             return;
@@ -160,15 +168,13 @@ class NpcControl extends GameModuleComponentBase
             {
                 //TODO：小怪降临的特效提示
                 var enemyBornWarningEvent = new EnemyBornWarningEvent();
-                enemyBornWarningEvent.enemyLine = 3;
+                enemyBornWarningEvent.enemyLine = this.curDifficultyCreateEnemyLineNum;
                 enemyBornWarningEvent.bornCountDown = this.remindCreateEnemyTurns;
                 GameMain.GetInstance().DispatchEvent(enemyBornWarningEvent);
             }
 
             if(this.remindCreateEnemyTurns <= 0)
             {
-                this.remindCreateEnemyTurns = TurnNum_CreateEnemyTurnNum;
-
                 //创建普通小怪
                 if(controlWorkParam.turn == 0)
                 {
@@ -177,15 +183,14 @@ class NpcControl extends GameModuleComponentBase
                     this.addAllNpcInOneTime = true;
                     this.npcControlTimer = 0;
                     this.addNpcToSceneInterval = Time_AddNpcToSceneIntervalMax;
-                    return;
                 }
                 else
                 {
                     this.npcControlState = NpcControlState.MoveAllUp;
-                    this.remindMoveUpNum = 3;
+                    this.remindMoveUpNum = this.curDifficultyCreateEnemyLineNum;
                     this.addAllNpcInOneTime = false;
-                    return;
                 }
+                return;
             }
         }
         
@@ -321,6 +326,12 @@ class NpcControl extends GameModuleComponentBase
 
             if(this.npcSmileSound != null)
             {
+                //this.remindCreateEnemyTurns = TurnNum_CreateEnemyTurnNum;
+                this.remindCreateEnemyTurns = this.GetDifficultyCreateEnemyTurnNum();
+                this.curDifficultyShieldProperty = this.GetDifficultyCreateEnemyShieldProperty();
+                this.curDifficultyCreateEnemyLineNum = this.GetDifficultyCreateEnemyLineNum();
+                this.AddDifficulty();
+
                 this.npcControlState = NpcControlState.PlaySinisterSmileSound;
             }
             else if(this.remindMoveUpNum > 0)
@@ -333,6 +344,12 @@ class NpcControl extends GameModuleComponentBase
             }
             else
             {
+                //this.remindCreateEnemyTurns = TurnNum_CreateEnemyTurnNum;
+                this.remindCreateEnemyTurns = this.GetDifficultyCreateEnemyTurnNum();
+                this.curDifficultyShieldProperty = this.GetDifficultyCreateEnemyShieldProperty();
+                this.curDifficultyCreateEnemyLineNum = this.GetDifficultyCreateEnemyLineNum();
+                this.AddDifficulty();
+
                 this.npcControlState = NpcControlState.NpcControlFinish;
             }
         }
@@ -401,8 +418,8 @@ class NpcControl extends GameModuleComponentBase
             {
                 this.npcControlState = NpcControlState.None;
 
-                var createNum:number = Scene.Columns - Math.floor(Math.random() * 3);
-                this.CreateRandomVirus(createNum, 0, 0, 8);
+                var createNum:number = Scene.Columns - 3;
+                this.CreateRandomVirus(createNum, 0, 0, Scene.Rows - Procedure_InitCreateEnemyLine);
                 
                 this.remindInitCreateEnemyLines--;
                 if(this.remindInitCreateEnemyLines <= 0)
@@ -709,6 +726,29 @@ class NpcControl extends GameModuleComponentBase
         this.remindMoveUpNum = 0;
         this.npcControlState = NpcControlState.None;
         this.tobeAddToSceneNpcArray = null;
+    }
+
+    private AddDifficulty()
+    {
+        if(this.curDifficultyId < Difficulty_MaxDifficulty-1)
+        {
+            this.curDifficultyId++;
+        }
+    }
+
+    private GetDifficultyCreateEnemyTurnNum():number
+    {
+        return Difficulty_CreateEnemyTurnNum[this.curDifficultyId];
+    }
+
+    private GetDifficultyCreateEnemyLineNum():number
+    {
+        return Difficulty_CreateEnmeyLineNum[this.curDifficultyId];
+    }
+
+    private GetDifficultyCreateEnemyShieldProperty():number
+    {
+        return Difficulty_ShieldProperty[this.curDifficultyId];
     }
 }
 

@@ -1,6 +1,6 @@
 class PlayerControl extends GameModuleComponentBase
 {
-    public static readonly DropdownInterval:number = 1000;//每隔多久药丸下落一格
+    public dropdownInterval:number;//每隔多久药丸下落一格
     private dropdownTimer:number;
     public target:ControlableElement;
 	private playSoundEvent: PlaySoundEvent;
@@ -28,6 +28,8 @@ class PlayerControl extends GameModuleComponentBase
         this.nextControlableElementArray = [];
         this.nextCentainEliminateToolCountDown = Eliminate_NextCentainEliminateToolTurn;
 
+        this.dropdownInterval = Difficulty_DropDownMaxInterval;
+
         GameMain.GetInstance().AddEventListener(InputEvent.EventName, this.OnInputEvent, this);
         GameMain.GetInstance().AddEventListener(SceneElementControlFailedEvent.EventName, this.OnPlayerControlFailed, this);
         GameMain.GetInstance().AddEventListener(SceneElementControlSuccessEvent.EventName, this.OnPlayerControlSuccess, this);
@@ -45,6 +47,15 @@ class PlayerControl extends GameModuleComponentBase
     public Work(param?:any):any
     {
         let controlWorkParam:GameplayControlWorkParam = param;
+
+        //speed up 
+        if(controlWorkParam.turn == Difficulty_DropDownSpeedUpTurn1 || controlWorkParam.turn == Difficulty_DropDownSpeedUpTurn2 
+            || controlWorkParam.turn == Difficulty_DropDownSpeedUpTurn3 || controlWorkParam.turn == Difficulty_DropDownSpeedUpTurn4)
+        {
+            this.dropdownInterval -= Difficulty_DropDownSpeedUpStep;
+            if(this.dropdownInterval < Difficulty_DropDownMinInterval)
+                this.dropdownInterval = Difficulty_DropDownMinInterval;
+        }
         
         if(this.targetBeforeGameOver != null && this.targetBeforeGameOver != undefined)
         {
@@ -156,7 +167,7 @@ class PlayerControl extends GameModuleComponentBase
 			}
 			else if (key == InputKey.Down)
 			{
-				this.dropdownTimer += PlayerControl.DropdownInterval / 4;
+				this.dropdownTimer += 200;
 			}
 			else if (key == InputKey.Rotate)
 			{
@@ -176,7 +187,7 @@ class PlayerControl extends GameModuleComponentBase
     private TryDropdown(deltaTime:number): void
     {
         this.dropdownTimer += deltaTime;
-        if(this.dropdownTimer >= PlayerControl.DropdownInterval)
+        if(this.dropdownTimer >= this.dropdownInterval)
         {
             //即使时间很长，超过两个MatchModule.PillDropdownInterval，也还是移动一格，否则卡了，就忽然间下降很多，体验不好
             this.dropdownTimer = 0;
