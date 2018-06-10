@@ -67,6 +67,7 @@ class SceneCrossEliminater extends SceneElementBase
     public PlayEliminateAnim()
     {
         this.PlayScaling();
+        this.PlayEliminateSound();
         // this.MoveOneSide(Direction.Up);
         // this.MoveOneSide(Direction.Down);
         // this.MoveOneSide(Direction.Left);

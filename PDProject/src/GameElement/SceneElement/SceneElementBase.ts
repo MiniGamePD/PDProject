@@ -19,12 +19,14 @@ abstract class SceneElementBase
     private bubbleShield: egret.Bitmap;
     protected framesAnim: SyncFramesAnim;
     public eliminateDelay: number;
+    private isInFever: boolean;
 
     public constructor(owner: GameplayElementBase) 
     {
         this.owner = owner;
         this.bindedElements = [];
         this.eliminateDelay = 0;
+        this.isInFever = false;
         if (this.resModule == null)
         {
             this.resModule = <IResModule>GameMain.GetInstance().GetModule(ModuleType.RES);
@@ -211,6 +213,18 @@ abstract class SceneElementBase
     {
         this.PlayBoomEffect();
         this.PlayScaling();
+        this.PlayEliminateSound();
+    }
+
+    public PlayEliminateSound()
+    {
+        if (this.eliminateSound != null
+			&& this.eliminateSound != undefined
+            && this.eliminateSound != "")
+        {
+            var playSoundEvent = new PlaySoundEvent(this.eliminateSound , 1);
+		    GameMain.GetInstance().DispatchEvent(playSoundEvent);
+        }
     }
 
     protected PlayParticalEff()
@@ -350,7 +364,12 @@ abstract class SceneElementBase
 
     public SetFeverState(isFever: boolean)
     {
+        this.isInFever = isFever;
+    }
 
+    public IsInFeverState(): boolean
+    {
+        return this.isInFever;
     }
 
     public Release()

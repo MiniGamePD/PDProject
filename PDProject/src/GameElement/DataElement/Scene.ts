@@ -218,6 +218,10 @@ class Scene extends GameModuleComponentBase
                 var element = cloumnList[iRow];
                 if (element != null)
                 {
+                    if (element.IsInFeverState() != this.isInFeverTime)
+                    {
+                        element.SetFeverState(this.isInFeverTime);
+                    }
                     element.Update(deltaTime);
                 }
             }
@@ -227,18 +231,6 @@ class Scene extends GameModuleComponentBase
     private OnFeverEvent(event: FeverEvent)
     {
        this.isInFeverTime = event.feverBegin;
-        for (var iColumn = 0; iColumn < this.sceneData.length; ++iColumn)
-        {
-            var cloumnList = this.sceneData[iColumn];
-            for (var iRow = 0; iRow < cloumnList.length; ++iRow)
-            {
-                var element = cloumnList[iRow];
-                if (element != null)
-                {
-                    element.SetFeverState(this.isInFeverTime);
-                }
-            }
-        }
     }
 
     // 设置下一次消除方法

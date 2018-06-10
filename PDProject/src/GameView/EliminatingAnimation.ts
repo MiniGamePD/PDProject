@@ -157,12 +157,6 @@ class EliminatingAnimation
 					{
 						this.AddScore(element);
 					}
-
-					if (element.eliminateSound != null
-						&& element.eliminateSound != "")
-					{
-						this.PlaySound(element.eliminateSound);
-					}
 				}
 			}
 		}

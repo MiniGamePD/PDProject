@@ -10,7 +10,8 @@ class ScenePill extends SceneElementBase
         this.color = this.RandomColor();
         this.canDrop = true;
         this.eliminateMinCount = Scene.EliminateMinCount;
-        this.elementType = SceneElementType.Pill;
+        this.elementType = SceneElementType.Pill;  
+        this.eliminateSound = "VirusEliminate_mp3";
     }
 
     public CreatePillLink()

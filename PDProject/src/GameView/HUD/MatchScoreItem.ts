@@ -1,6 +1,6 @@
 class MatchScoreItem extends egret.DisplayObjectContainer
 {
-	private scoreText: egret.TextField;
+	private scoreText: egret.BitmapText;
 	private stepText: egret.TextField;
 	private curShowScore: number;
 	private targetScore: number;
@@ -30,17 +30,17 @@ class MatchScoreItem extends egret.DisplayObjectContainer
 		this.addChild(this.scoreIcon);
 
 		//得分数字
-		this.scoreText = new egret.TextField();
+		this.scoreText = resModule.CreateBitmapText("font_num3_fnt");
 		this.scoreText.x = stageWidth/2 -10;
 		this.scoreText.y = 30;
 		this.scoreText.width = 200;
 		this.scoreText.height = 100;
-		this.scoreText.textColor = 0xffffff;
-		this.scoreText.fontFamily = "Impact";
-		this.scoreText.size = 40;
+		// this.scoreText.textColor = 0xffffff;
+		// this.scoreText.fontFamily = "Impact";
+		// this.scoreText.size = 40;
 		this.scoreText.textAlign = "left";
 		this.scoreText.text = "0";
-		GameMain.GetInstance().AdaptTextField(this.scoreText);
+		GameMain.GetInstance().AdapteDisplayObject(this.scoreText);
 		this.addChild(this.scoreText);
 
 		if(DEBUG)

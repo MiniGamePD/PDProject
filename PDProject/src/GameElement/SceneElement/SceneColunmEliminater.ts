@@ -71,6 +71,7 @@ class SceneColunmEliminater extends SceneElementBase
         // this.MoveOneSide(Direction.Down);
         this.RemoveDirectionBitmap();
         this.PlayCrossEliminaterEffect([Direction.Down, Direction.Up]);
+        this.PlayEliminateSound();
     }
 
     private RemoveDirectionBitmap()

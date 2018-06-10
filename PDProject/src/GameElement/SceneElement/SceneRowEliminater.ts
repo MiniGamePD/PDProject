@@ -71,6 +71,7 @@ class SceneRowEliminater extends SceneElementBase
         // this.MoveOneSide(Direction.Right);
         this.RemoveDirectionBitmap();
         this.PlayCrossEliminaterEffect([Direction.Right, Direction.Left]);
+        this.PlayEliminateSound();
     }
 
     private RemoveDirectionBitmap()

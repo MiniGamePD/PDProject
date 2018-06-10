@@ -86,6 +86,7 @@ class SceneVirus extends SceneElementBase
 
     public SetFeverState(isFever: boolean)
     {
+        super.SetFeverState(isFever);
         var lastAnimType = this.animType;
         this.animType = isFever ? SceneVirusAnimType.Fever : SceneVirusAnimType.Idle;
         if (lastAnimType != this.animType)
@@ -152,6 +153,7 @@ class SceneVirus extends SceneElementBase
     {
         this.PlayBoomEffect();
         this.PlayScaling();
+        this.PlayEliminateSound();
     }
 }
 
