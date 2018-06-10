@@ -45,9 +45,16 @@ class PaAddFeverPowerEffect extends ProgramAnimationBase<PaAddFeverPowerEffectPa
         movingParam.targetPosY = Tools.FeverPowerTargetPos.y;
         movingParam.needRotate = true;
         movingParam.needRemoveOnFinish = false;
+		movingParam.callBack = this.FlyMoveCallBack;
         var event = new PlayProgramAnimationEvent();
         event.param = movingParam;
         GameMain.GetInstance().DispatchEvent(event);
+	}
+
+	private FlyMoveCallBack(runTime: number)
+	{
+		var playSoundEvent = new PlaySoundEvent("AddFeverPower_mp3", 1);
+		GameMain.GetInstance().DispatchEvent(playSoundEvent);
 	}
 
 	private PlayPartical()

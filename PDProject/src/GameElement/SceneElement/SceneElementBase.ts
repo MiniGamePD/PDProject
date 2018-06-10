@@ -370,6 +370,7 @@ abstract class SceneElementBase
             this.accessory.removeChild(this.bubbleShield);
             this.bubbleShield = null;
         }
+        this.PlayEliminateSound();
     }
 
 
