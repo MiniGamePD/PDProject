@@ -61,7 +61,7 @@ class SceneCrossEliminater extends SceneElementBase
 
     protected GetResPathByColor():string
     {
-        return "Cross_huojian1";
+        return "shizixiao";
     }
 
     public PlayEliminateAnim()

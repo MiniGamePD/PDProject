@@ -60,7 +60,7 @@ class SceneColunmEliminater extends SceneElementBase
 
     protected GetResPathByColor():string
     {
-        return "Cross_huojian1";
+        return "shangxiaxiao";
     }
 
     public PlayEliminateAnim()

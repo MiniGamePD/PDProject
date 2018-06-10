@@ -23,7 +23,7 @@ class MatchScoreItem extends egret.DisplayObjectContainer
 
 		var resModule = <IResModule> GameMain.GetInstance().GetModule(ModuleType.RES);
 		//得分图标
-		this.scoreIcon = resModule.CreateBitmapByName("pd_res_json.DeFen");
+		this.scoreIcon = resModule.CreateBitmapByName("pd_res_json.Defen");
 		this.scoreIcon.x = stageWidth/2 - 70;
 		this.scoreIcon.y = 25;
 		GameMain.GetInstance().AdapteDisplayObject(this.scoreIcon);
