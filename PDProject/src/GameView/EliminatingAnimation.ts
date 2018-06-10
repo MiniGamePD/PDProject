@@ -17,6 +17,8 @@ class EliminatingAnimation
 	private deadElementArray: SceneElementBase[];
 	public static MoveFinishElementCount: number;
 	public static NeedPlayMoveFinishSound: boolean;
+	public static PlayMoveFinishSoundCoolDown: number;
+	public static readonly PlayMoveFinishSoundCoolDownTime = 100;
 
 	public Init(view: MatchView)
 	{
@@ -26,6 +28,7 @@ class EliminatingAnimation
 		this.runningTime = 0;
 		EliminatingAnimation.MoveFinishElementCount = 0;
 		EliminatingAnimation.NeedPlayMoveFinishSound = true;
+		EliminatingAnimation.PlayMoveFinishSoundCoolDown = 0;
 		this.moveDownFinish = false;
 		this.deadElementArray = [];
 	}
@@ -41,6 +44,7 @@ class EliminatingAnimation
 		this.runningTime = 0;
 		EliminatingAnimation.MoveFinishElementCount = 0;
 		EliminatingAnimation.NeedPlayMoveFinishSound = eliminateInfo.methodType != EliminateMethodType.MoveUp;
+		EliminatingAnimation.PlayMoveFinishSoundCoolDown = 0;
 		this.moveDownFinish = false;
 		this.isLightningHide = false;
 		this.eliminateInfo = eliminateInfo;
@@ -83,6 +87,14 @@ class EliminatingAnimation
 	public Update(deltaTime: number)
 	{
 		this.runningTime += deltaTime;
+
+		if (EliminatingAnimation.PlayMoveFinishSoundCoolDown > 0)
+		{	
+			EliminatingAnimation.PlayMoveFinishSoundCoolDown -= deltaTime;
+			if (EliminatingAnimation.PlayMoveFinishSoundCoolDown < 0) 
+				EliminatingAnimation.PlayMoveFinishSoundCoolDown = 0;
+		}
+
 		switch (this.state)
 		{
 			case EliminatingAnimState.Lightning:
@@ -237,8 +249,10 @@ class EliminatingAnimation
 	private MoveFinishCallBack(runTime: number)
 	{
 		EliminatingAnimation.MoveFinishElementCount++;
-		if (EliminatingAnimation.NeedPlayMoveFinishSound)
+		if (EliminatingAnimation.NeedPlayMoveFinishSound
+			&& EliminatingAnimation.PlayMoveFinishSoundCoolDown <= 0)
 		{
+			EliminatingAnimation.PlayMoveFinishSoundCoolDown = EliminatingAnimation.PlayMoveFinishSoundCoolDownTime;
 			var landSound = new PlaySoundEvent("OnDown_mp3", 1);
 			GameMain.GetInstance().DispatchEvent(landSound);
 		}
