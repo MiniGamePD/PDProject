@@ -43,7 +43,7 @@ class EliminatingAnimation
 			|| this.eliminateInfo.ShieldBreakElements.length > 0)
 		{
 			this.EnterState(EliminatingAnimState.Lightning);
-			this.PlayEliminateSound();
+			// this.PlayEliminateSound();
 			// this.PlayElementEliminateAnim();
 		}
 		else
@@ -158,11 +158,11 @@ class EliminatingAnimation
 						this.AddScore(element);
 					}
 
-					// if (element.eliminateSound != null
-					// 	&& element.eliminateSound != "")
-					// {
-					// 	this.PlaySound(element.eliminateSound);
-					// }
+					if (element.eliminateSound != null
+						&& element.eliminateSound != "")
+					{
+						this.PlaySound(element.eliminateSound);
+					}
 				}
 			}
 		}
