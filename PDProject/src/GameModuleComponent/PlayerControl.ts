@@ -38,6 +38,11 @@ class PlayerControl extends GameModuleComponentBase
     public Release():void
     {
         this.nextControlableElementArray = null;
+        if(this.startWorkTimer != null)
+        {
+            this.startWorkTimer.stop();
+            this.startWorkTimer = null;
+        }
 
         GameMain.GetInstance().RemoveEventListener(InputEvent.EventName, this.OnInputEvent, this);
         GameMain.GetInstance().RemoveEventListener(SceneElementControlFailedEvent.EventName, this.OnPlayerControlFailed, this);
@@ -130,6 +135,9 @@ class PlayerControl extends GameModuleComponentBase
 
     private ReallyStartWork()
     {
+        if(this.nextControlableElementArray == undefined || this.nextControlableElementArray == null)
+            return;
+
         if(this.targetBeforeGameOver != null && this.targetBeforeGameOver != undefined)
         {
             this.target = this.targetBeforeGameOver;
