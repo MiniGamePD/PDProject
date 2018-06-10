@@ -160,10 +160,14 @@ class PlayerControl extends GameModuleComponentBase
 			if (key == InputKey.Left)
 			{
                 this.DispatchControlEvent(SceneElementControlType.Move, Direction.Left, 1);
+                var playSoundEvent = new PlaySoundEvent("PillMove_mp3", 1);
+        	    GameMain.GetInstance().DispatchEvent(playSoundEvent);
 			}
 			else if (key == InputKey.Right)
 			{
                 this.DispatchControlEvent(SceneElementControlType.Move, Direction.Right, 1);
+                var playSoundEvent = new PlaySoundEvent("PillMove_mp3", 1);
+        	    GameMain.GetInstance().DispatchEvent(playSoundEvent);
 			}
 			else if (key == InputKey.Down)
 			{
@@ -172,6 +176,8 @@ class PlayerControl extends GameModuleComponentBase
 			else if (key == InputKey.Rotate)
 			{
                 this.DispatchControlEvent(SceneElementControlType.Rotation);
+                var playSoundEvent = new PlaySoundEvent("PillRotation_mp3", 1);
+        	    GameMain.GetInstance().DispatchEvent(playSoundEvent);
 			}
 		}
     }
@@ -191,7 +197,7 @@ class PlayerControl extends GameModuleComponentBase
         {
             //即使时间很长，超过两个MatchModule.PillDropdownInterval，也还是移动一格，否则卡了，就忽然间下降很多，体验不好
             this.dropdownTimer = 0;
-            this.DispatchControlEvent(SceneElementControlType.Move, Direction.Down, 1);                
+            this.DispatchControlEvent(SceneElementControlType.Move, Direction.Down, 1);    
         }
     }
 
@@ -211,6 +217,12 @@ class PlayerControl extends GameModuleComponentBase
                 hudEvent.eventType = HUDEventType.RefreshControlablePreview;
                 hudEvent.param = this.nextControlableElementArray;
                 GameMain.GetInstance().DispatchEvent(hudEvent); 
+            }
+            else if(event.controlType == SceneElementControlType.Move
+                && event.moveDir == Direction.Down)
+            {
+                var playSoundEvent = new PlaySoundEvent("PillMove_mp3", 1);
+                    GameMain.GetInstance().DispatchEvent(playSoundEvent);       
             }
         }
     }

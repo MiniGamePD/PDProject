@@ -1,7 +1,7 @@
 class FeverControl extends GameModuleComponentBase
 {
     private feverEnerge:number;
-    private basicFeverStep:number = 10;
+    private basicFeverStep:number = 6;
     private isInFeverState:boolean;
     private feverTimer:egret.Timer;
     private feverBgmFadeOutTimer:egret.Timer;
