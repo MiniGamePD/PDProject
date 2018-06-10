@@ -213,6 +213,8 @@ class EliminatingAnimation
 		{
 			var moveParam = new PaAccMovingParam();
 			moveParam.displayObj = this.eliminateInfo.MoveElements[i].MoveElement.renderer;
+			moveParam.attachDisplayObj = [this.eliminateInfo.MoveElements[i].MoveElement.accessory,
+										 this.eliminateInfo.MoveElements[i].MoveElement.accessoryBg]
 			moveParam.startSpeed = 300;
 			moveParam.accelerate = 500;
 			moveParam.startPos = new egret.Point(0, 0);
