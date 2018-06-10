@@ -15,6 +15,7 @@ class EliminatingAnimation
 	private playSoundEvent: PlaySoundEvent;
 
 	private deadElementArray: SceneElementBase[];
+	public static MoveFinishElementCount: number;
 
 	public Init(view: MatchView)
 	{
@@ -22,6 +23,7 @@ class EliminatingAnimation
 
 		this.state = EliminatingAnimState.Init;
 		this.runningTime = 0;
+		EliminatingAnimation.MoveFinishElementCount = 0;
 		this.moveDownFinish = false;
 		this.deadElementArray = [];
 	}
@@ -35,6 +37,7 @@ class EliminatingAnimation
 	{
 		this.matchScore = matchScore;
 		this.runningTime = 0;
+		EliminatingAnimation.MoveFinishElementCount = 0;
 		this.moveDownFinish = false;
 		this.isLightningHide = false;
 		this.eliminateInfo = eliminateInfo;
@@ -48,6 +51,7 @@ class EliminatingAnimation
 		}
 		else
 		{
+			this.MoveElement();
 			this.EnterState(EliminatingAnimState.MoveDown);
 		}
 	}
@@ -85,16 +89,18 @@ class EliminatingAnimation
 					{
 						this.DeleteEliminatElements();
 						this.matchView.RefreshTextrue();
+						this.MoveElement();
 						this.EnterState(EliminatingAnimState.MoveDown);
 					}
 					break;
 				}
 			case EliminatingAnimState.MoveDown:
 				{
-					this.UpdateMoveDown(deltaTime);
+					// this.UpdateMoveDown(deltaTime);
 
-					if (this.moveDownFinish)
+					if (EliminatingAnimation.MoveFinishElementCount >= this.eliminateInfo.MoveElements.length)
 					{
+						this.eliminateInfo.Reset();
 						this.EnterState(EliminatingAnimState.Init);
 					}
 				}
@@ -199,6 +205,35 @@ class EliminatingAnimation
 				superVirues[i].GetMainSceneElement().renderer.alpha = 1;
 			}
 		}
+	}
+
+	private MoveElement()
+	{
+		for (var i = 0; i < this.eliminateInfo.MoveElements.length; ++i)
+		{
+			var moveParam = new PaAccMovingParam();
+			moveParam.displayObj = this.eliminateInfo.MoveElements[i].MoveElement.renderer;
+			moveParam.startSpeed = 300;
+			moveParam.accelerate = 500;
+			moveParam.startPos = new egret.Point(0, 0);
+			moveParam.startPos.x = Tools.GetMatchViewRenderPosX(this.eliminateInfo.MoveElements[i].StartPosX);
+			moveParam.startPos.y = Tools.GetMatchViewRenderPosY(this.eliminateInfo.MoveElements[i].StartPosY);
+			moveParam.targetPos = new egret.Point(0, 0);
+			moveParam.targetPos.x = Tools.GetMatchViewRenderPosX(this.eliminateInfo.MoveElements[i].EndPosX);
+			moveParam.targetPos.y = Tools.GetMatchViewRenderPosY(this.eliminateInfo.MoveElements[i].EndPosY);
+			moveParam.callBack = this.MoveFinishCallBack;
+			moveParam.callBackObject = this;
+			var event = new PlayProgramAnimationEvent();
+			event.param = moveParam;
+			GameMain.GetInstance().DispatchEvent(event);
+		}
+	}
+
+	private MoveFinishCallBack(runTime: number)
+	{
+		EliminatingAnimation.MoveFinishElementCount++;
+		var landSound = new PlaySoundEvent("OnDown_mp3", 1);
+		GameMain.GetInstance().DispatchEvent(landSound);
 	}
 
 	private UpdateMoveDown(deltaTime: number)
