@@ -284,6 +284,8 @@ class PlayerControl extends GameModuleComponentBase
     public AddTurn()
     {
         this.nextCentainEliminateToolCountDown--;
+        var inputModule = <IInputModule>GameMain.GetInstance().GetModule(ModuleType.INPUT);
+        inputModule.OnStartNewTurn();
     }
 
     public OnGameOver()

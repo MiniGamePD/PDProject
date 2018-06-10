@@ -19,8 +19,8 @@ class InputModule extends ModuleBase implements IInputModule {
 		this.mInputEvent = new InputEvent(InputKey.Max, 0, 0);
 		let stageWidth = GameMain.GetInstance().GetAdaptedStageWidth();
 		let stageHeight = GameMain.GetInstance().GetAdaptedStageHeight();
-		this.mMoveEventMinDisX = stageWidth * INPUT_MOVE_EVENT_DIS_RATE * 1.5;
-		this.mMoveEventMinDisY = stageHeight * INPUT_MOVE_EVENT_DIS_RATE;
+		this.mMoveEventMinDisX = stageWidth * INPUT_MOVE_EVENT_DIS_RATE_HOR;
+		this.mMoveEventMinDisY = stageHeight * INPUT_MOVE_EVENT_DIS_RATE_VER;
 		this.RegisterTouchEvent();
 		this.InitKey();
 		return true;
@@ -58,6 +58,7 @@ class InputModule extends ModuleBase implements IInputModule {
 		GameMain.GetInstance().AddEventListener(egret.TouchEvent.TOUCH_MOVE, this.OnTouchMove, this);
 		GameMain.GetInstance().AddEventListener(egret.TouchEvent.TOUCH_TAP, this.OnTouchTap, this);
 		GameMain.GetInstance().AddEventListener(egret.TouchEvent.TOUCH_END, this.OnTouchEnd, this);
+		GameMain.GetInstance().AddEventListener(egret.TouchEvent.TOUCH_RELEASE_OUTSIDE, this.OnTouchReleaseOutSide, this);
 	}
 
 	private UnRegisterTouchEvent(): void {
@@ -65,6 +66,7 @@ class InputModule extends ModuleBase implements IInputModule {
 		GameMain.GetInstance().RemoveEventListener(egret.TouchEvent.TOUCH_MOVE, this.OnTouchMove, this);
 		GameMain.GetInstance().RemoveEventListener(egret.TouchEvent.TOUCH_TAP, this.OnTouchTap, this);
 		GameMain.GetInstance().RemoveEventListener(egret.TouchEvent.TOUCH_END, this.OnTouchEnd, this);
+		GameMain.GetInstance().RemoveEventListener(egret.TouchEvent.TOUCH_RELEASE_OUTSIDE, this.OnTouchReleaseOutSide, this);
 	}
 
 	private OnTouchBegin(evt: egret.TouchEvent): void {
@@ -137,6 +139,14 @@ class InputModule extends ModuleBase implements IInputModule {
 		}
 	}
 
+	private OnTouchReleaseOutSide(evt: egret.TouchEvent): void
+	{
+		if (evt.type == egret.TouchEvent.TOUCH_RELEASE_OUTSIDE) 
+		{
+			this.continueDown = false;
+		}
+	}	
+
 	public Update(deltaTime: number): void {
 		this.ClearKey();
 		if(this.continueDown)
@@ -155,5 +165,10 @@ class InputModule extends ModuleBase implements IInputModule {
 
 	public GetKey(key: InputKey): boolean {
 		return this.mKeyState[key];
+	}
+
+	public OnStartNewTurn()
+	{
+		this.continueDown = false;
 	}
 }
