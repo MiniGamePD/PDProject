@@ -355,10 +355,10 @@ class Tools
         // GameMain.GetInstance().DispatchEvent(event);
 
 		var particalParam = new PaPlayParticalParam();
-		particalParam.textureName = "huojian_shinning";
-		particalParam.jsonName = "huojian_shinning";
+		particalParam.textureName = "xingxing1";
+		particalParam.jsonName = "LandEffect";
 		particalParam.duration = 2000;
-		particalParam.emitDuration = 100;
+		particalParam.emitDuration = 10;
 		particalParam.posX = pos.x;
 		particalParam.posY = pos.y;
 		var event = new PlayProgramAnimationEvent();
