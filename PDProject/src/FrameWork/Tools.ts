@@ -348,7 +348,7 @@ class Tools
 		particalParam.textureName = "xingxing1";
 		particalParam.jsonName = "LandEffect";
 		particalParam.duration = 2000;
-		particalParam.emitDuration = 10;
+		particalParam.emitDuration = 40;
 		particalParam.posX = pos.x;
 		particalParam.posY = pos.y;
 		var event = new PlayProgramAnimationEvent();
