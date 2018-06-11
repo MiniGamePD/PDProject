@@ -27,53 +27,66 @@ class PaPlayDBAnimationParam extends ProgramAnimationParamBase
 
 class PaPlayDBAnimation extends ProgramAnimationBase<PaPlayDBAnimationParam>
 {
-	private armatureDisplay: dragonBones.EgretArmatureDisplay;
-	private animationState: dragonBones.AnimationState;
-	protected OnInit()
-	{
-		let egretFactory: dragonBones.EgretFactory = dragonBones.EgretFactory.factory;
-		this.armatureDisplay = egretFactory.buildArmatureDisplay(this.param.animationName);
-		if (this.armatureDisplay != null)
-		{
-			GameMain.GetInstance().GetAdaptedStageContainer().addChild(this.armatureDisplay);
-			this.armatureDisplay.x = this.param.posX;
-			this.armatureDisplay.y = this.param.posY;
-			this.armatureDisplay.scaleX = this.param.scaleX; 
-			this.armatureDisplay.scaleY = this.param.scaleY; 
-			GameMain.GetInstance().AdapteDisplayObjectScale(this.armatureDisplay);
-			this.animationState = this.armatureDisplay.animation.play(this.param.animationName, 1);
-		}
-	}
 
-	protected OnUpdate(deltaTime: number)
-	{
+	// 派生类的初始化处理
+	protected OnInit(){}
 
-	}
+	// 派生类的更新处理
+	protected OnUpdate(deltaTime: number){}
 
-	protected OnRelease()
-	{
-		if (this.armatureDisplay != null
-		&& this.armatureDisplay.parent != null
-		&& this.armatureDisplay.parent != undefined)
-		{
-			this.armatureDisplay.parent.removeChild(this.armatureDisplay);
-			this.armatureDisplay = null;
-		}
-		this.animationState = null;
-	}
+	// 派生类的析构处理
+	protected OnRelease(){}
 
-	public IsFinish()
-	{
-		if (this.param.playTimes > 0
-		&& this.animationState != undefined
-		&& this.animationState != null)
-		{
-			return !this.animationState.isPlaying;
-		}
-		else
-		{
-			return this.runningTime >= this.param.duration;
-		}
-	}
+	// 派生类返回是否完成
+	public IsFinish(){ return true;}
+
+	// private armatureDisplay: dragonBones.EgretArmatureDisplay;
+	// private animationState: dragonBones.AnimationState;
+	// protected OnInit()
+	// {
+	// 	let egretFactory: dragonBones.EgretFactory = dragonBones.EgretFactory.factory;
+	// 	this.armatureDisplay = egretFactory.buildArmatureDisplay(this.param.animationName);
+	// 	if (this.armatureDisplay != null)
+	// 	{
+	// 		GameMain.GetInstance().GetAdaptedStageContainer().addChild(this.armatureDisplay);
+	// 		this.armatureDisplay.x = this.param.posX;
+	// 		this.armatureDisplay.y = this.param.posY;
+	// 		this.armatureDisplay.scaleX = this.param.scaleX; 
+	// 		this.armatureDisplay.scaleY = this.param.scaleY; 
+	// 		GameMain.GetInstance().AdapteDisplayObjectScale(this.armatureDisplay);
+	// 		this.animationState = this.armatureDisplay.animation.play(this.param.animationName, 1);
+	// 	}
+	// }
+
+	// protected OnUpdate(deltaTime: number)
+	// {
+
+	// }
+
+	// protected OnRelease()
+	// {
+	// 	if (this.armatureDisplay != null
+	// 	&& this.armatureDisplay.parent != null
+	// 	&& this.armatureDisplay.parent != undefined)
+	// 	{
+	// 		this.armatureDisplay.parent.removeChild(this.armatureDisplay);
+	// 		this.armatureDisplay = null;
+	// 	}
+	// 	this.animationState = null;
+	// }
+
+	// public IsFinish()
+	// {
+	// 	if (this.param.playTimes > 0
+	// 	&& this.animationState != undefined
+	// 	&& this.animationState != null)
+	// 	{
+	// 		return !this.animationState.isPlaying;
+	// 	}
+	// 	else
+	// 	{
+	// 		return this.runningTime >= this.param.duration;
+	// 	}
+	// }
 
 }

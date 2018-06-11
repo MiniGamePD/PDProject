@@ -1,6 +1,5 @@
 class ResModule extends ModuleBase implements IResModule
 {
-	private readonly DragonBonesRes: string[] = ["DB_Boom_Bomb", "Pill_Boom", "Virus"]
 	public Init(): boolean
 	{
 		this.isForeground = true;
@@ -34,7 +33,7 @@ class ResModule extends ModuleBase implements IResModule
 		{
 			await RES.loadConfig("resource/default.res.json", "resource/");
 			await RES.loadGroup("preload", 0, null);
-			await this.InitDragonBonesData();
+			// await this.InitDragonBonesData();
 			if (finishCallBack != null
 				&& finishCallBack != undefined)
 			{
@@ -54,28 +53,31 @@ class ResModule extends ModuleBase implements IResModule
 		return RES.getRes(key);
 	}
 	
-	public InitDragonBonesData()
-	{
-		for (var i = 0; i < this.DragonBonesRes.length; ++i)
-		{
-			this.LoadDragonBonesData(this.DragonBonesRes[i]);
-		}
-	}
 
-	private LoadDragonBonesData(resName: string)
-	{
-		var dragonbonesData = RES.getRes(resName + "_ske_json");
-		var textureData = RES.getRes(resName + "_tex_json");
-		var texture = RES.getRes(resName + "_tex_png");
-		if (dragonbonesData != null
-			&& textureData != null
-			&& texture != null)
-		{
-			let egretFactory: dragonBones.EgretFactory = dragonBones.EgretFactory.factory;
-			egretFactory.parseDragonBonesData(dragonbonesData);
-			egretFactory.parseTextureAtlasData(textureData, texture);
-		}
-	}
+	// <<DragonBones 组件>> -- 先关闭DragonBones组件
+	// private readonly DragonBonesRes: string[] = ["DB_Boom_Bomb", "Pill_Boom", "Virus"]
+	// public InitDragonBonesData()
+	// {
+	// 	for (var i = 0; i < this.DragonBonesRes.length; ++i)
+	// 	{
+	// 		this.LoadDragonBonesData(this.DragonBonesRes[i]);
+	// 	}
+	// }
+
+	// private LoadDragonBonesData(resName: string)
+	// {
+	// 	var dragonbonesData = RES.getRes(resName + "_ske_json");
+	// 	var textureData = RES.getRes(resName + "_tex_json");
+	// 	var texture = RES.getRes(resName + "_tex_png");
+	// 	if (dragonbonesData != null
+	// 		&& textureData != null
+	// 		&& texture != null)
+	// 	{
+	// 		let egretFactory: dragonBones.EgretFactory = dragonBones.EgretFactory.factory;
+	// 		egretFactory.parseDragonBonesData(dragonbonesData);
+	// 		egretFactory.parseTextureAtlasData(textureData, texture);
+	// 	}
+	// }
 
 	public CreateBitmapByName(key: string): egret.Bitmap
 	{

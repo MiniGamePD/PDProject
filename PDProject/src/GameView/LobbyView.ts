@@ -65,7 +65,6 @@ class LobbyView extends GameView
 
         this.PlayLightningAnim(text);
         // this.PlayMoving(text);
-        this.PlayDBAnimation();
         // this.PlayDynamicMoving();
 
         var angle = Tools.GetRotateAngle(0, 0, 1, 1);
@@ -172,19 +171,6 @@ class LobbyView extends GameView
     private MoveParticalCallBack(runTime: number)
     {
         egret.log("MoveParticalCallBack, runTime=" + runTime);
-    }
-
-    private PlayDBAnimation()
-    {
-        var param = new PaPlayDBAnimationParam;
-        param.resName = "DB_Boom_Bomb";
-        param.animationName = "Boom1";
-        param.duration = 1000;
-        param.posX = this.mStageWidth / 2;
-        param.posY = this.mStageHeight / 2;
-        var event = new PlayProgramAnimationEvent();
-        event.param = param;
-        GameMain.GetInstance().DispatchEvent(event);
     }
 
     private PlayDynamicMoving()
