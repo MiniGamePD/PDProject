@@ -21,6 +21,8 @@ class GameMain implements IGameMain {
 	//为了避免单局内对药丸的操作影响和对UI的操作互相影响，添加一个点击排除列表
 	private mInGameTouchableUIArray:egret.DisplayObject[]; 
 
+	private pause:boolean; //只允许MatchModule写入，其他地方只能获取
+
 	//创建单例
 	public static CreatInstance(egretMain:Main): boolean 
 	{
@@ -318,5 +320,15 @@ class GameMain implements IGameMain {
 			}
 		}
 		return result;
+	}
+
+	public SetPause(pause:boolean)
+	{
+		this.pause = pause;
+	}
+
+	public GetPause():boolean
+	{
+		return this.pause;
 	}
 }

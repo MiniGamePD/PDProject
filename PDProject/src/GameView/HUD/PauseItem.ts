@@ -99,19 +99,27 @@ class PauseItem extends egret.DisplayObjectContainer
         //设置显示对象可以相应触摸事件
         this.pauseIcon.touchEnabled = true;
         //注册事件
-        this.pauseIcon.addEventListener(egret.TouchEvent.TOUCH_TAP, this.OnPause, this);
+        this.pauseIcon.addEventListener(egret.TouchEvent.TOUCH_TAP, this.OnPauseTrue, this);
     }
 
     public Release()
     {
         GameMain.GetInstance().UnregisterInGameTouchableUI(this.pauseIcon);
 
-        this.pauseIcon.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.OnPause, this);
+        this.pauseIcon.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.OnPauseTrue, this);
     }
 
-    private OnPause()
+    private OnPauseTrue()
     {
         var event = new PauseEvent();
+        event.pause = true;
+        GameMain.GetInstance().DispatchEvent(event);
+    }
+
+    private OnPauseFalse()
+    {
+        var event = new PauseEvent();
+        event.pause = false;
         GameMain.GetInstance().DispatchEvent(event);
     }
 
@@ -131,7 +139,7 @@ class PauseItem extends egret.DisplayObjectContainer
             egret.log("OnClickContinue");
         }
        
-        this.OnPause();
+        this.OnPauseFalse();
     }
 
     public ShowPauseMenu()

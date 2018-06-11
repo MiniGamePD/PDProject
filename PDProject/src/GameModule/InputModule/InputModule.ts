@@ -127,7 +127,7 @@ class InputModule extends ModuleBase implements IInputModule {
 	{
 		if (evt.type == egret.TouchEvent.TOUCH_TAP) 
 		{
-			if(!GameMain.GetInstance().IsTapTargetInInGameTouchableUIArray(evt.target))
+			if(!GameMain.GetInstance().GetPause() && !GameMain.GetInstance().IsTapTargetInInGameTouchableUIArray(evt.target))
 			{
 				//没有点击在UI按钮上，才算对于药丸的操作
 				// egret.log("OnTouchTap(" + evt.stageX + "," + evt.stageY + ")");

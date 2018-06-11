@@ -278,7 +278,11 @@ class MatchModule extends GameViewModule
 		if(this.matchState == MatchState.GameOver)
 			return;
 
-		this.pause = !this.pause;
+		if(this.pause == event.pause)
+			return;
+
+		this.pause = event.pause;
+		GameMain.GetInstance().SetPause(this.pause);
 
 		var hudEvent = new HUDEvent();
 		hudEvent.eventType = this.pause ? HUDEventType.ShowPauseMenu : HUDEventType.HidePauseMenu;

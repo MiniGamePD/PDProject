@@ -71,11 +71,20 @@ class Main extends egret.DisplayObjectContainer
         //         }
         //     })
 
-        egret.lifecycle.onPause = () => {
+        egret.lifecycle.onPause = () => 
+        {
+            var pauseEvent = new PauseEvent();
+            pauseEvent.pause = true;
+            GameMain.GetInstance().DispatchEvent(pauseEvent);
+            
             egret.ticker.pause();
         }
 
-        egret.lifecycle.onResume = () => {
+        egret.lifecycle.onResume = () => 
+        {
+            // var pauseEvent = new PauseEvent();
+            // GameMain.GetInstance().DispatchEvent(pauseEvent);
+
             egret.ticker.resume();
         }
 
