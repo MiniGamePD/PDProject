@@ -39,6 +39,8 @@ class NpcControl extends GameModuleComponentBase
     private curDifficultyShieldProperty:number;
     private curDifficultyCreateEnemyLineNum:number;
 
+    public moveUpFinish:boolean;
+
     public constructor(gameplayElementFactory:GameplayElementFactory)
     {
         super();
@@ -57,6 +59,7 @@ class NpcControl extends GameModuleComponentBase
         this.curDifficultyId = 0;
         this.curDifficultyShieldProperty = 0;
         this.curDifficultyCreateEnemyLineNum = 0;
+        this.moveUpFinish = false;
         GameMain.GetInstance().AddEventListener(SceneElementAccessAnswerEvent.EventName, this.OnReciveSceneData, this);
         GameMain.GetInstance().AddEventListener(SceneElementControlFailedEvent.EventName, this.OnAddElementToSceneFailed, this);
     }
@@ -66,6 +69,7 @@ class NpcControl extends GameModuleComponentBase
         // this.skillNpcArray = [];
         // this.aliveNpcArray = [];
         this.lastTurnNum = -1;
+        this.moveUpFinish = false;
         GameMain.GetInstance().RemoveEventListener(SceneElementAccessAnswerEvent.EventName, this.OnReciveSceneData, this);
         GameMain.GetInstance().RemoveEventListener(SceneElementControlFailedEvent.EventName, this.OnAddElementToSceneFailed, this);
     }
@@ -387,6 +391,11 @@ class NpcControl extends GameModuleComponentBase
     {
         this.npcControlState = NpcControlState.None;
         let event = new NpcControlFinishEvent();
+        if(this.moveUpFinish)
+        {
+            event.moveUpFinish = true;
+            this.moveUpFinish = false;
+        }
         GameMain.GetInstance().DispatchEvent(event);
     }
 
@@ -396,6 +405,9 @@ class NpcControl extends GameModuleComponentBase
         if(this.remindMoveUpNum > 0)
         {
             this.remindMoveUpNum--;
+
+            if(this.remindMoveUpNum <= 0)
+                this.moveUpFinish = true;
 
             let event = new NpcControlFinishEvent();
             event.specialEliminateMethod = new EliminateMethod();

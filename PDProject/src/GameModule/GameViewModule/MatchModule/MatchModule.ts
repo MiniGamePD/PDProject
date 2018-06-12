@@ -179,6 +179,10 @@ class MatchModule extends GameViewModule
 		{
 			this.StartNpcSkill(event);
 		}
+		else if(event.moveUpFinish)
+		{
+			this.StartSceneEliminate(null);
+		}
 		else
 		{
 			this.StartPlayerControl();
